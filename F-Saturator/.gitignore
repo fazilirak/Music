@@ -1,0 +1,24 @@
+# Üretilmiş dosyalar; indirilebilir paketler GitHub Releases üzerinden yayımlanır.
+/build/
+/build-*/
+/dist/
+/build-log.txt
+/.vs/
+/.vscode/
+CMakeUserPresets.json
+*.user
+*.suo
+*.pdb
+*.ilk
+*.log
+
+# Yerel kimlik bilgileri ve geliştirme ayarları depoya girmemelidir.
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.key
+*.pem
+Thumbs.db
+.DS_Store

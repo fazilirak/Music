@@ -1,0 +1,10 @@
+# Kaynak metinlerini tutarlı satır sonlarıyla sakla.
+* text=auto
+*.cpp text eol=lf
+*.h text eol=lf
+*.md text eol=lf
+*.ps1 text eol=lf
+
+# cmd.exe için hazır CRLF baytlarını koru; GitHub kaynak ZIP'i de aynı betiği içersin.
+*.cmd -text
+*.otf binary

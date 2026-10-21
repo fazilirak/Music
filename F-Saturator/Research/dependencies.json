@@ -1,0 +1,20 @@
+{
+  "juce": {
+    "repository": "https://github.com/juce-framework/JUCE",
+    "commit": "10a589619b452c261b2940767eb253171eb5a823",
+    "licence": "AGPLv3 / commercial"
+  },
+  "researchOnly": [
+    {
+      "repository": "https://github.com/apmastering/Saturation",
+      "commit": "c9145ac3494d98e2227510777357cfc743cc6608",
+      "compiled": false
+    },
+    {
+      "repository": "https://github.com/resonantdsp/SwankyAmp",
+      "commit": "f9b206a074b1c87ba23137d223586ab5feeaefed",
+      "alsoReviewed": "juce-1.4.0",
+      "compiled": false
+    }
+  ]
+}
