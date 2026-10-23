@@ -37,7 +37,7 @@ def package():
         if info['CFBundleShortVersionString'] != version:
             raise RuntimeError('Bundle/source version mismatch: ' + str(bundle))
         executable = bundle / 'Contents/MacOS' / info['CFBundleExecutable']
-        subprocess.run(['lipo', '-verify_arch', 'arm64', 'x86_64', str(executable)], check=True)
+        subprocess.run(['lipo', str(executable), '-verify_arch', 'arm64', 'x86_64'], check=True)
         content = executable.read_bytes()
         if ir not in content or b'Deltaworks' in content or b'Samplicity' in content:
             raise RuntimeError('Incorrect IR in linked Mach-O: ' + str(executable))
