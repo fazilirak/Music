@@ -42,7 +42,9 @@
     },
     {
       "path": "Tests/DSPTests.cpp",
-      "cpp_tokens_unchanged": true
+      "cpp_tokens_unchanged": false,
+      "change": "Diagnostic output only; existing conditions and thresholds preserved."
     }
-  ]
+  ],
+  "test_diagnostics": "Failure codes/line numbers and harmonic/block comparisons printed for CI; thresholds unchanged."
 }

@@ -14,6 +14,14 @@
 
 namespace
 {
+// Fazıl Irak tarafından değiştirildi: 23.10.2026.
+// CI çıktısında hangi mevcut koşulun başarısız olduğunu görünür yapar; eşikleri değiştirmez.
+int verificationFailure(int code, int line)
+{
+    std::cerr << "Verification failed: code=" << code << ", source line=" << line << std::endl;
+    return code;
+}
+
 // UI testleri bileşenleri kalıcı ComponentID üzerinden bulur; görünen yazıya bağımlı değildir.
 juce::Component *byId(juce::Component &c, const juce::String &id)
 {
@@ -184,7 +192,7 @@ int main(int argc, char **argv)
                       << " dB\n";
             // Koşul başarısızsa dönüş 1: katsayı, oversampling, ADAA veya ölçüm penceresi değişikliğini araştırın; eşiği yükselterek testi susturmayın.
             if (cleanAlias > rawAlias - 12 || cleanAlias > -40)
-                return 1;
+                return verificationFailure(1, __LINE__);
         }
         for (int m = 0; m < 5; ++m)
         {
@@ -198,10 +206,11 @@ int main(int argc, char **argv)
             const double h2 = harmonicDb(rendered, 2), h3 = harmonicDb(rendered, 3);
             report += juce::String(irak::modelNames[m]) + ": 1 kHz H2 " + juce::String(h2, 2) + " dBc; H3 " +
                       juce::String(h3, 2) + " dBc.\n\n";
+            std::cout << "Harmonics model " << m << ": H2=" << h2 << ", H3=" << h3 << std::endl;
             if (m == 4 && h2 > -65)
-                return 6;
+                return verificationFailure(6, __LINE__);
             if (m == 3 && h2 < -50)
-                return 7;
+                return verificationFailure(7, __LINE__);
             // Referans girişte sürüş boyunca Auto Gain telafisinin ±0.65 dB içinde kalmasını doğrular (kod 8).
             s.autoGain = true;
             for (float d : {0.0f, 12.0f, 24.0f, 36.0f, 54.0f})
@@ -212,7 +221,7 @@ int main(int argc, char **argv)
                 if (std::abs(db) > .65)
                 {
                     std::cerr << "Auto gain " << m << " / " << d << ": " << db << " dB\n";
-                    return 8;
+                    return verificationFailure(8, __LINE__);
                 }
             }
         }
@@ -224,7 +233,10 @@ int main(int argc, char **argv)
             auto a = render(s, 3, true, 48000, 423, .2f, 256), b = render(s, 3, true, 48000, 423, .2f, 127);
             for (size_t i = 0; i < a.size(); ++i)
                 if (std::abs(a[i] - b[i]) > 1e-6f)
-                    return 9;
+                {
+                    std::cerr << "Block difference at " << i << ": " << a[i] - b[i] << std::endl;
+                    return verificationFailure(9, __LINE__);
+                }
         }
         // 44.1/48/96/192 kHz’de yüksek Drive+Heat+Bias ile sonlu/kararlı çıkış kontrolü.
         for (double sr : {44100.0, 48000.0, 96000.0, 192000.0})
@@ -255,7 +267,7 @@ int main(int argc, char **argv)
             dsp.process(b, s);
             for (int i = 0; i < 1024; ++i)
                 if (std::abs(b.getSample(0, i) - (i == dsp.getLatency() ? 1.0f : 0.0f)) > 1e-6f)
-                    return 2;
+                    return verificationFailure(2, __LINE__);
             report += "Dry latency: " + juce::String(dsp.getLatency()) + " samples.\n\n";
         }
         // Persistent state, all factory programs and a rendered editor.
@@ -273,14 +285,14 @@ int main(int argc, char **argv)
             const auto file = bank.getChildFile(juce::String(i + 1).paddedLeft('0', 2) + " " +
                                                 p.getProgramName(i) + ".irakpreset");
             if (!file.replaceWithData(data.getData(), data.getSize()))
-                return 11;
+                return verificationFailure(11, __LINE__);
             p.setCurrentProgram((i + 1) % 16);
             juce::MemoryBlock loaded;
             if (!file.loadFileAsData(loaded) || loaded != data)
-                return 12;
+                return verificationFailure(12, __LINE__);
             p.setStateInformation(loaded.getData(), (int)loaded.getSize());
             if (p.getCurrentProgram() != i)
-                return 3;
+                return verificationFailure(3, __LINE__);
         }
         p.setCurrentProgram(2);
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
@@ -292,13 +304,13 @@ int main(int argc, char **argv)
             auto *control =
                 dynamic_cast<irak::ConcentricKnob *>(byId(*editor, "saturator-group-" + juce::String(group)));
             if (!control)
-                return 13;
+                return verificationFailure(13, __LINE__);
             const float x = control->getWidth() * .5f;
             for (int part = 0; part < 3; ++part)
             {
                 const juce::Point<float> pos{x + (part == 0 ? 20.0f : part == 1 ? 65.0f : 90.0f), 124};
                 if (control->partAt(pos) != part)
-                    return 14;
+                    return verificationFailure(14, __LINE__);
                 std::array<float, 3> before;
                 for (int i = 0; i < 3; ++i)
                     before[(size_t)i] = p.state.getRawParameterValue(groupedIds[group][i])->load();
@@ -318,7 +330,7 @@ int main(int argc, char **argv)
                     const float after = p.state.getRawParameterValue(groupedIds[group][i])->load();
                     if ((i == part && std::abs(after - before[(size_t)i]) < 1e-5f) ||
                         (i != part && after != before[(size_t)i]))
-                        return 15;
+                        return verificationFailure(15, __LINE__);
                 }
             }
         }
@@ -334,7 +346,7 @@ int main(int argc, char **argv)
         auto *bypass = byId(*editor, "saturator-bypass");
         if (!heat || !autoGain || !bypass || heat->getX() != autoGain->getX() ||
             heat->getY() >= autoGain->getY() || autoGain->getY() >= bypass->getY())
-            return 16;
+            return verificationFailure(16, __LINE__);
         editor.reset();
         // Parameter/model changes and a silent tail must not create NaN or a stuck DC tone.
         // Preset değişimleri sırasında NaN oluşmamasını ve sessizlik kuyruğunda kalıcı DC kalmamasını sınar (kod 4/5).
@@ -351,10 +363,10 @@ int main(int argc, char **argv)
             for (int c = 0; c < 2; ++c)
                 for (int j = 0; j < 256; ++j)
                     if (!std::isfinite(b.getSample(c, j)))
-                        return 4;
+                        return verificationFailure(4, __LINE__);
         }
         if (b.getMagnitude(0, 0, 256) > 1e-5f)
-            return 5;
+            return verificationFailure(5, __LINE__);
         // Original synthetic audition: kick/snare/hat and bass, no third-party recordings.
         // Sabit tohumlu sentetik kick/snare/hat/bass üretir; üçüncü taraf kayıt kullanılmaz.
         juce::AudioBuffer<float> source(2, 48000 * 6);
@@ -406,7 +418,7 @@ int main(int argc, char **argv)
     catch (const std::exception &error)
     {
         std::cerr << error.what() << "\n";
-        return 10;
+        return verificationFailure(10, __LINE__);
     }
     return 0;
 }
