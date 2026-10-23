@@ -2,7 +2,9 @@
   "juce": {
     "repository": "https://github.com/juce-framework/JUCE",
     "commit": "10a589619b452c261b2940767eb253171eb5a823",
-    "licence": "AGPLv3 / commercial"
+    "licence": "AGPLv3 / commercial",
+    "archive_url": "https://codeload.github.com/juce-framework/JUCE/tar.gz/10a589619b452c261b2940767eb253171eb5a823",
+    "archive_sha256": "c7616aaec86e74d5e9ad6ee7a34969111daaab5bd85414fa9c1097d8d71ca463"
   },
   "researchOnly": [
     {
@@ -16,5 +18,12 @@
       "alsoReviewed": "juce-1.4.0",
       "compiled": false
     }
-  ]
+  ],
+  "fonts": {
+    "repository": "https://github.com/ArtifexSoftware/urw-base35-fonts",
+    "tag": "20200910",
+    "archive_sha256": "e0d9b7f11885fdfdc4987f06b2aa0565ad2a4af52b22e5ebf79e1a98abd0ae2f",
+    "licence": "AGPLv3 with font exception",
+    "modified": false
+  }
 }

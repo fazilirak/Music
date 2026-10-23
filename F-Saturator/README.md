@@ -1,62 +1,85 @@
-# F Saturator 0.2.0 — FAZIL IRAK
+<!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026 -->
+# F Saturator 0.3.0 — FAZIL IRAK
 
-[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.2.0/F-Saturator-0.2.0-Windows-x64.zip) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.2.0) · [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.2.0/F-Saturator-0.2.0-Source.zip)
+[![Build](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml/badge.svg)](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml)
 
-![F Saturator](https://fazilirak.com/wp-content/uploads/2026/10/F-Saturator-preview.png)
+[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.3.0/F-Saturator-0.3.0-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.3.0/F-Saturator-0.3.0-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
 
-JUCE tabanlı, bağımsız **VST3 ve standalone saturation/distortion** projesi. Aynı DSP motoru Shaper içinde **Saturation** efekti olarak da kullanılır.
+![F Saturator](doc/f-saturator.png)
 
-## Kullanım
+Saturation and distortion with five character models, 16 factory presets and a compact concentric-control interface. Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone, macOS 11.0 or later.
 
-- **Console, Transformer, Tape, Triode, Pentode**: beş özgün renk modeli.
-- **Drive** 0–36 dB; **Heat** ek +20 dB. **Auto Gain** referans tona göre Drive seviyesini dengeler; Output ile son seviyeyi ayarlayın.
-- **Tone** parlak/koyu tilt; **Low cut** distortion öncesi, **High cut** distortion sonrası filtre.
-- **Bias** yarım dalga asimetrisi; **Dynamics** dinamik yükleme/sag miktarı.
-- **Mix** paralel dry/wet; **Stereo** wet stereo genişliği; **Bypass** gecikmesi korunmuş geçiş.
-- Sabit **8x FIR oversampling + iki ADAA katı**, örnekleme hızına bağlı yumuşatmalar ve DC temizleme.
-- 16 özgün hazır preset; önceki/sonraki ve `.irakpreset` kaydet/yükle.
-- Shaper'da grafik Low/Mid/High band kontrolü, bağımsız üç motor, ortak sağ üst Mix/Stereo/dB paneli ve rack presetleriyle tam durum saklama.
+## Features
 
-Modeller analog davranışlardan esinlenen hibrit tasarımlardır. Belirli bir cihazın ölçülmüş kopyası veya Decapitator ile aynı ses oldukları iddia edilmez. Tape karakteri tape hızını, hiss veya wow/flutter'ı modellemez.
+- **Console, Transformer, Tape, Triode and Pentode**: five independently designed character models.
+- **Drive** 0–36 dB; **Heat** adds 20 dB. **Auto Gain** provides compensation calibrated against a reference tone. Use Output for the final level; Auto Gain is not programme loudness normalisation.
+- **Tone**, pre-distortion **Low Cut** and post-distortion **High Cut** shape the frequency balance.
+- **Bias** controls asymmetry; **Dynamics** adjusts dynamic loading and sag.
+- **Mix**, **Output**, **Stereo** and latency-aligned **Bypass** control the result.
+- Fixed 8× FIR oversampling, antiderivative antialiasing, parameter smoothing and DC removal.
+- 16 factory presets, previous/next navigation and `.irakpreset` save/load.
+- Embedded URW Gothic fonts provide the same lettering on both platforms.
 
-## Derleme
+Models are not measured hardware replicas. Tape does not simulate tape speed, hiss or wow/flutter.
 
-Windows: `scripts/build-windows.cmd`. Visual Studio 2026 C++ araçları ve CMake/Ninja kullanılır.
+## Downloads and installation
 
-JUCE yolu varsayılan olarak `../upstream/gate12/libs/JUCE`'dur. Proje ayrı bir konuma taşınırsa CMake'e `-DIRAK_JUCE_PATH=C:/path/to/JUCE` verin. Proje başka bir Shaper kaynak dosyasına ihtiyaç duymaz.
+Use the [0.3.0 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
 
-Araştırma depoları derlemeye katılmaz. Ayrıntılı kaynak incelemesi, lisans notları, DSP denklemleri ve tasarım sınırları: [DSP-RESEARCH.md](Research/DSP-RESEARCH.md). Otomatik ölçüm raporu: `dist/DSP-REPORT.md`.
+- Windows: extract the ZIP; copy the entire `VST3/F Saturator.vst3` bundle into your shared VST3 directory. Open `Standalone/F Saturator.exe` without a DAW.
+- macOS: extract the TAR.GZ; copy the VST3 to `~/Library/Audio/Plug-Ins/VST3/` and the AU to `~/Library/Audio/Plug-Ins/Components/`. Open `Standalone/F Saturator.app` without a DAW.
+- Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Windows binaries are unsigned. Separate DAW and Intel Mac compatibility testing remains necessary.
 
-## Lisans
+## Build from source
 
-F Saturator özgün kaynak kodu: Copyright 2026 Fazıl Irak, AGPLv3-or-later. JUCE, AGPLv3 / ticari lisans seçenekleriyle ayrıca lisanslıdır. Açık kaynak dağıtımda F Saturator kaynakları ve kullanılan JUCE sürümü erişilebilir olmalıdır. Referans projelerin kodu veya medya dosyaları ürüne dahil edilmemiştir.
+C++17, CMake 3.24+, Ninja and Python 3.12+. Windows also needs Visual Studio desktop C++ tools; macOS needs Xcode Command Line Tools.
 
-## F EQ arayüz standardı
-
-Koyu gri #141819 panel, #ed6c46 turuncu dış halka, #e5e7df kırık beyaz orta halka ve #292f31 gri yivli iç kapak kullanılır. URW Gothic Book/Demi fontları ürüne gömülüdür; lisans ve kaynak bilgileri Resources/fonts içindedir.
-
-Üst sırada saturation transfer eğrisi, Heat / Auto Gain / Bypass checkbox'ları ve dikey IN / OUT seviye göstergeleri bulunur. Ortada üç bağımsız konsantrik kontrol grubu vardır. İçten dışa: Tone / Low Cut / High Cut; Drive / Bias / Dynamics; Mix / Output / Stereo. Model düğmeleri altta, orta grubun merkezine göre hizalıdır.
-
-Hedef halkayı yukarı/aşağı sürükleyin veya tekerleği kullanın. Shift hassas ayar; çift tıklama veya Ctrl/Alt + tıklama varsayılan değere dönüş sağlar. Alt sayısal değerlere çift tıklayarak doğrudan değer yazabilirsiniz. Low Cut / High Cut halkalarının görsel frekans ölçeği logaritmiktir; mevcut host normalizasyonu değişmez.
-
-Bu proje F Saturator klasöründe bağımsız CMake projesidir. Yalnız JUCE bağımlılığı dışarıdan seçilir (IRAK_JUCE_PATH). Shaper dosyalarına derleme bağımlılığı yoktur; varsayılan JUCE yolu bu bilgisayardaki Shaper deposunu gösterir. Plugin kimlikleri, parametre ID'leri, IRAK_STATE ve .irakpreset biçimi önceki IRAK oturumları/presetleri için korunur. Görünen ürün adı F Saturator'dır.
-
-## Kaynakları düzenleme ve GitHub
-
-Türkçe açıklamalar `Source`, `Tests`, CMake ve betik dosyaları içindedir. Dosya haritası, sinyal zinciri, parametre/preset düzenleme ve derleme adımları: **[GELISTIRME-TR.md](GELISTIRME-TR.md)**. İnceleme kapsamı ve bakım notları: **[REVIEW-TR.md](REVIEW-TR.md)**.
-
-Depo kaynakları içerir; Windows indirme paketleri sürüm etiketiyle GitHub Releases bölümünde paylaşılabilir. `build` ve `dist` üretilmiş çıktılardır, depoya eklenmez. Bu proje Windows x64 VST3 ve standalone üretir; CLAP hedefi bulunmaz.
-
-## Building from source (English)
-
-F Saturator uses C++17, CMake 3.24+, Ninja and the Visual Studio desktop C++ tools. Obtain JUCE separately from https://github.com/juce-framework/JUCE and check out commit `10a589619b452c261b2940767eb253171eb5a823`, recorded in `Research/dependencies.json`. From a Visual Studio x64 Native Tools terminal:
-
-```powershell
-cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DIRAK_JUCE_PATH=C:/path/to/JUCE
-cmake --build build --parallel 4
-ctest --test-dir build --output-on-failure
+```sh
+python scripts/bootstrap_juce.py
+python scripts/bootstrap_fonts.py
 ```
 
-The VST3 and standalone binaries are under `build/IRAK_artefacts/Release`. Tests generate the presets, screenshots, original audition WAVs and DSP report under `dist`. After successful tests, run `powershell -ExecutionPolicy Bypass -File scripts/package.ps1` to create the Windows and corresponding-source ZIPs. The local build helper assumes Visual Studio 2026 Community; adjust its `VSROOT` for a different installation.
+The scripts verify fixed archive SHA-256 values. Complete release-source ZIPs already contain the dependencies and are checked in place. An ordinary repository checkout downloads them from their original repositories.
 
-F Saturator is licensed under AGPLv3-or-later; see `LICENSE`. JUCE has its own AGPL/commercial terms in `JUCE-LICENSE.md`. Embedded URW Gothic font notices and the font exception are retained in `Resources/fonts`. Research-only repository references are documented, not compiled into the product. Keep the matching source, dependency revision and build instructions available with each binary release.
+Windows, from an x64 Native Tools terminal:
+
+```sh
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel 4
+ctest --test-dir build --output-on-failure --timeout 300
+python scripts/package_distribution.py --platform Windows
+```
+
+Alternatively run `scripts/build-windows.cmd`, then the package command. The helper discovers Visual Studio with vswhere; `FSATURATOR_VSROOT` overrides its location.
+
+Mac Universal:
+
+```sh
+bash scripts/build-macos.sh
+```
+
+Tests cover sample-rate extremes, finite output, harmonic character, Auto Gain reference calibration, block-size invariance, preset recall, dry/bypass latency, model changes and editor interaction/rendering. They export 16 presets, six original audition WAVs, screenshots and a DSP report. Packaging additionally checks source hashes, binary versions, Mac architectures/signatures and archive contents.
+
+## 0.3.0 changes
+
+- First macOS Universal release with AU, VST3 and standalone formats.
+- Portable Windows build helper and verified GitHub Actions release flow.
+- Updated Turkish code comments and maintenance documents from the local development tree.
+- Complete matching dependency sources and third-party notices in distribution packages.
+- Existing plug-in IDs, parameter IDs, `IRAK_STATE`, preset format and DSP behaviour preserved.
+
+## Türkçe geliştirme belgeleri
+
+- [Geliştirme ve kaynak haritası](GELISTIRME-TR.md)
+- [Hata ayıklama rehberi](docs/HATA_AYIKLAMA_TR.md)
+- [Mac derleme ve kurulum](docs/MACOS_TR.md)
+- [Kaynak incelemesi](REVIEW-TR.md)
+- [DSP araştırma notları](Research/DSP-RESEARCH.md)
+
+F Saturator bağımsız projedir; Shaper kaynaklarına veya arayüzüne derleme bağımlılığı yoktur. Ses motorunu ve kimlikleri koruyan bu sürüm, mevcut Türkçe bakım notlarını ve Mac dağıtım desteğini bir araya getirir. JUCE yolu gerektiğinde `-DIRAK_JUCE_PATH=...` ile değiştirilebilir; resmî dağıtım sabitlenmiş kaynakları kullanır.
+
+## Licence
+
+Copyright (c) 2026 Fazıl Irak. F Saturator: **AGPLv3-or-later**, see [LICENSE](LICENSE). JUCE uses its AGPLv3 option; URW font licences and the font exception are preserved. See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt), [JUCE-LICENSE.md](JUCE-LICENSE.md) and `Resources/fonts`. Research references are documented rather than compiled third-party effect code. Publish the matching complete source with equivalent access alongside binaries.
+
+[Website — Türkçe](https://fazilirak.com/f-saturator/) · [Website — English](https://fazilirak.com/f-saturator-english/)

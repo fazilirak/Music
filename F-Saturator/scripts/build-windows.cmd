@@ -1,19 +1,19 @@
 @echo off
+REM Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
+REM SPDX-License-Identifier: AGPL-3.0-or-later
+REM Copyright (c) 2026 Fazıl Irak
 setlocal
-rem Visual Studio C++ araçlarının kurulu olduğu yol. Başka sürüm/yerde kuruluysa yalnız bu yolu uyarlayın.
-set "VSROOT=C:\Program Files\Microsoft Visual Studio\18\Community"
-rem 64-bit MSVC ortamını kurar; bu adım başarısızsa derlemeye devam edilmez.
-call "%VSROOT%\VC\Auxiliary\Build\vcvars64.bat"
+if not defined FSATURATOR_VSROOT (
+    for /f "usebackq delims=" %%V in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "FSATURATOR_VSROOT=%%V"
+)
+if not defined FSATURATOR_VSROOT exit /b 1
+call "%FSATURATOR_VSROOT%\VC\Auxiliary\Build\vcvars64.bat"
 if errorlevel 1 exit /b 1
-rem Visual Studio ile gelen CMake ve Ninja kullanılır; sistem PATH değişikliği yalnız bu betik süresincedir.
-set "PATH=%VSROOT%\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;%VSROOT%\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;%PATH%"
-rem Proje köküne geçer; derleme çıktıları build altına yazılır.
+set "PATH=%FSATURATOR_VSROOT%\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin;%FSATURATOR_VSROOT%\Common7\IDE\CommonExtensions\Microsoft\CMake\Ninja;%PATH%"
+if not defined FSATURATOR_BUILD_JOBS set "FSATURATOR_BUILD_JOBS=4"
 cd /d "%~dp0.."
-rem Release yapılandırmasını üretir. Farklı JUCE yolu gerekiyorsa CMake’e -DIRAK_JUCE_PATH=... eklenebilir.
 cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 if errorlevel 1 exit /b 1
-rem Dört paralel derleme işi kullanır; bu sayı ürünün ses işleme kanalı sayısı değildir.
-cmake --build build --parallel 4
+cmake --build build --parallel %FSATURATOR_BUILD_JOBS%
 if errorlevel 1 exit /b 1
-rem DSP, preset, gecikme ve GUI kontrollerini çalıştırır. Hata varsa test raporu terminale yazılır.
-ctest --test-dir build --output-on-failure
+ctest --test-dir build --output-on-failure --timeout 300

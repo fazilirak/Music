@@ -1,0 +1,82 @@
+[
+  {
+    "project": "F-Saturator",
+    "path": "Source/ConcentricKnob.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "4f7b2c5359fa2aa7d85a2fafa547dfe357567c47222b641ec6f26fdbd54c3322"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/Entry.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "fbf32ab90f37e87c2916dd930fc0b357c27b8f27031280cc07491ad7cf5bbfef"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/PluginEditor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "407af33f269e999bf8a3f9d732a4009a229f90d67667f0a837a21e42a02c4751"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/PluginEditor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "a2d0d9cef23f392178a7a6f81010ef9695813ed1610063ad0930a8b37002c613"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/PluginProcessor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "d7c02b48995666f110ea4810daabb7a8388c7dd36f1c05167b60d7869c68662c"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/PluginProcessor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "1af4b791aa30d152ec706c60153f25ce532e9502e73054acbcaa26baebbb1cc4"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/RackEditorCommands.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "e7384708914ad71b0a76eaaa9b6f173a48567e270bac7fe308034d51a93ad56f"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/SaturationDSP.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "ec5eaef7c1ba068ccc062a40ca8c97bf1e220681b23132f7515c5a2e5ae888a9"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Source/SaturationDSP.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "34351a6a7e940b689bef3e1c09188664d38d43b8d6b22a201cb00421f03995b8"
+  },
+  {
+    "project": "F-Saturator",
+    "path": "Tests/DSPTests.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "fe63dc0bb08543b451ccbd874895ba315daf359ecb2e3aa4d0ae428bef7616b4"
+  }
+]

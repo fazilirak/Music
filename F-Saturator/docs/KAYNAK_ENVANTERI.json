@@ -1,0 +1,200 @@
+[
+  {
+    "path": ".gitattributes",
+    "sha256": "218b7cdb5782aa00ec219126d173bd93ef804282666dd316d93ceb88da84f021",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": ".gitignore",
+    "sha256": "b40eb5848f2f8b42269590cba678dafe5ab93eb980e5ee4c0aa442859d9cb66e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "build-transfer.log",
+    "sha256": "5b739d67c41fab6c793e2448daa7cc40f9ffe6cce61afbf71449a69fa33d1fe3",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "CMakeLists.txt",
+    "sha256": "d9c470421da88ab8e5e1820f468d05b504f21047767727839eb8bae75be12bcd",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "GELISTIRME-TR.md",
+    "sha256": "90428be64569f07c570ec07337c129f30eebc069512f41f52e719ca8e8572bd5",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "JUCE-LICENSE.md",
+    "sha256": "e93c5360082b6afb3e5f313d0975321dacaee9a30c888ab88539f1df5992db30",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "LICENSE",
+    "sha256": "35199237191e0cbd7df5636d313dab0a1ba5fb68de22cee0c62e81da22dd9fbc",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "README.md",
+    "sha256": "bbe787f5be6401323030e52a7f3eb578f10d5190b3e130d1701013f415247b10",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "REVIEW-TR.md",
+    "sha256": "4e2799b9fc4730a8adfb9962b0a993f27836c7e9a7d8056c01a1a4aa075ce70c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/HATA_AYIKLAMA_TR.md",
+    "sha256": "c6244a2fbf2b79fc6b795f4afde227951f43405d06b34e78121aa1e2532f619c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/KAYNAK_DOGRULAMA.json",
+    "sha256": "d77ee98d75d2063df707331efe2db596bed127e9846b7ab3fbfd845a8a6e7f5d",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/KAYNAK_INCELEME_2026-10-22.md",
+    "sha256": "9c11b70dbf6af00dc9ec531dabdc098af91d91284a11677ccf3c17565e63f254",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Research/dependencies.json",
+    "sha256": "3fc76707ecaed8ff490a91c295980b7e1f17577d5f38b0989fed75e4056c25db",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Research/DSP-RESEARCH.md",
+    "sha256": "5cbef4505bece755be2e337199ff77bba4cbbe935c488615c9ce14d49d0524c4",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "scripts/build-windows.cmd",
+    "sha256": "ae4d12674d003909f24ef1a00b51a79d017ecf7fbf8ecd0b824b899e0f23a3b2",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "scripts/package.ps1",
+    "sha256": "29aa80bf7daa599541f60dab00f345aa72c9adec35a74f59d488950a9b5d07f7",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/ConcentricKnob.h",
+    "sha256": "4f7b2c5359fa2aa7d85a2fafa547dfe357567c47222b641ec6f26fdbd54c3322",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/Entry.cpp",
+    "sha256": "fbf32ab90f37e87c2916dd930fc0b357c27b8f27031280cc07491ad7cf5bbfef",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/PluginEditor.cpp",
+    "sha256": "407af33f269e999bf8a3f9d732a4009a229f90d67667f0a837a21e42a02c4751",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/PluginEditor.h",
+    "sha256": "a2d0d9cef23f392178a7a6f81010ef9695813ed1610063ad0930a8b37002c613",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/PluginProcessor.cpp",
+    "sha256": "d7c02b48995666f110ea4810daabb7a8388c7dd36f1c05167b60d7869c68662c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/PluginProcessor.h",
+    "sha256": "1af4b791aa30d152ec706c60153f25ce532e9502e73054acbcaa26baebbb1cc4",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/RackEditorCommands.h",
+    "sha256": "e7384708914ad71b0a76eaaa9b6f173a48567e270bac7fe308034d51a93ad56f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/SaturationDSP.cpp",
+    "sha256": "ec5eaef7c1ba068ccc062a40ca8c97bf1e220681b23132f7515c5a2e5ae888a9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Source/SaturationDSP.h",
+    "sha256": "34351a6a7e940b689bef3e1c09188664d38d43b8d6b22a201cb00421f03995b8",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Tests/DSPTests.cpp",
+    "sha256": "fe63dc0bb08543b451ccbd874895ba315daf359ecb2e3aa4d0ae428bef7616b4",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/Book.otf",
+    "sha256": "04318316cee29950805110c9c8949eea189ef5575132881f4d4d7e03e5299903",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/COPYING",
+    "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/Demi.otf",
+    "sha256": "5b009410cf5231dcb1e45b155c1afedcfc63d82042fd8c414d0dd7705c9fbbae",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/F-Saturator-README.txt",
+    "sha256": "1a56cf85c50ecc841fef69081c4bc0cf44c622380dfbe24ae69de08ad7baa54f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/LICENSE",
+    "sha256": "772b1b47eead8722156abaed483154e1dd1137e7035290550cea6444192a2e3f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/README.md",
+    "sha256": "6d51b6dc08c39d78a82664c386f4b794333df5b71865648927e05cbfd480e72d",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Resources/fonts/VENDORED.md",
+    "sha256": "e98b14abce5cb64236cb6a782171d76ceb49ba3a1137f4b02bb69fe630c72d34",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  }
+]

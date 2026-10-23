@@ -1,0 +1,48 @@
+{
+  "author": "Fazıl Irak",
+  "date": "2026-10-23",
+  "version": "0.3.0",
+  "scope": "macOS Universal and complete source distribution; DSP and UI behaviour preserved",
+  "checks": [
+    {
+      "path": "Source/Entry.cpp",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/PluginEditor.cpp",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/PluginProcessor.cpp",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/SaturationDSP.cpp",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/ConcentricKnob.h",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/PluginEditor.h",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/PluginProcessor.h",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/RackEditorCommands.h",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Source/SaturationDSP.h",
+      "cpp_tokens_unchanged": true
+    },
+    {
+      "path": "Tests/DSPTests.cpp",
+      "cpp_tokens_unchanged": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+F Saturator 0.3.0
+Copyright (c) 2026 Fazıl Irak
+F Saturator source code: GNU AGPL version 3 or later; see LICENSE.
+This software is provided without warranty; the complete licence governs distribution.
+
+JUCE 8.0.7
+Copyright (c) Raw Material Software Limited.
+Revision: 10a589619b452c261b2940767eb253171eb5a823
+This distribution uses the AGPLv3 option. See JUCE-LICENSE.md and the original
+notices in vendor/JUCE, including its bundled third-party dependency licences.
+The complete matching JUCE source tree is included in each corresponding-source ZIP.
+
+URW Gothic Book / Demi
+Copyright (URW)++ and the respective contributors; original notices are preserved.
+Source collection: ArtifexSoftware/urw-base35-fonts, tag 20200910.
+GNU AGPLv3 with the font exception reproduced in Font-Licences/LICENSE
+(Resources/fonts/LICENSE in the source). Complete licence: COPYING.
+Font program bytes are unmodified; Book.otf and Demi.otf are local filenames.
+The original font source collection is included in vendor/urw-base35-fonts
+in each corresponding-source ZIP.
+
+Research references under Research/ are documentation, not compiled third-party
+effect code. Their repositories are not included in the binary distribution.

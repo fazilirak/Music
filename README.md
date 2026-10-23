@@ -4,16 +4,16 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 
 | Project | Windows | macOS | Source |
 | --- | --- | --- | --- |
-| [F Saturator](F-Saturator/README.md) | [0.2.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.2.0) | Planned with its next update | [Browse](F-Saturator) |
+| [F Saturator](F-Saturator/README.md) | [0.3.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) | [Universal 0.3.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) | [Browse](F-Saturator) |
 | [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.2) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
 
 ## F Saturator
 
-**Add colour. Shape the character.** Free saturation/distortion for Windows 64-bit in VST3 and standalone formats.
+**Add colour. Shape the character.** Free saturation/distortion for Windows x64 and macOS Universal. VST3 and standalone, plus AU on macOS.
 
 Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface.
 
-![F Saturator](https://fazilirak.com/wp-content/uploads/2026/10/F-Saturator-preview.png)
+![F Saturator](F-Saturator/doc/f-saturator.png)
 
 - [Source and build instructions](F-Saturator/README.md)
 - [Türkçe geliştirme rehberi](F-Saturator/GELISTIRME-TR.md)
@@ -23,7 +23,7 @@ Five original character models — Console, Transformer, Tape, Triode and Pentod
 
 ## Türkçe
 
-Müzik yazılımlarımı bu depoda ayrı proje klasörleriyle yayımlıyorum. F Saturator kaynaklarında Türkçe açıklamalar ve düzenleme rehberi bulunur. Windows indirmeleri sürümlerin **Releases** bölümündedir.
+Müzik yazılımlarımı bu depoda ayrı proje klasörleriyle yayımlıyorum. F Saturator kaynaklarında Türkçe açıklamalar ve düzenleme rehberi bulunur. Windows ve macOS indirmeleri sürümlerin **Releases** bölümündedir.
 
 ## Licensing
 

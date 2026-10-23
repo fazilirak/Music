@@ -6,5 +6,10 @@
 *.ps1 text eol=lf
 
 # cmd.exe için hazır CRLF baytlarını koru; GitHub kaynak ZIP'i de aynı betiği içersin.
-*.cmd -text
+*.cmd -text whitespace=cr-at-eol
 *.otf binary
+
+*.sh text eol=lf
+*.py text eol=lf
+
+*.json text eol=lf

@@ -1,22 +1,32 @@
-# F Saturator 0.2.0 derleme tanımı. C++17 ve JUCE kullanır; Windows VST3/Standalone hedefleri üretir.
+# Geliştirici: Fazıl Irak | Son düzenleme: 22.10.2026
+# F Saturator 0.3.0: Windows VST3/Standalone, macOS Universal VST3/AU/Standalone.
 cmake_minimum_required(VERSION 3.24)
-project(FSaturator VERSION 0.2.0 LANGUAGES C CXX)
+project(FSaturator VERSION 0.3.0 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 # MSVC çalışma zamanı statik bağlanır; /utf-8 Türkçe kaynak açıklamalarının doğru okunmasını sağlar.
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
-# Yerel geliştirme için mevcut JUCE kopyasını arar. GitHub’dan indiren kişi
-# -DIRAK_JUCE_PATH=... ile Research/dependencies.json içindeki commit’e ait JUCE yolunu vermelidir.
-set(f_saturator_default_juce "${CMAKE_CURRENT_SOURCE_DIR}/../upstream/gate12/libs/JUCE")
+# Fazıl Irak tarafından değiştirildi: 23.10.2026. Paketlenmiş kaynak JUCE'yi içerir.
+# GitHub checkout'unda scripts/bootstrap_juce.py sabitlenmiş bağımlılığı getirir.
+set(f_saturator_default_juce "${CMAKE_CURRENT_SOURCE_DIR}/vendor/JUCE")
 if(NOT EXISTS "${f_saturator_default_juce}/CMakeLists.txt")
-    set(f_saturator_default_juce "${CMAKE_CURRENT_SOURCE_DIR}/../Shaper/upstream/gate12/libs/JUCE")
+    set(f_saturator_default_juce "${CMAKE_CURRENT_SOURCE_DIR}/../_Dependencies/JUCE")
 endif()
 set(IRAK_JUCE_PATH "${f_saturator_default_juce}" CACHE PATH "JUCE checkout")
+if(NOT EXISTS "${IRAK_JUCE_PATH}/CMakeLists.txt")
+    message(FATAL_ERROR "Run scripts/bootstrap_juce.py or set IRAK_JUCE_PATH to the pinned JUCE checkout.")
+endif()
 add_subdirectory("${IRAK_JUCE_PATH}" "${CMAKE_CURRENT_BINARY_DIR}/JUCE")
 # IRAK hedefi ve FIrk/Irak kimlikleri eski oturum uyumluluğu içindir; görünen ürün adı F Saturator’dır.
 # Bu hedef bir ses efektidir; MIDI veya CLAP hedefi tanımlı değildir.
+set(f_saturator_formats VST3 Standalone)
+if(APPLE)
+    list(APPEND f_saturator_formats AU)
+endif()
 juce_add_plugin(IRAK COMPANY_NAME "FAZIL IRAK" BUNDLE_ID "com.fazilirak.irak" PLUGIN_MANUFACTURER_CODE FIrk PLUGIN_CODE Irak
-    PRODUCT_NAME "F Saturator" FORMATS VST3 Standalone IS_SYNTH FALSE NEEDS_MIDI_INPUT FALSE NEEDS_MIDI_OUTPUT FALSE COPY_PLUGIN_AFTER_BUILD FALSE)
+    PRODUCT_NAME "F Saturator" FORMATS ${f_saturator_formats} IS_SYNTH FALSE NEEDS_MIDI_INPUT FALSE NEEDS_MIDI_OUTPUT FALSE COPY_PLUGIN_AFTER_BUILD FALSE
+    MICROPHONE_PERMISSION_ENABLED TRUE
+    MICROPHONE_PERMISSION_TEXT "F Saturator uses audio input to process your sound.")
 juce_generate_juce_header(IRAK)
 # Windows kaynak dosyasının ürün bilgisi değiştiğinde yeniden üretilmesi için bağımlılık ekler.
 if(WIN32)

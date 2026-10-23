@@ -1,3 +1,4 @@
+<!-- Fazıl Irak | Son düzenleme: 22.10.2026 -->
 # F Saturator — Türkçe geliştirme rehberi
 
 Bu rehber 0.2.0 kaynakları içindir. Türkçe yorumlar kodun akışını açıklar; ürünün arayüz dili ve ses davranışı değiştirilmemiştir. İlk denemelerinizde özgün preset ve DAW projelerinizin kopyasını kullanın.
@@ -101,3 +102,6 @@ Depoya `Source`, `Tests`, `Resources`, `Research` içindeki belgeler, `scripts`,
 F Saturator kodu AGPLv3-or-later olarak lisanslıdır; JUCE ayrıca kendi lisansına tabidir. Kaynakları ve tam JUCE sürümü/derleme talimatlarını Windows sürümüyle eşleştirin. GitHub herkese açık depo ve etiketli Release bu eşlemeyi görünür kılar. Sitedeki indirme düğmesi Release dosyasına, kaynak bağlantısı depoya yönlenebilir.
 
 Database Doctor ayrı bir depoda ve kendi lisans kararıyla yayımlanmalıdır. Bu projenin AGPL tercihi ona kendiliğinden uygulanmaz. Database Doctor kaynaklarını herkese açmak ile yalnız kurulum dosyasını Releases üzerinden dağıtmak ayrı kararlardır.
+
+
+Yeni klasör düzeni ve ayrıntılı hata müdahalesi: [Bakım rehberi](docs/HATA_AYIKLAMA_TR.md).

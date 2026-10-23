@@ -1,0 +1,135 @@
+# Fazıl Irak tarafından oluşturuldu: 23.10.2026
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: F Saturator Windows and macOS Release
+
+on:
+  push:
+    branches: [main]
+    paths: ['F-Saturator/**', '.github/workflows/fsaturator-release.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fsaturator-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-2022
+            platform: Windows
+          - os: macos-15
+            platform: macOS
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: F-Saturator
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install build tools
+        run: python -m pip install 'cmake>=3.24,<4' ninja
+      - name: Verify pinned dependency sources
+        run: |
+          python scripts/bootstrap_juce.py
+          python scripts/bootstrap_fonts.py
+      - name: Read version
+        id: version
+        shell: python
+        run: |
+          import os, pathlib, re
+          version = re.search(r'project\(FSaturator VERSION ([\d.]+)', pathlib.Path('CMakeLists.txt').read_text())[1]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('version=' + version + '\n')
+      - name: Build and test Windows
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: scripts\build-windows.cmd
+      - name: Package Windows
+        if: runner.os == 'Windows'
+        run: python scripts/package_distribution.py --platform Windows
+      - name: Build, test and package Mac Universal
+        if: runner.os == 'macOS'
+        run: bash scripts/build-macos.sh
+      - uses: actions/upload-artifact@v7
+        with:
+          name: F-Saturator-${{ matrix.platform }}
+          path: F-Saturator/dist/F-Saturator-*-${{ matrix.platform }}-distribution/*
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload test diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: F-Saturator-${{ matrix.platform }}-diagnostics
+          path: |
+            F-Saturator/build*/Testing/Temporary/*.log
+            F-Saturator/build*/CMakeFiles/CMakeConfigureLog.yaml
+          if-no-files-found: ignore
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: F-Saturator-Windows
+          path: artifacts/windows
+      - uses: actions/download-artifact@v7
+        with:
+          name: F-Saturator-macOS
+          path: artifacts/macos
+      - name: Publish verified binaries and matching source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ needs.build.outputs.version }}
+          RELEASE_COMMIT: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir release
+          copy_asset() {
+            local root="$1" pattern="$2" target="$3"
+            mapfile -d '' matches < <(find "$root" -type f -name "$pattern" -print0)
+            if [ "${#matches[@]}" -ne 1 ]; then
+              echo "Expected one $pattern in $root, found ${#matches[@]}" >&2
+              exit 1
+            fi
+            cp "${matches[0]}" "$target"
+          }
+          copy_asset artifacts/windows '*-Source.zip' release/
+          copy_asset artifacts/windows '*-Windows-x64.zip' release/
+          copy_asset artifacts/macos '*-macOS-Source.zip' release/
+          copy_asset artifacts/macos '*-macOS-Universal.tar.gz' release/
+          copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
+          copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
+          cat > notes.md <<'NOTES'
+          Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone; minimum macOS 11.0.
+
+          Updated Turkish source comments and maintenance guides. Existing parameter IDs, plug-in IDs, preset format and DSP behaviour are preserved.
+          Both hosts passed the DSP, preset and UI regression target. Separate DAW and Intel Mac testing is still required.
+          Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Windows binaries are unsigned.
+          Download the matching Source ZIP alongside each binary. It contains F Saturator, the complete pinned JUCE and URW font source collections, build scripts and licence notices.
+          AGPLv3-or-later for F Saturator; original third-party terms are preserved. SHA-256 values are in the platform release manifests.
+          NOTES
+          tag="F-Saturator-v${VERSION}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo 'Release exists; use a new version for a new build.' >&2
+            exit 1
+          fi
+          gh release create "$tag" release/* --target "$RELEASE_COMMIT" --title "F Saturator ${VERSION}" --notes-file notes.md
