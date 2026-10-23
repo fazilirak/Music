@@ -1,0 +1,44 @@
+# Fazıl Irak tarafından oluşturuldu: 23.10.2026
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 Fazıl Irak
+name: Shaper macOS Universal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install build tools
+        run: python3 -m pip install 'cmake>=3.24,<4' ninja
+      - name: Build, test and package arm64 + x86_64
+        run: bash scripts/build-macos.sh
+      - name: Upload macOS binaries, corresponding source and manifest
+        uses: actions/upload-artifact@v7
+        with:
+          name: Shaper-macOS-Universal
+          path: dist/Shaper-*-macOS-distribution/*
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+      - name: Upload diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: Shaper-macOS-diagnostics
+          path: |
+            build-macos/Testing/Temporary/*.log
+            build-macos/CMakeFiles/CMakeConfigureLog.yaml
+          if-no-files-found: ignore

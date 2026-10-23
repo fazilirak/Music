@@ -25,3 +25,15 @@ Müzik yazılımlarımı bu depoda ayrı proje klasörleriyle yayımlıyorum. F 
 Each project has its own licence. F Saturator is AGPLv3-or-later; see [its licence](F-Saturator/LICENSE), [JUCE notice](F-Saturator/JUCE-LICENSE.md) and embedded font notices. This repository does not assign a common licence to projects that may be added later.
 
 Website: https://fazilirak.com · Contact: info@fazilirak.com
+
+## Shaper
+
+JUCE-based effects rack: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and Pitch.
+
+- [Source, licences and Windows build instructions](Shaper/README.md)
+- [macOS Universal build instructions](Shaper/docs/MACOS_TR.md)
+- [macOS build workflow](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml)
+- [Source and binary distribution requirements](Shaper/docs/YAYIN_LISANSLARI_TR.md)
+
+Shaper preserves the individual GPLv3, AGPLv3, MIT and other dependency licences;
+see [COPYING](Shaper/COPYING.txt) and [third-party notices](Shaper/THIRD-PARTY-NOTICES.txt).

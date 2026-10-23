@@ -1,0 +1,298 @@
+[
+  {
+    "project": "Shaper",
+    "path": "Source/AboutPanel.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "33e71995e2f7ae3ca08ad802ed2914b7a12aada2941d3dcd64402aa534ff3f56"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/AboutPanel.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "a4667cbf7be1ee522658ab159d5cfa65f7a63fb3d679fe3d21aea3ed53c6bef1"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/BandGraph.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "6af9a0c9f1d36d0437f4a263aa7bc721c8d03fe2d72a94b46f5735fd3cd55c9b"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Editor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "9045409d50da764129a42f5808a49dd5f1b5ef18b450a7b03ec4eea3942a9e34"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Editor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "2629d6867e96fb28d65b79e66856179eda786fe83e39edbe4451cedab44df769"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EffectOutputPanel.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "3e4ee43a1e8c141acf908a034bd24eaa5903c01cde05bb31c3bae684e8efdcaf"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EffectPalette.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "26f19d49d1a9fbfb73be8268fe509bca71b3db5a3843fca51ec1a5ce6406c20a"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EffectPalette.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "5fa753f210eb09d017392bf9cec89985406c5a35d02ec5d2951a5bb28d23d2e4"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/JuceHeader.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "38ca4e960a94478124382284e8bcbfb8292464c58b09c017db18fd3344342a98"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/PanPresets.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "8690979903140f8dc02a7bdcde04026ca0ed8de11c77174bfcaa869178a7c1ee"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/RackEditorCommands.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "b9ec03fd4fb275284ff7688dcaed11ec88a2281719657effbf0da693ea077e50"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/RackKnob.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "9db83c7b4fa7d4ba20c31ac694d1754ed6a4f23cba6048221593348aeb838336"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/SidechainPresets.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "3941734df6a5be0b20db05900c431b6c70f857fd6ad6c903f7fbead332d681da"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/TimeQuickPresets.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "fd7541f88d84a930d2af938cb160f7cb5f735459af507e99630e05112df8fcf7"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/VolumePresetData.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "f5d8d336329c3318301cc82664582835c6a9c0184602f686a7b91bf4dc58ded4"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEditor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "b852432f5904df7c97640a9d2af9b47c992de642dd6a872c39b03f1a53ca8aa3"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEditor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "86f1b741c911aef29dc45691d69a403730a74a52c0964a58cf02a65ad80d2b16"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEffect.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "b13bc500b44b17d6e2852f7fd21776314970b1e77bc919fb09f24a3c99097b0d"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEffect.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "13c88506ce0b478e8701dc9f6365039ab6c6e543c3911187581744efde67672d"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopePresets.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "dc5366ac6e6db764b158187d5d801d2e9406c9f0ef9fcde1612ab20f9986593e"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/FactoryPresets.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "822dc470f5929231d8ef50774d4bcaa5ea884e4b3a845e3718bc2fd6617a2a67"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/ForwardParameter.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "119feba2d147d481c5c8622002ca025e17c37033a8343c484366806b95ca7588"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/IconButton.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "3d9eea7cb37e66e6959306b3a08139affa427a398387731a294687558b26425c"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/MultibandProcessor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "fe59331f3774ef9cd09a0aa0069af461989f39c04ee61d8141da63a3669bb6b3"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/MultibandProcessor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "c4f06a5cce2073820173b02f55afa74db379b88bd864ca89e5278aed1e01b9dc"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Pitch/PitchProcessor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "86a622b0f34815b8d0da49dc43b518f408d1268b13c3c43277d6525d583b742f"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Pitch/PitchProcessor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "e22efaec365a7a1bcd27e362aeeadb6c67a99f3ddefb491264ee143b2e5cb2a0"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Processor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "c3dc660870046658741824a783f604afb0b302b1f279070684574d50b64281d3"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Processor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "20400a640aea9bfd32256c0938f17af06dec49c8a6dfa303b6f7db0ca87130db"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/PluginProcessor.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "aa0def37dc20202e26f3c54240597ee2b88cf41b6987a03dc587f13f75395fb6"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/PluginProcessor.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "4fa9bf4acf268154b963854f108abc2f59a89766044c378ef9257dcad7ed0a6f"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/SaturationDSP.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "5cb04d6e326702d6ad35e39275f428c9d9b5041ba70ab39258457191759a436c"
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/SaturationDSP.h",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "264b3425a742d5fbb99bb3c69e78af0ddf1c7588c992aeeb3c7c0058d14431eb"
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/AudioTests.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "5d88efc30e4a65b39fc7fd3b7f3b590b41263636abaf8a6a2a8577b91b323ab4"
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/EnvelopeTests.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "08c92a8a2920cb9e4441aaa8c7dc1ca4296a29cb0b97b408416db6866622f4b5"
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/PitchTests.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "118de6b6cf2ba752358ad172ab084370204d37db4d6b1a6886feac25d736a028"
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/SaturationDSPTests.cpp",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "8bf4abb92f0d0ac88e578d821f6eb48980c8c99e93f3ad9f4e734e0522d79073"
+  }
+]

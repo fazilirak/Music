@@ -1,0 +1,50 @@
+[
+  {
+    "number": 1,
+    "source_file": "1.shapereffect",
+    "sha256": "6ef226caf298d6c004c10fd12354711d319fb085c9b2c858eadafdfb3969e95d",
+    "band": 1
+  },
+  {
+    "number": 2,
+    "source_file": "2.shapereffect",
+    "sha256": "b32fded1ae5a6014c17b2aeab6aa74d8b3ac0c52160111cf728e3423e8ea54d8",
+    "band": 1
+  },
+  {
+    "number": 3,
+    "source_file": "3.shapereffect",
+    "sha256": "b92b00d5e39e9546bbef72193021ce8a46ab87ad2b05c730f9fead74ea3fb952",
+    "band": 1
+  },
+  {
+    "number": 4,
+    "source_file": "4.shapereffect",
+    "sha256": "3ba3addad2e1063bb661ff4de02265a25b6abe03b0e3d2189ebe146146c009be",
+    "band": 1
+  },
+  {
+    "number": 5,
+    "source_file": "5.shapereffect",
+    "sha256": "603de4a5374045a1f77109193f09af862ed5375c454ef2665bc416e16cbacf99",
+    "band": 1
+  },
+  {
+    "number": 6,
+    "source_file": "6.shapereffect",
+    "sha256": "a5e42dda0ea0ed44beafceb5f75883a317f0d5bd37acacd45dafa6ced2e4e33a",
+    "band": 1
+  },
+  {
+    "number": 7,
+    "source_file": "7.shapereffect",
+    "sha256": "d5c2f029362a9b275a177920a30be9f4a5809c569156d5835abea5098a5aab0a",
+    "band": 1
+  },
+  {
+    "number": 8,
+    "source_file": "8.shapereffect",
+    "sha256": "54893accada30bf9f664e54ba5f645223f3391377bbf204299091ba19ecc28fc",
+    "band": 1
+  }
+]

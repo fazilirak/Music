@@ -1,5 +1,9 @@
 # F Saturator 0.2.0 — FAZIL IRAK
 
+[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.2.0/F-Saturator-0.2.0-Windows-x64.zip) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.2.0) · [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.2.0/F-Saturator-0.2.0-Source.zip)
+
+![F Saturator](https://fazilirak.com/wp-content/uploads/2026/10/F-Saturator-preview.png)
+
 JUCE tabanlı, bağımsız **VST3 ve standalone saturation/distortion** projesi. Aynı DSP motoru Shaper içinde **Saturation** efekti olarak da kullanılır.
 
 ## Kullanım

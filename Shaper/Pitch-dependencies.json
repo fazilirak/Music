@@ -1,0 +1,15 @@
+{
+  "signalsmith-stretch": {
+    "url": "https://github.com/Signalsmith-Audio/signalsmith-stretch",
+    "commit": "a670068d9aeb64913331d5cc29337b19a457a7df",
+    "license": "MIT",
+    "path": "upstream/signalsmith-stretch"
+  },
+  "signalsmith-linear": {
+    "url": "https://github.com/Signalsmith-Audio/linear",
+    "tag": "0.6.4",
+    "commit": "de55e6a50ffcf6f8f43f649692d94691c7025151",
+    "license": "MIT",
+    "path": "upstream/signalsmith-linear"
+  }
+}

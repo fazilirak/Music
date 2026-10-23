@@ -1,0 +1,2 @@
+# Preserve vendored source and binary resource bytes on every platform.
+* -text

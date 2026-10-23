@@ -1,0 +1,658 @@
+[
+  {
+    "project": "Shaper",
+    "path": "Source/AboutPanel.cpp",
+    "purpose": "Geliştirici, üçüncü taraf kaynakları ve lisans/bilgilendirme görünümünü kurar.",
+    "functions": [
+      "Page",
+      "resized",
+      "AboutPanel::AboutPanel",
+      "AboutPanel::paint",
+      "AboutPanel::resized"
+    ],
+    "comment_lines": 9,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/AboutPanel.h",
+    "purpose": "Geliştirici, üçüncü taraf kaynakları ve lisans/bilgilendirme görünümünü kurar.",
+    "functions": [],
+    "comment_lines": 3,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/BandGraph.h",
+    "purpose": "Low/Mid/High bölme sınırlarının görsel hit-test ve sürükleme etkileşimini yönetir.",
+    "functions": [
+      "BandGraph",
+      "~BandGraph",
+      "frequencyX",
+      "paint",
+      "mouseMove",
+      "mouseDown",
+      "mouseDrag",
+      "mouseUp",
+      "mouseDoubleClick",
+      "parameter",
+      "hit",
+      "timerCallback"
+    ],
+    "comment_lines": 20,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Editor.cpp",
+    "purpose": "Ana rack editörünü, efekt sırasını, seçimlerini ve mevcut ortak kontrol yerleşimini yönetir.",
+    "functions": [
+      "ShaperEditor::effectColour",
+      "ShaperEditor::ShaperEditor",
+      "ShaperEditor::~ShaperEditor",
+      "ShaperEditor::select",
+      "ShaperEditor::executeEdit",
+      "ShaperEditor::timerCallback",
+      "ShaperEditor::refreshPresets",
+      "ShaperEditor::chooseRack",
+      "ShaperEditor::saveRackFile",
+      "ShaperEditor::loadRackFile",
+      "ShaperEditor::refreshRackPresets",
+      "ShaperEditor::loadFactory",
+      "ShaperEditor::chooseEffect",
+      "ShaperEditor::saveEffectFile",
+      "ShaperEditor::loadEffectFile",
+      "ShaperEditor::showAbout",
+      "ShaperEditor::paint",
+      "ShaperEditor::resized"
+    ],
+    "comment_lines": 37,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Editor.h",
+    "purpose": "Ana rack editörünü, efekt sırasını, seçimlerini ve mevcut ortak kontrol yerleşimini yönetir.",
+    "functions": [
+      "getTextButtonFont"
+    ],
+    "comment_lines": 4,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EffectOutputPanel.h",
+    "purpose": "Efektin ortak Stereo/çıkış meter/dB/Mix panelini bağlı parametrelerle eşitler.",
+    "functions": [
+      "parameter",
+      "change",
+      "Dial",
+      "~Dial",
+      "paint",
+      "mouseDown",
+      "mouseDrag",
+      "mouseUp",
+      "mouseDoubleClick",
+      "mouseWheelMove",
+      "mouseEnter",
+      "mouseExit",
+      "timerCallback",
+      "EffectOutputPanel",
+      "paint",
+      "resized"
+    ],
+    "comment_lines": 21,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EffectPalette.cpp",
+    "purpose": "Efekt kimliği, adı, rengi ve üretici fonksiyonunu tek kayıt sözleşmesinde tutar.",
+    "functions": [
+      "EffectPalette::EffectPalette",
+      "EffectPalette::changed",
+      "EffectPalette::refresh",
+      "EffectPalette::resized",
+      "EffectPalette::paint",
+      "EffectPalette::Card::paint",
+      "EffectPalette::Card::mouseDown",
+      "EffectPalette::Card::mouseDrag",
+      "EffectPalette::isInterestedInDragSource",
+      "EffectPalette::insertionAt",
+      "EffectPalette::itemDragMove",
+      "EffectPalette::itemDragExit",
+      "EffectPalette::itemDropped"
+    ],
+    "comment_lines": 19,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EffectPalette.h",
+    "purpose": "Efekt kimliği, adı, rengi ve üretici fonksiyonunu tek kayıt sözleşmesinde tutar.",
+    "functions": [
+      "rackEffectColour",
+      "Card"
+    ],
+    "comment_lines": 5,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/JuceHeader.h",
+    "purpose": "Gömülü modüller için JUCE başlık/namespace köprüsüdür; ayrı bir uygulama motoru değildir.",
+    "functions": [],
+    "comment_lines": 3,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/PanPresets.h",
+    "purpose": "Pan modülü için hazır desen ve parametre verilerini tanımlar.",
+    "functions": [
+      "name",
+      "position",
+      "points",
+      "sync"
+    ],
+    "comment_lines": 10,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/RackEditorCommands.h",
+    "purpose": "Gömülü editörün seçenek komutları ve başlık yerleşimi için ortak sanal sözleşmedir.",
+    "functions": [
+      "~RackEditorCommands",
+      "rackDockHeader",
+      "rackHeaderHeight"
+    ],
+    "comment_lines": 6,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/RackKnob.h",
+    "purpose": "Shaper standart küçük rotary çizimi ve etiket/drag alanlarını ortak tutar; görünüm standardı AGENTS.md içindedir.",
+    "functions": [
+      "drawKnob",
+      "RackKnob",
+      "~RackKnob",
+      "paint",
+      "mouseDown",
+      "mouseDrag",
+      "mouseUp",
+      "mouseWheelMove",
+      "mouseDoubleClick"
+    ],
+    "comment_lines": 13,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/SidechainPresets.h",
+    "purpose": "Volume/sidechain yönlü hazır envelope/desen verilerinin sözleşmesidir.",
+    "functions": [
+      "name",
+      "state",
+      "points",
+      "SidechainPresetButton",
+      "setPreview",
+      "setSelected",
+      "paintButton"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/TimeQuickPresets.h",
+    "purpose": "Time modülünün kısa hazır ayarlarını ve değer eşlemelerini tutar.",
+    "functions": [
+      "name",
+      "delay",
+      "points",
+      "TimeQuickPresetButton",
+      "setSelected",
+      "paintButton"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Embedded/VolumePresetData.h",
+    "purpose": "Volume modülünün hazır desen/kontrol verisidir; veri tablosunu uygulama akışıyla karıştırmayın.",
+    "functions": [],
+    "comment_lines": 3,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEditor.cpp",
+    "purpose": "Çok noktalı envelope eğrisi, düğüm/segment düzenleme, kalıp ve taşıma etkileşimlerini yönetir.",
+    "functions": [
+      "EnvelopeEditor::EnvelopeEditor",
+      "EnvelopeEditor::~EnvelopeEditor",
+      "EnvelopeEditor::rebuild",
+      "EnvelopeEditor::resized",
+      "EnvelopeEditor::timerCallback",
+      "EnvelopeEditor::rackOptions",
+      "EnvelopeEditor::rackCommand"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEditor.h",
+    "purpose": "Çok noktalı envelope eğrisi, düğüm/segment düzenleme, kalıp ve taşıma etkileşimlerini yönetir.",
+    "functions": [
+      "paint",
+      "commands",
+      "rackCanEdit",
+      "rackIsSequencing",
+      "rackDockHeader",
+      "rackHeaderHeight"
+    ],
+    "comment_lines": 9,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEffect.cpp",
+    "purpose": "Bağımsız efekt motorunu tempo, tetik, sequencer ve envelope modülasyonuyla sarar.",
+    "functions": [
+      "EnvelopeEffect::layout",
+      "EnvelopeEffect::EnvelopeEffect",
+      "EnvelopeEffect::~EnvelopeEffect",
+      "EnvelopeEffect::audioSettingsShown",
+      "EnvelopeEffect::forceCV",
+      "EnvelopeEffect::applyShape",
+      "EnvelopeEffect::isBusesLayoutSupported",
+      "EnvelopeEffect::prepareToPlay",
+      "EnvelopeEffect::releaseResources",
+      "EnvelopeEffect::processBlock",
+      "EnvelopeEffect::getProgramName",
+      "EnvelopeEffect::setCurrentProgram",
+      "EnvelopeEffect::getStateInformation",
+      "EnvelopeEffect::setStateInformation",
+      "EnvelopeEffect::createEditor"
+    ],
+    "comment_lines": 24,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopeEffect.h",
+    "purpose": "Bağımsız efekt motorunu tempo, tetik, sequencer ve envelope modülasyonuyla sarar.",
+    "functions": [
+      "&curve()",
+      "getName",
+      "acceptsMidi",
+      "producesMidi",
+      "getTailLengthSeconds",
+      "hasEditor",
+      "getNumPrograms",
+      "getCurrentProgram",
+      "changeProgramName"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/EnvelopePresets.h",
+    "purpose": "Envelope biçimlerini ve hazır desen verilerini saklar; sıra/alanlar kaydedilen durumla uyumludur.",
+    "functions": [
+      "name",
+      "set",
+      "reset",
+      "value",
+      "curve"
+    ],
+    "comment_lines": 11,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/FactoryPresets.cpp",
+    "purpose": "Rack fabrika presetlerinin efekt dizilişi ve kaydedilen parametre durumlarını tanımlar.",
+    "functions": [
+      "plain",
+      "curve",
+      "shape",
+      "ShaperProcessor::factoryPresetName",
+      "ShaperProcessor::loadFactoryPreset"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/ForwardParameter.h",
+    "purpose": "İç efekt parametresini dış host parametresine yönlendirir; host gesture ve değer ölçeklerini korur.",
+    "functions": [
+      "ForwardParameter",
+      "detach",
+      "~ForwardParameter",
+      "getValue",
+      "setValue",
+      "getDefaultValue",
+      "getText",
+      "getValueForText",
+      "getNumSteps",
+      "isDiscrete",
+      "isBoolean",
+      "&getNormalisableRange() const override",
+      "parameterValueChanged",
+      "parameterGestureChanged"
+    ],
+    "comment_lines": 17,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/IconButton.h",
+    "purpose": "Rack düğmelerinin görsel/etkileşim durumunu ve ortak ikon çizimini tanımlar.",
+    "functions": [
+      "CompactIconButton",
+      "paintButton"
+    ],
+    "comment_lines": 6,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/MultibandProcessor.cpp",
+    "purpose": "Üç bağımsız efekt motoru, bant ayırma/birleştirme, bypass ve bant durumu saklamasını yönetir.",
+    "functions": [
+      "setPlain",
+      "rebuild",
+      "panelWidth",
+      "commands",
+      "timerCallback",
+      "BandEditor",
+      "~BandEditor",
+      "paint",
+      "resized",
+      "rackOptions",
+      "rackCommand",
+      "rackCanEdit",
+      "rackIsSequencing",
+      "MultibandProcessor::MultibandProcessor",
+      "MultibandProcessor::outputParameter",
+      "MultibandProcessor::~MultibandProcessor",
+      "MultibandProcessor::getName",
+      "MultibandProcessor::setCurrentProgram",
+      "MultibandProcessor::isBusesLayoutSupported",
+      "MultibandProcessor::setMultiband",
+      "MultibandProcessor::prepareToPlay",
+      "MultibandProcessor::releaseResources",
+      "MultibandProcessor::processBlock",
+      "MultibandProcessor::createEditor",
+      "MultibandProcessor::getStateInformation",
+      "MultibandProcessor::setStateInformation",
+      "MultibandProcessor::resetBands",
+      "MultibandProcessor::readSpectrum"
+    ],
+    "comment_lines": 41,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/MultibandProcessor.h",
+    "purpose": "Üç bağımsız efekt motoru, bant ayırma/birleştirme, bypass ve bant durumu saklamasını yönetir.",
+    "functions": [
+      "hasEditor",
+      "acceptsMidi",
+      "producesMidi",
+      "getTailLengthSeconds",
+      "getNumPrograms",
+      "getCurrentProgram",
+      "getProgramName",
+      "changeProgramName",
+      "&band(int b)",
+      "&current()",
+      "hasLowBand",
+      "hasHighBand",
+      "isMultiband",
+      "editorBand"
+    ],
+    "comment_lines": 17,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Pitch/PitchProcessor.cpp",
+    "purpose": "Pitch/formant motorunu Signalsmith işleme durumuyla bağlar; gecikme, reset ve kanal durumunu taşır.",
+    "functions": [
+      "prepare",
+      "Processor::layout",
+      "Processor::Processor",
+      "Processor::~Processor",
+      "Processor::isBusesLayoutSupported",
+      "Processor::prepareToPlay",
+      "Processor::releaseResources",
+      "Processor::reset",
+      "Processor::processBlock",
+      "Processor::processModulated",
+      "Processor::getProgramName",
+      "Processor::setCurrentProgram",
+      "Processor::getStateInformation",
+      "Processor::setStateInformation",
+      "Processor::createEditor",
+      "createEmbeddedProcessor",
+      "createAboutPage"
+    ],
+    "comment_lines": 24,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Pitch/PitchProcessor.h",
+    "purpose": "Pitch/formant motorunu Signalsmith işleme durumuyla bağlar; gecikme, reset ve kanal durumunu taşır.",
+    "functions": [
+      "getName",
+      "acceptsMidi",
+      "producesMidi",
+      "getTailLengthSeconds",
+      "hasEditor",
+      "getNumPrograms",
+      "getCurrentProgram",
+      "changeProgramName"
+    ],
+    "comment_lines": 11,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Processor.cpp",
+    "purpose": "Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.",
+    "functions": [
+      "ShaperProcessor::effectName",
+      "ShaperProcessor::layout",
+      "ShaperProcessor::ShaperProcessor",
+      "ShaperProcessor::palette",
+      "ShaperProcessor::addEffect",
+      "ShaperProcessor::removeEffect",
+      "ShaperProcessor::moveEffect",
+      "ShaperProcessor::signalOrder",
+      "ShaperProcessor::applyPaletteOrder",
+      "ShaperProcessor::~ShaperProcessor",
+      "ShaperProcessor::isBusesLayoutSupported",
+      "ShaperProcessor::prepareToPlay",
+      "ShaperProcessor::releaseResources",
+      "ShaperProcessor::handleAsyncUpdate",
+      "ShaperProcessor::processBlock",
+      "ShaperProcessor::render",
+      "ShaperProcessor::getStateInformation",
+      "ShaperProcessor::setStateInformation",
+      "ShaperProcessor::createEditor",
+      "JUCE_CALLTYPE createPluginFilter"
+    ],
+    "comment_lines": 34,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Processor.h",
+    "purpose": "Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.",
+    "functions": [
+      "hasEditor",
+      "getName",
+      "acceptsMidi",
+      "producesMidi",
+      "isMidiEffect",
+      "getTailLengthSeconds",
+      "getNumPrograms",
+      "getCurrentProgram",
+      "setCurrentProgram",
+      "getProgramName",
+      "changeProgramName",
+      "&module(int effect)",
+      "enableId",
+      "presentId",
+      "getPosition",
+      "prepare",
+      "sample",
+      "advance"
+    ],
+    "comment_lines": 22,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/PluginProcessor.cpp",
+    "purpose": "Saturation parametrelerini, presetleri ve host callback’lerini kendi DSP motoruna bağlar.",
+    "functions": [
+      "Processor::layout",
+      "Processor::Processor",
+      "Processor::settings",
+      "Processor::prepareToPlay",
+      "Processor::processBlock",
+      "Processor::isBusesLayoutSupported",
+      "Processor::createEditor",
+      "Processor::getProgramName",
+      "Processor::setCurrentProgram",
+      "Processor::getStateInformation",
+      "Processor::setStateInformation",
+      "createEmbeddedProcessor",
+      "createAboutPage"
+    ],
+    "comment_lines": 20,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/PluginProcessor.h",
+    "purpose": "Saturation parametrelerini, presetleri ve host callback’lerini kendi DSP motoruna bağlar.",
+    "functions": [
+      "releaseResources",
+      "reset",
+      "getName",
+      "acceptsMidi",
+      "producesMidi",
+      "getTailLengthSeconds",
+      "hasEditor",
+      "getNumPrograms",
+      "getCurrentProgram",
+      "changeProgramName"
+    ],
+    "comment_lines": 13,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/SaturationDSP.cpp",
+    "purpose": "Doygunluk karakterleri, oversampling, ADAA, dinamik hafıza, filtre ve hizalı dry/wet zincirini uygular.",
+    "functions": [
+      "coefficient",
+      "follow",
+      "SaturationDSP::ADAA::logCosh",
+      "SaturationDSP::ADAA::shape",
+      "SaturationDSP::ADAA::process",
+      "SaturationDSP::Magnet::langevin",
+      "SaturationDSP::Magnet::langevinDerivative",
+      "SaturationDSP::Magnet::slope",
+      "SaturationDSP::Magnet::process",
+      "SaturationDSP::Model::process",
+      "SaturationDSP::compensationDb",
+      "SaturationDSP::preview",
+      "SaturationDSP::prepare",
+      "SaturationDSP::reset",
+      "SaturationDSP::process",
+      "SaturationDSP::processModulated",
+      "SaturationDSP::render"
+    ],
+    "comment_lines": 28,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Source/Saturation/SaturationDSP.h",
+    "purpose": "Doygunluk karakterleri, oversampling, ADAA, dinamik hafıza, filtre ve hizalı dry/wet zincirini uygular.",
+    "functions": [
+      "getLatency"
+    ],
+    "comment_lines": 4,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/AudioTests.cpp",
+    "purpose": "AudioTests regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.",
+    "functions": [
+      "getPosition",
+      "set",
+      "preview",
+      "snapshot",
+      "byId",
+      "finite",
+      "main"
+    ],
+    "comment_lines": 11,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/EnvelopeTests.cpp",
+    "purpose": "EnvelopeTests regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.",
+    "functions": [
+      "set",
+      "find",
+      "getPosition",
+      "main"
+    ],
+    "comment_lines": 8,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/PitchTests.cpp",
+    "purpose": "PitchTests regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.",
+    "functions": [
+      "set",
+      "finite",
+      "main"
+    ],
+    "comment_lines": 7,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "Shaper",
+    "path": "Tests/SaturationDSPTests.cpp",
+    "purpose": "SaturationDSPTests regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.",
+    "functions": [
+      "snapshot",
+      "render",
+      "rms",
+      "aliasDb",
+      "harmonicDb",
+      "wave",
+      "main"
+    ],
+    "comment_lines": 15,
+    "tokens_unchanged": true
+  }
+]

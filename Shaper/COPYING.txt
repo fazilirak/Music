@@ -1,0 +1,35 @@
+Shaper source distribution
+Copyright (c) 2026 Fazıl Irak, for Shaper additions and modifications only.
+
+Shaper-authored additions and modifications are distributed under the GNU
+General Public License, version 3. See LICENSE for the complete text.
+This grant does not replace the original licences of third-party code,
+fonts, audio resources or other assets.
+
+GATE-12, TIME-12 and REEV-R retain GPLv3. FILT-R retains AGPLv3.
+JUCE 8.0.7 is used under its AGPLv3 open-source option for this source
+distribution. GPLv3 section 13 and AGPLv3 section 13 permit combination;
+the respective parts retain their licences and the applicable AGPLv3
+network interaction provisions apply to the combination.
+See LICENSE-AGPL-3.0.txt, THIRD-PARTY-NOTICES.txt and licenses/.
+Signalsmith and other permissively licensed dependencies retain their
+original notices. No exclusive authorship of third-party work is claimed.
+
+This program is distributed WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+The upstream/ directory contains the preserved original dependency sources
+as present in this project. scripts/prepare_sources.py, module_extensions.py
+and editor_layout.py generate the Shaper adaptations under build/modules/.
+Generated copies must not replace the original upstream sources.
+
+When distributing binaries over a download service, also provide access to
+the complete corresponding source for that exact build, including upstream
+sources, adaptations, build scripts and required resources. Keep licence
+texts, notices and modification dates. See GPLv3 sections 5 and 6 and the
+AGPLv3 terms. Publish source alongside binaries with equivalent access.
+
+The original Samplicity Hall Quad.flac asset is excluded from source and binary
+distribution. Shaper uses Resources/impulses/Shaper_Hall_Quad.wav, generated
+without external recordings by scripts/generate_ir.py and licensed GPLv3.
+See docs/YAYIN_LISANSLARI_TR.md and docs/RELEASE-READINESS.json.

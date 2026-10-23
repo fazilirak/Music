@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-23",
+  "version": "0.8.2",
+  "upstream_files_compared_to_previous_inventory": 4638,
+  "upstream_changes": [],
+  "excluded_from_distribution": [
+    "upstream/reevr/resources/impulses/Hall Quad.flac"
+  ],
+  "replacement_ir": "Resources/impulses/Shaper_Hall_Quad.wav",
+  "font_license": "licenses/Ubuntu-Font-Licence-1.0.txt",
+  "licensing": "GPLv3 Shaper additions, original component licences preserved; JUCE AGPLv3 option.",
+  "remaining_known_resource_permission_blockers": [],
+  "scope": "Local source/licence review and original snapshot integrity; not a legal opinion or an independent verification of upstream commit history.",
+  "validation": {
+    "ctest": "4/4 passed",
+    "elapsed_seconds": 45.08,
+    "ir_generator": "SHA-256 reproducibility, four channels, no PCM clipping",
+    "original_upstream": "4638 files match previous inventory"
+  }
+}
