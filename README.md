@@ -2,6 +2,11 @@
 
 Independent music software and development resources by [FAZIL AHMET IRAK](https://fazilirak.com).
 
+| Project | Windows | macOS | Source |
+| --- | --- | --- | --- |
+| [F Saturator](F-Saturator/README.md) | [0.2.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.2.0) | Planned with its next update | [Browse](F-Saturator) |
+| [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.2) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
+
 ## F Saturator
 
 **Add colour. Shape the character.** Free saturation/distortion for Windows 64-bit in VST3 and standalone formats.
@@ -27,6 +32,8 @@ Each project has its own licence. F Saturator is AGPLv3-or-later; see [its licen
 Website: https://fazilirak.com · Contact: info@fazilirak.com
 
 ## Shaper
+
+![Shaper](Shaper/doc/shaper.png)
 
 JUCE-based effects rack: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and Pitch.
 
