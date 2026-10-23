@@ -2,7 +2,24 @@
   "date": "2026-10-23",
   "version": "0.8.2",
   "upstream_files_compared_to_previous_inventory": 4638,
-  "upstream_changes": [],
+  "upstream_changes": [
+    {
+      "path": "upstream/gate12/README.md",
+      "scope": "Documentation only: optional product references removed by Fazıl Irak, 2026-10-23; original author/licence notices preserved."
+    },
+    {
+      "path": "upstream/time12/README.md",
+      "scope": "Documentation only: optional product references removed by Fazıl Irak, 2026-10-23; original author/licence notices preserved."
+    },
+    {
+      "path": "upstream/filtr/README.md",
+      "scope": "Documentation only: optional product references removed by Fazıl Irak, 2026-10-23; original author/licence notices preserved."
+    },
+    {
+      "path": "upstream/reevr/README.md",
+      "scope": "Documentation only: optional product references removed by Fazıl Irak, 2026-10-23; original author/licence notices preserved."
+    }
+  ],
   "excluded_from_distribution": [
     "upstream/reevr/resources/impulses/Hall Quad.flac"
   ],
@@ -15,6 +32,6 @@
     "ctest": "4/4 passed",
     "elapsed_seconds": 45.08,
     "ir_generator": "SHA-256 reproducibility, four channels, no PCM clipping",
-    "original_upstream": "4638 files match previous inventory"
+    "original_upstream": "Original comparison: 4638 files matched the previous inventory. Subsequent documentation-only edits are listed under upstream_changes; implementation unchanged."
   }
 }

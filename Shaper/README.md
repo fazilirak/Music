@@ -21,7 +21,7 @@ Kaynak ve Windows paketlerini birlikte üretmek için derleme/test sonrası `pyt
 - Saturation ve Pitch için 16'şar özgün Motion preset eklendi. Her efektte toplam 40 program vardır; ilk 24 programın sırası korunur.
 - Önceki 128 rack'e 16 Saturation Motion ve 16 Pitch Motion eklendi: toplam 160 rack preset.
 - 32 yeni efekt preset dosyası `EffectPresets/Saturation` ve `EffectPresets/Pitch` klasöründedir. İlgili efektte Load effect ile açılır; ayrıca efektin dahili preset listesindedir.
-- Tasarım referansı: [Cableguys ShaperBox 3 kılavuzu](https://downloads.cableguys.com/Cableguys-ShaperBox-3-Manual.pdf), PitchShaper ve DriveShaper bölümleri. Ritmik drive, analog renk, vibrato, wow, glissando, arpej, formant ve kuru bası koruyan bant işleme fikirlerinden yararlanıldı. Eğriler ve ayarlar bağımsız üretildi; ShaperBox preset dosyası kullanılmadı. Shaper'ın kendi ses motorları kullanılır.
+- Saturation ve Pitch Motion presetleri ritmik drive, vibrato, perde geçişleri, arpej ve formant hareketleri için özgün eğriler ve Shaper’ın ses motorlarını kullanır.
 
 ## Pitch ve Saturation eğrileri (0.8.0)
 
@@ -35,7 +35,7 @@ Kaynak ve Windows paketlerini birlikte üretmek için derleme/test sonrası `pyt
 
 Ses ve iki çizim, MIDI/audio tetikleme kaynakları arasında hizalı kalması için sabit 15 ms kontrol tamponu kullanır. Toplam gecikme Saturation'da 48 kHz için 786 örnek (16.375 ms), Pitch'te 6480 örnek (135 ms) olur; DAW'a bildirilir. Dry/wet ve bypass bu gecikmeyle hizalanır. Spektral pitch ve formant işlemleri, büyük transpozisyonlarda ve vurmalı kaynaklarda tını/transient değişimleri oluşturabilir.
 
-Cableguys'ın resmi [ShaperBox kılavuzundaki](https://downloads.cableguys.com/Cableguys-ShaperBox-3-Manual.pdf) çizilebilir drive, pitch ve formant kontrol yaklaşımı referans alınmıştır. Ses motorları kendi uygulamamız ve Signalsmith Stretch'tir; Cableguys'ın dört özel PitchShaper algoritmasının kopyası değildir. Signalsmith sürümleri ve MIT bildirimleri Pitch-dependencies.json / THIRD-PARTY-NOTICES.txt içindedir.
+Pitch motoru Signalsmith Stretch kullanır. Bağımlılık sürümleri ve MIT bildirimleri Pitch-dependencies.json / THIRD-PARTY-NOTICES.txt içindedir.
 ## Kullanım
 
 - Rack boş açılır. Üst paletin **+** butonundan efekt ekleyin. Her efekt türü bir kez eklenebilir.
@@ -72,13 +72,13 @@ Gate-12'nin volume motorunu sidechain amaçlı kullanır. Gate'in pattern, MIDI/
 
 Time sayfasında 8 yeni küçük eğri kutusu vardır: **Stutter 1/8, Stutter 1/16, Scratch Sweep, Scratch Double, Tape Stop Slow, Tape Stop Fast, Pitch -12 st, Pitch +12 st**. Bunlar orijinal 79 presete ek olarak listede de bulunur. Bir kutuya tıklamak eğriyi, tempo senkronizasyonunu, mix ve smoothing ayarlarını birlikte yükler. Time preset dosyaları ve DAW durumu bu seçimi de saklar.
 
-[Cableguys'ın resmî TimeShaper açıklamasındaki](https://www.cableguys.com/timeshaper) zaman okuma, stutter, scratch ve tape-stop kullanım fikirleri incelenerek bağımsız eğriler oluşturuldu. Pitch örnekleri Time motorunun okuma hızını 0.5x ve 2x yapar; tempo süresini koruyan ayrı bir pitch-shifter algoritması değildir. Perde oranları 440 Hz sinyal ile otomatik test edilir.
+Time hızlı presetleri stutter, scratch ve tape-stop için bağımsız eğriler içerir. Pitch örnekleri Time motorunun okuma hızını 0.5x ve 2x yapar; tempo süresini koruyan ayrı bir pitch-shifter algoritması değildir. Perde oranları 440 Hz sinyal ile otomatik test edilir.
 
 ## Rack presetleri
 
 160 preset ayrıca paketin `FactoryPresets` klasöründe, 10 kategoriye ayrılmış `.shaper` dosyaları olarak bulunur. `Load rack` ile herhangi birini açabilirsiniz. Ayrı banka arşivi: `Shaper-160-Rack-Presets.zip`. Dosya isimleri ve efekt sıraları `FactoryPresets/index.json` içinde listelenir. Dahili listeden seçmek için bu dosyaları kurmak gerekmez.
 
-160 presetin tasarımında [resmî ShaperBox sayfasındaki](https://www.cableguys.com/shaperbox) ve [kullanım kılavuzundaki](https://downloads.cableguys.com/Cableguys-ShaperBox-3-Manual.pdf) ritmik ducking, gate, filtre, stereo hareket, zaman ve reverb kullanım fikirleri incelendi. Preset dosyaları ve sayısal eğri verileri bağımsız oluşturuldu. Ses kararlılığı otomatik olarak kontrol edilir; müzikal değerlendirme farklı kaynaklarla DAW içinde yapılmalıdır.
+160 rack preseti ritmik ducking, gate, filtre, stereo hareket, zaman ve reverb düzenlerini içerir. Preset dosyaları ve sayısal eğri verileri bağımsız oluşturuldu. Ses kararlılığı otomatik olarak kontrol edilir; müzikal değerlendirme farklı kaynaklarla DAW içinde yapılmalıdır.
 
 ## Derleme ve çıktılar
 
@@ -114,7 +114,7 @@ Orijinal geliştirici: **tiagolr / tilr**.
 - [FILT-R](https://github.com/tiagolr/filtr)
 - [REEV-R](https://github.com/tiagolr/reevr)
 
-Gate12, Time12 ve Reevr GPLv3; Filtr AGPLv3 lisanslıdır. JUCE 8 AGPLv3 / ticari çift lisanslıdır. Dağıtımda GPL/AGPL koşulları ve bağımlılık bildirimleri birlikte uygulanmalıdır. 0.8.2 dağıtımı, aynı sürümün tam kaynak ZIP’i ve lisans bildirimleriyle birlikte hazırlanır. Yeniden dağıtım izni doğrulanmamış Samplicity IR pakete alınmaz; varsayılan IR, Shaper için üretilen GPLv3 lisanslı dört kanallı sentetik kaynaktır. Ayrıntılar: [yayın ve lisanslar](docs/YAYIN_LISANSLARI_TR.md). Cableguys / ShaperBox kodları, preset verileri veya görsel varlıkları kullanılmaz.
+Gate12, Time12 ve Reevr GPLv3; Filtr AGPLv3 lisanslıdır. JUCE 8 AGPLv3 / ticari çift lisanslıdır. Dağıtımda GPL/AGPL koşulları ve bağımlılık bildirimleri birlikte uygulanmalıdır. 0.8.2 dağıtımı, aynı sürümün tam kaynak ZIP’i ve lisans bildirimleriyle birlikte hazırlanır. Yeniden dağıtım izni doğrulanmamış Samplicity IR pakete alınmaz; varsayılan IR, Shaper için üretilen GPLv3 lisanslı dört kanallı sentetik kaynaktır. Ayrıntılar: [yayın ve lisanslar](docs/YAYIN_LISANSLARI_TR.md).
 
 ## Saturation / F Saturator
 

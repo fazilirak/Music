@@ -1,3 +1,4 @@
+<!-- Documentation modified by Fazıl Irak, 2026-10-23: optional product comparisons removed. Original author and licence notices preserved; implementation unchanged. -->
 <h1 align="center">
   <!-- <img src="doc/logo.png" width="200" style="padding: 5px;" /> -->
   REEV-R
@@ -80,12 +81,6 @@ REEV-R is a convolution reverb with modulation capabilities, it is possible than
 
 REEV supports IR manipulation like stretching, reversing, trimming, attack and decay. Because loading IRs is expensive this plugin uses two reverbs, one active and one idle, and loads the modified impulses on the idle reverb on a separate thread. Once the secondary reverb is ready it warms it with one second of buffered audio so that it achieves the same state as the main reverb, finally both reverbs are cross-faded for a smooth transition before swapping the two.
 
-### A note on ShaperBox
-
-This plugin, more so than the others, is feature-by-feature almost a re-implementation of ShaperBox - this was not intentional or planned, there are not many references and I didn't want to miss some very well thought features so I ended replicating most of them.
-
-If you like this plugin consider checking ShaperBox Reverb, it's probably more studio grade, more polished and the price tag is affordable.
-
 ### Features
 
 #### Point types
@@ -120,7 +115,7 @@ Multiple points can be selected and moved around, the selections can also be sca
 
 #### Audio Trigger
 
-Audio transients can be used to trigger the envelope or restart its cycle, its heavily based on ShaperBox and includes two modes of detection: *Simple* - based on envelope following and *Drums* - based on total energy during a small time window. This feature is also heavily based on ShaperBox and also allows to use sidechain as input.
+Audio transients can trigger the envelope or restart its cycle. Simple detection follows the envelope; Drums detection uses total energy over a short time window. External sidechain input is supported.
 
 #### MIDI Trigger
 
@@ -159,7 +154,6 @@ Reverb tails can be cleared on any point of the reverb pattern, to do so, `Right
 
 Big thanks to KlangFalter creator for his wonderful convolution library, without it this plugin would not be possible, maybe there are other solutions out there but this one really fits.
 
-CableGuys for the ShaperBox reference and original idea, this plugin re-implements many of its features, including the self repeating patterns, envelope followers, average points manipulation and many others.
 
 ## MacOS
 

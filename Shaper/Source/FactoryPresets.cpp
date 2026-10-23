@@ -58,7 +58,7 @@ void plain(juce::AudioProcessor &m, const char *id, float v)
             if (r->paramID == id)
                 r->setValueNotifyingHost(r->convertTo0to1(v));
 }
-// Independent curves in musical families; no Cableguys preset data is used.
+// Original preset curves grouped into musical families.
 // curve alt adımı: Rack fabrika presetlerinin efekt dizilişi ve kaydedilen parametre durumlarını tanımlar.
 // Gövdedeki başlıca çağrılar: std::fmod → std::pow → juce::jlimit → std::cos. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 juce::String curve(int kind, int variant, float depth = 1.0f)

@@ -1,3 +1,4 @@
+<!-- Documentation modified by Fazıl Irak, 2026-10-23: optional product comparisons removed. Original author and licence notices preserved; implementation unchanged. -->
 <h1 align="center">
   <!-- <img src="doc/logo.png" width="200" style="padding: 5px;" /> -->
   TIME-12
@@ -19,7 +20,7 @@
 
 </div>
 
-**TIME-12** is a cross-platform is a delay modulator inspired by plugins like GrossBeat and ShaperBox. It can be used for a wide range of effects like stuttering, tape stop, glitch, scratch, reverse, pitch shift and more. It is the second version of [TIME-1](https://github.com/tiagolr/time1) rebuilt from scratch using the _JUCE_ framework.
+**TIME-12** is a cross-platform delay modulator for stuttering, tape stop, glitch, scratch, reverse and pitch effects. It is the second version of [TIME-1](https://github.com/tiagolr/time1) rebuilt from scratch using the JUCE framework.
 
 <div align="center">
 
@@ -67,7 +68,7 @@ Also check other plugins from this collection:
 
 ## About
 
-TIME-12 is an envelope based plugin that combines some of the best features of GrossBeat and ShaperBox, it includes a point system very similar to GrossBeat but also with some great features of ShaperBox like self repeating patterns, multi-point selections that can be scaled or skewed, audio envelope triggering and more.
+TIME-12 provides an envelope editor with self-repeating patterns, scalable multi-point selections and audio-envelope triggering.
 
 With version 2 this plugin was rebuilt from scratch using JUCE for its cross-platforms capabilities, maintainability and overall development tools/processes.
 
@@ -101,7 +102,7 @@ Multiple points can be selected and moved around, the selections can also be sca
 
 #### Audio Trigger
 
-Audio transients can be used to trigger the envelope or restart its cycle, its heavily based on ShaperBox and includes two modes of detection: *Simple* - based on envelope following and *Drums* - based on total energy during a small time window. This feature is also heavily based on ShaperBox and also allows to use sidechain as input.
+Audio transients can trigger the envelope or restart its cycle. Simple detection follows the envelope; Drums detection uses total energy over a short time window. External sidechain input is supported.
 
 #### MIDI Trigger
 

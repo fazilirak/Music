@@ -1,3 +1,4 @@
+<!-- Documentation modified by Fazıl Irak, 2026-10-23: optional product comparisons removed. Original author and licence notices preserved; implementation unchanged. -->
 <h1 align="center">
   <!-- <img src="doc/logo.png" width="200" style="padding: 5px;" /> -->
   FILT-R
@@ -19,7 +20,7 @@
 
 </div>
 
-**FILT-R** is a cross-platform filter modulator based on plugins like ShaperBox and FilterShaper. It is the second version of [FLTR-1 JSFX](https://github.com/tiagolr/tilr_jsfx?tab=readme-ov-file#fltr-1) for the Reaper DAW.
+**FILT-R** is a cross-platform filter modulator. It is the second version of [FLTR-1 JSFX](https://github.com/tiagolr/tilr_jsfx?tab=readme-ov-file#fltr-1) for the Reaper DAW.
 
 It includes 6 filters ported from different sources plus 28 filters from [QuadMorphFilter](https://github.com/OTODESK4193/QuadMorphFilter).
 
@@ -80,7 +81,7 @@ There are 32 patterns that can be used and edited, these patterns are saved in t
 
 #### Envelope Followers
 
-Envelope followers for cutoff and resonance can be activated in the `Envelope` section by setting the amount positive or negative. This feature like many others was introduced by ShaperBox and had to be included in this project.
+Envelope followers for cutoff and resonance can be activated in the `Envelope` section by setting the amount positive or negative.
 
 #### Self repeating patterns
 
@@ -94,7 +95,7 @@ Multiple points can be selected and moved around, the selections can also be sca
 
 #### Audio Trigger
 
-Audio transients can be used to trigger the envelope or restart its cycle, its heavily based on ShaperBox and includes two modes of detection: *Simple* - based on envelope following and *Drums* - based on total energy during a small time window. This feature is also heavily based on ShaperBox and also allows to use sidechain as input.
+Audio transients can trigger the envelope or restart its cycle. Simple detection follows the envelope; Drums detection uses total energy over a short time window. External sidechain input is supported.
 
 #### MIDI Trigger
 
