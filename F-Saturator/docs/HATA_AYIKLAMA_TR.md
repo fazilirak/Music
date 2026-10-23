@@ -1,12 +1,12 @@
 # F-Saturator: geliştirme ve hata müdahale rehberi
 
-**Fazıl Irak · Düzenleme: 22.10.2026 · Kaynak sürümü: 0.2.0**
+**Fazıl Irak · Düzenleme: 23.10.2026 · Kaynak sürümü: 0.3.0**
 
-Bu kaynak çalışma kopyasıdır; yayımlanan 0.2.0 ZIP’i ve GitHub Release kendiliğinden değiştirilmez. Türkçe not ve biçim düzenlemesinde DSP katsayıları, parametre kimlikleri ve C++ token dizisi korunmuştur. CMake/paketleme yolları yeni klasör düzenine uyarlandı. Üçüncü taraf JUCE/font kaynaklarına geliştirici adınız eklenmedi; özgün lisanslar korunur.
+0.3.0 Windows ve macOS Universal derleme/paketleme akışı GitHub Actions içinde tanımlıdır. Eski 0.2.0 sürümü ayrı etiket olarak korunur. Türkçe not ve biçim düzenlemesinde DSP katsayıları, parametre kimlikleri ve C++ token dizisi korunmuştur. CMake/paketleme yolları taşınabilir hale getirildi; tam JUCE/font kaynakları eşleşen kaynak ZIP’lerinde bulunur. Üçüncü taraf JUCE/font kaynaklarına geliştirici adınız eklenmedi; özgün lisanslar korunur.
 
 ## Başlamak ve sinyal yolunu izlemek
 
-Visual Studio C++ masaüstü araçları ve CMake/Ninja kurulu olmalıdır. Proje klasörünü Visual Studio’nun **Open Folder** seçeneğiyle açabilirsiniz. `scripts/build-windows.cmd` x64 MSVC ortamını kurar, yapılandırır, derler ve CTest’i çalıştırır. VS başka yerdeyse betikteki VSROOT’u değiştirin. CMake projesinde JUCE varsayılanı `../_Dependencies/JUCE`; kayıtlı commit `Research/dependencies.json` içindedir. Tüm Music klasörü taşınırsa bu göreli yapı korunur. Farklı JUCE için `-DIRAK_JUCE_PATH=C:/.../JUCE` verin. Eski build klasörünü başka yola kopyalamayın; CMake önbelleği mutlak kaynak yolları içerir.
+Visual Studio C++ masaüstü araçları ve CMake/Ninja kurulu olmalıdır. Proje klasörünü Visual Studio’nun **Open Folder** seçeneğiyle açabilirsiniz. `scripts/build-windows.cmd` x64 MSVC ortamını kurar, yapılandırır, derler ve CTest’i çalıştırır. VS otomatik bulunur; gerekirse FSATURATOR_VSROOT ortam değişkenini verin. CMake öncelikle `vendor/JUCE` kullanır; GitHub checkout’unda Python 3.12+ ile scripts/bootstrap_juce.py ve scripts/bootstrap_fonts.py çalıştırın. Kayıtlı commit ve arşiv SHA-256 değerleri `Research/dependencies.json` içindedir. Tüm Music klasörü taşınırsa bu göreli yapı korunur. Farklı JUCE için `-DIRAK_JUCE_PATH=C:/.../JUCE` verin. Eski build klasörünü başka yola kopyalamayın; CMake önbelleği mutlak kaynak yolları içerir.
 
 Host → Entry `createPluginFilter` → Processor → `prepareToPlay` (tamponlar/gecikme) → `processBlock` (Settings okuma) → DSP `process` (alt bloklar) → `render` (işlem zinciri). GUI ayrı mesaj iş parçacığında Editor/ConcentricKnob ile APVTS’ye bağlıdır; pencere kapalıyken DSP çalışır.
 
@@ -67,3 +67,7 @@ Giriş/çıkış dB, kesimler Hz; Tone/Bias −1..1, Mix/Dynamics 0..1, Width 0.
 ## Yayın ve sahiplik
 
 Paket üretimi için önce başarılı build/test, sonra `scripts/package.ps1`. Bu betik dist ZIP’lerini aynı sürüm adıyla yenileyebilir; önceden yayımlanan dosyayı sessizce değiştirmeyin. Kaynak+Windows dağıtımı lisanslarıyla birlikte eşleşmelidir. Bu çalışma yalnız yerel taşıma/bakım içindir; web veya GitHub’a otomatik push/yayın yapmaz. `GELISTIRME-TR.md` ayrıntılı mevcut geliştirme tarifidir; `docs/KAYNAK_INCELEME_2026-10-22.md` son doğrulama kaydıdır.
+
+## Mac ve sürüm paketleri
+
+Mac Universal için [MACOS_TR.md](MACOS_TR.md) rehberini izleyin. Ortak paketleyici testsiz veya değiştirilmiş bağımlılıklarla paket üretmez; ikili/kaynak sürümünü, kaynak dosya özetlerini ve platform arşivlerini doğrular. CI hata çıktısında mevcut kontrolün kodu ve kaynak satırı gösterilir; testi geçirmek için eşik yükseltilmez.

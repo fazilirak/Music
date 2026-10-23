@@ -43,8 +43,9 @@
     {
       "path": "Tests/DSPTests.cpp",
       "cpp_tokens_unchanged": false,
-      "change": "Diagnostic output only; existing conditions and thresholds preserved."
+      "change": "Initialize synthetic wheel event and print diagnostics; conditions and thresholds preserved."
     }
   ],
-  "test_diagnostics": "Failure codes/line numbers and harmonic/block comparisons printed for CI; thresholds unchanged."
+  "test_diagnostics": "Failure codes/line numbers and harmonic/block comparisons printed for CI; thresholds unchanged.",
+  "test_fixture_fix": "Value-initialize all synthetic MouseWheelDetails fields; otherwise uninitialized isReversed can clamp a boundary parameter on Windows CI. Production input handling and thresholds unchanged."
 }

@@ -66,6 +66,7 @@ Tests cover sample-rate extremes, finite output, harmonic character, Auto Gain r
 - Portable Windows build helper and verified GitHub Actions release flow.
 - Updated Turkish code comments and maintenance documents from the local development tree.
 - Complete matching dependency sources and third-party notices in distribution packages.
+- Deterministic synthetic mouse-wheel events in UI regression tests; existing thresholds retained.
 - Existing plug-in IDs, parameter IDs, `IRAK_STATE`, preset format and DSP behaviour preserved.
 
 ## Türkçe geliştirme belgeleri

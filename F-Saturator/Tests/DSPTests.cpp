@@ -318,7 +318,9 @@ int main(int argc, char **argv)
                 juce::MouseEvent event(juce::Desktop::getInstance().getMainMouseSource(), pos,
                                        juce::ModifierKeys(), 1, 0, 0, 0, 0, control, control, now, pos, now,
                                        1, false);
-                juce::MouseWheelDetails wheel;
+                // Sentetik olayın deltaX/isReversed/isSmooth/isInertial alanları da tanımlı olmalı.
+                // Aksi halde özellikle CI'da ters yön rastgele seçilip sınırdaki değer kıpırdamayabilir.
+                juce::MouseWheelDetails wheel{};
                 wheel.deltaY =
                     before[(size_t)part] >=
                             p.state.getParameter(groupedIds[group][part])->getNormalisableRange().end
