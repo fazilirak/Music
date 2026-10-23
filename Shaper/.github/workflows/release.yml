@@ -109,12 +109,22 @@ jobs:
         run: |
           set -euo pipefail
           mkdir release
-          cp artifacts/windows/*-Source.zip release/
-          cp artifacts/windows/*-Windows-x64.zip release/
-          cp artifacts/macos/*-macOS-Universal.tar.gz release/
-          cp artifacts/macos/*-macOS-Source.zip release/
-          cp artifacts/windows/RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
-          cp artifacts/macos/RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
+          # Resolve each expected file uniquely, including preserved artifact directories.
+          copy_asset() {
+            local root="$1" pattern="$2" target="$3"
+            mapfile -d '' matches < <(find "$root" -type f -name "$pattern" -print0)
+            if [ "${#matches[@]}" -ne 1 ]; then
+              echo "Expected one $pattern in $root, found ${#matches[@]}" >&2
+              exit 1
+            fi
+            cp "${matches[0]}" "$target"
+          }
+          copy_asset artifacts/windows '*-Source.zip' release/
+          copy_asset artifacts/windows '*-Windows-x64.zip' release/
+          copy_asset artifacts/macos '*-macOS-Universal.tar.gz' release/
+          copy_asset artifacts/macos '*-macOS-Source.zip' release/
+          copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
+          copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
           Windows x64: VST3 and standalone.
           macOS Universal (arm64 + x86_64): VST3, AU and standalone; deployment target macOS 11.0.
