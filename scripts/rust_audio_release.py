@@ -59,6 +59,8 @@ def main():
     parser.add_argument('--package-only', action='store_true')
     args = parser.parse_args()
     root = REPO / args.project
+    if not root.exists() and (REPO / 'Cargo.toml').exists():
+        root = REPO  # Tam kaynak ZIP'i tek proje köküne açılır.
     model = args.project == 'Model-F'
     crate, library, example, display = (('model-f', 'model_f', 'model-f-standalone', 'Model F') if model else
                                        ('simple-eq', 'simple_eq', 'simple-eq', 'F EQ'))
@@ -118,13 +120,17 @@ def main():
             shutil.copy2(root / name, package / name)
     shutil.copytree(root / 'third_party/urw-gothic', package / 'licences/urw-gothic')
     shutil.copy2(root / 'docs/RELEASE-LICENSING.md', package / 'RELEASE-LICENSING.md')
-    commit = run(['git', 'rev-parse', 'HEAD'], root, capture=True).strip()
+    revision_file = root / 'BUILD-REVISION.json'
+    commit = (json.loads(revision_file.read_text(encoding='utf-8'))['commit'] if revision_file.exists()
+              else run(['git', 'rev-parse', 'HEAD'], root, capture=True).strip())
     metadata = json.loads(run(cargo + ['metadata', '--locked', '--format-version', '1'], root, capture=True))
     dependencies = sorted([{'name': p['name'], 'version': p['version'], 'licence': p.get('license')}
                            for p in metadata['packages']], key=lambda p: (p['name'], p['version']))
     (package / 'DEPENDENCY-LICENCES.json').write_text(json.dumps(dependencies, indent=2) + '\n', encoding='utf-8')
     # Kaynakları cargo vendor ile kilit dosyasındaki gerçek revizyonlardan toplarız.
-    vendor_config = run(cargo + ['vendor', '--locked', '--versioned-dirs', 'vendor'], root, capture=True)
+    existing_config = root / '.cargo/config.toml'
+    already_vendored = (root / 'vendor').exists() and 'vendored-sources' in existing_config.read_text(encoding='utf-8')
+    vendor_config = '' if already_vendored else run(cargo + ['vendor', '--locked', '--versioned-dirs', 'vendor'], root, capture=True)
     source = root / '.release-source'
     if source.exists():
         raise RuntimeError('Source staging already exists')
@@ -145,9 +151,16 @@ def main():
     (source / 'scripts').mkdir(exist_ok=True)
     shutil.copy2(__file__, source / 'scripts/rust_audio_release.py')
     (source / 'ci').mkdir(exist_ok=True)
-    shutil.copy2(REPO / '.github/workflows/rust-audio-release.yml', source / 'ci/rust-audio-release.yml')
+    workflow = REPO / '.github/workflows/rust-audio-release.yml'
+    if not workflow.exists():
+        workflow = root / 'ci/rust-audio-release.yml'
+    shutil.copy2(workflow, source / 'ci/rust-audio-release.yml')
     font_archive = source / 'third_party/urw-base35-fonts-20200910.tar.gz'
-    urllib.request.urlretrieve(FONT_URL, font_archive)
+    existing_fonts = root / 'third_party/urw-base35-fonts-20200910.tar.gz'
+    if existing_fonts.exists():
+        shutil.copy2(existing_fonts, font_archive)
+    else:
+        urllib.request.urlretrieve(FONT_URL, font_archive)
     if sha(font_archive) != FONT_SHA:
         raise RuntimeError('URW original source checksum mismatch')
     with tarfile.open(font_archive) as fonts:

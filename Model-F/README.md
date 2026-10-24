@@ -105,3 +105,15 @@ GPL-3.0-or-later. Modifiye devre DSP ve gerçek zamanlı zamanlama kodunun telif
 ## Yeni geliştirme konumu
 
 `Codex/Music/Model-F` içinden çalışın. [Türkçe geliştirici ve hata müdahale rehberi](docs/GELISTIRICI_REHBERI_TR.md). Eski mutlak build yollarını yeniden kullanmayın.
+
+## Build from the complete Source ZIP
+
+Extract the matching Source ZIP, enter the extracted directory and install Rust 1.97.1 plus the platform's C/C++ linker/SDK. Dependencies are included in `vendor/` and selected by `.cargo/config.toml`.
+
+```sh
+cargo test -p model-f --release --locked --offline
+cargo build -p model-f --lib --release --locked --offline
+cargo build -p model-f --example model-f-standalone --features standalone --release --locked --offline
+```
+
+For macOS Universal install both Rust targets, then use `python3 scripts/rust_audio_release.py Model-F` to build, validate, sign ad-hoc and package. macOS 11+ deployment is selected by the script. The included `ci/rust-audio-release.yml` records the original build job. The `BUILD-REVISION.json` file identifies the exact source commit; `OFFLINE-SOURCE-VALIDATION.json` confirms all dependency manifests resolve inside the source distribution.
