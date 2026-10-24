@@ -1,0 +1,1282 @@
+[
+  {
+    "name": "Sub Foundation",
+    "category": "Bass",
+    "peak": 0.05834781751036644,
+    "rms": 0.018307540969489822,
+    "seconds": 5.002666666666666,
+    "offline_speed": 15.410464309034023
+  },
+  {
+    "name": "Iron Undertow",
+    "category": "Bass",
+    "peak": 0.052029144018888474,
+    "rms": 0.015026145530378258,
+    "seconds": 5.002666666666666,
+    "offline_speed": 14.46496635844761
+  },
+  {
+    "name": "Pulse Furnace",
+    "category": "Bass",
+    "peak": 0.06687904894351959,
+    "rms": 0.014426900588024576,
+    "seconds": 5.002666666666666,
+    "offline_speed": 15.112778403952442
+  },
+  {
+    "name": "Locked Piston",
+    "category": "Bass",
+    "peak": 0.0496659092605114,
+    "rms": 0.012300451925947194,
+    "seconds": 5.002666666666666,
+    "offline_speed": 13.582074991370929
+  },
+  {
+    "name": "FM Root Cell",
+    "category": "Bass",
+    "peak": 0.03387760370969772,
+    "rms": 0.01376335012041753,
+    "seconds": 5.002666666666666,
+    "offline_speed": 9.062634470643236
+  },
+  {
+    "name": "Ring Cavern",
+    "category": "Bass",
+    "peak": 0.06834343820810318,
+    "rms": 0.020217147826537447,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.710586525788251
+  },
+  {
+    "name": "Seven Tonnes",
+    "category": "Bass",
+    "peak": 0.07689009606838226,
+    "rms": 0.014455639156659355,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.765867227699878
+  },
+  {
+    "name": "Acid Foundry",
+    "category": "Bass",
+    "peak": 0.06132612004876137,
+    "rms": 0.01427557691395591,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.352359605589202
+  },
+  {
+    "name": "Dust Engine",
+    "category": "Bass",
+    "peak": 0.07294677942991257,
+    "rms": 0.02196989686621552,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.219573461753214
+  },
+  {
+    "name": "Fifth Gear",
+    "category": "Bass",
+    "peak": 0.0755484476685524,
+    "rms": 0.020138055679780133,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.907330291261628
+  },
+  {
+    "name": "Shark Bite",
+    "category": "Bass",
+    "peak": 0.01880633644759655,
+    "rms": 0.005482809716455796,
+    "seconds": 5.002666666666666,
+    "offline_speed": 9.343288467743648
+  },
+  {
+    "name": "Resonant Drum",
+    "category": "Bass",
+    "peak": 0.04713154211640358,
+    "rms": 0.021237080958407404,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.206238582099574
+  },
+  {
+    "name": "Hybrid Pressure",
+    "category": "Bass",
+    "peak": 0.04128528758883476,
+    "rms": 0.008824221137182517,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.084224170882226
+  },
+  {
+    "name": "Tunnel Walker",
+    "category": "Bass",
+    "peak": 0.058131635189056396,
+    "rms": 0.015143632163346339,
+    "seconds": 5.002666666666666,
+    "offline_speed": 9.134301004432277
+  },
+  {
+    "name": "Broken Staircase",
+    "category": "Bass",
+    "peak": 0.04946982488036156,
+    "rms": 0.009376735613175627,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.63531474335572
+  },
+  {
+    "name": "Valve Ratchet",
+    "category": "Bass",
+    "peak": 0.05889828875660896,
+    "rms": 0.014366591721298595,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.865391191588795
+  },
+  {
+    "name": "Sync Hammer",
+    "category": "Bass",
+    "peak": 0.048410605639219284,
+    "rms": 0.012222358148813289,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.922131278865171
+  },
+  {
+    "name": "Metal Footwork",
+    "category": "Bass",
+    "peak": 0.03392312675714493,
+    "rms": 0.013953771218984517,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.851709507041525
+  },
+  {
+    "name": "Ring Conveyor",
+    "category": "Bass",
+    "peak": 0.06341121345758438,
+    "rms": 0.012525806174403175,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.793357218594553
+  },
+  {
+    "name": "Seven Accents",
+    "category": "Bass",
+    "peak": 0.07825174182653427,
+    "rms": 0.014443703162796192,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.7576043536118195
+  },
+  {
+    "name": "Acid Labyrinth",
+    "category": "Bass",
+    "peak": 0.06297709792852402,
+    "rms": 0.0153498590954389,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.500626593189712
+  },
+  {
+    "name": "Gravel Steps",
+    "category": "Bass",
+    "peak": 0.07313529402017593,
+    "rms": 0.021916112960027382,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.017837979945039
+  },
+  {
+    "name": "Fifth Runner",
+    "category": "Bass",
+    "peak": 0.06828557699918747,
+    "rms": 0.012474244253389378,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.756518889324731
+  },
+  {
+    "name": "Shark Circuit",
+    "category": "Bass",
+    "peak": 0.01781792752444744,
+    "rms": 0.005478772945735161,
+    "seconds": 5.002666666666666,
+    "offline_speed": 9.576827752380806
+  },
+  {
+    "name": "Sub Siren",
+    "category": "Bass",
+    "peak": 0.04589904099702835,
+    "rms": 0.021536383678015684,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.684707537809485
+  },
+  {
+    "name": "Hybrid Braid",
+    "category": "Bass",
+    "peak": 0.04018426686525345,
+    "rms": 0.00892540837558108,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.4824468119581535
+  },
+  {
+    "name": "Velvet Wire",
+    "category": "Lead",
+    "peak": 0.059515636414289474,
+    "rms": 0.021391549847558707,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.357209683159404
+  },
+  {
+    "name": "Copper Anthem",
+    "category": "Lead",
+    "peak": 0.05647726356983185,
+    "rms": 0.017277896820459833,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.33718583758331
+  },
+  {
+    "name": "Pulse Needle",
+    "category": "Lead",
+    "peak": 0.057542894035577774,
+    "rms": 0.01452051088805148,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.38634294325686
+  },
+  {
+    "name": "Sync Vanguard",
+    "category": "Lead",
+    "peak": 0.039720579981803894,
+    "rms": 0.01091607410902087,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.793247956557211
+  },
+  {
+    "name": "FM Glassline",
+    "category": "Lead",
+    "peak": 0.03622253239154816,
+    "rms": 0.015532978944731901,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.42745573887106
+  },
+  {
+    "name": "Ring Beacon",
+    "category": "Lead",
+    "peak": 0.06750129163265228,
+    "rms": 0.022403642709295242,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.85571941179254
+  },
+  {
+    "name": "Solar Unison",
+    "category": "Lead",
+    "peak": 0.0916966050863266,
+    "rms": 0.017215980139912455,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.075304139651034
+  },
+  {
+    "name": "Acid Spear",
+    "category": "Lead",
+    "peak": 0.053670261055231094,
+    "rms": 0.013604079983716622,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.359350866548421
+  },
+  {
+    "name": "Rust Signal",
+    "category": "Lead",
+    "peak": 0.060607779771089554,
+    "rms": 0.023695885059582082,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.977069068474345
+  },
+  {
+    "name": "Fifth Horizon",
+    "category": "Lead",
+    "peak": 0.06641525775194168,
+    "rms": 0.02055465575458859,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.515523175909463
+  },
+  {
+    "name": "Shark Razor",
+    "category": "Lead",
+    "peak": 0.024186689406633377,
+    "rms": 0.007715784019916167,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.12941015625931
+  },
+  {
+    "name": "Whistle Chamber",
+    "category": "Lead",
+    "peak": 0.04497046023607254,
+    "rms": 0.023375176358245372,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.728042119121671
+  },
+  {
+    "name": "Hybrid Voltage",
+    "category": "Lead",
+    "peak": 0.03481876850128174,
+    "rms": 0.007842863444873668,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.033168409095712
+  },
+  {
+    "name": "Velvet Maze",
+    "category": "Lead",
+    "peak": 0.059564799070358276,
+    "rms": 0.01966492996957755,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.582400509088234
+  },
+  {
+    "name": "Copper Orbit",
+    "category": "Lead",
+    "peak": 0.05617693439126015,
+    "rms": 0.010657106789988584,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.371788167207056
+  },
+  {
+    "name": "Pulse Telegraph",
+    "category": "Lead",
+    "peak": 0.05011235177516937,
+    "rms": 0.014500243506091358,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.698780296313783
+  },
+  {
+    "name": "Sync Helix",
+    "category": "Lead",
+    "peak": 0.0392131507396698,
+    "rms": 0.01073457239015462,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.701814560442592
+  },
+  {
+    "name": "Glass Stairway",
+    "category": "Lead",
+    "peak": 0.03608309105038643,
+    "rms": 0.015531807653921845,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.419658961175205
+  },
+  {
+    "name": "Ring Carousel",
+    "category": "Lead",
+    "peak": 0.06599900871515274,
+    "rms": 0.013812809180355464,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.806872700898618
+  },
+  {
+    "name": "Solar Current",
+    "category": "Lead",
+    "peak": 0.091567263007164,
+    "rms": 0.017170138671794594,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.257943090662492
+  },
+  {
+    "name": "Acid Switchback",
+    "category": "Lead",
+    "peak": 0.05144912376999855,
+    "rms": 0.013151346274875622,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.462425932172
+  },
+  {
+    "name": "Rust Transmission",
+    "category": "Lead",
+    "peak": 0.060875218361616135,
+    "rms": 0.023243059166702093,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.206393253955449
+  },
+  {
+    "name": "Fifth Spiral",
+    "category": "Lead",
+    "peak": 0.056446678936481476,
+    "rms": 0.012659603524882681,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.865737809403549
+  },
+  {
+    "name": "Shark Relay",
+    "category": "Lead",
+    "peak": 0.023652613162994385,
+    "rms": 0.00771337588547906,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.57983788405465
+  },
+  {
+    "name": "Whistle Cipher",
+    "category": "Lead",
+    "peak": 0.042451780289411545,
+    "rms": 0.022781047574426883,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.660046559086146
+  },
+  {
+    "name": "Voltage Cascade",
+    "category": "Lead",
+    "peak": 0.03443380817770958,
+    "rms": 0.008018906160638283,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.038533673835531
+  },
+  {
+    "name": "Round Felt",
+    "category": "Key",
+    "peak": 0.15721949934959412,
+    "rms": 0.013302249404279418,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.417252068937339
+  },
+  {
+    "name": "Copper Pluck",
+    "category": "Key",
+    "peak": 0.14556516706943512,
+    "rms": 0.006107305388035887,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.961437039993399
+  },
+  {
+    "name": "Reed Cabinet",
+    "category": "Key",
+    "peak": 0.2098986953496933,
+    "rms": 0.015322662429743629,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.234521664254275
+  },
+  {
+    "name": "Sync Clavinet",
+    "category": "Key",
+    "peak": 0.16750507056713104,
+    "rms": 0.009293851865283425,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.193649628256776
+  },
+  {
+    "name": "FM Glass Bell",
+    "category": "Key",
+    "peak": 0.09355410188436508,
+    "rms": 0.012685949625361336,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.707569072475221
+  },
+  {
+    "name": "Ring Mallet",
+    "category": "Key",
+    "peak": 0.14955665171146393,
+    "rms": 0.016670612476328603,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.5970340385393555
+  },
+  {
+    "name": "Unison Chime",
+    "category": "Key",
+    "peak": 0.1564294844865799,
+    "rms": 0.01574530978500364,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.569409012343311
+  },
+  {
+    "name": "Pulse Marimba",
+    "category": "Key",
+    "peak": 0.2414463609457016,
+    "rms": 0.00901043693525506,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.294322838252104
+  },
+  {
+    "name": "Dust Piano",
+    "category": "Key",
+    "peak": 0.1700643002986908,
+    "rms": 0.01323229571045792,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.5865215841339255
+  },
+  {
+    "name": "Fifth Organ",
+    "category": "Key",
+    "peak": 0.05527536943554878,
+    "rms": 0.02060651472275061,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.214378643666405
+  },
+  {
+    "name": "Shark Harpsichord",
+    "category": "Key",
+    "peak": 0.10174071043729782,
+    "rms": 0.0044000956483554905,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.142656653499413
+  },
+  {
+    "name": "Tuned Air",
+    "category": "Key",
+    "peak": 0.0796540379524231,
+    "rms": 0.006013759433380216,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.542281458318106
+  },
+  {
+    "name": "Hybrid Celesta",
+    "category": "Key",
+    "peak": 0.1524677723646164,
+    "rms": 0.012778809841813848,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.429765925477806
+  },
+  {
+    "name": "Felt Clockwork",
+    "category": "Key",
+    "peak": 0.15806224942207336,
+    "rms": 0.013096990904037828,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.2617034607329725
+  },
+  {
+    "name": "Copper Pinwheel",
+    "category": "Key",
+    "peak": 0.02196102775633335,
+    "rms": 0.001359402335860784,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.718706796420172
+  },
+  {
+    "name": "Reed Automat",
+    "category": "Key",
+    "peak": 0.20987728238105774,
+    "rms": 0.015325926268214628,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.867188761530785
+  },
+  {
+    "name": "Sync Music Box",
+    "category": "Key",
+    "peak": 0.1676594763994217,
+    "rms": 0.009298225714484102,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.048476719268828
+  },
+  {
+    "name": "Glass Constellation",
+    "category": "Key",
+    "peak": 0.09176464378833771,
+    "rms": 0.0126951564756207,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.574380033509713
+  },
+  {
+    "name": "Ring Steps",
+    "category": "Key",
+    "peak": 0.1368742138147354,
+    "rms": 0.009489787331276,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.590409602434596
+  },
+  {
+    "name": "Chime Rain",
+    "category": "Key",
+    "peak": 0.15617141127586365,
+    "rms": 0.015829848348634865,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.380948711257298
+  },
+  {
+    "name": "Pulse Lattice",
+    "category": "Key",
+    "peak": 0.24344795942306519,
+    "rms": 0.009054282594429624,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.394432469796407
+  },
+  {
+    "name": "Dust Mosaic",
+    "category": "Key",
+    "peak": 0.17010018229484558,
+    "rms": 0.01287681120078171,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.970667276042697
+  },
+  {
+    "name": "Organ Clock",
+    "category": "Key",
+    "peak": 0.05041343346238136,
+    "rms": 0.012468864213560261,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.132593791841904
+  },
+  {
+    "name": "Shark Filigree",
+    "category": "Key",
+    "peak": 0.10155750811100006,
+    "rms": 0.004360924989558744,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.423458388688049
+  },
+  {
+    "name": "Air Machine",
+    "category": "Key",
+    "peak": 0.06859833747148514,
+    "rms": 0.005317551374547487,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.157253270550097
+  },
+  {
+    "name": "Celesta Labyrinth",
+    "category": "Key",
+    "peak": 0.15262319147586823,
+    "rms": 0.012664110690616475,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.603024274052189
+  },
+  {
+    "name": "Quiet Horizon",
+    "category": "Pad",
+    "peak": 0.09238111227750778,
+    "rms": 0.02213863334947424,
+    "seconds": 10.0,
+    "offline_speed": 5.932149497760494
+  },
+  {
+    "name": "Copper Veil",
+    "category": "Pad",
+    "peak": 0.09316246956586838,
+    "rms": 0.023518905716991112,
+    "seconds": 10.0,
+    "offline_speed": 5.589195057541881
+  },
+  {
+    "name": "Pulse Cathedral",
+    "category": "Pad",
+    "peak": 0.14009486138820648,
+    "rms": 0.02972663438281827,
+    "seconds": 10.0,
+    "offline_speed": 4.784164110607387
+  },
+  {
+    "name": "Synced Aurora",
+    "category": "Pad",
+    "peak": 0.12454050779342651,
+    "rms": 0.027578349494715125,
+    "seconds": 10.0,
+    "offline_speed": 4.216556079753122
+  },
+  {
+    "name": "FM Icefield",
+    "category": "Pad",
+    "peak": 0.06876702606678009,
+    "rms": 0.018152853059192158,
+    "seconds": 10.0,
+    "offline_speed": 5.417164165480714
+  },
+  {
+    "name": "Ring Nebula",
+    "category": "Pad",
+    "peak": 0.1664339005947113,
+    "rms": 0.036640234340792735,
+    "seconds": 10.0,
+    "offline_speed": 1.5005519630340824
+  },
+  {
+    "name": "Seven Clouds II",
+    "category": "Pad",
+    "peak": 0.1213400587439537,
+    "rms": 0.021563915780377235,
+    "seconds": 10.0,
+    "offline_speed": 1.6323067989838498
+  },
+  {
+    "name": "Pulse Ocean",
+    "category": "Pad",
+    "peak": 0.14056792855262756,
+    "rms": 0.028994117038510965,
+    "seconds": 10.0,
+    "offline_speed": 2.8779824928295787
+  },
+  {
+    "name": "Dust Atmosphere",
+    "category": "Pad",
+    "peak": 0.11043831706047058,
+    "rms": 0.028953583297233063,
+    "seconds": 10.0,
+    "offline_speed": 5.107794642750882
+  },
+  {
+    "name": "Fifth Sanctuary",
+    "category": "Pad",
+    "peak": 0.04413465037941933,
+    "rms": 0.015963984261468386,
+    "seconds": 10.0,
+    "offline_speed": 6.2820372118987065
+  },
+  {
+    "name": "Shark Silk",
+    "category": "Pad",
+    "peak": 0.06534282118082047,
+    "rms": 0.018152458784922627,
+    "seconds": 10.0,
+    "offline_speed": 5.494934824028559
+  },
+  {
+    "name": "Resonant Mist",
+    "category": "Pad",
+    "peak": 0.09843842685222626,
+    "rms": 0.030611987129565865,
+    "seconds": 10.0,
+    "offline_speed": 3.7609844722866783
+  },
+  {
+    "name": "Hybrid Monolith",
+    "category": "Pad",
+    "peak": 0.10253970324993134,
+    "rms": 0.02147509694760445,
+    "seconds": 10.0,
+    "offline_speed": 4.592772840215274
+  },
+  {
+    "name": "Wide Observatory",
+    "category": "Pad",
+    "peak": 0.15604792535305023,
+    "rms": 0.030624298665717677,
+    "seconds": 10.0,
+    "offline_speed": 5.346452815682643
+  },
+  {
+    "name": "Horizon Tides",
+    "category": "Pad",
+    "peak": 0.07268231362104416,
+    "rms": 0.015684060718974362,
+    "seconds": 10.0,
+    "offline_speed": 5.947998198232386
+  },
+  {
+    "name": "Copper Canopy",
+    "category": "Pad",
+    "peak": 0.09162088483572006,
+    "rms": 0.02340918614691774,
+    "seconds": 10.0,
+    "offline_speed": 4.683235548155627
+  },
+  {
+    "name": "Cathedral Gates",
+    "category": "Pad",
+    "peak": 0.13900774717330933,
+    "rms": 0.029719622202537255,
+    "seconds": 10.0,
+    "offline_speed": 4.366252812849218
+  },
+  {
+    "name": "Aurora Motion",
+    "category": "Pad",
+    "peak": 0.09947071224451065,
+    "rms": 0.019955749912693103,
+    "seconds": 10.0,
+    "offline_speed": 5.403536657970935
+  },
+  {
+    "name": "Icefield Currents",
+    "category": "Pad",
+    "peak": 0.06913593411445618,
+    "rms": 0.01807890632458054,
+    "seconds": 10.0,
+    "offline_speed": 3.891441241961256
+  },
+  {
+    "name": "Nebula Compass",
+    "category": "Pad",
+    "peak": 0.16122055053710938,
+    "rms": 0.036572914430415195,
+    "seconds": 10.0,
+    "offline_speed": 2.1909826079362387
+  },
+  {
+    "name": "Seven Mirrors",
+    "category": "Pad",
+    "peak": 0.09635192155838013,
+    "rms": 0.01526987567736502,
+    "seconds": 10.0,
+    "offline_speed": 3.847548582515008
+  },
+  {
+    "name": "Ocean Drift",
+    "category": "Pad",
+    "peak": 0.14053818583488464,
+    "rms": 0.02899412523433424,
+    "seconds": 10.0,
+    "offline_speed": 5.049674914553188
+  },
+  {
+    "name": "Dust Mandala",
+    "category": "Pad",
+    "peak": 0.11060234904289246,
+    "rms": 0.0289375001516534,
+    "seconds": 10.0,
+    "offline_speed": 5.0626300494735395
+  },
+  {
+    "name": "Sanctuary Choir",
+    "category": "Pad",
+    "peak": 0.04132944718003273,
+    "rms": 0.011881862019957255,
+    "seconds": 10.0,
+    "offline_speed": 7.285069505026881
+  },
+  {
+    "name": "Silk Polyrhythm",
+    "category": "Pad",
+    "peak": 0.0651036873459816,
+    "rms": 0.018169001560281554,
+    "seconds": 10.0,
+    "offline_speed": 4.275125532648578
+  },
+  {
+    "name": "Mist Topography",
+    "category": "Pad",
+    "peak": 0.0983838215470314,
+    "rms": 0.02975937948955663,
+    "seconds": 10.0,
+    "offline_speed": 4.565829351397459
+  },
+  {
+    "name": "Monolith Pulse",
+    "category": "Pad",
+    "peak": 0.08605910837650299,
+    "rms": 0.01513593545485003,
+    "seconds": 10.0,
+    "offline_speed": 5.569765884916606
+  },
+  {
+    "name": "Observatory Bloom",
+    "category": "Pad",
+    "peak": 0.1405130922794342,
+    "rms": 0.030512622801912612,
+    "seconds": 10.0,
+    "offline_speed": 5.850214272873066
+  },
+  {
+    "name": "Sub Drop Vessel",
+    "category": "FX",
+    "peak": 0.017585713416337967,
+    "rms": 0.004897410300214286,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.910868397612353
+  },
+  {
+    "name": "Copper Impact",
+    "category": "FX",
+    "peak": 0.023020803928375244,
+    "rms": 0.004736083232037742,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.529697390684408
+  },
+  {
+    "name": "Pulse Alarm",
+    "category": "FX",
+    "peak": 0.02686416357755661,
+    "rms": 0.004377836768632796,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.7963968487962685
+  },
+  {
+    "name": "Sync Laser",
+    "category": "FX",
+    "peak": 0.02801593206822872,
+    "rms": 0.007537903512164077,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.566297001821264
+  },
+  {
+    "name": "FM Fracture",
+    "category": "FX",
+    "peak": 0.015292229130864143,
+    "rms": 0.003626942129836186,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.82382649516177
+  },
+  {
+    "name": "Ring Satellite",
+    "category": "FX",
+    "peak": 0.03302127495408058,
+    "rms": 0.007503378549982151,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.824995396141435
+  },
+  {
+    "name": "Seven Swarm",
+    "category": "FX",
+    "peak": 0.04158618673682213,
+    "rms": 0.004588151087363711,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.89346370579804
+  },
+  {
+    "name": "Acid Launch",
+    "category": "FX",
+    "peak": 0.02480064146220684,
+    "rms": 0.006732292245386652,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.412169175991827
+  },
+  {
+    "name": "Dust Collision",
+    "category": "FX",
+    "peak": 0.025532931089401245,
+    "rms": 0.005765844505518561,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.090852540363596
+  },
+  {
+    "name": "Fifth Warning",
+    "category": "FX",
+    "peak": 0.028192557394504547,
+    "rms": 0.006753990559961937,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.745894606182832
+  },
+  {
+    "name": "Shark Burst",
+    "category": "FX",
+    "peak": 0.017631463706493378,
+    "rms": 0.003582858652636164,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.455362334434499
+  },
+  {
+    "name": "Steam Valve",
+    "category": "FX",
+    "peak": 0.018192384392023087,
+    "rms": 0.0051952521148792945,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.742223778396474
+  },
+  {
+    "name": "Hybrid Anomaly",
+    "category": "FX",
+    "peak": 0.02458779141306877,
+    "rms": 0.004656768019558924,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.712701855868884
+  },
+  {
+    "name": "Vessel Countdown",
+    "category": "FX",
+    "peak": 0.01946631819009781,
+    "rms": 0.0045375507507972755,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.426582724247716
+  },
+  {
+    "name": "Copper Fractal",
+    "category": "FX",
+    "peak": 0.02171522192656994,
+    "rms": 0.002994070585676694,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.635462313123199
+  },
+  {
+    "name": "Alarm Polyrhythm",
+    "category": "FX",
+    "peak": 0.026049762964248657,
+    "rms": 0.004623552624022079,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.8410228328415865
+  },
+  {
+    "name": "Laser Matrix",
+    "category": "FX",
+    "peak": 0.027096591889858246,
+    "rms": 0.006986357681268359,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.446038458814396
+  },
+  {
+    "name": "Fracture Codes",
+    "category": "FX",
+    "peak": 0.015311365015804768,
+    "rms": 0.0036285080063636296,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.679087222339906
+  },
+  {
+    "name": "Satellite Relay",
+    "category": "FX",
+    "peak": 0.030608806759119034,
+    "rms": 0.004749192002773939,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.569367162473328
+  },
+  {
+    "name": "Swarm Geometry",
+    "category": "FX",
+    "peak": 0.04017360508441925,
+    "rms": 0.004500060671608375,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.45868463522489
+  },
+  {
+    "name": "Acid Coordinates",
+    "category": "FX",
+    "peak": 0.025682101026177406,
+    "rms": 0.005943853300883504,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.400905407387476
+  },
+  {
+    "name": "Collision Chain",
+    "category": "FX",
+    "peak": 0.025531228631734848,
+    "rms": 0.005828848669734374,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.898468634651575
+  },
+  {
+    "name": "Warning Grid",
+    "category": "FX",
+    "peak": 0.02540779300034046,
+    "rms": 0.004395773768249557,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.705519365765108
+  },
+  {
+    "name": "Burst Network",
+    "category": "FX",
+    "peak": 0.01763293519616127,
+    "rms": 0.0035833583046686233,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.421324588750175
+  },
+  {
+    "name": "Steam Cipher",
+    "category": "FX",
+    "peak": 0.022162437438964844,
+    "rms": 0.003909496178736541,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.424380867844476
+  },
+  {
+    "name": "Anomaly Engine",
+    "category": "FX",
+    "peak": 0.024318628013134003,
+    "rms": 0.0046697641491705985,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.635871889322187
+  },
+  {
+    "name": "Sub Transit",
+    "category": "Arp",
+    "peak": 0.03717206045985222,
+    "rms": 0.01355230866307923,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.405960138093515
+  },
+  {
+    "name": "Copper Relay",
+    "category": "Arp",
+    "peak": 0.04125309735536575,
+    "rms": 0.01360579740836126,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.841445013448206
+  },
+  {
+    "name": "Pulse Sprint",
+    "category": "Arp",
+    "peak": 0.030356934294104576,
+    "rms": 0.00904926517308856,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.126864445164328
+  },
+  {
+    "name": "Sync Runner",
+    "category": "Arp",
+    "peak": 0.025898247957229614,
+    "rms": 0.008134407228467415,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.600738448817668
+  },
+  {
+    "name": "FM Bell Train",
+    "category": "Arp",
+    "peak": 0.02362000197172165,
+    "rms": 0.010515178267485478,
+    "seconds": 5.002666666666666,
+    "offline_speed": 6.26365113266161
+  },
+  {
+    "name": "Ring Conveyor II",
+    "category": "Arp",
+    "peak": 0.057208310812711716,
+    "rms": 0.02127248430087902,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.417271002086125
+  },
+  {
+    "name": "Seven Locomotive",
+    "category": "Arp",
+    "peak": 0.1048237755894661,
+    "rms": 0.01837185240483562,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.2178261739132155
+  },
+  {
+    "name": "Acid Framework",
+    "category": "Arp",
+    "peak": 0.03689960390329361,
+    "rms": 0.009092787379451425,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.610907562428917
+  },
+  {
+    "name": "Dust Metronome",
+    "category": "Arp",
+    "peak": 0.039506200700998306,
+    "rms": 0.014565367190480228,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.22137056036947
+  },
+  {
+    "name": "Fifth Rails",
+    "category": "Arp",
+    "peak": 0.053234364837408066,
+    "rms": 0.018948792085253064,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.8485439120897755
+  },
+  {
+    "name": "Shark Engine",
+    "category": "Arp",
+    "peak": 0.014194179326295853,
+    "rms": 0.005152387516265881,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.997582184719217
+  },
+  {
+    "name": "Whistle Signal",
+    "category": "Arp",
+    "peak": 0.013164250180125237,
+    "rms": 0.0027994433971020925,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.891958873750176
+  },
+  {
+    "name": "Hybrid Switchyard",
+    "category": "Arp",
+    "peak": 0.04219823703169823,
+    "rms": 0.01312865500081986,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.606257043075202
+  },
+  {
+    "name": "Wide Interchange",
+    "category": "Arp",
+    "peak": 0.05439664050936699,
+    "rms": 0.01783805357292562,
+    "seconds": 5.002666666666666,
+    "offline_speed": 5.414239268898763
+  },
+  {
+    "name": "Transit Polymeter",
+    "category": "Arp",
+    "peak": 0.05578072741627693,
+    "rms": 0.01496161121766875,
+    "seconds": 5.002666666666666,
+    "offline_speed": 14.50121445738616
+  },
+  {
+    "name": "Copper Labyrinth",
+    "category": "Arp",
+    "peak": 0.05231969803571701,
+    "rms": 0.008553795627236674,
+    "seconds": 5.002666666666666,
+    "offline_speed": 14.776831251895347
+  },
+  {
+    "name": "Pulse Counterpoint",
+    "category": "Arp",
+    "peak": 0.04756133630871773,
+    "rms": 0.009386187219830736,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.662007841203254
+  },
+  {
+    "name": "Sync Braids",
+    "category": "Arp",
+    "peak": 0.0510617271065712,
+    "rms": 0.008519715890731333,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.363027150583246
+  },
+  {
+    "name": "Bell Constellation",
+    "category": "Arp",
+    "peak": 0.035589322447776794,
+    "rms": 0.010583599986393391,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.884320441241954
+  },
+  {
+    "name": "Ring Euclid",
+    "category": "Arp",
+    "peak": 0.07695003598928452,
+    "rms": 0.013364926954046435,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.340046270363317
+  },
+  {
+    "name": "Seven Stations",
+    "category": "Arp",
+    "peak": 0.21546627581119537,
+    "rms": 0.025552983204603526,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.9351136299476086
+  },
+  {
+    "name": "Acid Triplets",
+    "category": "Arp",
+    "peak": 0.06803040206432343,
+    "rms": 0.009233775579355325,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.296755851263844
+  },
+  {
+    "name": "Dust Clockwork",
+    "category": "Arp",
+    "peak": 0.06994061172008514,
+    "rms": 0.017545954280389554,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.904294415585448
+  },
+  {
+    "name": "Fifth Crossings",
+    "category": "Arp",
+    "peak": 0.07170432060956955,
+    "rms": 0.011667540226046458,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.501366744248434
+  },
+  {
+    "name": "Shark Ratchets",
+    "category": "Arp",
+    "peak": 0.02040151134133339,
+    "rms": 0.0051099245364230085,
+    "seconds": 5.002666666666666,
+    "offline_speed": 9.259084458668688
+  },
+  {
+    "name": "Whistle Semaphore",
+    "category": "Arp",
+    "peak": 0.0197775699198246,
+    "rms": 0.002899179541530861,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.6552883765844
+  },
+  {
+    "name": "Switchyard Cipher",
+    "category": "Arp",
+    "peak": 0.07047605514526367,
+    "rms": 0.01325304392013383,
+    "seconds": 5.002666666666666,
+    "offline_speed": 7.834071770808717
+  },
+  {
+    "name": "Interchange Weave",
+    "category": "Arp",
+    "peak": 0.08275642991065979,
+    "rms": 0.01113061502599907,
+    "seconds": 5.002666666666666,
+    "offline_speed": 8.599137083927646
+  }
+]

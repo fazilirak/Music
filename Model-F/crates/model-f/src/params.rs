@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Host parametre kimliği, aralığı, varsayılanı ve DSP kontrol modeline dönüşüm sözleşmesidir.
 use crate::engine::Controls;
 use model_f_core::{
@@ -197,9 +197,35 @@ parameters! {
     mseg_n17_out: "mseg_n17_out" => ("Envelope Node 17 out", -1.0, 1.0, 0.0, 0.001),
     mseg_n17_wave: "mseg_n17_wave" => ("Envelope Node 17 wave", 0.0, 8.0, 0.0, 1.0),
     mseg_n17_depth: "mseg_n17_depth" => ("Envelope Node 17 depth", 0.0, 1.0, 1.0, 0.001),
+    // Fazıl Irak: eski kimliklere dokunmadan yeni kontroller sona eklenir.
+    // -1 eski presetin ortak değerini izler; yeni kayıtta/ilk GUI düzenlemesinde çözülür.
+    osc2_waveform: "osc2_waveform" => ("OSC 2 Waveform", -1.0, 5.0, -1.0, 1.0),
+    osc2_octave: "osc2_octave" => ("OSC 2 Range", -1.0, 5.0, -1.0, 1.0),
+    osc1_level: "osc1_level" => ("OSC 1 Level", 0.0, 10.0, 7.6, 0.01),
+    osc2_level: "osc2_level" => ("OSC 2 Level", 0.0, 10.0, 7.6, 0.01),
+    osc1_tune: "osc1_tune" => ("OSC 1 Tune Semitones", -12.0, 12.0, 0.0, 0.01),
+    audio_attack: "audio_attack" => ("Audio Env Attack", -1.0, 10.0, -1.0, 0.01),
+    audio_decay: "audio_decay" => ("Audio Env Decay", -1.0, 10.0, -1.0, 0.01),
+    audio_sustain: "audio_sustain" => ("Audio Env Sustain", -1.0, 10.0, -1.0, 0.01),
+    osc_sync: "osc_sync" => ("OSC 1 to 2 Hard Sync", 0.0, 1.0, 0.0, 1.0),
+    fm_on: "fm_on" => ("OSC 2 to 1 FM", 0.0, 1.0, 0.0, 1.0),
+    fm_amount: "fm_amount" => ("FM Depth", 0.0, 1.0, 0.2, 0.001),
 }
 
 impl ModelFParams {
+    // Kalıtılmış eski değerleri çizim, preset ve DSP için aynı yerde çöz.
+    pub fn effective(&self, id: &str) -> f32 {
+        let v = self.get(id).expect("known parameter").value();
+        if v >= 0.0 { return v; }
+        match id {
+            "osc2_waveform" => self.waveform.value(), "osc2_octave" => self.octave.value(),
+            "audio_attack" => self.attack.value(), "audio_decay" => self.decay.value(),
+            "audio_sustain" => self.sustain.value(), _ => v,
+        }
+    }
+    pub fn display_normalized(&self, id: &str) -> f32 {
+        if matches!(id,"audio_attack" | "audio_decay" | "audio_sustain") { self.effective(id)/10.0 } else { self.get(id).unwrap().preview_normalized(self.effective(id)) }
+    }
     // envelope_slots alt adımı: Host parametre kimliği, aralığı, varsayılanı ve DSP kontrol modeline dönüşüm sözleşmesidir.
     // Gövdedeki başlıca çağrılar: f64::from → self.mseg_p0_x.value → self.mseg_p0_y.value → self.mseg_p0_on.value. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn envelope_slots(&self) -> ([crate::mseg::Point; 16], [crate::mseg::Bend; 18]) {
@@ -428,6 +454,13 @@ impl ModelFParams {
             o.on = true;
             o.volume = 0.76;
         }
+        let second_octave = self.effective("osc2_octave").round() as usize;
+        p.osc[1].range = [Range::R32, Range::R16, Range::R8, Range::R4, Range::R2, Range::R2][second_octave.min(5)];
+        p.osc[1].waveform = [Waveform::Triangle, Waveform::SharkTooth, Waveform::Sawtooth, Waveform::Square, Waveform::WideRectangle, Waveform::NarrowRectangle][(self.effective("osc2_waveform").round() as usize).min(5)];
+        p.osc[0].volume = if self.osc1_level.value() == 7.6 { 0.76 } else { f64::from(self.osc1_level.value()) / 10.0 };
+        p.osc[1].volume = if self.osc2_level.value() == 7.6 { 0.76 } else { f64::from(self.osc2_level.value()) / 10.0 };
+        p.osc[0].on = p.osc[0].volume > 0.0;
+        p.osc[1].on = p.osc[1].volume > 0.0;
         if mode == 1 {
             p.osc[0].waveform = Waveform::Sawtooth;
             p.osc[1].on = false;
@@ -450,7 +483,11 @@ impl ModelFParams {
             sustain: f64::from(self.sustain.value()) / 10.0,
         };
         p.filter_contour = contour;
-        p.loudness_contour = contour;
+        p.loudness_contour = ContourKnobs {
+            attack: f64::from(self.effective("audio_attack")) / 10.0,
+            decay: f64::from(self.effective("audio_decay")) / 10.0,
+            sustain: f64::from(self.effective("audio_sustain")) / 10.0,
+        };
         p.decay = self.release.value() > 0.5;
         p.noise_on = self.noise.value() > 0.0;
         p.noise_volume = f64::from(self.noise.value()) / 10.0;
@@ -478,6 +515,12 @@ impl ModelFParams {
             3 => 7.0,
             _ => 0.0,
         };
+        c.transpose += f64::from(self.osc1_tune.value());
+        c.interval += if second_octave == 5 { 12.0 } else { 0.0 }
+            - if octave == 5 { 12.0 } else { 0.0 } - f64::from(self.osc1_tune.value());
+        // SuperSaw tek 7'li banktır; ikinci audio osilatör yerine FM/Sync bankı açılmaz.
+        c.sync = mode != 1 && self.osc_sync.value() > 0.5;
+        c.fm = if mode != 1 && self.fm_on.value() > 0.5 { f64::from(self.fm_amount.value()) } else { 0.0 };
         c
     }
 }

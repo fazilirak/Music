@@ -1,27 +1,33 @@
-<!-- Türkçe bakım: Fazıl Irak | 22.10.2026 -->
+<!-- Türkçe bakım: Fazıl Irak | 24.10.2026 -->
 # Model F
 
 Az kontrol, güçlü analog karakter. Windows x64 için VST3, CLAP ve bağımsız synthesizer.
 
 ![Model F](docs/panel.png)
 
-## GitHub releases / Windows ve macOS
-
-- [Windows, Mac Universal ve tam eşleşen kaynaklar](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.1.9)
-- [Otomatik Windows/macOS derlemesi](https://github.com/fazilirak/Music/actions/workflows/rust-audio-release.yml)
-- [Lisans ve kaynak paketleme açıklaması](docs/RELEASE-LICENSING.md) · [COPYING](COPYING)
-
-macOS: Universal arm64+x86_64 **VST3, CLAP ve bağımsız APP**; macOS 11+. VST3'ü `~/Library/Audio/Plug-Ins/VST3`, CLAP'ı `~/Library/Audio/Plug-Ins/CLAP`, APP'ı Applications'a koyun. AU sürümü yoktur. Paketler ad-hoc imzalıdır; Developer ID imzası ve Apple noterlemesi yoktur. Her iki platform için aynı sürümün kaynak ZIP'i birlikte sunulur.
-
-English: Free GPLv3-covered Rust/NIH-plug edition, with preserved third-party licences. Windows x64 and macOS Universal: VST3, CLAP, standalone. Complete matching source, vendored dependencies and build scripts accompany downloads. Mac builds are ad-hoc signed, not notarised; independent DAW and hardware validation remains necessary.
-
 ## Başlangıç
 
-`dist/Model-F-Windows-0.1.9/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
+`dist/Model-F-Windows-0.2.1/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
 
 VST3 için `Model F.vst3` klasörünü DAW'ın taradığı VST3 klasörüne; CLAP için `Model F.clap` dosyasını CLAP klasörüne kopyalayın. DAW'da eklentileri yeniden taratın. VST3 ve CLAP kimlikleri Model F'e özeldir.
 
 Model F başlığına tıklayarak FAZIL IRAK şirket adını ve sürüm bilgisini gösteren About penceresini açabilirsiniz. ESC, Enter veya CLOSE ile kapanır.
+
+## 0.2.1 arayüz düzeltmesi
+
+OSC seçicileri ve alt knob değerleri kendi çerçevelerinin içine alındı. Filter/Audio Env kutuları dış panelin içinde alt boşluk bırakır. Ses motoru ve 160 seslik banka 0.2.0 ile aynıdır.
+
+## 0.2.0 yenilikleri
+
+İki ayrı OSC alanında dalga biçimi, oktav ve seviye ayarlanır. OSC 1 TUNE ±12 yarım ses, OSC 2 DETUNE ince frekans farkını belirler. **SYNC**, OSC 1'i master, OSC 2'yi slave yapar. **FM**, OSC 2'nin seçili dalgasıyla OSC 1'in frekansını modüle eder; FM DEPTH derinliğidir. OSC 2 LEVEL sıfırken FM hâlâ çalışır. SuperSaw tek yedili bank olduğu için OSC 2/Sync/FM kontrolleri bu modda pasiftir.
+
+AD modu ile Multi kontrolleri birbirinden ayrıldı. AD+Amount etkinse ana buton logo beyazı; Multi etkinse turuncudur. AD panelinde yalnız Attack/Decay aktiftir; Multi'de bu ikisi pasif, grafik/ızgara/eğri/oynatma aktiftir. Amount ve Target ortaktır.
+
+**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. Multi süresi saniye cinsindedir; otomatik DAW tempo kilidi değildir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
+
+Eski preset/oturumlarda OSC 2 dalga/oktav ve Audio ADS başlangıçta eski ortak ayarları izler. İlk düzenlemede bu alanlar ayrılır; yeni kayıtlar çözümlenmiş değerleri saklar. Eski host parametre kimlikleri korunur.
+
+Bilgisayar klavyesi için ekran tuşlarına veya **CLICK KEYS TO PLAY A–K** alanına tıklayın. Düğmeleri ayarlarken klavye odağı kalır. ESC basılı notaları bırakır. Türkçe klavye düzeninde fiziksel tuş konumları kullanılır.
 
 ## Ses motoru
 
@@ -31,7 +37,7 @@ Model F başlığına tıklayarak FAZIL IRAK şirket adını ve sürüm bilgisin
 - **OCTAVE / FIFTH:** ikinci osilatör bir oktav / yedi yarım ses yukarıdadır; monofonik çalınır.
 - **RING / RING POLY:** filtre öncesinde iki osilatörün dengeli çarpımı; mono / dört nota.
 
-Osilatörler, nonlinear ladder filtre, noise ve contour devre modelleridir. Ortak ATTACK, DECAY, SUSTAIN, filtre ve ses yüksekliği contour'larını birlikte ayarlar. CONTOUR DECAY açıkken tuş bırakıldıktan sonraki sönüm DECAY süresini kullanır. LFO, klavyeden ayrılmış üçüncü devre osilatörüdür. MOD DEPTH ve OSC MOD / FILTER MOD yönlendirmeleriyle kullanılır; MIDI mod wheel ek derinlik sağlar. Pitch bend ±2 yarım sestir.
+Osilatörler, nonlinear ladder filtre, noise ve contour devre modelleridir. **FILTER ENV** ve **AUDIO ENV** ayrı Attack/Decay/Sustain kontrollerine sahiptir. CONTOUR DECAY açıkken tuş bırakıldıktan sonraki sönüm DECAY süresini kullanır. LFO, klavyeden ayrılmış üçüncü devre osilatörüdür. MOD DEPTH ve OSC MOD / FILTER MOD yönlendirmeleriyle kullanılır; MIDI mod wheel ek derinlik sağlar. Pitch bend ±2 yarım sestir.
 
 SuperSaw'ın asimetrik frekans dağılımı ve detune eğrisi JP-8000 ölçümlerinden türetilmiştir. Kaynak: [Adam Szabo, How to Emulate the Super Saw, 2010](https://www.adamszabo.com/internet/adam_szabo_how_to_emulate_the_super_saw.pdf), s. 9–15. Yedi osilatörde de Model F devre çekirdeği korunur. Merkez/yan seviye karışımı sabit .75'tir; temel frekansı takip eden high-pass kullanılır.
 
@@ -39,7 +45,7 @@ SuperSaw, işlemciye pay bırakmak için 8 nota ile sınırlandırılmıştır. 
 
 ## Kontroller
 
-Düğmeleri yukarı/aşağı sürükleyin; SHIFT hassas ayar yapar. Mouse tekerleği de çalışır. CTRL-tıklama veya ALT-tıklama başlangıç değerine döndürür. Seçiciler sol tıklamayla ileri, sağ tıklamayla geri gider. Envelope noktaları ve eğrileri dahil 161 parametre DAW otomasyonuna açıktır.
+Düğmeleri yukarı/aşağı sürükleyin; SHIFT hassas ayar yapar. Mouse tekerleği de çalışır. CTRL-tıklama veya ALT-tıklama başlangıç değerine döndürür. Seçiciler sol tıklamayla ileri, sağ tıklamayla geri gider. Envelope noktaları ve eğrileri dahil 172 parametre DAW otomasyonuna açıktır.
 
 ## Multi-Stage Envelope
 
@@ -66,7 +72,7 @@ ARP ile açılır. UP, DOWN, UP/DOWN ve RANDOM; 1–3 oktav; 1/4, 1/8, 1/8T, 1/1
 
 ## Presetler
 
-**160 hazır ses:** önceki 120 ses ve 40 yeni multi-stage envelope sesi. Bass 26, Lead 26, Key 26, Pad 28, FX 26, Arp 28 preset içerir. Yeni sesleri bulmak için preset aramasına `multi-stage` yazabilirsiniz. Preset adına tıklayın; kategori veya metin aramasıyla seçin. Oklarla önceki/sonraki sese geçilir. Değiştirilen sesin yanında bir nokta görünür.
+**160 yeni hazır ses:** 80 AD ve 80 Multi. Bass 26, Lead 26, Key 26, Pad 28, FX 26, Arp 28. Aramaya `Multi`, `AD`, `FM` veya `sync` yazarak ilgili sesleri bulabilirsiniz. Preset adına tıklayın; kategori veya metin aramasıyla seçin. Oklarla önceki/sonraki sese geçilir. Değiştirilen sesin yanında bir nokta görünür.
 
 - **SAVE:** ad ve kategori seçerek kullanıcı kütüphanesine kaydeder. Aynı kullanıcı adı varsa yeni ad ister.
 - **LOAD:** `.modelf` dosyası açar.
@@ -74,7 +80,7 @@ ARP ile açılır. UP, DOWN, UP/DOWN ve RANDOM; 1–3 oktav; 1/4, 1/8, 1/8T, 1/1
 - Kullanıcı sesleri: `%APPDATA%/Model F/Presets`. `MODEL_F_PRESETS` ortam değişkeniyle farklı klasör seçilebilir.
 - DAW oturumu bütün parametreleri ve preset adını saklar. Kullanıcı presetleri fabrikadan ayrı dosyalardır.
 
-Dokuz kısa örnek ve birleştirilmiş demo `docs/audio` klasöründedir. Demo WAV'ları dinleme için -3 dBFS tepe seviyesine getirilmiştir. Ham preset ölçümleri `validation.json` içindedir.
+Yeni bankadan seçilmiş örnekler ve birleştirilmiş demo `docs/audio-020` klasöründedir. Demo WAV'ları dinleme için -3 dBFS tepe seviyesine getirilmiştir. Ham preset ölçümleri `validation.json` içindedir.
 
 ## Kaynaktan derleme
 
@@ -84,11 +90,11 @@ Rust 1.97.1 ve Windows için Visual Studio C++ Build Tools / Windows SDK gerekir
 .\build.ps1 -Test -PackageSource
 ```
 
-Bu komut release sürümlerini derler, testleri çalıştırır ve `dist` altında Windows paketini ve isteğe bağlı kaynak ZIP'ini oluşturur. Windows ve macOS dağıtımları GitHub Actions üzerinde ayrı ayrı derlenir/test edilir. Model F dosya diyalogları Windows ve macOS için etkinleştirilmiştir.
+Bu komut release sürümlerini derler, testleri çalıştırır ve `dist` altında Windows paketini ve isteğe bağlı kaynak ZIP'ini oluşturur. GitHub Actions Windows x64 ve macOS Universal (Apple Silicon + Intel) paketlerini üretir. Preset/envelope dosya diyalogları Windows ve macOS üzerinde etkinleştirilmiştir. Bağımsız gerçek DAW/donanım testleri ayrıca gereklidir.
 
 ```powershell
 cargo run -p model-f --example preview --release -- docs
-cargo run -p model-f --example render-bank --release -- docs/audio
+cargo run -p model-f --example render-bank --release -- docs/audio-020
 ```
 
 ## Overload
@@ -105,15 +111,3 @@ GPL-3.0-or-later. Modifiye devre DSP ve gerçek zamanlı zamanlama kodunun telif
 ## Yeni geliştirme konumu
 
 `Codex/Music/Model-F` içinden çalışın. [Türkçe geliştirici ve hata müdahale rehberi](docs/GELISTIRICI_REHBERI_TR.md). Eski mutlak build yollarını yeniden kullanmayın.
-
-## Build from the complete Source ZIP
-
-Extract the matching Source ZIP, enter the extracted directory and install Rust 1.97.1 plus the platform's C/C++ linker/SDK. Dependencies are included in `vendor/` and selected by `.cargo/config.toml`.
-
-```sh
-cargo test -p model-f --release --locked --offline
-cargo build -p model-f --lib --release --locked --offline
-cargo build -p model-f --example model-f-standalone --features standalone --release --locked --offline
-```
-
-For macOS Universal install both Rust targets, then use `python3 scripts/rust_audio_release.py Model-F` to build, validate, sign ad-hoc and package. macOS 11+ deployment is selected by the script. The included `ci/rust-audio-release.yml` records the original build job. The `BUILD-REVISION.json` file identifies the exact source commit; `OFFLINE-SOURCE-VALIDATION.json` confirms all dependency manifests resolve inside the source distribution.

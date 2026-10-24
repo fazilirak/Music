@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: realtime regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.
 //! Seven-saw detune changes, ring and poly switching must not allocate in render.
 #![allow(unsafe_code)]
@@ -68,6 +68,7 @@ fn new_modes_do_not_allocate_or_free_on_the_audio_thread() {
             None
         };
         c.ring = block >= 120 && block < 180;
+        c.sync = block % 3 == 0; c.fm = if block % 2 == 0 {0.45} else {0.0};
         c.poly = block >= 180;
         c.panel.osc[1].on = c.supersaw.is_none();
         c.panel.cutoff = 0.3 + block as f64 / 1000.0;

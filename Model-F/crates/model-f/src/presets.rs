@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Preset sürüm geçişi, doğrulama, capture/apply, fabrika/kullanıcı dosyaları ve arama akışıdır.
 use crate::params::ModelFParams;
 use nih_plug::prelude::*;
@@ -50,7 +50,7 @@ impl Preset {
             values: p
                 .list()
                 .into_iter()
-                .map(|(id, p)| (id.into(), p.unmodulated_plain_value()))
+                .map(|(id, _)| (id.into(), p.effective(id)))
                 .collect(),
         }
     }
@@ -73,13 +73,14 @@ impl Preset {
             return Err("Unknown preset category".into());
         }
         let p = ModelFParams::default();
-        if self.values.len() != p.list().len() && !matches!(self.values.len(), 27 | 160) {
+        if self.values.len() != p.list().len() && !matches!(self.values.len(), 27 | 160 | 161) {
             return Err("Preset has missing or unknown controls".into());
         }
         if p.list().iter().any(|(id, _)| {
             !self.values.contains_key(*id)
-                && !(*id == "overload" && matches!(self.values.len(), 27 | 160))
+                && !(*id == "overload" && matches!(self.values.len(), 27 | 160 | 161))
                 && !(id.starts_with("mseg_") && self.values.len() == 27)
+                && !matches!(*id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount")
         }) {
             return Err("Preset has missing controls".into());
         }
@@ -244,9 +245,9 @@ pub fn user() -> (Vec<Preset>, Vec<String>) {
 mod tests {
     use super::*;
     #[test]
-    // Regresyon senaryosu factory_has_160_distinct_sounds_and_40_multi_stage_sounds: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
+    // Regresyon senaryosu factory_has_160_distinct_sounds_and_80_multi_stage_sounds: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     // Gövdedeki başlıca çağrılar: factory → bank.len → bank.iter → filter. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
-    fn factory_has_160_distinct_sounds_and_40_multi_stage_sounds() {
+    fn factory_has_160_distinct_sounds_and_80_multi_stage_sounds() {
         let bank = factory();
         assert_eq!(bank.len(), 160);
         assert_eq!(
@@ -255,7 +256,7 @@ mod tests {
                     && p.values["mseg_target"] > 0.0
                     && p.values["mseg_amount"].abs() > 0.0)
                 .count(),
-            40
+            80
         );
         for c in CATEGORIES {
             assert!(bank.iter().filter(|p| p.category == c).count() >= 26);
@@ -266,7 +267,7 @@ mod tests {
             p.validate().unwrap();
             assert!(names.insert(p.name.clone()));
             assert!(sounds.insert(serde_json::to_string(&p.values).unwrap()));
-            assert_eq!(p.values["arp_on"] > 0.5, p.category == "Arp");
+            assert_eq!(p.values["arp_on"] > 0.5, p.category == "Arp" && p.values["mseg_enable"] < 0.5);
         }
     }
     #[test]
@@ -301,7 +302,7 @@ mod tests {
         let mut old = factory().remove(0);
         old.format = 1;
         old.values
-            .retain(|id, _| !id.starts_with("mseg_") && id != "overload");
+            .retain(|id, _| !id.starts_with("mseg_") && id != "overload" && !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount"));
         assert_eq!(old.values.len(), 27);
         old.validate().unwrap();
         let p = std::sync::Arc::new(ModelFParams::default());
@@ -324,6 +325,7 @@ mod tests {
     // Regresyon senaryosu previous_160_control_presets_default_to_dry_feedback: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     fn previous_160_control_presets_default_to_dry_feedback() {
         let mut old = factory().remove(0);
+        old.values.retain(|id,_| !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount"));
         old.values.remove("overload");
         assert_eq!(old.values.len(), 160);
         old.validate().unwrap();

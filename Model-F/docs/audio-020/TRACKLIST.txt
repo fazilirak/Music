@@ -1,0 +1,19 @@
+Fazıl Irak · Model F 0.2.0 · 24.10.2026
+Stereo 48 kHz / 16-bit, örnek başına -3 dBFS peak normalize.
+
+01 Sub Foundation
+02 Tunnel Walker
+03 Velvet Wire
+04 Velvet Maze
+05 Round Felt
+06 Felt Clockwork
+07 Quiet Horizon
+08 Wide Observatory
+09 Monolith Pulse
+10 Steam Valve
+11 Steam Cipher
+12 Whistle Signal
+13 Transit Polymeter
+14 Copper Labyrinth
+15 Pulse Counterpoint
+16 Shark Ratchets

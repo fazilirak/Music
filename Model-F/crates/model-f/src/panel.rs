@@ -1,8 +1,9 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
 //! Shared vector panel and hit regions: the plug-in and preview use this same drawing.
 use crate::{params::ModelFParams, presets::Preset};
+#[cfg(test)]
 use nih_plug::prelude::*;
 use std::fmt::Write;
 pub const W: u32 = 1120;
@@ -39,7 +40,7 @@ impl Control {
     // hit: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
     pub fn hit(&self, x: f64, y: f64) -> bool {
         if self.knob {
-            (x - self.x).hypot(y - self.y) < self.w + 16.0
+            (x - self.x).hypot(y - self.y) < self.w + (self.w * 0.4).clamp(6.0, 16.0)
         } else {
             x >= self.x && x <= self.x + self.w && y >= self.y && y <= self.y + self.h
         }
@@ -73,21 +74,32 @@ macro_rules! b {
 }
 pub const CONTROLS: &[Control] = &[
     k!("volume", "OUTPUT", 1045, 59, 22),
-    b!("mode", "VOICE", 48, 194, 286, 32),
-    b!("waveform", "WAVEFORM", 48, 258, 160, 34),
-    b!("octave", "RANGE", 224, 258, 110, 34),
-    k!("detune", "DETUNE", 115, 367, 36),
+    b!("mode", "VOICE", 48, 170, 286, 28),
+    b!("waveform", "WAVE", 48, 241, 106, 28),
+    b!("octave", "RANGE", 48, 294, 106, 28),
+    b!("osc2_waveform", "WAVE", 232, 241, 106, 28),
+    b!("osc2_octave", "RANGE", 232, 294, 106, 28),
+    k!("osc1_level", "LEVEL", 72, 374, 18),
+    k!("osc1_tune", "TUNE", 130, 374, 18),
+    k!("osc2_level", "LEVEL", 256, 374, 18),
+    k!("detune", "DETUNE", 314, 374, 18),
+    b!("osc_sync", "SYNC", 171, 225, 48, 25),
+    b!("fm_on", "FM", 171, 269, 48, 25),
+    k!("fm_amount", "FM DEPTH", 195, 345, 13),
     k!("cutoff", "CUTOFF", 453, 245, 35),
     k!("emphasis", "EMPHASIS", 607, 245, 27),
-    k!("contour", "CONTOUR", 607, 371, 24),
-    k!("overload", "OVERLOAD", 453, 371, 24),
+    k!("contour", "CONTOUR", 616, 371, 21),
+    k!("overload", "OVERLOAD", 430, 371, 21),
     b!("filter_mod", "FILTER MOD", 548, 146, 108, 28),
-    k!("attack", "ATTACK", 756, 235, 30),
-    k!("decay", "DECAY", 882, 235, 30),
-    k!("sustain", "SUSTAIN", 1008, 235, 30),
-    k!("noise", "NOISE", 756, 361, 27),
-    b!("noise_color", "COLOR", 811, 343, 80, 32),
-    b!("release", "CONTOUR DECAY", 924, 343, 142, 32),
+    k!("attack", "ATTACK", 758, 246, 21),
+    k!("decay", "DECAY", 886, 246, 21),
+    k!("sustain", "SUSTAIN", 1013, 246, 21),
+    k!("audio_attack", "ATTACK", 758, 378, 21),
+    k!("audio_decay", "DECAY", 886, 378, 21),
+    k!("audio_sustain", "SUSTAIN", 1013, 378, 21),
+    k!("noise", "NOISE", 523, 371, 21),
+    b!("noise_color", "COLOR", 506, 294, 54, 23),
+    b!("release", "DECAY", 922, 142, 150, 26),
     k!("mod_depth", "MOD DEPTH", 88, 567, 27),
     k!("lfo_rate", "LFO RATE", 195, 567, 27),
     k!("glide", "GLIDE", 302, 567, 24),
@@ -139,7 +151,7 @@ pub fn button(s: &mut String, x: f64, y: f64, w: f64, h: f64, label: &str, on: b
         s,
         x + w / 2.0,
         y + h / 2.0 + 4.0,
-        11,
+        if w < 55.0 { 8 } else { 11 },
         color,
         label,
         "middle",
@@ -157,8 +169,14 @@ fn section(s: &mut String, x: f64, y: f64, w: f64, h: f64, n: &str, title: &str)
 // value alt adımı: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
 // Gövdedeki başlıca çağrılar: p.get → map_or → p.unmodulated_plain_value → v.round. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 pub fn value(p: &ModelFParams, id: &str) -> String {
-    let v = p.get(id).map_or(0.0, |p| p.unmodulated_plain_value());
+    let v = p.effective(id);
     match id {
+        "osc_sync" | "fm_on" => if v > 0.5 { "ON" } else { "OFF" }.into(),
+        "osc1_tune" => format!("{v:+.1} st"),
+        "osc1_level" | "osc2_level" => format!("{:.0}%", v * 10.0),
+        "fm_amount" => format!("{:.0}%", v * 100.0),
+        "osc2_waveform" => WAVES[(v.round() as usize).min(5)].into(),
+        "osc2_octave" => ["32′", "16′", "8′", "4′", "2′", "1′"][(v.round() as usize).min(5)].into(),
         "mode" => MODES[(v.round() as usize).min(6)].into(),
         "waveform" => {
             if p.mode.value().round() == 1.0 {
@@ -259,14 +277,26 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     }
     text(&mut s, 871.0, 96.0, 9, "#8d9799", "EXPORT .MODELF", "start");
     s.push_str(r##"<path d="M28 118H1092" stroke="#ed6c46" stroke-width="2"/><path d="M28 123H1092" stroke="#dce0d8" stroke-width="2"/>"##);
-    section(&mut s, 28.0, 132.0, 326.0, 310.0, "01", "OSCILLATOR");
+    section(&mut s, 28.0, 132.0, 326.0, 310.0, "01", "OSCILLATORS");
     section(&mut s, 374.0, 132.0, 300.0, 310.0, "02", "LADDER FILTER");
-    section(&mut s, 694.0, 132.0, 398.0, 310.0, "03", "CONTOUR / MIXER");
+    section(&mut s, 694.0, 132.0, 398.0, 310.0, "03", "ENVELOPES");
     section(&mut s, 28.0, 464.0, 326.0, 202.0, "04", "MODULATION");
     section(&mut s, 374.0, 464.0, 718.0, 210.0, "05", "ARPEGGIATOR");
+    // Fazıl Irak, 24.10.2026: seçiciler, knob tick ve değerleri çerçevelerin içinde boşluk bırakır.
+    // İki oscillator ve iki bağımsız contour, aynı 1120×760 panel içinde ayrılır.
+    for (x, title) in [(40., "OSC 1"), (224., "OSC 2")] {
+        let _ = write!(s, r##"<rect x="{x}" y="206" width="122" height="226" rx="5" fill="#191e20" stroke="#343d40"/>"##);
+        text(&mut s, x + 61., 221., 10, "#e5e7df", title, "middle");
+    }
+    for (y, title) in [(176., "FILTER ENV"), (308., "AUDIO ENV")] {
+        let _ = write!(s, r##"<rect x="710" y="{y}" width="366" height="126" rx="5" fill="#191e20" stroke="#3e474a"/>"##);
+        text(&mut s, 723., y + 16., 10, "#e5e7df", title, "start");
+    }
     for (i, c) in CONTROLS.iter().enumerate() {
-        let param = p.get(c.id).expect("panel control exists");
-        let n = f64::from(param.unmodulated_normalized_value());
+
+        let n = f64::from(p.display_normalized(c.id));
+        let enabled = control_enabled(p, c.id);
+        if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
         let active = v.hover == Some(i);
         let accent = if active { "#ff956f" } else { "#ed6c46" };
         if c.knob {
@@ -321,62 +351,27 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         } else {
             let switch = matches!(
                 c.id,
-                "release" | "filter_mod" | "osc_mod" | "arp_on" | "arp_latch" | "arp_sync"
+                "release" | "filter_mod" | "osc_mod" | "arp_on" | "arp_latch" | "arp_sync" | "osc_sync" | "fm_on"
             );
-            let label = if switch {
+            let label = if c.id == "mode" { format!("VOICE · {}", value(p,c.id)) } else if switch {
                 format!("{}  {}", c.label, value(p, c.id))
             } else {
                 value(p, c.id)
             };
             button(&mut s, c.x, c.y, c.w, c.h, &label, switch && n > 0.5);
-            if !switch {
+            if !switch && c.id != "mode" {
                 text(&mut s, c.x, c.y - 9.0, 9, "#899598", c.label, "start");
             }
         }
+        if !enabled { s.push_str("</g>"); }
     }
     // The lamp follows the return saturation stage's input drive, not output volume.
     let lamp = v.overload.clamp(0.0, 1.0);
     let _ = write!(
         s,
-        r##"<circle cx="506" cy="349" r="10" fill="#ed6c46" opacity="{}"/><circle cx="506" cy="349" r="6" fill="#43271e" stroke="#644235"/><circle cx="506" cy="349" r="5" fill="#ff794b" opacity="{}"/>"##,
+        r##"<circle cx="472" cy="349" r="10" fill="#ed6c46" opacity="{}"/><circle cx="472" cy="349" r="6" fill="#43271e" stroke="#644235"/><circle cx="472" cy="349" r="5" fill="#ff794b" opacity="{}"/>"##,
         lamp * 0.22,
         lamp
-    );
-    let super_mode = p.mode.value().round() == 1.0;
-    text(
-        &mut s,
-        189.0,
-        347.0,
-        15,
-        "#dce0d8",
-        if super_mode { "7 × SAW" } else { "2 × VCO" },
-        "start",
-    );
-    text(
-        &mut s,
-        189.0,
-        370.0,
-        9,
-        "#8c999b",
-        if super_mode {
-            "JP DETUNE CURVE"
-        } else {
-            "Model F CIRCUIT CORE"
-        },
-        "start",
-    );
-    text(
-        &mut s,
-        189.0,
-        393.0,
-        9,
-        "#8c999b",
-        if super_mode {
-            "8 NOTE POLYPHONY"
-        } else {
-            "ONE LADDER. BIG SOUND."
-        },
-        "start",
     );
     text(
         &mut s,
@@ -411,9 +406,10 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         709.0,
         9,
         "#899598",
-        "PLAY A–K  /  W E T Y U = BLACK KEYS",
+        "CLICK KEYS TO PLAY A–K",
         "start",
     );
+    text(&mut s, 30., 724., 8, "#899598", "W E T Y U = BLACK KEYS · ESC releases", "start");
     text(
         &mut s,
         30.0,
@@ -451,6 +447,11 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         "MULTI-STAGE ENV.",
         p.mseg_enable.value() > 0.5,
     );
+    if p.mseg_enable.value() <= 0.5 && p.mseg_amount.value().abs() > 0.0005 {
+        // AD açık ve amount etkin: logoyla aynı kırık beyaz. Multi hâlâ turuncudur.
+        let _ = write!(s, r##"<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="4" fill="#e5e7df" stroke="#e5e7df"/>"##);
+        text(&mut s, x+w/2., y+h/2.+4., 11, "#17191a", "MULTI-STAGE ENV.", "middle");
+    }
     if v.envelope {
         crate::mseg_ui::draw(&mut s, p, &v.env);
     }
@@ -641,7 +642,7 @@ mod tests {
         view.about_click(560.0, 330.0);
         assert!(view.about);
         let drawing = svg(&p, &view);
-        assert!(drawing.contains("FAZIL IRAK") && drawing.contains("VERSION 0.1.9"));
+        assert!(drawing.contains("FAZIL IRAK") && drawing.contains(concat!("VERSION ", env!("CARGO_PKG_VERSION"))));
         assert!(render(&drawing, W, H).is_ok());
         view.about_click(560.0, 514.0);
         assert!(!view.about);
@@ -806,4 +807,10 @@ mod tests {
         v.rows = crate::presets::factory();
         assert!(render(&svg(&p, &v), W * 2, H * 2).is_ok());
     }
+}
+
+// SuperSaw'ın tek bankı ve kapalı FM'nin derinlik kontrolü bilinçli olarak pasiftir.
+pub fn control_enabled(p: &ModelFParams, id: &str) -> bool {
+    if p.mode.value().round() == 1.0 && matches!(id, "osc2_waveform" | "osc2_octave" | "osc2_level" | "osc_sync" | "fm_on" | "fm_amount") { return false; }
+    id != "fm_amount" || p.fm_on.value() > 0.5
 }

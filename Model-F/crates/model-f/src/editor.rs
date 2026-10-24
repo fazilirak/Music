@@ -1,6 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
 // Son düzenleme: 24.10.2026
-// macOS: preset/envelope dosya diyalogları etkinleştirildi; DSP değişmedi.
 // Dosyanın görevi: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.
 use crate::{
     panel::{self, CONTROLS, H, View, W},
@@ -12,7 +11,7 @@ use baseview::{
     Event, EventStatus, MouseButton, MouseEvent, ScrollDelta, Size, Window, WindowEvent,
     WindowHandler, WindowOpenOptions, WindowScalePolicy,
 };
-use keyboard_types::{Key, KeyState, Modifiers};
+use keyboard_types::{Code, Key, KeyState, Modifiers};
 use nih_plug::prelude::*;
 use std::{
     any::Any,
@@ -348,10 +347,26 @@ impl PanelWindow {
     fn set_normalized(&self, i: usize, value: f32, once: bool) {
         let p = self.params.get(CONTROLS[i].id).expect("known control");
         let setter = ParamSetter::new(self.context.as_ref());
+        // Fazıl Irak, 24.10.2026: eski ortak ayarı ilk düzenlemede ayır; diğer düğmeler yerinden oynamaz.
+        let group: &[&str] = match CONTROLS[i].id {
+            "audio_attack" | "audio_decay" | "audio_sustain" => &["audio_attack", "audio_decay", "audio_sustain"],
+            "osc2_waveform" | "osc2_octave" => &["osc2_waveform", "osc2_octave"],
+            _ => &[],
+        };
+        for &id in group {
+            let param = self.params.get(id).unwrap();
+            if param.unmodulated_plain_value() < 0.0 {
+                let value = self.params.effective(id);
+                setter.begin_set_parameter(param); setter.set_parameter(param,value); setter.end_set_parameter(param);
+            }
+        }
         if once {
             setter.begin_set_parameter(p);
         }
-        setter.set_parameter_normalized(p, value.clamp(0.0, 1.0));
+        // -1 yalnızca eski dosya geçişi içindir; Audio ADS düğmesinin gerçek hareketi 0–10.
+        let value=value.clamp(0.0,1.0);
+        let normalized=if matches!(CONTROLS[i].id,"audio_attack" | "audio_decay" | "audio_sustain") {p.preview_normalized(value*10.0)} else {value};
+        setter.set_parameter_normalized(p, normalized);
         if once {
             setter.end_set_parameter(p);
         }
@@ -361,7 +376,8 @@ impl PanelWindow {
         let p = self.params.get(CONTROLS[i].id).expect("known control");
         let lo = p.preview_plain(0.0);
         let hi = p.preview_plain(1.0);
-        let value = p.unmodulated_plain_value();
+        let value = self.params.effective(CONTROLS[i].id);
+        let lo = if matches!(CONTROLS[i].id, "osc2_waveform" | "osc2_octave") { 0.0 } else { lo };
         let next = if value + delta > hi {
             lo
         } else if value + delta < lo {
@@ -475,8 +491,13 @@ impl PanelWindow {
             self.view.about_click(x, y);
             return;
         }
-        if !((687.0..730.0).contains(&y) && (420.0..996.0).contains(&x)) {
-            self.keyboard_active = false;
+        // Klavye bir kez etkinleştirilince knob'a tıklamak odağı host'a geri vermez.
+        if !right && panel::in_rect((28., 687., 198., 43.), x, y) {
+            self.keyboard_active = true;
+            window.set_wants_keys(true);
+            if self.focus.is_none() { self.focus = window::take_keys(window); }
+            self.view.status = "Computer keyboard on: A W S E D F T G Y H U J K. ESC releases.".into();
+            return;
         }
         if self.view.save {
             if (393.0..427.0).contains(&y) {
@@ -593,6 +614,7 @@ impl PanelWindow {
         if (687.0..730.0).contains(&y) {
             if (420.0..996.0).contains(&x) {
                 self.keyboard_active = true;
+                window.set_wants_keys(true);
                 self.mouse_note = Some(((x - 420.0) / 24.0) as u32);
                 self.publish_keys();
                 if self.focus.is_none() {
@@ -603,6 +625,7 @@ impl PanelWindow {
         }
         if let Some(i) = CONTROLS.iter().position(|c| c.hit(x, y)) {
             let c = &CONTROLS[i];
+            if !panel::control_enabled(&self.params, c.id) { return; }
             if c.id == "waveform" && self.params.mode.value().round() == 1.0 {
                 self.view.status = "SuperSaw always uses seven Model F saw oscillators.".into();
                 return;
@@ -616,7 +639,7 @@ impl PanelWindow {
             if c.knob && !right {
                 let p = self.params.get(c.id).expect("known control");
                 ParamSetter::new(self.context.as_ref()).begin_set_parameter(p);
-                self.drag = Some((i, y, p.unmodulated_normalized_value()));
+                self.drag = Some((i, y, self.params.display_normalized(c.id)));
             } else if !c.knob {
                 self.selector(i, if right { -1.0 } else { 1.0 });
             }
@@ -687,28 +710,14 @@ impl PanelWindow {
             }
             return true;
         }
-        let n = match &e.key {
-            Key::Character(s) => match s.to_lowercase().as_str() {
-                "a" => Some(0),
-                "w" => Some(1),
-                "s" => Some(2),
-                "e" => Some(3),
-                "d" => Some(4),
-                "f" => Some(5),
-                "t" => Some(6),
-                "g" => Some(7),
-                "y" => Some(8),
-                "h" => Some(9),
-                "u" => Some(10),
-                "j" => Some(11),
-                "k" => Some(12),
-                _ => None,
-            },
-            _ => None,
-        };
+        if e.key == Key::Escape && e.state == KeyState::Down {
+            self.release_keys(); self.keyboard_active = false; return true;
+        }
+        let n = if self.keyboard_active || self.view.envelope { piano_note(&e) } else { None };
         if let Some(n) = n {
             if e.state == KeyState::Down {
                 self.keyboard_notes |= 1 << n;
+                self.view.status = format!("Computer keyboard: {}{}  /  MIDI {}", ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"][(n%12) as usize], 3+n/12, 48+n);
             } else {
                 self.keyboard_notes &= !(1 << n);
             }
@@ -893,8 +902,8 @@ impl WindowHandler for PanelWindow {
                     }
                 } else if !self.view.save {
                     if let Some(i) = self.view.hover {
+                        if !panel::control_enabled(&self.params, CONTROLS[i].id) { return EventStatus::Captured; }
                         if CONTROLS[i].knob {
-                            let p = self.params.get(CONTROLS[i].id).expect("known control");
                             let step = if modifiers.contains(Modifiers::SHIFT) {
                                 0.002
                             } else {
@@ -902,7 +911,7 @@ impl WindowHandler for PanelWindow {
                             };
                             self.set_normalized(
                                 i,
-                                p.unmodulated_normalized_value() + amount * step,
+                                self.params.display_normalized(CONTROLS[i].id) + amount * step,
                                 true,
                             );
                         } else {
@@ -919,5 +928,35 @@ impl WindowHandler for PanelWindow {
             _ => return EventStatus::Ignored,
         }
         EventStatus::Captured
+    }
+}
+
+// Fiziksel scan-code, Türkçe Q/F karakter dönüşümü ve Shift/CapsLock'tan bağımsız nota tutar.
+// KeyUp sırasında modifier değişmiş olsa da nota kapanır. Metin kutuları bu yoldan önce işlenir.
+fn piano_note(e: &keyboard_types::KeyboardEvent) -> Option<u32> {
+    if e.state == KeyState::Down && e.modifiers.intersects(Modifiers::CONTROL | Modifiers::META | Modifiers::ALT) { return None; }
+    match e.code {
+        Code::KeyA=>Some(0), Code::KeyW=>Some(1), Code::KeyS=>Some(2), Code::KeyE=>Some(3),
+        Code::KeyD=>Some(4), Code::KeyF=>Some(5), Code::KeyT=>Some(6), Code::KeyG=>Some(7),
+        Code::KeyY=>Some(8), Code::KeyH=>Some(9), Code::KeyU=>Some(10), Code::KeyJ=>Some(11), Code::KeyK=>Some(12),
+        _ => if let Key::Character(ref key) = e.key {
+            ["a","w","s","e","d","f","t","g","y","h","u","j","k"].iter().position(|k| *k == key.to_lowercase()).map(|n| n as u32)
+        } else { None }
+    }
+}
+
+#[cfg(test)]
+mod keyboard_tests {
+    use super::*;
+    #[test]
+    fn physical_keys_survive_layout_shift_and_modifier_release() {
+        let mut e=keyboard_types::KeyboardEvent::default();
+        e.code=Code::KeyA; e.key=Key::Character("ş".into()); e.state=KeyState::Down;
+        assert_eq!(piano_note(&e),Some(0));
+        e.modifiers=Modifiers::SHIFT; assert_eq!(piano_note(&e),Some(0));
+        e.modifiers=Modifiers::CONTROL; assert_eq!(piano_note(&e),None);
+        e.state=KeyState::Up; assert_eq!(piano_note(&e),Some(0));
+        e.code=Code::Unidentified; e.modifiers=Modifiers::empty(); e.key=Key::Character("K".into());
+        assert_eq!(piano_note(&e),Some(12));
     }
 }

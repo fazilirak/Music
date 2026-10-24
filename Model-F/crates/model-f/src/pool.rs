@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Ses işçisi/görev sahipliği, iş alma-verme ve iş parçacığı koordinasyonu için yerel havuz durumunu yönetir.
 //! POLY's voices on worker threads of the plug-in's own (decisions.md R11): the host's audio
 //! thread and a few workers (up to four) share each run of samples' voices, every voice played whole by
@@ -60,7 +60,8 @@ const FAILED: u64 = 1 << 63;
 const CLOSED: u64 = 1 << 16;
 
 /// How long an idle worker spins for the next run before it parks.
-const SPIN: Duration = Duration::from_micros(200);
+// Fazıl Irak: kısa boşluklarda 50 µs dön; uzun beklemeyi park/unpark ile geçir.
+const SPIN: Duration = Duration::from_micros(50);
 
 /// A voice as the engine and the workers share it.
 pub type Shared<V = Playing> = Arc<Mutex<V>>;

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: preview geliştirme örneğinin çıktı/ölçüm girişidir; ürün audio callback’i değildir.
 use model_f::{
     panel::{self, View},
@@ -22,7 +22,7 @@ fn main() {
         ..View::default()
     };
     for name in [
-        "panel", "supersaw", "browser", "save", "about", "envelope", "overload",
+        "panel", "supersaw", "browser", "save", "about", "envelope", "overload", "ad-active", "multi-active", "envelope-multi",
     ] {
         let params = if name == "supersaw" {
             ModelFParams {
@@ -48,8 +48,10 @@ fn main() {
         } else {
             params
         };
+        let params=if name=="ad-active" {ModelFParams {mseg_amount: FloatParam::new("Amount",0.5,FloatRange::Linear{min:-1.0,max:1.0}),..params}} else {params};
+        let params=if name=="multi-active" || name=="envelope-multi" {ModelFParams {mseg_enable: FloatParam::new("Multi",1.0,FloatRange::Linear{min:0.0,max:1.0}),..params}} else {params};
         view.overload = if name == "overload" { 1.0 } else { 0.0 };
-        view.envelope = name == "envelope";
+        view.envelope = name == "envelope" || name == "envelope-multi";
         view.env.selected = 1;
         view.about = name == "about";
         view.browser = name == "browser";

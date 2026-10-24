@@ -1,0 +1,34 @@
+[
+  {
+    "case": "mono",
+    "ms": 139.6018,
+    "hash": "4d1d692d038d15ad",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "mono-filter",
+    "ms": 140.1268,
+    "hash": "d42fe93aad24d09d",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "poly",
+    "ms": 543.4762,
+    "hash": "66cc06876f204555",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "supersaw",
+    "ms": 688.1180999999999,
+    "hash": "dc996f386cb639d9",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  }
+]

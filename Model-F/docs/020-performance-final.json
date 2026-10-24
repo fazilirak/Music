@@ -1,0 +1,42 @@
+[
+  {
+    "case": "mono-idle",
+    "ms": 117.3144,
+    "hash": "6a90bb7c0813ad0d",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "mono",
+    "ms": 135.77100000000002,
+    "hash": "4d1d692d038d15ad",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "mono-filter",
+    "ms": 148.9193,
+    "hash": "d42fe93aad24d09d",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "poly",
+    "ms": 568.9983,
+    "hash": "66cc06876f204555",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  },
+  {
+    "case": "supersaw",
+    "ms": 721.8371,
+    "hash": "dc996f386cb639d9",
+    "sample_rate": 48000,
+    "samples": 96000,
+    "workers": 0
+  }
+]

@@ -84,6 +84,22 @@ jobs:
           Complete matching Source ZIPs include project sources, locked vendored dependencies, original font source collection, tests, build scripts and licences. Keep the corresponding source available when redistributing covered binaries.
           No JUCE rewrite is included. Plugin identities and DSP are preserved; Model F enables preset/envelope file dialogs on macOS.
           NOTES
+            if [ "$project" = "Model-F" ]; then
+              cat >> release-notes.md <<'MODEL'
+
+          Model F 0.2.1
+          - Separate OSC 1 / OSC 2 waveform, range and level controls; OSC 1 tune and OSC 2 detune.
+          - OSC 1 to OSC 2 hard sync; OSC 2 to OSC 1 exponential FM, including a muted modulator.
+          - Independent Filter Env and Audio Env. AD/Multi controls disable each other, with white/orange status.
+          - Rebuilt 160 factory sounds: 80 AD and 80 Multi. Pitch phrases, amplitude gates and filter sequences; hold a note to hear the complete phrase. MSEG duration is in seconds, not automatically tempo-synchronised.
+          - Compact panel bounds corrected; physical computer-key mapping and keyboard focus handling updated.
+          - Reduced repeated mono work and worker busy-waiting without lowering sound quality or voice limits. One local 18-case test measured about 11% less process CPU time with no deadline misses; results vary by system and preset.
+          - Existing parameter IDs and legacy 27/160/161-control presets/session loading retained. The user preset folder is preserved.
+
+          61 Windows product tests and 12 core tests passed locally. The release build hosts run their own automated tests. Live keyboard/audio-device and real-DAW behaviour still need hardware testing.
+          16 audition tracks and the combined demo are included under docs/audio-020. Generated demo WAVs are peak-normalised for listening.
+          MODEL
+            fi
             if gh release view "$tag" >/dev/null 2>&1; then
               echo "Existing $tag preserved; use a new version to replace a published build."
               continue

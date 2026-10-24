@@ -21,3 +21,12 @@ Testler; sekiz ayrı sesin duyulmasını, dokuzuncu notada ses seçimini, çalı
 ```powershell
 cargo run -p model-f --example supersaw-load --release -- docs/supersaw-load.json
 ```
+
+
+## 0.2.0 — 24.10.2026, Fazıl Irak
+
+Kararlı mono blokta kilit/gate/gain sorguları blok başına alınır; mixer katsayıları önbellekte tutulur. Yardımcı işçiler 200 yerine 50 µs aktif bekleyip park olur. Kalite, oversampling ve nota sınırları aynı kalır.
+
+Aynı 18 senaryolu yerel 48 kHz / dört işçi testinde süreç CPU süresi 10578.125 ms → 9421.875 ms oldu (yaklaşık %10.9 azalma). 128/256/512 sample ve 0/1/3/4/6/8 nota senaryolarında sıfır blok süresi aşımı gözlendi. Bunlar toplam işlemci yüzdesi değildir; süreç CPU zamanı ve ses bloğu bütçesidir. Tek karşılaştırma, yük/güç/sıcaklık değişkenlerine bağlıdır ve başka bilgisayarlarda aynı kazancı garanti etmez.
+
+Beş tek iş parçacıklı örnek senaryosu ölçüldü; dört eski referansın PCM hash'i birebir aynı kaldı. Ham raporlar 020-*.json dosyalarındadır. Bu senaryolarda wall-clock süre farkları küçük/değişkendir; kalite düşürülerek elde edilmiş bir hızlandırma yoktur. Multi/FM/Sync yeni ses tasarımları daha çok hesap gerektirebilir.

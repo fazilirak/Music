@@ -1,0 +1,42 @@
+{
+  "author": "Fazıl Irak",
+  "date": "2026-10-24",
+  "version": "0.2.0",
+  "factory_sha256": "4113cb28770f0dd156352c86d8d300cdca936ab7bf4ac8dff613a00d0484af47",
+  "preset_count": 160,
+  "ad": 80,
+  "multi": 80,
+  "rendered_presets": 160,
+  "raw_peak_range": [
+    0.013164250180125237,
+    0.24344795942306519
+  ],
+  "demo_tracks": [
+    "Sub Foundation",
+    "Tunnel Walker",
+    "Velvet Wire",
+    "Velvet Maze",
+    "Round Felt",
+    "Felt Clockwork",
+    "Quiet Horizon",
+    "Wide Observatory",
+    "Monolith Pulse",
+    "Steam Valve",
+    "Steam Cipher",
+    "Whistle Signal",
+    "Transit Polymeter",
+    "Copper Labyrinth",
+    "Pulse Counterpoint",
+    "Shark Ratchets"
+  ],
+  "plugin_tests_passed": 61,
+  "core_tests_passed": 12,
+  "core_tests_ignored": 11,
+  "reference_pcm_hashes_unchanged": true,
+  "process_cpu_before_ms": 10578.125,
+  "process_cpu_after_ms": 9421.875,
+  "observed_process_cpu_reduction_percent": 10.930576070901033,
+  "load_cases": 18,
+  "load_deadline_misses": 0,
+  "live_audio_device_check": "Not confirmed on this machine; offline engine and CLAP host audio checks passed"
+}

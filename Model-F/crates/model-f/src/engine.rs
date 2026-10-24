@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Nota/voice, MIDI, çalışma kipleri, arpej, MSEG, filtre ve ses render akışını koordine eder.
 //! The plug-in's audio engine, apart from any plug-in format: the circuit model's voice in its
 //! real-time (Potato) quality, played by MIDI notes, pitch bend and the modulation wheel, with
@@ -82,6 +82,8 @@ const ENTROPY_KNOBS: usize = 6;
 pub struct Controls {
     pub mseg: crate::mseg::Config,
     pub ring: bool,
+    pub sync: bool,
+    pub fm: f64,
     pub transpose: f64,
     pub interval: f64,
     pub supersaw: Option<f64>,
@@ -111,6 +113,8 @@ impl Default for Controls {
         Controls {
             mseg: crate::mseg::Config::default(),
             ring: false,
+            sync: false,
+            fm: 0.0,
             transpose: 0.0,
             interval: 0.0,
             supersaw: None,
@@ -1049,6 +1053,27 @@ impl Engine {
     pub fn render(&mut self, ext: &[f32], left: &mut [f32], right: &mut [f32]) {
         let len = left.len().min(right.len());
         let at = |i: usize| ext.get(i).copied().filter(|x| x.is_finite()).unwrap_or(0.0);
+        // Fazıl Irak: kararlı mono blokta Arc/Mutex, held taraması ve panel sorgusu örnek başına tekrarlanmaz.
+        // Başlangıç/Power/Panic geçişleri eski örnek yolunu korur. Ses matematiğinin sırası değişmez.
+        if !self.controls.poly && self.over.is_none() && !self.slots.is_empty()
+            && self.controls.power && !self.hush && self.fade == 1.0 {
+            self.settle();
+            let play = self.slots[0].play.clone();
+            let Ok(mut p) = play.try_lock() else { left[..len].fill(0.0); right[..len].fill(0.0); return; };
+            self.bring_up(0, &mut p);
+            let rate = self.voice_rate(); let mix = self.mix();
+            let gate = self.held.iter().any(|&h| h);
+            let (gl, gr) = p.character.gains(mix.spread);
+            for i in 0..len {
+                if p.broken { left[i]=0.0; right[i]=0.0; continue; }
+                let mut j = jacks(&mut p.character, f64::from(at(i)), rate, &mix);
+                let envelope_gain = p.envelope.route(gate, &mut j);
+                let y = p.voice.tick_jacks(&j) * envelope_gain;
+                if !y.is_finite() { p.broken = true; left[i]=0.0; right[i]=0.0; continue; }
+                (left[i],right[i]) = self.faded(y * f64::from(gl), y * f64::from(gr));
+            }
+            return;
+        }
         if !self.controls.poly || self.over.is_some() || self.slots.is_empty() {
             for i in 0..len {
                 (left[i], right[i]) = self.tick_stereo(at(i));
@@ -1386,6 +1411,8 @@ impl Engine {
             v.voice.panel = pv;
         }
         v.voice.ring = self.controls.ring;
+        v.voice.sync = self.controls.sync;
+        v.voice.fm = self.controls.fm;
         v.voice.supersaw = self.controls.supersaw;
         v.voice.pitch_offsets = [
             self.controls.transpose * 100.0,

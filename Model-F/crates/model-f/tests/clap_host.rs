@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: clap_host regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.
 //! CLAP lifecycle, MIDI timing, automation and session-state integration tests.
 #![allow(unsafe_code, clippy::unwrap_used)]
@@ -437,10 +437,22 @@ fn clap_automation_and_full_session_roundtrip() {
         In::Param(0, "mseg_p9_x", 0.63),
         In::Param(0, "mseg_n10_out", 0.8),
         In::Param(0, "mseg_n10_wave", 0.5),
+        In::Param(0, "osc2_waveform", 0.75),
+        In::Param(0, "osc2_octave", 0.75),
+        In::Param(0, "osc1_level", 0.75),
+        In::Param(0, "osc2_level", 0.75),
+        In::Param(0, "osc1_tune", 0.75),
+        In::Param(0, "audio_attack", 0.75),
+        In::Param(0, "audio_decay", 0.75),
+        In::Param(0, "audio_sustain", 0.75),
+        In::Param(0, "osc_sync", 0.75),
+        In::Param(0, "fm_on", 0.75),
+        In::Param(0, "fm_amount", 0.75),
+
     ]);
     let saved = a.save();
     let json = json_of(&saved);
-    assert_eq!(json["params"].as_object().unwrap().len(), 161);
+    assert_eq!(json["params"].as_object().unwrap().len(), 172);
     let b = Instance::new();
     assert!(b.load(&saved));
     for id in [
@@ -453,6 +465,17 @@ fn clap_automation_and_full_session_roundtrip() {
         "mseg_p9_x",
         "mseg_n10_out",
         "mseg_n10_wave",
+        "osc2_waveform",
+        "osc2_octave",
+        "osc1_level",
+        "osc2_level",
+        "osc1_tune",
+        "audio_attack",
+        "audio_decay",
+        "audio_sustain",
+        "osc_sync",
+        "fm_on",
+        "fm_amount",
     ] {
         assert!((a.value(id) - b.value(id)).abs() < 0.001, "{id}");
     }
@@ -491,7 +514,7 @@ fn legacy_sessions_reset_new_modulation_even_in_an_existing_instance() {
     json["params"]
         .as_object_mut()
         .unwrap()
-        .retain(|id, _| !id.starts_with("mseg_") && id != "overload");
+        .retain(|id, _| !id.starts_with("mseg_") && id != "overload" && !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount"));
     let payload = serde_json::to_vec(&json).unwrap();
     let mut old = (payload.len() as u64).to_le_bytes().to_vec();
     old.extend(payload);
@@ -500,10 +523,14 @@ fn legacy_sessions_reset_new_modulation_even_in_an_existing_instance() {
         In::Param(0, "mseg_target", 1.),
         In::Param(0, "mseg_amount", 1.),
         In::Param(0, "overload", 0.8),
+        In::Param(0,"fm_on",1.0),
+        In::Param(0,"osc_sync",1.0),
+        In::Param(0,"audio_attack",0.9),
     ]);
     assert!(p.value("mseg_enable") > 0.5);
     assert!(p.load(&old));
     assert_eq!(p.value("overload"), 0.);
+    assert_eq!(p.value("fm_on"),0.0);assert_eq!(p.value("osc_sync"),0.0);assert_eq!(p.value("audio_attack"),0.0);
     assert_eq!(p.value("mseg_enable"), 0.);
     assert_eq!(p.value("mseg_target"), 0.);
 }

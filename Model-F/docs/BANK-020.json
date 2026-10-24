@@ -1,0 +1,1122 @@
+[
+  {
+    "name": "Sub Foundation",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · round triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Iron Undertow",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · saw and sub · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Furnace",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · opposed pulses · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Locked Piston",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · hard-sync saw · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "FM Root Cell",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · FM triangle carrier · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Ring Cavern",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · ring product · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Seven Tonnes",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · seven-oscillator unison · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Acid Foundry",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · narrow pulse pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Dust Engine",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · noise and reed · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Fifth Gear",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · fifth saw pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Shark Bite",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · shark and triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Resonant Drum",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · resonant noise · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Hybrid Pressure",
+    "category": "Bass",
+    "description": "0.2.0 original bank · AD · sync/FM hybrid · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Tunnel Walker",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · round triangle · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Broken Staircase",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · saw and sub · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Valve Ratchet",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · opposed pulses · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sync Hammer",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · hard-sync saw · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Metal Footwork",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · FM triangle carrier · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Ring Conveyor",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · ring product · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Seven Accents",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · seven-oscillator unison · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Acid Labyrinth",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · narrow pulse pair · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Gravel Steps",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · noise and reed · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Fifth Runner",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · fifth saw pair · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Shark Circuit",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · shark and triangle · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sub Siren",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · resonant noise · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Hybrid Braid",
+    "category": "Bass",
+    "description": "0.2.0 original bank · Multi · sync/FM hybrid · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Velvet Wire",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · round triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Copper Anthem",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · saw and sub · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Needle",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · opposed pulses · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Sync Vanguard",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · hard-sync saw · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "FM Glassline",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · FM triangle carrier · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Ring Beacon",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · ring product · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Solar Unison",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · seven-oscillator unison · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Acid Spear",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · narrow pulse pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Rust Signal",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · noise and reed · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Fifth Horizon",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · fifth saw pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Shark Razor",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · shark and triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Whistle Chamber",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · resonant noise · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Hybrid Voltage",
+    "category": "Lead",
+    "description": "0.2.0 original bank · AD · sync/FM hybrid · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Velvet Maze",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · round triangle · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Copper Orbit",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · saw and sub · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Pulse Telegraph",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · opposed pulses · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sync Helix",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · hard-sync saw · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Glass Stairway",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · FM triangle carrier · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Ring Carousel",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · ring product · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Solar Current",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · seven-oscillator unison · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Acid Switchback",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · narrow pulse pair · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Rust Transmission",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · noise and reed · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Fifth Spiral",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · fifth saw pair · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Shark Relay",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · shark and triangle · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Whistle Cipher",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · resonant noise · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Voltage Cascade",
+    "category": "Lead",
+    "description": "0.2.0 original bank · Multi · sync/FM hybrid · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Round Felt",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · round triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Copper Pluck",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · saw and sub · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Reed Cabinet",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · opposed pulses · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Sync Clavinet",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · hard-sync saw · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "FM Glass Bell",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · FM triangle carrier · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Ring Mallet",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · ring product · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Unison Chime",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · seven-oscillator unison · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Marimba",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · narrow pulse pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Dust Piano",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · noise and reed · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Fifth Organ",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · fifth saw pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Shark Harpsichord",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · shark and triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Tuned Air",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · resonant noise · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Hybrid Celesta",
+    "category": "Key",
+    "description": "0.2.0 original bank · AD · sync/FM hybrid · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Felt Clockwork",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · round triangle · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Copper Pinwheel",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · saw and sub · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Reed Automat",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · opposed pulses · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sync Music Box",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · hard-sync saw · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Glass Constellation",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · FM triangle carrier · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Ring Steps",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · ring product · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Chime Rain",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · seven-oscillator unison · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Pulse Lattice",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · narrow pulse pair · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Dust Mosaic",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · noise and reed · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Organ Clock",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · fifth saw pair · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Shark Filigree",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · shark and triangle · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Air Machine",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · resonant noise · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Celesta Labyrinth",
+    "category": "Key",
+    "description": "0.2.0 original bank · Multi · sync/FM hybrid · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Quiet Horizon",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · round triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Copper Veil",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · saw and sub · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Cathedral",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · opposed pulses · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Synced Aurora",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · hard-sync saw · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "FM Icefield",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · FM triangle carrier · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Ring Nebula",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · ring product · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Seven Clouds II",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · seven-oscillator unison · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Ocean",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · narrow pulse pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Dust Atmosphere",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · noise and reed · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Fifth Sanctuary",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · fifth saw pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Shark Silk",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · shark and triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Resonant Mist",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · resonant noise · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Hybrid Monolith",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · sync/FM hybrid · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Wide Observatory",
+    "category": "Pad",
+    "description": "0.2.0 original bank · AD · wide poly duo · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Horizon Tides",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · round triangle · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Copper Canopy",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · saw and sub · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Cathedral Gates",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · opposed pulses · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Aurora Motion",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · hard-sync saw · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Icefield Currents",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · FM triangle carrier · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Nebula Compass",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · ring product · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Seven Mirrors",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · seven-oscillator unison · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Ocean Drift",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · narrow pulse pair · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Dust Mandala",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · noise and reed · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sanctuary Choir",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · fifth saw pair · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Silk Polyrhythm",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · shark and triangle · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Mist Topography",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · resonant noise · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Monolith Pulse",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · sync/FM hybrid · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Observatory Bloom",
+    "category": "Pad",
+    "description": "0.2.0 original bank · Multi · wide poly duo · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sub Drop Vessel",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · round triangle · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Copper Impact",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · saw and sub · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Alarm",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · opposed pulses · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Sync Laser",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · hard-sync saw · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "FM Fracture",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · FM triangle carrier · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Ring Satellite",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · ring product · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Seven Swarm",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · seven-oscillator unison · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Acid Launch",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · narrow pulse pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Dust Collision",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · noise and reed · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Fifth Warning",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · fifth saw pair · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Shark Burst",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · shark and triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Steam Valve",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · resonant noise · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Hybrid Anomaly",
+    "category": "FX",
+    "description": "0.2.0 original bank · AD · sync/FM hybrid · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Vessel Countdown",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · round triangle · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Copper Fractal",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · saw and sub · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Alarm Polyrhythm",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · opposed pulses · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Laser Matrix",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · hard-sync saw · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Fracture Codes",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · FM triangle carrier · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Satellite Relay",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · ring product · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Swarm Geometry",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · seven-oscillator unison · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Acid Coordinates",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · narrow pulse pair · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Collision Chain",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · noise and reed · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Warning Grid",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · fifth saw pair · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Burst Network",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · shark and triangle · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Steam Cipher",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · resonant noise · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Anomaly Engine",
+    "category": "FX",
+    "description": "0.2.0 original bank · Multi · sync/FM hybrid · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Sub Transit",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · round triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Copper Relay",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · saw and sub · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Pulse Sprint",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · opposed pulses · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Sync Runner",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · hard-sync saw · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "FM Bell Train",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · FM triangle carrier · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Ring Conveyor II",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · ring product · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Seven Locomotive",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · seven-oscillator unison · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Acid Framework",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · narrow pulse pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Dust Metronome",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · noise and reed · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Fifth Rails",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · fifth saw pair · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Shark Engine",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · shark and triangle · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Whistle Signal",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · resonant noise · independent Filter/Audio contours · AD transient pitch contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 2
+  },
+  {
+    "name": "Hybrid Switchyard",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · sync/FM hybrid · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Wide Interchange",
+    "category": "Arp",
+    "description": "0.2.0 original bank · AD · wide poly duo · independent Filter/Audio contours · AD secondary filter contour. Hold a note or chord to hear the full phrase.",
+    "envelope": "AD",
+    "target": 1
+  },
+  {
+    "name": "Transit Polymeter",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · round triangle · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Copper Labyrinth",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · saw and sub · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Pulse Counterpoint",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · opposed pulses · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Sync Braids",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · hard-sync saw · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Bell Constellation",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · FM triangle carrier · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Ring Euclid",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · ring product · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Seven Stations",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · seven-oscillator unison · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Acid Triplets",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · narrow pulse pair · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Dust Clockwork",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · noise and reed · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Fifth Crossings",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · fifth saw pair · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  },
+  {
+    "name": "Shark Ratchets",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · shark and triangle · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Whistle Semaphore",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · resonant noise · independent Filter/Audio contours · eight-step contour sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 1
+  },
+  {
+    "name": "Switchyard Cipher",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · sync/FM hybrid · independent Filter/Audio contours · eight-step pitch phrase. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 2
+  },
+  {
+    "name": "Interchange Weave",
+    "category": "Arp",
+    "description": "0.2.0 original bank · Multi · wide poly duo · independent Filter/Audio contours · accented rhythmic amplitude sequence. Hold a note or chord to hear the full phrase.",
+    "envelope": "Multi",
+    "target": 3
+  }
+]

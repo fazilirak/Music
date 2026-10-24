@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: render-bank geliştirme örneğinin çıktı/ölçüm girişidir; ürün audio callback’i değildir.
 //! Offline audition of the actual plug-in, not a second DSP implementation.
 #![allow(unsafe_code)]
@@ -63,7 +63,8 @@ fn main() {
     let mut demo = Vec::new();
     let start = Instant::now();
     let bank = presets::factory();
-    for (index, preset) in bank.iter().enumerate() {
+    let from=std::env::args().nth(2).and_then(|s|s.parse::<usize>().ok()).unwrap_or(0);
+    for (index, preset) in bank.iter().enumerate().skip(from) {
         preset.validate().unwrap();
         let mut plugin = ModelF::default();
         let params = plugin.parameters();
@@ -108,7 +109,7 @@ fn main() {
         let mut peak = 0f32;
         let mut energy = 0f64;
         let mut count = 0usize;
-        let selected = [
+        let selected = index % 13 == 0 || matches!(index,146|147|148) || [
             "Super Weight",
             "Seven Suns",
             "Copper Tines",
@@ -121,7 +122,7 @@ fn main() {
         ]
         .contains(&preset.name.as_str());
         let mut rendered = Vec::new();
-        let blocks = if preset.category == "Pad" { 938 } else { 563 };
+        let blocks = if preset.category == "Pad" { 1875 } else { 938 };
         let sound_start = Instant::now();
         for block in 0..blocks {
             if block == blocks - 94 {
@@ -184,7 +185,8 @@ fn main() {
     .unwrap();
     wav(&format!("{dir}/Model-F-demo.wav"), &demo, rate as u32);
     println!(
-        "All 160 presets produced finite audio. {:.1}s elapsed.",
+        "All {} tested presets produced finite audio. {:.1}s elapsed.",
+        report.len(),
         start.elapsed().as_secs_f64()
     );
 }

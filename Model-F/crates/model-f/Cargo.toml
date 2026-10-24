@@ -1,10 +1,10 @@
 # Türkçe bakım açıklamaları: Fazıl Irak
-# Son düzenleme: 22.10.2026
+# Son düzenleme: 24.10.2026
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 [package]
 name = "model-f"
 description = "Model F: a compact circuit-modelled synthesizer"
-version = "0.1.9"
+version = "0.2.1"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -50,8 +50,6 @@ resvg = { version = "0.45", default-features = false, features = ["text", "raste
 
 [target.'cfg(target_os = "windows")'.dependencies]
 winapi = { version = "0.3.9", features = ["winuser", "windef"] }
-
-# Fazıl Irak | 24.10.2026: ses motoru değiştirilmeden macOS dosya pencereleri açılır.
 [target.'cfg(any(target_os = "windows", target_os = "macos"))'.dependencies]
 rfd = { version = "0.15", default-features = false }
 
@@ -68,3 +66,7 @@ workspace = true
 [[example]]
 name = "overload-audition"
 path = "examples/overload-audition.rs"
+
+[[example]]
+name = 'performance-check'
+path = 'examples/performance-check.rs'

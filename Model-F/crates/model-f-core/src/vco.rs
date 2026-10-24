@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Devre osilatörünün faz, dalga, oversampling, reset ve gecikme akışını yönetir.
 //! One oscillator of board 1 in real time: the exponential converter ([`crate::expo`]),
 //! the sawtooth core with its reset, and the wave shapers (docs/circuit/board1.md).
@@ -207,6 +207,8 @@ pub struct Vco {
     v: f64,
     hold_left: f64,
     reset_in: Option<f64>,
+    // Fazıl Irak: hard-sync olayı alt örnek içinde doğal reset ile aynı BLEP yolundan geçer.
+    sync_in: Option<f64>,
     rise_in: Option<f64>,
     fall_in: Option<f64>,
     rect_is_low: bool,
@@ -268,6 +270,7 @@ impl Vco {
             v: CoreParams::default().v_top0,
             hold_left: 0.0,
             reset_in: None,
+            sync_in: None,
             rise_in: None,
             fall_in: None,
             rect_is_low: false,
@@ -331,6 +334,10 @@ impl Vco {
     /// The latest ramp reset's time in output samples since [`Vco::reset`] (exact, before
     /// the output's latency), and how many resets there have been.
     // last_reset alt adımı: Devre osilatörünün faz, dalga, oversampling, reset ve gecikme akışını yönetir.
+    // Fazıl Irak: tarihsel reset zamanı bir alt-örnek geriden gelir; Sync için bu ofseti çöz.
+    pub fn last_reset_fraction(&self) -> f64 {
+        (self.last_reset - self.ticks.saturating_sub(1) as f64 + 1.0/self.oversample as f64).clamp(0.0,1.0)
+    }
     pub fn last_reset(&self) -> (f64, u64) {
         (self.last_reset, self.resets)
     }
@@ -348,6 +355,7 @@ impl Vco {
         self.v = self.core.v_top0;
         self.hold_left = 0.0;
         self.reset_in = None;
+        self.sync_in = None;
         self.rise_in = None;
         self.fall_in = None;
         self.rect_is_low = false;
@@ -447,6 +455,9 @@ impl Vco {
     /// slope `b` per volt (the Early effect). [`Vco::tick`] computes them from the inputs.
     // tick_current alt adımı: Devre osilatörünün faz, dalga, oversampling, reset ve gecikme akışını yönetir.
     // Gövdedeki başlıca çağrılar: VcoOut::default → self.step → self.saw.push → self.tri.push. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
+    pub fn synchronize_at(&mut self, fraction: f64) {
+        if fraction.is_finite() { self.sync_in=Some(fraction.clamp(0.0,1.0) * self.dt * self.oversample as f64); }
+    }
     pub fn tick_current(&mut self, i0: f64, b: f64, width: f64) -> VcoOut {
         let a = i0 - self.core.i_leak;
         let c = self.core.c1 + self.core.c_par;
@@ -514,6 +525,7 @@ impl Vco {
             if holding {
                 take(self.hold_left, 1);
             }
+            if let Some(sync) = self.sync_in { take(sync.max(0.0), 7); }
             if let Some(r) = self.reset_in {
                 take(r, 2);
             }
@@ -539,7 +551,7 @@ impl Vco {
                 self.v = advance(self.v, next);
             }
             self.hold_left = (self.hold_left - next).max(0.0);
-            for x in [&mut self.reset_in, &mut self.rise_in, &mut self.fall_in]
+            for x in [&mut self.reset_in, &mut self.rise_in, &mut self.fall_in, &mut self.sync_in]
                 .into_iter()
                 .flatten()
             {
@@ -549,6 +561,11 @@ impl Vco {
             let frac = (t / dt).clamp(1e-9, 1.0);
             let sh = self.shaper;
             match which {
+                7 => {
+                    self.sync_in=None;
+                    self.reset_in=None;
+                    self.do_reset(a,b,c,frac,rise_buf);
+                }
                 2 => {
                     self.reset_in = None;
                     self.do_reset(a, b, c, frac, rise_buf);
@@ -606,5 +623,19 @@ impl Vco {
         self.last_reset =
             self.ticks as f64 + (self.sub as f64 + frac - 1.0) / self.oversample as f64;
         self.resets += 1;
+    }
+}
+
+#[cfg(test)]
+mod sync_tests {
+    use super::*;
+    #[test]
+    fn forced_reset_keeps_subsample_position_and_finite_blep_output() {
+        for os in [1,2,4] {
+            let mut v=Vco::new(48000.0,os);
+            v.synchronize_at(0.375);v.tick_current(1e-5,1e-8,0.5);
+            let (time,count)=v.last_reset();assert_eq!(count,1);assert!((v.last_reset_fraction()-0.375).abs()<1e-7,"{time}");
+            for _ in 0..100 {let o=v.tick_current(1e-5,1e-8,0.5);assert!(o.saw.is_finite() && o.tri.is_finite() && o.rect.is_finite());}
+        }
     }
 }

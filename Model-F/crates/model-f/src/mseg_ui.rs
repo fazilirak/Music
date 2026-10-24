@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Envelope editörünün nokta/tutamak hit-test, ızgara, snap ve düzenleme işlemlerini yönetir.
 //! Model F's envelope overlay. Hit testing and drawing share the same coordinates.
 use crate::{
@@ -16,6 +16,14 @@ use std::{
 pub const OPEN: (f64, f64, f64, f64) = (236., 687., 170., 43.);
 pub const PLOT: (f64, f64, f64, f64) = (56., 244., 1008., 240.);
 pub const RECT: (f64, f64, f64, f64) = (28., 132., 1064., 542.);
+// AD/Multi ortak alanları Amount, Target ve mod düğmesidir; geri kalanlar karşılıklı kilitlenir.
+pub fn enabled(p: &ModelFParams, id: &str) -> bool {
+    match id {
+        "mseg_enable" | "mseg_amount" | "mseg_target" => true,
+        "mseg_attack" | "mseg_decay" => p.mseg_enable.value() <= 0.5,
+        _ => p.mseg_enable.value() > 0.5,
+    }
+}
 pub const CONTROLS: &[Control] = &[
     Control {
         id: "mseg_duration",
@@ -254,7 +262,7 @@ impl State {
         if x > 1000. && y < 177. {
             return (vec![], Command::Close);
         }
-        if (144.0..174.0).contains(&y) {
+        if p.mseg_enable.value() > 0.5 && (144.0..174.0).contains(&y) {
             if (812.0..882.0).contains(&x) {
                 return (vec![], Command::Save);
             }
@@ -269,6 +277,7 @@ impl State {
         let c = Config::from_params(p);
         let shape = c.shape();
         if panel::in_rect(PLOT, x, y) {
+            if !c.enabled { return (vec![], Command::None); }
             if mods.contains(Modifiers::CONTROL) && !right {
                 self.drag = Some(Drag::Brush(None));
                 return (self.motion(p, x, y, mods), Command::None);
@@ -325,7 +334,7 @@ impl State {
             }
             return (vec![], Command::None);
         }
-        if (190.0..220.0).contains(&y) && (536.0..726.0).contains(&x) {
+        if c.enabled && (190.0..220.0).contains(&y) && (536.0..726.0).contains(&x) {
             let id = node_id(self.selected, "wave");
             let v = value(p, &id);
             return (
@@ -333,7 +342,7 @@ impl State {
                 Command::None,
             );
         }
-        if (x - 870.).hypot(y - 558.) < 40. {
+        if c.enabled && (x - 870.).hypot(y - 558.) < 40. {
             let id = node_id(self.selected, "depth");
             self.drag = Some(Drag::Knob(
                 id.clone(),
@@ -343,7 +352,7 @@ impl State {
             return (vec![], Command::None);
         }
         for ctl in CONTROLS {
-            if ctl.hit(x, y) {
+            if enabled(p, ctl.id) && ctl.hit(x, y) {
                 let param = p.get(ctl.id).unwrap();
                 if mods.intersects(Modifiers::CONTROL | Modifiers::ALT) {
                     return (
@@ -376,6 +385,11 @@ impl State {
     // motion alt adımı: Envelope editörünün nokta/tutamak hit-test, ızgara, snap ve düzenleme işlemlerini yönetir.
     // Gövdedeki başlıca çağrılar: self.drag.clone → Drag::Node → let → xy. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn motion(&mut self, p: &ModelFParams, x: f64, y: f64, mods: Modifiers) -> Edits {
+        let allowed = match &self.drag {
+            Some(Drag::Knob(id, ..)) => enabled(p, id),
+            Some(_) => p.mseg_enable.value() > 0.5, _ => true,
+        };
+        if !allowed { self.drag = None; return vec![]; }
         match self.drag.clone() {
             Some(Drag::Node(id)) => {
                 let (a, b) = xy(x, y);
@@ -443,6 +457,7 @@ impl State {
     // key: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
     // Gövdedeki başlıca çağrılar: point_id → Config::from_params → shape → iter. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn key(&self, p: &ModelFParams, key: &Key, mods: Modifiers) -> Edits {
+        if p.mseg_enable.value() <= 0.5 { return vec![]; }
         if matches!(key, Key::Delete | Key::Backspace) && self.selected > 0 && self.selected <= CAP
         {
             return vec![(point_id(self.selected - 1, "on"), 0.)];
@@ -550,10 +565,15 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
         r##"<rect x="28" y="132" width="1064" height="542" rx="8" fill="#1b2123" stroke="#596265"/>"##
     );
     panel::text(s, 50., 166., 16, "#e2e5de", "MULTI-STAGE ENVELOPE", "start");
+    if !c.enabled { s.push_str(r##"<g opacity="0.25">"##); }
     panel::button(s, 812., 144., 70., 30., "SAVE", false);
     panel::button(s, 894., 144., 70., 30., "LOAD", false);
+    if !c.enabled { s.push_str("</g>"); }
     panel::text(s, 1068., 165., 11, "#ed6c46", "CLOSE ×", "end");
+    let _ = write!(s, r##"<rect x="430" y="492" width="236" height="124" rx="6" fill="#171c1e" stroke="{}"/>"##, if c.enabled { "#343d40" } else { "#e5e7df" });
+    panel::text(s, 440., 505., 8, "#a8b0ae", "AD ENVELOPE", "start");
     for ctl in CONTROLS {
+        if !enabled(p, ctl.id) { s.push_str(r##"<g opacity="0.25">"##); }
         let param = p.get(ctl.id).unwrap();
         let v = param.value();
         let label = match ctl.id {
@@ -598,7 +618,9 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
                 matches!(ctl.id, "mseg_enable" | "mseg_snap") && v > 0.5,
             );
         }
+        if !enabled(p, ctl.id) { s.push_str("</g>"); }
     }
+    if !c.enabled { s.push_str(r##"<g opacity="0.25">"##); }
     let depth = value(p, &node_id(state.selected, "depth"));
     knob(
         s,
@@ -686,6 +708,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
             }
         }
     }
+    if !c.enabled { s.push_str("</g>"); }
     panel::text(
         s,
         56.,
@@ -746,6 +769,7 @@ pub fn wheel(
     } else {
         return vec![];
     };
+    if !enabled(p, id) { return vec![]; }
     let param = p.get(id).unwrap();
     let step = if mods.contains(Modifiers::SHIFT) {
         0.002
@@ -785,6 +809,7 @@ mod tests {
             48000.,
             ProcessMode::Offline,
         );
+        assert!(ctx.automate(p.mseg_enable.as_ptr(), 1.0));
         let mut state = State::default();
         let (x, y) = pixel(0.55, 0.45);
         let (e, _) = state.down(&p, x, y, false, Modifiers::empty());

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Bir notanın osilatör/filtre/VCA/contour/noise devrelerini tek örnek akışında birleştirir.
 //! The instrument, first voice (v0): the parts derived and tested so far, wired as the
 //! instrument wires them (docs/circuit/voice.md).
@@ -336,6 +336,31 @@ fn channel(v: f64, r_src: f64, volume: f64, on: bool, r_series: f64) -> (f64, f6
     (v_w * g, g)
 }
 
+// Fazıl Irak: pot/r_src sabitken Norton katsayılarını örnek başına bölmeyle yeniden kurma.
+// İşlem sırası v*down/total*g olarak aynıdır; ses çekirdeği ve örnekleme kalitesi değiştirilmez.
+#[derive(Debug, Clone, Copy)]
+struct ChannelMemo(Option<([u64; 3], f64, f64, f64)>);
+impl ChannelMemo {
+    const NEW: Self = Self(None);
+    fn sample(&mut self, v: f64, r_src: f64, volume: f64, on: bool, series: f64) -> (f64, f64) {
+        if !on { return (0.0, 1.0 / series); }
+        let key = [r_src.to_bits(), volume.to_bits(), series.to_bits()];
+        let (down,total,g) = match self.0 {
+            Some((old,down,total,g)) if old == key => (down,total,g),
+            _ => {
+                let p = volume.clamp(0.0,1.0);
+                let (up,down) = (r_src + 25e3 * (1.0-p), (25e3*p).max(1e-3));
+                let total = up+down;
+                let rw = up*down/total;
+                let g = 1.0/(rw+series);
+                self.0=Some((key,down,total,g));
+                (down,total,g)
+            }
+        };
+        (v*down/total*g,g)
+    }
+}
+
 /// An oscillator's selected output as a Thevenin source (board 1's output dividers:
 /// sawtooth R34/R33, triangle R28/R23 behind Q1, rectangle R22 against R13 as Q12
 /// switches), the shark tooth through R030 and R031. For oscillator 3, `rev` is its reverse
@@ -425,6 +450,8 @@ pub struct Voice {
     /// Model F extension: multiply oscillators 1 and 2 before the ladder filter.
     /// Disabled by default, preserving the original Model F signal path.
     pub ring: bool,
+    pub sync: bool,
+    pub fm: f64,
     pub pitch_offsets: [f64; 3],
     pub supersaw: Option<f64>,
     keys: Keys,
@@ -487,6 +514,8 @@ pub struct Contacts {
 #[derive(Debug, Clone, Copy, PartialEq, Default)]
 pub struct Jacks {
     pub ring: bool,
+    pub sync: bool,
+    pub fm: f64,
     pub supersaw: Option<f64>,
     pub ext: f64,
     pub osc: Option<f64>,
@@ -644,6 +673,12 @@ pub struct FrontPart {
     last_i: [f64; 3],
     /// The MODULATION wheel's law.
     wheel: Memo<f64>,
+    // Fazıl Irak: OSC 2'nin önceki örneği OSC 1'e audio-rate exponential FM verir.
+    // Tek örnek nedensel gecikme geri beslemeyi cebirsel döngüye dönüştürmez.
+    fm_sample: f64,
+    fm_depth: f64,
+    fm_step: f64,
+    mixer: [ChannelMemo; 4],
 }
 
 /// What the front gives the back each sample: the mixer bus's Norton current (A) and
@@ -818,6 +853,10 @@ impl Voice {
                     last_osc3: 0.0,
                     last_i: [0.0; 3],
                     wheel: Memo::NEW,
+                    fm_sample: 0.0,
+                    fm_depth: 0.0,
+                    fm_step: 1.0 - libm::exp(-1.0 / (rate * 0.005)),
+                    mixer: [ChannelMemo::NEW; 4],
                 },
                 back: BackPart {
                     vcf: {
@@ -835,6 +874,8 @@ impl Voice {
                 last: (0.0, 0.0, 0.0),
             },
             ring: false,
+            sync: false,
+            fm: 0.0,
             pitch_offsets: [0.0; 3],
             supersaw: None,
             control_quality: None,
@@ -1051,6 +1092,8 @@ impl Voice {
     pub fn tick_jacks(&mut self, j: &Jacks) -> f64 {
         let j = &Jacks {
             ring: j.ring || self.ring,
+            sync: j.sync || self.sync,
+            fm: self.fm.max(j.fm),
             supersaw: self.supersaw.or(j.supersaw),
             detune: std::array::from_fn(|n| j.detune[n] + self.pitch_offsets[n]),
             ..*j
@@ -1509,6 +1552,10 @@ impl FrontPart {
         let mut g_bus = 1.0 / 33e3;
         let (_, mod_load_b) = Modulation::source_loads(p.mod_mix);
         let mut osc3_node = 0.0;
+        let master_resets = self.vcos[0].last_reset().1;
+        let target_fm = j.fm.clamp(0.0, 1.0);
+        self.fm_depth += (target_fm-self.fm_depth)*self.fm_step;
+        if self.fm_depth.abs() < 1e-12 { self.fm_depth=0.0; }
         let mut ring_carrier = 0.0;
         for n in 0..3 {
             let op = p.osc[n];
@@ -1516,7 +1563,7 @@ impl FrontPart {
             // channel's 33K then only loads the bus) and, for oscillator 3, not feeding a
             // modulation switch that is on. It resumes where it stopped (a free-running
             // oscillator's phase is arbitrary; performance).
-            if !(op.on || (n == 2 && (p.osc_mod || p.filter_mod))) {
+            if !(op.on || (n == 2 && (p.osc_mod || p.filter_mod)) || (n == 0 && j.sync) || (n == 1 && (j.sync || self.fm_depth > 0.0))) {
                 g_bus += 1.0 / 33e3;
                 continue;
             }
@@ -1536,9 +1583,18 @@ impl FrontPart {
                 // its range tap (R43), which the octave trimmer set to an octave a step.
                 d.inputs[5].v += j.detune[n] / 1200.0 * tuning.octave_step;
             }
+            // FM 2→1: OSC 2 mixer seviyesi sıfırken de modülatör çalışır; maksimum ±2 oktav.
+            if n == 0 && self.fm_depth > 0.0 {
+                d.inputs[5].v += (self.fm_sample / 1.2).clamp(-1.0,1.0) * self.fm_depth * 2.0 * tuning.octave_step;
+            }
             let i_in = d.apply(&mut self.vcos[n].expo);
             self.vcos[n].set_oversample(oversampling(p.quality).0);
             self.vcos[n].table_on = p.quality == Quality::Potato;
+            // Master OSC 1'in bu örnekteki reset konumunu slave OSC 2'nin BLEP olayına taşı.
+            if n == 1 && j.sync && self.vcos[0].last_reset().1 != master_resets {
+                let fraction = self.vcos[0].last_reset_fraction();
+                self.vcos[1].synchronize_at(fraction);
+            }
             let o = self.vcos[n].tick(i_in, op.waveform.width());
             self.last_i[n] = self.vcos[n].timing_current();
             // Oscillator 3's reverse sawtooth stage runs while its sawtooth or reverse
@@ -1554,6 +1610,7 @@ impl FrontPart {
                 None
             };
             let (mut v_src, r_src) = waveform_source(op.waveform, &o, rev.as_ref());
+            if n == 1 { self.fm_sample = v_src; }
             if n == 0
                 && let Some(detune) = j.supersaw
             {
@@ -1575,7 +1632,7 @@ impl FrontPart {
                     g_bus += 1.0 / 33e3;
                     continue;
                 }
-                let (i, g) = channel(ring_carrier * v_src / 1.2, r_src, op.volume, op.on, 33e3);
+                let (i, g) = self.mixer[n].sample(ring_carrier * v_src / 1.2, r_src, op.volume, op.on, 33e3);
                 i_bus += i;
                 g_bus += g;
                 continue;
@@ -1585,9 +1642,9 @@ impl FrontPart {
                 let z_ch = channel_load(op.volume, 33e3);
                 let z = z_ch * mod_load_b / (z_ch + mod_load_b);
                 osc3_node = v_src * z / (r_src + z);
-                channel(osc3_node, 0.0, op.volume, op.on, 33e3)
+                self.mixer[n].sample(osc3_node, 0.0, op.volume, op.on, 33e3)
             } else {
-                channel(v_src, r_src, op.volume, op.on, 33e3)
+                self.mixer[n].sample(v_src, r_src, op.volume, op.on, 33e3)
             };
             i_bus += i;
             g_bus += g;
@@ -1595,7 +1652,7 @@ impl FrontPart {
         laps.lap(crate::prof::Part::Oscillators);
         self.last_osc3 = osc3_node;
         // The noise's channel (R48 11K).
-        let (i, g) = channel(
+        let (i, g) = self.mixer[3].sample(
             noise_to_mixer.0,
             noise_to_mixer.1,
             p.noise_volume,
@@ -1674,5 +1731,21 @@ impl BackPart {
         let out = self.vca.signal(y, d);
         laps.lap(crate::prof::Part::Vca);
         (y, out / 5.0)
+    }
+}
+
+#[cfg(test)]
+mod mixer_cache_tests {
+    use super::*;
+    #[test]
+    fn cached_mixer_is_bit_identical_and_tracks_switches() {
+        let mut memo=ChannelMemo::NEW;
+        for source in [0.0,2245.5555555555557,33000.0] {
+            for level in [0.0,0.17,0.76,1.0] {
+                for on in [false,true] { for v in [-4.1,-0.2,0.0,0.8,4.2] {
+                    assert_eq!(memo.sample(v,source,level,on,33000.0),channel(v,source,level,on,33000.0));
+                }}
+            }
+        }
     }
 }
