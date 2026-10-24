@@ -31,7 +31,7 @@ def sha(path):
 
 
 def archive_zip(source, destination, prefix):
-    with zipfile.ZipFile(destination, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as output:
+    with zipfile.ZipFile(destination, 'w', zipfile.ZIP_DEFLATED, compresslevel=6, strict_timestamps=False) as output:
         for path in sorted(source.rglob('*')):
             if path.is_file():
                 output.write(path, (Path(prefix) / path.relative_to(source)).as_posix())
@@ -160,6 +160,15 @@ def main():
     info = {'project': args.project, 'version': version, 'commit': commit, 'platform': platform,
             'licence': 'GPL-3.0-or-later with preserved third-party terms', 'font_source_sha256': FONT_SHA}
     (source / 'BUILD-REVISION.json').write_text(json.dumps(info, indent=2) + '\n', encoding='utf-8')
+    # Tam kaynak paketi yerel cache'e işaret etmemeli: çevrimdışı çöz ve bütün manifest yollarını denetle.
+    closure = json.loads(run(cargo + ['metadata', '--locked', '--offline', '--format-version', '1'], source, capture=True))
+    for dependency in closure['packages']:
+        path = Path(dependency['manifest_path']).resolve()
+        if not path.is_relative_to(source.resolve()):
+            raise RuntimeError('Source dependency escapes the distribution: ' + str(path))
+    (source / 'OFFLINE-SOURCE-VALIDATION.json').write_text(
+        json.dumps({'all_manifests_inside_source': True, 'packages': len(closure['packages'])}, indent=2) + '\n', encoding='utf-8')
+
     source_zip = dist / f'{args.project}-{version}-{platform}-Source.zip'
     archive_zip(source, source_zip, f'{args.project}-{version}-Source')
     (package / 'SOURCE.txt').write_text(
