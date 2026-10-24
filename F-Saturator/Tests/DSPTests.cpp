@@ -419,6 +419,19 @@ int main(int argc, char **argv)
         juce::AudioProcessor::copyXmlToBinary(*legacyXml, legacyData);
         p.setStateInformation(legacyData.getData(), (int)legacyData.getSize());
         if (p.settings().character != 0 || p.settings().harmonics != 0 || p.settings().drift != 0)
+        {
+            std::cerr << "Legacy neutral values: " << p.settings().character << ", "
+                      << p.settings().harmonics << ", " << p.settings().drift << std::endl;
+            return verificationFailure(25, __LINE__);
+        }
+        // Platformun normalize yuvarlamasından kalan çok küçük merkez artığı DSP'ye geçmez;
+        // fakat gerçek ilk 0.001 adımı korunmalıdır. Testten sonra fabrika preseti state'i eşler.
+        p.state.getRawParameterValue("character")->store(4.75e-8f);
+        p.state.getRawParameterValue("harmonics")->store(-4.75e-8f);
+        if (p.settings().character != 0 || p.settings().harmonics != 0)
+            return verificationFailure(25, __LINE__);
+        p.state.getRawParameterValue("character")->store(.001f);
+        if (p.settings().character == 0)
             return verificationFailure(25, __LINE__);
         p.setCurrentProgram(2);
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());

@@ -71,9 +71,17 @@ Settings Processor::settings() const
     s.mix = get("mix");
     s.output = get("output");
     s.width = get("width");
-    s.character = get("character");
-    s.harmonics = get("harmonics");
-    s.drift = get("drift");
+    // Fazıl Irak: macOS/Clang FMA, -1..1 parametresinin normalize dönüşünde
+    // sıfıra çok yakın bir artık bırakabilir. 0.001 adımın yarısından küçük
+    // merkez farkını tam sıfıra sabitle; eski presetlerin nötr ses yolu kesin korunsun.
+    const auto neutral = [&](const char *id)
+    {
+        const float value = get(id);
+        return std::abs(value) < .0005f ? 0.0f : value;
+    };
+    s.character = neutral("character");
+    s.harmonics = neutral("harmonics");
+    s.drift = neutral("drift");
     s.heat = get("heat") > .5f;
     s.autoGain = get("auto_gain") > .5f;
     s.bypass = get("bypass") > .5f;
