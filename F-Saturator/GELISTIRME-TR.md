@@ -1,7 +1,7 @@
-<!-- Fazıl Irak | Son düzenleme: 22.10.2026 -->
+<!-- Fazıl Irak | Son düzenleme: 24.10.2026 -->
 # F Saturator — Türkçe geliştirme rehberi
 
-Bu rehber 0.2.0 kaynakları içindir. Türkçe yorumlar kodun akışını açıklar; ürünün arayüz dili ve ses davranışı değiştirilmemiştir. İlk denemelerinizde özgün preset ve DAW projelerinizin kopyasını kullanın.
+Bu rehber 0.4.0 kaynakları içindir. Türkçe yorumlar kodun akışını açıklar. Yeni Character / Harmonic Balance / Analog Drift grubu için docs/CHARACTER_TR.md belgesine bakın; üç yeni kontrol sıfırken eski ses korunur. İlk denemelerinizde özgün preset ve DAW projelerinizin kopyasını kullanın.
 
 ## Nerede değişiklik yapmalıyım?
 

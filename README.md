@@ -4,7 +4,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 
 | Project | Windows | macOS | Source |
 | --- | --- | --- | --- |
-| [F Saturator](F-Saturator/README.md) | [0.3.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) | [Universal 0.3.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) | [Browse](F-Saturator) |
+| [F Saturator](F-Saturator/README.md) | [0.4.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.4.0) | [Universal 0.4.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.4.0) | [Browse](F-Saturator) |
 | [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.2) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
 | [Model F](Model-F/README.md) | [0.1.9](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.1.9) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.1.9) | [Browse / licences](Model-F) |
 | [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Browse / licences](F-EQ) |
@@ -13,7 +13,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 
 **Add colour. Shape the character.** Free saturation/distortion for Windows x64 and macOS Universal. VST3 and standalone, plus AU on macOS.
 
-Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface.
+Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface. Version 0.4.0 adds a fourth concentric group: Character (Warm–Sizzle), Harmonic Balance (Even–Odd) and subtle Analog Drift.
 
 ![F Saturator](F-Saturator/doc/f-saturator.png)
 

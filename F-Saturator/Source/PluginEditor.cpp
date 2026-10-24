@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Arayüz kurulumu, yerleşim, meter/transfer çizimi, model/preset eylemleri ve dosya penceresi.
 #include "PluginEditor.h"
 #include "FSaturatorFonts.h"
@@ -50,17 +50,21 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
 {
     setLookAndFeel(&theme);
     setComponentID("irak-editor");
-    // Halka sırası içten dışa: Colour=Tone/LowCut/HighCut; Saturation=Drive/Bias/Dynamics; Output=Mix/Output/Stereo.
+    // Fazıl Irak: Character grubu Saturation ile Output arasındadır.
+    // Her grubun sırası içten dışadır; eski parametre kimlikleri değişmez.
     groups[0] = std::make_unique<ConcentricKnob>(p.state, "COLOUR",
                                                  std::array<const char *, 3>{"tone", "lowcut", "highcut"},
                                                  std::array<const char *, 3>{"Tone", "Low Cut", "High Cut"});
     groups[1] = std::make_unique<ConcentricKnob>(p.state, "SATURATION",
                                                  std::array<const char *, 3>{"drive", "bias", "dynamics"},
                                                  std::array<const char *, 3>{"Drive", "Bias", "Dynamics"});
-    groups[2] = std::make_unique<ConcentricKnob>(p.state, "OUTPUT",
+    groups[2] = std::make_unique<ConcentricKnob>(p.state, "CHARACTER",
+                                                 std::array<const char *, 3>{"character", "harmonics", "drift"},
+                                                 std::array<const char *, 3>{"Character", "Harmonic Balance", "Analog Drift"});
+    groups[3] = std::make_unique<ConcentricKnob>(p.state, "OUTPUT",
                                                  std::array<const char *, 3>{"mix", "output", "width"},
                                                  std::array<const char *, 3>{"Mix", "Output", "Stereo"});
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < 4; ++i)
     {
         groups[(size_t)i]->setComponentID("saturator-group-" + juce::String(i));
         addAndMakeVisible(*groups[(size_t)i]);
@@ -171,7 +175,7 @@ void Editor::curve(juce::Graphics &g, juce::Rectangle<float> r)
     juce::Path path;
     for (int i = 0; i <= 256; ++i)
     {
-        const float x = i / 128.0f - 1, y = s.bypass ? x : SaturationDSP::preview(x * drive, s.model, s.bias);
+        const float x = i / 128.0f - 1, y = s.bypass ? x : SaturationDSP::preview(x * drive, s.model, s.bias, s.character, s.harmonics);
         const auto p =
             juce::Point<float>(r.getX() + r.getWidth() * i / 256,
                                r.getCentreY() - juce::jlimit(-1.0f, 1.0f, y) * r.getHeight() * .46f);
@@ -231,10 +235,10 @@ void Editor::paint(juce::Graphics &g)
     g.setColour(panel);
     g.fillRoundedRectangle(22, (float)divider + 20, (float)getWidth() - 44,
                            (float)getHeight() - divider - (dockLeft ? 38 : 90), 8);
-    const float third = (getWidth() - 56) / 3.0f;
+    const float column = (getWidth() - 56) / 4.0f;
     g.setColour(juce::Colour(0xff30383a));
-    for (int i = 1; i < 3; ++i)
-        g.drawVerticalLine((int)(28 + third * i), (float)divider + 36,
+    for (int i = 1; i < 4; ++i)
+        g.drawVerticalLine((int)(28 + column * i), (float)divider + 36,
                            (float)getHeight() - (dockLeft ? 110 : 158));
     if (!dockLeft)
     {
@@ -256,8 +260,8 @@ void Editor::resized()
     bypass.setBounds(checkX, (int)top + 73, 140, 27);
     inputMeter = {right - 98, top + 17, 29, 76};
     outputMeter = {right - 41, top + 17, 29, 76};
-    const int divider = dockLeft ? 210 : 166, groupWidth = (getWidth() - 56) / 3;
-    for (int i = 0; i < 3; ++i)
+    const int divider = dockLeft ? 210 : 166, groupWidth = (getWidth() - 56) / 4;
+    for (int i = 0; i < 4; ++i)
         groups[(size_t)i]->setBounds(28 + i * groupWidth, divider + 26, groupWidth, 320);
     const int bankWidth = juce::jmin(650, getWidth() - 100), buttonWidth = (bankWidth - 24) / 5,
               bankY = dockLeft ? getHeight() - 60 : getHeight() - 112;

@@ -1,8 +1,8 @@
 # F-Saturator: geliştirme ve hata müdahale rehberi
 
-**Fazıl Irak · Düzenleme: 23.10.2026 · Kaynak sürümü: 0.3.0**
+**Fazıl Irak · Düzenleme: 24.10.2026 · Kaynak sürümü: 0.4.0**
 
-0.3.0 Windows ve macOS Universal derleme/paketleme akışı GitHub Actions içinde tanımlıdır. Eski 0.2.0 sürümü ayrı etiket olarak korunur. Türkçe not ve biçim düzenlemesinde DSP katsayıları, parametre kimlikleri ve C++ token dizisi korunmuştur. CMake/paketleme yolları taşınabilir hale getirildi; tam JUCE/font kaynakları eşleşen kaynak ZIP’lerinde bulunur. Üçüncü taraf JUCE/font kaynaklarına geliştirici adınız eklenmedi; özgün lisanslar korunur.
+0.4.0 Windows ve macOS Universal derleme/paketleme akışı GitHub Actions içinde tanımlıdır. Eski 0.2.0 sürümü ayrı etiket olarak korunur. 0.4.0 üç yeni kontrol ekler; eski parametre kimlikleri ve indeksleri korunur. Nötr yeni kontrollerle önceki Windows ses örnekleri bit düzeyinde aynıdır. Yeni sinyal şekillendirme ve kayıt göçü için CHARACTER_TR.md belgesine bakın. CMake/paketleme yolları taşınabilir hale getirildi; tam JUCE/font kaynakları eşleşen kaynak ZIP’lerinde bulunur. Üçüncü taraf JUCE/font kaynaklarına geliştirici adınız eklenmedi; özgün lisanslar korunur.
 
 ## Başlamak ve sinyal yolunu izlemek
 
@@ -71,3 +71,7 @@ Paket üretimi için önce başarılı build/test, sonra `scripts/package.ps1`. 
 ## Mac ve sürüm paketleri
 
 Mac Universal için [MACOS_TR.md](MACOS_TR.md) rehberini izleyin. Ortak paketleyici testsiz veya değiştirilmiş bağımlılıklarla paket üretmez; ikili/kaynak sürümünü, kaynak dosya özetlerini ve platform arşivlerini doğrular. CI hata çıktısında mevcut kontrolün kodu ve kaynak satırı gösterilir; testi geçirmek için eşik yükseltilmez.
+
+## 0.4.0 ek test kodları
+
+17: Dört sütun ve 12 halka, dar/normal/geniş pencere geometrisi. 18: Beş modelde Even/Odd ikinci harmonik farkı. 19: Warm/Sizzle üçüncü harmonik farkı. 20: Drift etkinliği ve blok boyundan bağımsız sonuç. 21: Yeni uçların alias azaltımı ve çoklu örnekleme hızında kararlılığı. 22: Mono/stereo eşitliği ve sessizlik kuyruğu. 23: Değişmeyen DAW parametre indeksleri. 24: Yeni state round-trip. 25: Eski kayıtta eksik parametrelerin nötrleşmesi.

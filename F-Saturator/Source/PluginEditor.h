@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: GUI kontrollerinin, attachment’ların, tema, timer ve asenkron dosya seçicisinin sahipliği.
 #pragma once
 #include "PluginProcessor.h"
@@ -34,9 +34,9 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
     } theme;
     // Processor editörden daha uzun yaşar; kontroller onun APVTS parametrelerine bağlanır.
     Processor &processor;
-    // Beş karakter seçicisi ve üç ayrı, üç halkalı kontrol grubu.
+    // Beş karakter seçicisi ve dört ayrı, üç halkalı kontrol grubu.
     std::array<juce::TextButton, 5> characters;
-    std::array<std::unique_ptr<ConcentricKnob>, 3> groups;
+    std::array<std::unique_ptr<ConcentricKnob>, 4> groups;
     juce::ToggleButton heat{"HEAT +20"}, autoGain{"AUTO GAIN"}, bypass{"BYPASS"};
     // Attachment nesneleri kontrollerin ömrü boyunca yaşamalıdır; otomasyonla GUI’yi eşler.
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> heatAttachment, autoAttachment,

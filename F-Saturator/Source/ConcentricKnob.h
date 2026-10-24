@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Üç halkanın geometrisi, görsel/fiziksel dönüşüm, metin girişi, drag/wheel ve host gesture akışı.
 #pragma once
 #include <juce_audio_processors/juce_audio_processors.h>
@@ -71,6 +71,15 @@ class ConcentricKnob final : public juce::Component, public juce::SettableToolti
         const float v = plain[(size_t)i];
         if (id == "drive" || id == "output")
             return juce::String(v, 1) + " dB";
+        // Character ve Harmonic Balance iki kutupludur; sıfır eski sesin nötr merkezidir.
+        // Sayısal etiket, yüzdeyle birlikte uçların hangi yönde olduğunu da gösterir.
+        if (id == "character" || id == "harmonics")
+        {
+            if (std::abs(v) < .0005f)
+                return "0% (" + juce::String(id == "character" ? "Warm / Sizzle" : "Even / Odd") + ")";
+            const auto side = id == "character" ? (v < 0 ? "Warm" : "Sizzle") : (v < 0 ? "Even" : "Odd");
+            return juce::String(juce::roundToInt(v * 100)) + "% " + side;
+        }
         if (frequency(i))
             return v >= 1000 ? juce::String(v / 1000, 2) + " kHz" : juce::String(juce::roundToInt(v)) + " Hz";
         return juce::String(juce::roundToInt(v * 100)) + "%";
@@ -117,18 +126,24 @@ class ConcentricKnob final : public juce::Component, public juce::SettableToolti
             addAndMakeVisible(label);
             label.setComponentID("irak-" + ids[n]);
             label.setJustificationType(juce::Justification::centred);
-            label.setFont(juce::FontOptions(13));
+            label.setFont(juce::FontOptions(ids[n] == "harmonics" ? 11.5f : 13.0f));
             label.setColour(juce::Label::textColourId, i == 2   ? orange()
                                                        : i == 1 ? juce::Colour(0xffe5e7df)
                                                                 : juce::Colour(0xffc3cbc7));
             label.setEditable(false, true, false);
-            label.setTooltip("Double-click to enter " + names[n]);
+            label.setTooltip("Double-click to enter " + names[n] +
+                             (ids[n] == "character" ? ". -100% Warm, 0% neutral, +100% Sizzle."
+                              : ids[n] == "harmonics" ? ". -100% Even, 0% original balance, +100% Odd."
+                              : ids[n] == "drift" ? ". 0% off; slow drive/bias variation, not pitch modulation." : "."));
             // Sayısal düzenleyici açılırken yalnız biçimlendirilmiş değeri seçer; başlığı girişten çıkarır.
             label.onEditorShow = [this, i]
             {
                 if (auto *editor = readouts[(size_t)i].getCurrentTextEditor())
                 {
-                    editor->setText(formatted(i), false);
+                    // Uç açıklamaları düzenleme metnine taşınmaz; kullanıcı yalnız imzalı yüzdeyi değiştirir.
+                    const auto id = ids[(size_t)i];
+                    editor->setText(id == "character" || id == "harmonics"
+                                        ? juce::String(plain[(size_t)i] * 100, 1) + "%" : formatted(i), false);
                     editor->selectAll();
                 }
             };

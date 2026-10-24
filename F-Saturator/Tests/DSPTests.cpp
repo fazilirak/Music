@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Sentetik sinyallerle DSP, gecikme, preset, UI hedefleme, kararlılık ve çıktı üretimi regresyonları.
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -270,6 +270,105 @@ int main(int argc, char **argv)
                     return verificationFailure(2, __LINE__);
             report += "Dry latency: " + juce::String(dsp.getLatency()) + " samples.\n\n";
         }
+        // Fazıl Irak: yeni kontrollerin gerçekten duyulan motoru değiştirdiğini spektral ölç.
+        // Even/Odd, statik katların eğimini/asimetrisini şekillendirir; tüm müziği harmoniklere ayırmaz.
+        for (int model = 0; model < 5; ++model)
+        {
+            irak::Settings even;
+            even.model = model;
+            even.drive = 18;
+            even.dynamics = 0;
+            even.autoGain = false;
+            even.harmonics = -1;
+            auto odd = even;
+            odd.harmonics = 1;
+            const double evenH2 = harmonicDb(render(even, 3, true, 48000, 171), 2);
+            const double oddH2 = harmonicDb(render(odd, 3, true, 48000, 171), 2);
+            std::cout << "Balance model " << model << ": Even H2=" << evenH2 << ", Odd H2=" << oddH2 << std::endl;
+            if (evenH2 < oddH2 + 15)
+                return verificationFailure(18, __LINE__);
+        }
+        {
+            irak::Settings warm;
+            warm.drive = 12;
+            warm.dynamics = 0;
+            warm.autoGain = false;
+            warm.character = -1;
+            auto sizzle = warm;
+            sizzle.character = 1;
+            const double warmH3 = harmonicDb(render(warm, 3, true, 48000, 171), 3);
+            const double sizzleH3 = harmonicDb(render(sizzle, 3, true, 48000, 171), 3);
+            std::cout << "Character H3: Warm=" << warmH3 << ", Sizzle=" << sizzleH3 << std::endl;
+            if (sizzleH3 < warmH3 + 3)
+                return verificationFailure(19, __LINE__);
+            // Drift açıkken de blok bölünmesi ve reset sonrasında deterministik sonuç gerekir.
+            sizzle.drift = 1;
+            auto a = render(sizzle, 3, true, 48000, 423, .2f, 256);
+            auto b = render(sizzle, 3, true, 48000, 423, .2f, 127);
+            auto noDrift = sizzle;
+            noDrift.drift = 0;
+            auto clean = render(noDrift, 3, true, 48000, 423, .2f, 256);
+            double driftDifference = 0;
+            for (size_t i = 0; i < a.size(); ++i)
+            {
+                if (std::abs(a[i] - b[i]) > 1e-6f)
+                    return verificationFailure(20, __LINE__);
+                driftDifference += std::abs(a[i] - clean[i]);
+            }
+            if (driftDifference / a.size() < 1e-5)
+                return verificationFailure(20, __LINE__);
+        }
+        // Yeni uç ayarlar da 8×/ADAA alias azaltımını ve örnekleme hızlarında kararlılığı korumalı.
+        for (int model = 0; model < 5; ++model)
+            for (float balance : {-1.0f, 1.0f})
+            {
+                irak::Settings s;
+                s.model = model;
+                s.drive = 24;
+                s.character = 1;
+                s.harmonics = balance;
+                s.drift = 1;
+                s.dynamics = 0;
+                s.autoGain = false;
+                // Drift koherent sinüste yan bantlar üretir; alias testinde yalnız drift kapatılır.
+                s.drift = 0;
+                const double high = aliasDb(render(s), 1711), raw = aliasDb(render(s, 0, false), 1711);
+                if (high > -40 || high > raw - 12)
+                    return verificationFailure(21, __LINE__);
+                s.drift = 1;
+                s.heat = true;
+                s.drive = 36;
+                s.bias = 1;
+                for (double rate : {44100.0, 96000.0, 192000.0})
+                    render(s, 3, true, rate, 777, .95f);
+            }
+        // Drift girişsiz sinyal yaratmamalı; mono kanal stereo ile aynı soldan sonucu vermeli.
+        {
+            irak::SaturationDSP stereo, mono;
+            stereo.prepare(48000, 256);
+            mono.prepare(48000, 256);
+            irak::Settings s;
+            s.character = 1;
+            s.harmonics = -1;
+            s.drift = 1;
+            s.heat = true;
+            juce::AudioBuffer<float> st(2, 256), mo(1, 256);
+            for (int block = 0; block < 500; ++block)
+            {
+                for (int i = 0; i < 256; ++i)
+                {
+                    const float x = block < 100 ? .2f * std::sin((block * 256 + i) * .12f) : 0;
+                    st.setSample(0, i, x); st.setSample(1, i, x); mo.setSample(0, i, x);
+                }
+                stereo.process(st, s); mono.process(mo, s);
+                for (int i = 0; i < 256; ++i)
+                    if (std::abs(st.getSample(0, i) - mo.getSample(0, i)) > 1e-6f ||
+                        std::abs(st.getSample(0, i) - st.getSample(1, i)) > 1e-6f)
+                        return verificationFailure(22, __LINE__);
+            }
+            if (st.getMagnitude(0, 0, 256) > 1e-5f)
+                return verificationFailure(22, __LINE__);
+        }
         // Persistent state, all factory programs and a rendered editor.
         // Presetlerin dosyaya yazılıp okunmasını ve DAW durumundan geri çağrılmasını kontrol eder (kod 3/11/12).
         irak::Processor p;
@@ -294,12 +393,40 @@ int main(int argc, char **argv)
             if (p.getCurrentProgram() != i)
                 return verificationFailure(3, __LINE__);
         }
+        // Yeni parametreler eski otomasyon indekslerinden sonra gelmelidir.
+        const char *ordered[]{"model", "drive", "tone", "lowcut", "highcut", "bias", "dynamics", "mix", "output", "width", "heat", "auto_gain", "bypass", "character", "harmonics", "drift"};
+        if (p.getParameters().size() != 16) return verificationFailure(23, __LINE__);
+        for (int i = 0; i < 16; ++i)
+            if (p.getParameters()[i] != p.state.getParameter(ordered[i]))
+                return verificationFailure(23, __LINE__);
+        const auto set = [&](const char *id, float v) {
+            auto *parameter = p.state.getParameter(id);
+            parameter->setValueNotifyingHost(parameter->convertTo0to1(v));
+        };
+        set("character", -.6f); set("harmonics", .7f); set("drift", .8f);
+        juce::MemoryBlock currentState;
+        p.getStateInformation(currentState);
+        p.setCurrentProgram(0);
+        p.setStateInformation(currentState.getData(), (int)currentState.getSize());
+        if (std::abs(p.settings().character + .6f) > .001f || std::abs(p.settings().harmonics - .7f) > .001f || std::abs(p.settings().drift - .8f) > .001f)
+            return verificationFailure(24, __LINE__);
+        auto legacy = p.state.copyState();
+        for (const char *id : {"character", "harmonics", "drift"})
+            legacy.removeChild(legacy.getChildWithProperty("id", id), nullptr);
+        auto legacyXml = legacy.createXml();
+        legacyXml->setAttribute("version", 1);
+        juce::MemoryBlock legacyData;
+        juce::AudioProcessor::copyXmlToBinary(*legacyXml, legacyData);
+        p.setStateInformation(legacyData.getData(), (int)legacyData.getSize());
+        if (p.settings().character != 0 || p.settings().harmonics != 0 || p.settings().drift != 0)
+            return verificationFailure(25, __LINE__);
         p.setCurrentProgram(2);
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
-        // Dokuz halkada hedef seçimini ve tekerleğin yalnız doğru parametreyi değiştirdiğini sınar (kod 13–15).
-        const char *groupedIds[3][3] = {
-            {"tone", "lowcut", "highcut"}, {"drive", "bias", "dynamics"}, {"mix", "output", "width"}};
-        for (int group = 0; group < 3; ++group)
+        // On iki halkada hedef seçimini ve tekerleğin yalnız doğru parametreyi değiştirdiğini sınar (kod 13–15).
+        const char *groupedIds[4][3] = {
+            {"tone", "lowcut", "highcut"}, {"drive", "bias", "dynamics"},
+            {"character", "harmonics", "drift"}, {"mix", "output", "width"}};
+        for (int group = 0; group < 4; ++group)
         {
             auto *control =
                 dynamic_cast<irak::ConcentricKnob *>(byId(*editor, "saturator-group-" + juce::String(group)));
@@ -308,7 +435,8 @@ int main(int argc, char **argv)
             const float x = control->getWidth() * .5f;
             for (int part = 0; part < 3; ++part)
             {
-                const juce::Point<float> pos{x + (part == 0 ? 20.0f : part == 1 ? 65.0f : 90.0f), 124};
+                const float radius = juce::jmin(94.0f, control->getWidth() * .34f);
+                const juce::Point<float> pos{x + radius * (part == 0 ? .3f : part == 1 ? .67f : .95f), 124};
                 if (control->partAt(pos) != part)
                     return verificationFailure(14, __LINE__);
                 std::array<float, 3> before;
@@ -336,6 +464,24 @@ int main(int argc, char **argv)
                 }
             }
         }
+        // Fazıl Irak: dar, varsayılan ve geniş yerleşimde dört grup da ayrık ve pencere içinde kalmalı.
+        for (const auto dimensions : {juce::Point<int>{960, 610}, {1040, 640}, {1440, 900}})
+        {
+            editor->setSize(dimensions.x, dimensions.y);
+            for (int group = 0; group < 4; ++group)
+            {
+                auto *control = dynamic_cast<irak::ConcentricKnob *>(byId(*editor, "saturator-group-" + juce::String(group)));
+                if (!control || !editor->getLocalBounds().contains(control->getBounds()))
+                    return verificationFailure(17, __LINE__);
+                if (group > 0 && control->getBounds().intersects(byId(*editor, "saturator-group-" + juce::String(group - 1))->getBounds()))
+                    return verificationFailure(17, __LINE__);
+                const float radius = juce::jmin(94.0f, control->getWidth() * .34f);
+                for (int part = 0; part < 3; ++part)
+                    if (control->partAt({control->getWidth() * .5f + radius * (part == 0 ? .3f : part == 1 ? .67f : .95f), 124}) != part)
+                        return verificationFailure(17, __LINE__);
+            }
+        }
+        editor->setSize(1040, 640);
         // Tape Glue presetini iki pencere boyunda çizerek gerçek dağıtım görsellerini üretir.
         p.setCurrentProgram(2);
         juce::Timer::callPendingTimersSynchronously();

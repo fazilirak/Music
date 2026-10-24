@@ -121,7 +121,9 @@ jobs:
           cat > notes.md <<'NOTES'
           Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone; minimum macOS 11.0.
 
-          Updated Turkish source comments and maintenance guides. Existing parameter IDs, plug-in IDs, preset format and DSP behaviour are preserved.
+          New fourth concentric group between Saturation and Output: Character (Warm–Sizzle), Harmonic Balance (Even–Odd), Analog Drift. Independent automation, preset/state persistence and Turkish/English control guides.
+          Existing plug-in IDs and the original thirteen parameter IDs/indices are preserved. New controls default to neutral in old sessions and factory presets; new state saves use version 2 of the same container. Neutral Windows renders match the previous reference audio byte for byte.
+          Warm softens and Sizzle sharpens the nonlinear stages. Even increases asymmetry; Odd reduces even-symmetric static-stage content. Analog Drift is a subtle stereo-linked drive/bias variation, not pitch modulation or added hiss.
           Both hosts passed the DSP, preset and UI regression target. Separate DAW and Intel Mac testing is still required.
           Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Windows binaries are unsigned.
           Download the matching Source ZIP alongside each binary. It contains F Saturator, the complete pinned JUCE and URW font source collections, build scripts and licence notices.

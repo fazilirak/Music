@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Parametre aralıkları, oturum/preset kaydı, host programları ve DSP callback köprüsü.
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -39,6 +39,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout Processor::layout()
              {{"heat", false}, {"auto_gain", true}, {"bypass", false}}})
         p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{entry.first, 1}, entry.first,
                                                          entry.second));
+    // Fazıl Irak: yeni parametreler listenin SONUNA eklenir; eski DAW parametre indeksleri korunur.
+    // Sıfır değerleri eski presetleri aynı sesle açar. Yeni kontroller bağımsız otomasyon alır.
+    add("character", "Character Warm / Sizzle", -1, 1, 0);
+    add("harmonics", "Harmonic Balance Even / Odd", -1, 1, 0);
+    add("drift", "Analog Drift", 0, 1, 0);
     return p;
 }
 // Stereo varsayılan bus ve IRAK_STATE kökü oluşturulur. Ürün adı değişse de eski durum kimliği korunur.
@@ -66,6 +71,9 @@ Settings Processor::settings() const
     s.mix = get("mix");
     s.output = get("output");
     s.width = get("width");
+    s.character = get("character");
+    s.harmonics = get("harmonics");
+    s.drift = get("drift");
     s.heat = get("heat") > .5f;
     s.autoGain = get("auto_gain") > .5f;
     s.bypass = get("bypass") > .5f;
@@ -153,6 +161,10 @@ void Processor::setCurrentProgram(int index)
     set("output", 0);
     set("width", 1);
     set("bypass", 0);
+    // Eski fabrika seslerinde yeni kontroller nötrdür; önceki kullanıcı ayarı taşınmaz.
+    set("character", 0);
+    set("harmonics", 0);
+    set("drift", 0);
     program = index;
 }
 // APVTS XML’ine program indeksi ve durum biçimi sürümü eklenir; JUCE binary XML biçimine paketlenir.
@@ -160,7 +172,7 @@ void Processor::getStateInformation(juce::MemoryBlock &data)
 {
     auto xml = state.copyState().createXml();
     xml->setAttribute("program", program);
-    xml->setAttribute("version", 1);
+    xml->setAttribute("version", 2);
     copyXmlToBinary(*xml, data);
 }
 // Yalnız IRAK_STATE köküne sahip durumları kabul eder; program indeksi 0..15 sınırına çekilir.
@@ -171,7 +183,18 @@ void Processor::setStateInformation(const void *data, int size)
         if (xml->hasTagName("IRAK_STATE"))
         {
             program = juce::jlimit(0, 15, xml->getIntAttribute("program", 0));
-            state.replaceState(juce::ValueTree::fromXml(*xml));
+            auto restored = juce::ValueTree::fromXml(*xml);
+            // 0.3.x durumunda olmayan parametreler, açık editördeki son değere bırakılmaz.
+            // Her eksik yeni alan açıkça nötr oluşturulur; bilinmeyen alanlar ve eski değerler korunur.
+            for (const char *id : {"character", "harmonics", "drift"})
+                if (!restored.getChildWithProperty("id", id).isValid())
+                {
+                    juce::ValueTree neutral("PARAM");
+                    neutral.setProperty("id", id, nullptr);
+                    neutral.setProperty("value", 0.0f, nullptr);
+                    restored.appendChild(neutral, nullptr);
+                }
+            state.replaceState(restored);
         }
 }
 // Gömülü kullanım da aynı Processor sınıfını kullanır; ayrı bir DSP kopyası oluşturulmaz.

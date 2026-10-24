@@ -1,13 +1,17 @@
-<!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026 -->
-# F Saturator 0.3.0 — FAZIL IRAK
+<!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 24.10.2026 -->
+# F Saturator 0.4.0 — FAZIL IRAK
 
 [![Build](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml/badge.svg)](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml)
 
-[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.3.0/F-Saturator-0.3.0-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.3.0/F-Saturator-0.3.0-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
+[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.4.0/F-Saturator-0.4.0-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.4.0/F-Saturator-0.4.0-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.4.0) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
 
 ![F Saturator](doc/f-saturator.png)
 
 Saturation and distortion with five character models, 16 factory presets and a compact concentric-control interface. Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone, macOS 11.0 or later.
+
+## New in 0.4.0
+
+A fourth concentric group between Saturation and Output adds **Character (Warm–Sizzle)** on the inner cap, **Harmonic Balance (Even–Odd)** on the middle ring and **Analog Drift** on the outer ring. All three default to neutral for old sessions and factory presets. [Turkish controls and maintenance guide](docs/CHARACTER_TR.md).
 
 ## Features
 
@@ -24,7 +28,7 @@ Models are not measured hardware replicas. Tape does not simulate tape speed, hi
 
 ## Downloads and installation
 
-Use the [0.3.0 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
+Use the [0.4.0 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.4.0). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
 
 - Windows: extract the ZIP; copy the entire `VST3/F Saturator.vst3` bundle into your shared VST3 directory. Open `Standalone/F Saturator.exe` without a DAW.
 - macOS: extract the TAR.GZ; copy the VST3 to `~/Library/Audio/Plug-Ins/VST3/` and the AU to `~/Library/Audio/Plug-Ins/Components/`. Open `Standalone/F Saturator.app` without a DAW.
@@ -59,6 +63,16 @@ bash scripts/build-macos.sh
 ```
 
 Tests cover sample-rate extremes, finite output, harmonic character, Auto Gain reference calibration, block-size invariance, preset recall, dry/bypass latency, model changes and editor interaction/rendering. They export 16 presets, six original audition WAVs, screenshots and a DSP report. Packaging additionally checks source hashes, binary versions, Mac architectures/signatures and archive contents.
+
+## 0.4.0 changes
+
+- Four concentric groups: Colour, Saturation, Character, Output; independent automation for all twelve rings.
+- Warm–Sizzle adjusts nonlinear stage hardness; Even–Odd adjusts static-stage asymmetry and even-symmetric content.
+- Subtle, stereo-linked Analog Drift varies drive and bias; no added hiss or pitch modulation.
+- The original thirteen DAW parameter indices/IDs are preserved. Missing new fields in old sessions load at neutral; factory presets reset all three new controls.
+- Added harmonic, drift/block-size, mono/stereo, silent-tail, state-migration and four-column UI regression checks.
+- Neutral audio renders for all five models match the previous Windows reference WAVs byte for byte.
+- [Türkçe kontrol rehberi](docs/CHARACTER_TR.md) · [English control guide](docs/CHARACTER_EN.md).
 
 ## 0.3.0 changes
 

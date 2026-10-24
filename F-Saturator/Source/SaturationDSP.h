@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: DSP sözleşmesi, fiziksel ayarlar, kanal/model hafızaları, hazırlanan tamponlar ve atomik gösterge alanları.
 #pragma once
 #include <juce_dsp/juce_dsp.h>
@@ -24,6 +24,9 @@ struct Settings
     // Drive burada dB; doğrusal kazanca yalnız render içinde çevrilir. Filtre uç değerleri filtre bypass sözleşmesidir.
     float drive = 6, tone = 0, lowCut = 20, highCut = 20000, bias = 0, dynamics = .3f, mix = 1, output = 0,
           width = 1;
+    // Character -1=Warm, +1=Sizzle; harmonics -1=Even, +1=Odd; drift 0..1.
+    // Üçü de sıfırken 0.3.0 sinyal yolu korunur.
+    float character = 0, harmonics = 0, drift = 0;
     bool heat = false, autoGain = true, bypass = false;
 };
 
@@ -38,7 +41,9 @@ class SaturationDSP
         double previous = 0;
         static double logCosh(double x);
         static double shape(double x, double k, double bias);
-        double process(double x, double k, double bias, bool enabled);
+        // Pozitif denge, statik eğrinin çift simetrik bileşenini azaltır; temel bileşen korunur.
+        static double balancedShape(double x, double k, double bias, double balance);
+        double process(double x, double k, double bias, bool enabled, double balance = 0);
     };
     // Histerezis benzeri hafızalı manyetik dal. field ve magnetisation her kanal/model için ayrı saklanır.
     struct Magnet
@@ -58,7 +63,7 @@ class SaturationDSP
         Magnet magnetic;
         double record = 0, playback = 0, bass = 0, grid = 0;
         double process(double x, int model, const std::array<double, 5> &rates, double bias, double dynamics,
-                       double sag, bool adaa);
+                       double sag, bool adaa, double hardness, double harmonics);
     };
     // Her karakter ve iki ses kanalı için ayrı motor; model geçişleri weights ile çapraz soldurulur.
     std::array<std::array<Model, 2>, modelCount> models;
@@ -76,13 +81,18 @@ class SaturationDSP
     std::array<double, 2> highpass{}, highpassInput{}, lowpass{}, toneLow{}, dcInput{}, dcOutput{};
     // İki kanalın ortak seviye zarfı Dynamics/sag etkisini sürer; stereo dengenin korunmasına yardımcı olur.
     double envelope = 0;
+    // Ortak yavaş osilatörler stereo merkezini sabit tutar. Drift ses/pitch üretmez;
+    // yalnız sürüşü ve biası çok az değiştirir, sıfır girişte sessizlik korunur.
+    double driftPhase = 0, driftPhase2 = 0;
+    float previousCharacter = 2;
+    double characterHardness = 1;
     std::array<double, 5> modelRates{};
     // Yalnız kontrol değiştiğinde yeniden hesaplanan filtre katsayıları için önbellek.
     float previousLow = -1, previousHigh = -1, previousTone = 2;
     double highpassPole = 0, lowpassAmount = 0, toneBassGain = 1, toneTrebleGain = 1;
     // Otomasyon sıçramalarını yumuşatan rampalar; işlem iç örnekleme hızına göre ilerletilir.
     juce::SmoothedValue<float> drive, tone, lowCut, highCut, bias, dynamics, mix, output, width, autoLevel,
-        bypass;
+        bypass, character, harmonics, drift;
     // İlk blokta değerler hedefe doğrudan yerleşir; sonraki değişikliklerde rampalar kullanılır.
     bool primed = false;
     void render(juce::AudioBuffer<float> &, int offset, int count, const Settings &);
@@ -104,7 +114,7 @@ class SaturationDSP
     // Referans sinüse göre ölçülmüş Auto Gain tablosu; genel bir algısal ses yüksekliği eşitleyicisi değildir.
     static float compensationDb(int model, float drive);
     // Arayüz için yaklaşık statik transfer eğrisi; hafızalı modelin bütün dinamik davranışını göstermez.
-    static float preview(float x, int model, float bias = 0);
+    static float preview(float x, int model, float bias = 0, float character = 0, float harmonics = 0);
     // Ses iş parçacığından arayüze tek yönlü seviye aktarımı; arayüz ses motorunu kilitlemez.
     std::atomic<float> inputPeak{0}, outputPeak{0}, activity{0};
 };
