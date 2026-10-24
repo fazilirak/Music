@@ -1,0 +1,1282 @@
+[
+  {
+    "name": "Foundation",
+    "category": "Bass",
+    "peak": 0.2255765050649643,
+    "rms": 0.07490024434596565,
+    "seconds": 3.002666666666667,
+    "offline_speed": 7.539902557138534
+  },
+  {
+    "name": "Rubber Circuit",
+    "category": "Bass",
+    "peak": 0.41449376940727234,
+    "rms": 0.07503534332755865,
+    "seconds": 3.002666666666667,
+    "offline_speed": 6.88786911519403
+  },
+  {
+    "name": "Sub Authority",
+    "category": "Bass",
+    "peak": 0.4506381154060364,
+    "rms": 0.05522603144118504,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.603971304531485
+  },
+  {
+    "name": "Copper Teeth",
+    "category": "Bass",
+    "peak": 0.278424471616745,
+    "rms": 0.07497355988571112,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.5487212901565455
+  },
+  {
+    "name": "Concrete Pulse",
+    "category": "Bass",
+    "peak": 0.6365362405776978,
+    "rms": 0.07260970281472758,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.499260578994974
+  },
+  {
+    "name": "Night Driver",
+    "category": "Bass",
+    "peak": 0.24549414217472076,
+    "rms": 0.037741060953741565,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.057787068164156
+  },
+  {
+    "name": "Acid Foundry",
+    "category": "Bass",
+    "peak": 0.22558096051216125,
+    "rms": 0.03389218662783167,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.341089772050258
+  },
+  {
+    "name": "Roundhouse",
+    "category": "Bass",
+    "peak": 0.3618049919605255,
+    "rms": 0.0748240235371988,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.312971347053516
+  },
+  {
+    "name": "Seismic",
+    "category": "Bass",
+    "peak": 0.28254956007003784,
+    "rms": 0.07519392319699944,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.940660922269143
+  },
+  {
+    "name": "Dusty Ladder",
+    "category": "Bass",
+    "peak": 0.3743401765823364,
+    "rms": 0.06142278784735902,
+    "seconds": 3.002666666666667,
+    "offline_speed": 6.395813071286762
+  },
+  {
+    "name": "Short Fuse",
+    "category": "Bass",
+    "peak": 0.5365805625915527,
+    "rms": 0.04434610542686645,
+    "seconds": 3.002666666666667,
+    "offline_speed": 6.506033790207423
+  },
+  {
+    "name": "Black Rubber",
+    "category": "Bass",
+    "peak": 0.3159502446651459,
+    "rms": 0.0749460996439831,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.636741190167116
+  },
+  {
+    "name": "Low Orbit",
+    "category": "Bass",
+    "peak": 0.42363640666007996,
+    "rms": 0.07486034482322823,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.665294430219365
+  },
+  {
+    "name": "Resin Bass",
+    "category": "Bass",
+    "peak": 0.1926315575838089,
+    "rms": 0.03076501095971717,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.924282045808223
+  },
+  {
+    "name": "Pressure Line",
+    "category": "Bass",
+    "peak": 0.4257601499557495,
+    "rms": 0.03756512843579719,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.285377218862436
+  },
+  {
+    "name": "Soft Machine",
+    "category": "Bass",
+    "peak": 0.26791778206825256,
+    "rms": 0.075031010398608,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.5293859116059405
+  },
+  {
+    "name": "Warehouse",
+    "category": "Bass",
+    "peak": 0.2274087518453598,
+    "rms": 0.028422255147633108,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.476833232892837
+  },
+  {
+    "name": "Fifth Floor",
+    "category": "Bass",
+    "peak": 0.47425371408462524,
+    "rms": 0.05589958414963784,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.029077705224251
+  },
+  {
+    "name": "Dark Matter",
+    "category": "Bass",
+    "peak": 0.2807823717594147,
+    "rms": 0.07489423829561913,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.557316894335899
+  },
+  {
+    "name": "Super Weight",
+    "category": "Bass",
+    "peak": 0.38094058632850647,
+    "rms": 0.05256679359419479,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.155467248801129
+  },
+  {
+    "name": "First Light",
+    "category": "Lead",
+    "peak": 0.34087613224983215,
+    "rms": 0.07501812816734336,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.215704416221813
+  },
+  {
+    "name": "Seven Suns",
+    "category": "Lead",
+    "peak": 0.4318913519382477,
+    "rms": 0.07492398438175882,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.9179749671497723
+  },
+  {
+    "name": "Red Current",
+    "category": "Lead",
+    "peak": 0.21646884083747864,
+    "rms": 0.07486421006601776,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.425949373988922
+  },
+  {
+    "name": "Needlepoint",
+    "category": "Lead",
+    "peak": 0.34337306022644043,
+    "rms": 0.07492759487495361,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.641544513097189
+  },
+  {
+    "name": "Copper Solo",
+    "category": "Lead",
+    "peak": 0.3116896450519562,
+    "rms": 0.07490647822359756,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.520035957568464
+  },
+  {
+    "name": "Signal Flare",
+    "category": "Lead",
+    "peak": 0.32907766103744507,
+    "rms": 0.07508057533341238,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.120284874154297
+  },
+  {
+    "name": "Wide Horizon",
+    "category": "Lead",
+    "peak": 0.4119451344013214,
+    "rms": 0.0750472726987195,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.538035472026288
+  },
+  {
+    "name": "Afterburner",
+    "category": "Lead",
+    "peak": 0.45360860228538513,
+    "rms": 0.07515713950088773,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.905456223230467
+  },
+  {
+    "name": "Glass Razor",
+    "category": "Lead",
+    "peak": 0.22590869665145874,
+    "rms": 0.07489950722589696,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.072621320427882
+  },
+  {
+    "name": "Soft Voltage",
+    "category": "Lead",
+    "peak": 0.2875148057937622,
+    "rms": 0.07494036755608047,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.524460025122556
+  },
+  {
+    "name": "Mono Chrome",
+    "category": "Lead",
+    "peak": 0.2950442135334015,
+    "rms": 0.07516992587905509,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.53159583256176
+  },
+  {
+    "name": "Electric Silk",
+    "category": "Lead",
+    "peak": 0.41494178771972656,
+    "rms": 0.07506753879442216,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.470969816288208
+  },
+  {
+    "name": "Fifth Avenue",
+    "category": "Lead",
+    "peak": 0.32872098684310913,
+    "rms": 0.07519526571810745,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.042015866005966
+  },
+  {
+    "name": "Liquid Metal",
+    "category": "Lead",
+    "peak": 0.27395591139793396,
+    "rms": 0.03924746733198245,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.365271243358929
+  },
+  {
+    "name": "Northern Lead",
+    "category": "Lead",
+    "peak": 0.42515939474105835,
+    "rms": 0.07495770799650862,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.4855251842543877
+  },
+  {
+    "name": "Hot Circuit",
+    "category": "Lead",
+    "peak": 0.19866544008255005,
+    "rms": 0.07507880259170661,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.20698929062492
+  },
+  {
+    "name": "Twin Peaks",
+    "category": "Lead",
+    "peak": 0.33680686354637146,
+    "rms": 0.07502165936730794,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.616633389800992
+  },
+  {
+    "name": "Open Sky",
+    "category": "Lead",
+    "peak": 0.43384668231010437,
+    "rms": 0.07513793196027631,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.076346605126866
+  },
+  {
+    "name": "Last Transmission",
+    "category": "Lead",
+    "peak": 0.17385385930538177,
+    "rms": 0.042127471954827876,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.9416036921315305
+  },
+  {
+    "name": "Supernova",
+    "category": "Lead",
+    "peak": 0.4418492019176483,
+    "rms": 0.07513830229640783,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.901059634850771
+  },
+  {
+    "name": "Copper Tines",
+    "category": "Key",
+    "peak": 0.6505634188652039,
+    "rms": 0.037441916253381044,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.710022395103378
+  },
+  {
+    "name": "Short Circuit",
+    "category": "Key",
+    "peak": 0.6498052477836609,
+    "rms": 0.04886030886023911,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.120152204027152
+  },
+  {
+    "name": "Velvet Clav",
+    "category": "Key",
+    "peak": 0.6493088603019714,
+    "rms": 0.044216657839261576,
+    "seconds": 3.002666666666667,
+    "offline_speed": 2.416976080120396
+  },
+  {
+    "name": "Dust Keys",
+    "category": "Key",
+    "peak": 0.6519428491592407,
+    "rms": 0.04039842367674291,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.088706641485253
+  },
+  {
+    "name": "Ladder Bell",
+    "category": "Key",
+    "peak": 0.6486940383911133,
+    "rms": 0.04439774525338473,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.128954954930333
+  },
+  {
+    "name": "Paper Piano",
+    "category": "Key",
+    "peak": 0.6500217914581299,
+    "rms": 0.055399243696293586,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.2017530046215805
+  },
+  {
+    "name": "Pulsewood",
+    "category": "Key",
+    "peak": 0.6487753987312317,
+    "rms": 0.0653639042258331,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.9256163681816765
+  },
+  {
+    "name": "Soft Mallet",
+    "category": "Key",
+    "peak": 0.6494545340538025,
+    "rms": 0.037676994406128206,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.4375931454937065
+  },
+  {
+    "name": "Neon Chord",
+    "category": "Key",
+    "peak": 0.64848393201828,
+    "rms": 0.03931041239927376,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.336129860484368
+  },
+  {
+    "name": "Golden Wire",
+    "category": "Key",
+    "peak": 0.6513969302177429,
+    "rms": 0.03192206421966466,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.703173274029911
+  },
+  {
+    "name": "Dawn Keys",
+    "category": "Key",
+    "peak": 0.6492762565612793,
+    "rms": 0.044120196126517595,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.4526267339238
+  },
+  {
+    "name": "Plastic Ivory",
+    "category": "Key",
+    "peak": 0.6505400538444519,
+    "rms": 0.05623701798134283,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.165154093362059
+  },
+  {
+    "name": "Broken Harp",
+    "category": "Key",
+    "peak": 0.6511173844337463,
+    "rms": 0.044176352067687344,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.459012801045648
+  },
+  {
+    "name": "Round Pluck",
+    "category": "Key",
+    "peak": 0.6486186385154724,
+    "rms": 0.05184406804702251,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.190234062962241
+  },
+  {
+    "name": "Static Clav",
+    "category": "Key",
+    "peak": 0.6495006084442139,
+    "rms": 0.034521813198525944,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.008533912383906
+  },
+  {
+    "name": "Small Hours",
+    "category": "Key",
+    "peak": 0.6491516828536987,
+    "rms": 0.03876758808592856,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.4185762967483795
+  },
+  {
+    "name": "Octave Glass",
+    "category": "Key",
+    "peak": 0.6498705744743347,
+    "rms": 0.04101276686381338,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.220877270543099
+  },
+  {
+    "name": "Warm Reed",
+    "category": "Key",
+    "peak": 0.6503792405128479,
+    "rms": 0.05151948216753607,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.052438226746965
+  },
+  {
+    "name": "Seven Keys",
+    "category": "Key",
+    "peak": 0.6488538980484009,
+    "rms": 0.04466057647026067,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.023622487037578
+  },
+  {
+    "name": "Muted Brass",
+    "category": "Key",
+    "peak": 0.6511023640632629,
+    "rms": 0.05778021182731588,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.118416545647033
+  },
+  {
+    "name": "Slow Horizon",
+    "category": "Pad",
+    "peak": 0.285713255405426,
+    "rms": 0.07489266348405992,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.7955229907923576
+  },
+  {
+    "name": "Seven Clouds",
+    "category": "Pad",
+    "peak": 0.3745664954185486,
+    "rms": 0.07481319369484508,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.8775407027825635
+  },
+  {
+    "name": "Warm Static",
+    "category": "Pad",
+    "peak": 0.2648378610610962,
+    "rms": 0.07502113083410271,
+    "seconds": 5.002666666666666,
+    "offline_speed": 4.066031836855891
+  },
+  {
+    "name": "Dust Halo",
+    "category": "Pad",
+    "peak": 0.42120710015296936,
+    "rms": 0.07476234680527043,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.7715997892638624
+  },
+  {
+    "name": "Velvet Sky",
+    "category": "Pad",
+    "peak": 0.34419965744018555,
+    "rms": 0.07471255560271328,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.7675496031356364
+  },
+  {
+    "name": "Frozen Copper",
+    "category": "Pad",
+    "peak": 0.2691514194011688,
+    "rms": 0.0751015606548069,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.7585080446046346
+  },
+  {
+    "name": "Blue Hour",
+    "category": "Pad",
+    "peak": 0.3394020199775696,
+    "rms": 0.07494334052508322,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.9470630655001258
+  },
+  {
+    "name": "Soft Focus",
+    "category": "Pad",
+    "peak": 0.25161826610565186,
+    "rms": 0.07486683155812641,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.462921063443492
+  },
+  {
+    "name": "Dark Cinema",
+    "category": "Pad",
+    "peak": 0.32865557074546814,
+    "rms": 0.0746919237335612,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.870653366865349
+  },
+  {
+    "name": "Open Water",
+    "category": "Pad",
+    "peak": 0.3693321645259857,
+    "rms": 0.07490033265283354,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.855345003033994
+  },
+  {
+    "name": "Analog Bloom",
+    "category": "Pad",
+    "peak": 0.2763349711894989,
+    "rms": 0.07504713414314497,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.8100527256157064
+  },
+  {
+    "name": "Paper Moon",
+    "category": "Pad",
+    "peak": 0.3988263010978699,
+    "rms": 0.07493027432315656,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.544391562873529
+  },
+  {
+    "name": "Low Tide",
+    "category": "Pad",
+    "peak": 0.2711751163005829,
+    "rms": 0.07497984315650977,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.422941484542447
+  },
+  {
+    "name": "Silver Drift",
+    "category": "Pad",
+    "peak": 0.34054115414619446,
+    "rms": 0.0749562827402895,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.843637635528948
+  },
+  {
+    "name": "Distant Choir",
+    "category": "Pad",
+    "peak": 0.2626759111881256,
+    "rms": 0.07491600902852791,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.7091348270015323
+  },
+  {
+    "name": "Amber Field",
+    "category": "Pad",
+    "peak": 0.3497268855571747,
+    "rms": 0.07492885949232628,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.825795399835551
+  },
+  {
+    "name": "Night Glass",
+    "category": "Pad",
+    "peak": 0.30223214626312256,
+    "rms": 0.07489377303218508,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.5128204840127344
+  },
+  {
+    "name": "Cloud Engine",
+    "category": "Pad",
+    "peak": 0.3586171567440033,
+    "rms": 0.07498216360434301,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.5332974674587407
+  },
+  {
+    "name": "Deep Sleep",
+    "category": "Pad",
+    "peak": 0.29962649941444397,
+    "rms": 0.07467672215577814,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.885412794464037
+  },
+  {
+    "name": "First Snow",
+    "category": "Pad",
+    "peak": 0.26132890582084656,
+    "rms": 0.07489079636703176,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.904201285301147
+  },
+  {
+    "name": "Radio Ghost",
+    "category": "FX",
+    "peak": 0.10293056070804596,
+    "rms": 0.023695135240136174,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.567181011965223
+  },
+  {
+    "name": "Metal Rain",
+    "category": "FX",
+    "peak": 0.06934494525194168,
+    "rms": 0.012203964767965352,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.344069811825293
+  },
+  {
+    "name": "Broken Antenna",
+    "category": "FX",
+    "peak": 0.2468419373035431,
+    "rms": 0.037262534559825526,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.7761649707879603
+  },
+  {
+    "name": "Steam Valve",
+    "category": "FX",
+    "peak": 0.21688984334468842,
+    "rms": 0.07505172483009592,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.088913533731858
+  },
+  {
+    "name": "Solar Wind",
+    "category": "FX",
+    "peak": 0.2672286033630371,
+    "rms": 0.05036512789376384,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.412435311280546
+  },
+  {
+    "name": "Circuit Birds",
+    "category": "FX",
+    "peak": 0.2854921519756317,
+    "rms": 0.07496929543937612,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.7151108794390844
+  },
+  {
+    "name": "Ring Alarm",
+    "category": "FX",
+    "peak": 0.1138041764497757,
+    "rms": 0.029818736832194444,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.013191628303897
+  },
+  {
+    "name": "Filter Siren",
+    "category": "FX",
+    "peak": 0.07696454972028732,
+    "rms": 0.01837735734612986,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.710562647110302
+  },
+  {
+    "name": "Ion Storm",
+    "category": "FX",
+    "peak": 0.2583773732185364,
+    "rms": 0.044594482281003954,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.5759582073381697
+  },
+  {
+    "name": "Tape Monster",
+    "category": "FX",
+    "peak": 0.25378695130348206,
+    "rms": 0.0751329457903857,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.842635706830613
+  },
+  {
+    "name": "Alien Current",
+    "category": "FX",
+    "peak": 0.24070371687412262,
+    "rms": 0.07515904748557733,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.583613402586822
+  },
+  {
+    "name": "Pink Eclipse",
+    "category": "FX",
+    "peak": 0.31052306294441223,
+    "rms": 0.06937922020131988,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.7797086124948995
+  },
+  {
+    "name": "Pressure Drop",
+    "category": "FX",
+    "peak": 0.22714485228061676,
+    "rms": 0.056881456247638844,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.164468970799667
+  },
+  {
+    "name": "Glass Engine",
+    "category": "FX",
+    "peak": 0.07063902914524078,
+    "rms": 0.0158255510445644,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.5865928412593355
+  },
+  {
+    "name": "White Furnace",
+    "category": "FX",
+    "peak": 0.3183034658432007,
+    "rms": 0.06244434838206004,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.138313955889561
+  },
+  {
+    "name": "Falling Satellite",
+    "category": "FX",
+    "peak": 0.2656342089176178,
+    "rms": 0.07515880637504828,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.710132091493472
+  },
+  {
+    "name": "Copper Swarm",
+    "category": "FX",
+    "peak": 0.2190505564212799,
+    "rms": 0.043688603628975795,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.219083044480666
+  },
+  {
+    "name": "Short Wave",
+    "category": "FX",
+    "peak": 0.24994763731956482,
+    "rms": 0.07507771523005682,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.674460128069294
+  },
+  {
+    "name": "Dark Reactor",
+    "category": "FX",
+    "peak": 0.1326252967119217,
+    "rms": 0.03288112825991424,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.552189707856859
+  },
+  {
+    "name": "Last Spark",
+    "category": "FX",
+    "peak": 0.13137483596801758,
+    "rms": 0.03861042475381545,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.719884199359777
+  },
+  {
+    "name": "Copper Steps",
+    "category": "Arp",
+    "peak": 0.3076198995113373,
+    "rms": 0.07493871271021717,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.4291731653647575
+  },
+  {
+    "name": "Seven Runner",
+    "category": "Arp",
+    "peak": 0.42111828923225403,
+    "rms": 0.07306002329695489,
+    "seconds": 3.002666666666667,
+    "offline_speed": 1.8677804676194087
+  },
+  {
+    "name": "Night Sequence",
+    "category": "Arp",
+    "peak": 0.24658939242362976,
+    "rms": 0.07502193104201695,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.389396081710634
+  },
+  {
+    "name": "Pulse Engine",
+    "category": "Arp",
+    "peak": 0.3426627516746521,
+    "rms": 0.07489652378178578,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.20996217176462
+  },
+  {
+    "name": "Little Orbit",
+    "category": "Arp",
+    "peak": 0.2437792867422104,
+    "rms": 0.07492406637535949,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.8304332514263564
+  },
+  {
+    "name": "Upward Signal",
+    "category": "Arp",
+    "peak": 0.34050464630126953,
+    "rms": 0.07490271744448065,
+    "seconds": 3.002666666666667,
+    "offline_speed": 1.6926096487581315
+  },
+  {
+    "name": "Glass Ladder",
+    "category": "Arp",
+    "peak": 0.2707456052303314,
+    "rms": 0.06937828632364992,
+    "seconds": 3.002666666666667,
+    "offline_speed": 2.854225803608099
+  },
+  {
+    "name": "Fifth Motion",
+    "category": "Arp",
+    "peak": 0.33622506260871887,
+    "rms": 0.0748349124614013,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.114767291363987
+  },
+  {
+    "name": "Trance Wire",
+    "category": "Arp",
+    "peak": 0.44656476378440857,
+    "rms": 0.07875362440263858,
+    "seconds": 3.002666666666667,
+    "offline_speed": 1.978736707971258
+  },
+  {
+    "name": "Foundry Dance",
+    "category": "Arp",
+    "peak": 0.23188140988349915,
+    "rms": 0.07483941806749082,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.1950084094196143
+  },
+  {
+    "name": "Low Voltage",
+    "category": "Arp",
+    "peak": 0.21924079954624176,
+    "rms": 0.054942641500150824,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.499510348263438
+  },
+  {
+    "name": "Neon Stair",
+    "category": "Arp",
+    "peak": 0.36426395177841187,
+    "rms": 0.07489814254124118,
+    "seconds": 3.002666666666667,
+    "offline_speed": 2.7520528961186494
+  },
+  {
+    "name": "Soft Patterns",
+    "category": "Arp",
+    "peak": 0.24895134568214417,
+    "rms": 0.0591722845735428,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.7585243252420337
+  },
+  {
+    "name": "Acid Relay",
+    "category": "Arp",
+    "peak": 0.3495066463947296,
+    "rms": 0.07333901435616483,
+    "seconds": 3.002666666666667,
+    "offline_speed": 2.874467981703858
+  },
+  {
+    "name": "Clockwork",
+    "category": "Arp",
+    "peak": 0.14137589931488037,
+    "rms": 0.07484429261991357,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.944185570778559
+  },
+  {
+    "name": "Wide Sequence",
+    "category": "Arp",
+    "peak": 0.43279337882995605,
+    "rms": 0.07415015960753578,
+    "seconds": 3.002666666666667,
+    "offline_speed": 2.0125617545123733
+  },
+  {
+    "name": "Falling Stars",
+    "category": "Arp",
+    "peak": 0.26196956634521484,
+    "rms": 0.07518090217607083,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.7821233288781704
+  },
+  {
+    "name": "Signal Loop",
+    "category": "Arp",
+    "peak": 0.2310296893119812,
+    "rms": 0.07492733658430291,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.744136330454613
+  },
+  {
+    "name": "Super Highway",
+    "category": "Arp",
+    "peak": 0.47344571352005005,
+    "rms": 0.06857900775180564,
+    "seconds": 3.002666666666667,
+    "offline_speed": 1.8990298799112366
+  },
+  {
+    "name": "After Hours",
+    "category": "Arp",
+    "peak": 0.1675623506307602,
+    "rms": 0.037345312447936145,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.4525013540949474
+  },
+  {
+    "name": "Copper Ratchet",
+    "category": "Bass",
+    "peak": 0.2928629219532013,
+    "rms": 0.07455796742429255,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.0771552306957775
+  },
+  {
+    "name": "Elastic Current",
+    "category": "Bass",
+    "peak": 0.34583425521850586,
+    "rms": 0.07460757643146564,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.42528860240699
+  },
+  {
+    "name": "Saw Sculptor",
+    "category": "Bass",
+    "peak": 0.4825090765953064,
+    "rms": 0.07313443196200349,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.591131155101132
+  },
+  {
+    "name": "Rubber Steps",
+    "category": "Bass",
+    "peak": 0.34405019879341125,
+    "rms": 0.05990788550792747,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.3435116315102995
+  },
+  {
+    "name": "Low Voltage Gate",
+    "category": "Bass",
+    "peak": 0.4957723021507263,
+    "rms": 0.07484379045825122,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.832599725929972
+  },
+  {
+    "name": "Subterranean Arc",
+    "category": "Bass",
+    "peak": 0.4536946713924408,
+    "rms": 0.07024719233768585,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.647484966423859
+  },
+  {
+    "name": "Vector Solo",
+    "category": "Lead",
+    "peak": 0.32849928736686707,
+    "rms": 0.0746197316450259,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.315369171976085
+  },
+  {
+    "name": "Bent Light",
+    "category": "Lead",
+    "peak": 0.4296318292617798,
+    "rms": 0.07457404520174764,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.933136161305389
+  },
+  {
+    "name": "Singing Copper",
+    "category": "Lead",
+    "peak": 0.22686581313610077,
+    "rms": 0.07464763142161314,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.925743379596934
+  },
+  {
+    "name": "Pulse Lantern",
+    "category": "Lead",
+    "peak": 0.17622441053390503,
+    "rms": 0.05690864794089673,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.184004996653215
+  },
+  {
+    "name": "Orbiting Saw",
+    "category": "Lead",
+    "peak": 0.29297083616256714,
+    "rms": 0.07471684525936656,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.513303045903369
+  },
+  {
+    "name": "Broken Laser",
+    "category": "Lead",
+    "peak": 0.3980889916419983,
+    "rms": 0.07463209530115816,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.5580223667997966
+  },
+  {
+    "name": "Glass Mechanism",
+    "category": "Key",
+    "peak": 0.6476380228996277,
+    "rms": 0.037265407047912695,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.857317742516396
+  },
+  {
+    "name": "Circuit Harp",
+    "category": "Key",
+    "peak": 0.6491138339042664,
+    "rms": 0.04843104534484003,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.281076936344556
+  },
+  {
+    "name": "Clockwork Keys",
+    "category": "Key",
+    "peak": 0.6477492451667786,
+    "rms": 0.04385841712781544,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.609595447160669
+  },
+  {
+    "name": "Copper Ripple",
+    "category": "Key",
+    "peak": 0.5678030252456665,
+    "rms": 0.03948791891823672,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.5664555220474496
+  },
+  {
+    "name": "Folded Bell",
+    "category": "Key",
+    "peak": 0.6470672488212585,
+    "rms": 0.04431176911943381,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.5121977875452846
+  },
+  {
+    "name": "Prism Pluck",
+    "category": "Key",
+    "peak": 0.6498003005981445,
+    "rms": 0.055382479682832136,
+    "seconds": 3.002666666666667,
+    "offline_speed": 5.276087317370827
+  },
+  {
+    "name": "Moving Horizon",
+    "category": "Pad",
+    "peak": 0.2935720682144165,
+    "rms": 0.07486128758677192,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.899209544272
+  },
+  {
+    "name": "Saffron Clouds",
+    "category": "Pad",
+    "peak": 0.37844979763031006,
+    "rms": 0.07497195296154144,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.9026570142490136
+  },
+  {
+    "name": "Breathing Alloy",
+    "category": "Pad",
+    "peak": 0.3873627185821533,
+    "rms": 0.07481050403665725,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.3729915112426796
+  },
+  {
+    "name": "Slow Geometry",
+    "category": "Pad",
+    "peak": 0.25118523836135864,
+    "rms": 0.062185487748276334,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.613041693846331
+  },
+  {
+    "name": "Amber Tide",
+    "category": "Pad",
+    "peak": 0.34461039304733276,
+    "rms": 0.0748326255364985,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.7765333205458878
+  },
+  {
+    "name": "Drifting Layers",
+    "category": "Pad",
+    "peak": 0.3515765964984894,
+    "rms": 0.07489177049969548,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.020420177718963
+  },
+  {
+    "name": "Northern Circuit",
+    "category": "Pad",
+    "peak": 0.3609032928943634,
+    "rms": 0.07493368404182188,
+    "seconds": 5.002666666666666,
+    "offline_speed": 2.236859682707237
+  },
+  {
+    "name": "Ribbon Sky",
+    "category": "Pad",
+    "peak": 0.22287406027317047,
+    "rms": 0.06366513010184986,
+    "seconds": 5.002666666666666,
+    "offline_speed": 3.622035218886481
+  },
+  {
+    "name": "Signal Cartography",
+    "category": "FX",
+    "peak": 0.19351191818714142,
+    "rms": 0.04570951410504493,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.930164936128421
+  },
+  {
+    "name": "Robot Language",
+    "category": "FX",
+    "peak": 0.13130755722522736,
+    "rms": 0.026871908077310415,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.651010296194697
+  },
+  {
+    "name": "Metal Bloom",
+    "category": "FX",
+    "peak": 0.2792472541332245,
+    "rms": 0.046564374684487805,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.92772069545597
+  },
+  {
+    "name": "Fragmented Radio",
+    "category": "FX",
+    "peak": 0.20748285949230194,
+    "rms": 0.06119216820081429,
+    "seconds": 3.002666666666667,
+    "offline_speed": 4.140713087976777
+  },
+  {
+    "name": "Shifting Gravity",
+    "category": "FX",
+    "peak": 0.28823548555374146,
+    "rms": 0.06426853475636402,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.631072841344731
+  },
+  {
+    "name": "Wild Circuit",
+    "category": "FX",
+    "peak": 0.3360319137573242,
+    "rms": 0.05911786005525055,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.6767656087230773
+  },
+  {
+    "name": "Copper Staircase",
+    "category": "Arp",
+    "peak": 0.31513649225234985,
+    "rms": 0.07490953533532417,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.3411933720485956
+  },
+  {
+    "name": "Eightfold Motion",
+    "category": "Arp",
+    "peak": 0.4094209671020508,
+    "rms": 0.07475050916461642,
+    "seconds": 3.002666666666667,
+    "offline_speed": 1.842965395153529
+  },
+  {
+    "name": "Neon Clock",
+    "category": "Arp",
+    "peak": 0.24748973548412323,
+    "rms": 0.07491413771141292,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.537186062465968
+  },
+  {
+    "name": "Ribbon Sequence",
+    "category": "Arp",
+    "peak": 0.20322591066360474,
+    "rms": 0.05715442741243974,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.347633242250803
+  },
+  {
+    "name": "Saw Cascade",
+    "category": "Arp",
+    "peak": 0.2841280400753021,
+    "rms": 0.07497328008416383,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.7799070246936863
+  },
+  {
+    "name": "Pulse Geometry",
+    "category": "Arp",
+    "peak": 0.3933540880680084,
+    "rms": 0.0687441487971813,
+    "seconds": 3.002666666666667,
+    "offline_speed": 1.732519126276449
+  },
+  {
+    "name": "Amber Steps",
+    "category": "Arp",
+    "peak": 0.271511435508728,
+    "rms": 0.07494731390698842,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.107214169669278
+  },
+  {
+    "name": "Machine Garden",
+    "category": "Arp",
+    "peak": 0.1768074631690979,
+    "rms": 0.05773965771775819,
+    "seconds": 3.002666666666667,
+    "offline_speed": 3.3494484639313336
+  }
+]

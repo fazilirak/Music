@@ -1,0 +1,22 @@
+[
+  {
+    "key": 45,
+    "drive": 5,
+    "levelMatchedWaveformDifference": 0.2966333640923336
+  },
+  {
+    "key": 45,
+    "drive": 10,
+    "levelMatchedWaveformDifference": 0.6242130917957965
+  },
+  {
+    "key": 57,
+    "drive": 5,
+    "levelMatchedWaveformDifference": 0.3371898817771548
+  },
+  {
+    "key": 57,
+    "drive": 10,
+    "levelMatchedWaveformDifference": 0.6413427041543566
+  }
+]

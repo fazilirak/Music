@@ -6,6 +6,8 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 | --- | --- | --- | --- |
 | [F Saturator](F-Saturator/README.md) | [0.3.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) | [Universal 0.3.0](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.3.0) | [Browse](F-Saturator) |
 | [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.2) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
+| [Model F](Model-F/README.md) | [0.1.9](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.1.9) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.1.9) | [Browse / licences](Model-F) |
+| [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Browse / licences](F-EQ) |
 
 ## F Saturator
 
@@ -44,3 +46,17 @@ JUCE-based effects rack: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and
 
 Shaper preserves the individual GPLv3, AGPLv3, MIT and other dependency licences;
 see [COPYING](Shaper/COPYING.txt) and [third-party notices](Shaper/THIRD-PARTY-NOTICES.txt).
+
+## Model F
+
+**Few controls. Big sound. Built especially for techno.** Circuit-modelled synthesizer: mono/poly/SuperSaw, multi-stage envelope, arpeggiator and 160 factory presets. Existing Rust/NIH-plug edition; not the cancelled JUCE rewrite.
+
+![Model F](Model-F/docs/panel.png)
+
+## F EQ
+
+**Simple control. Focused tone shaping.** Tilt equalizer, independent bass shelf, steep cut filters, analog character, saturation and output spectrum. Existing Rust/NIH-plug edition.
+
+![F EQ](F-EQ/docs/panel.png)
+
+Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/CLAP/standalone. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. AU is not included. Complete corresponding source accompanies each binary release. Project code is GPL-3.0-or-later; individual third-party and embedded URW Gothic AGPLv3 licences are preserved. See each project's COPYING and third-party notices.

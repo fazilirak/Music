@@ -1,0 +1,8 @@
+/target/
+/.tools/
+/dist/
+
+vendor/
+release-dist/
+.release-source/
+__pycache__/

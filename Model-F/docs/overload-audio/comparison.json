@@ -1,0 +1,122 @@
+[
+  {
+    "key": 45,
+    "drive": 5.0,
+    "version": "dry",
+    "raw_rms": 0.03240036591049891,
+    "bass_fraction": 0.6715948951762477,
+    "treble_fraction": 0.007056400585270452,
+    "lamp": 0.0,
+    "audition_gain": 4.938215835030249
+  },
+  {
+    "key": 45,
+    "drive": 5.0,
+    "version": "previous",
+    "raw_rms": 0.11184321565725938,
+    "bass_fraction": 0.9569024714294249,
+    "treble_fraction": 0.0008708753449033398,
+    "lamp": 1.0,
+    "audition_gain": 1.430574032226647
+  },
+  {
+    "key": 45,
+    "drive": 5.0,
+    "version": "warm",
+    "raw_rms": 0.03541008701356861,
+    "bass_fraction": 0.7071262237701517,
+    "treble_fraction": 0.006001677710856478,
+    "lamp": 1.0,
+    "audition_gain": 4.518486496197832
+  },
+  {
+    "key": 45,
+    "drive": 10.0,
+    "version": "dry",
+    "raw_rms": 0.03240036591049891,
+    "bass_fraction": 0.6715948951762477,
+    "treble_fraction": 0.007056400585270452,
+    "lamp": 0.0,
+    "audition_gain": 4.938215835030249
+  },
+  {
+    "key": 45,
+    "drive": 10.0,
+    "version": "previous",
+    "raw_rms": 0.11170022421716079,
+    "bass_fraction": 0.9465010381221717,
+    "treble_fraction": 0.0014172476922752275,
+    "lamp": 1.0,
+    "audition_gain": 1.4324053610576262
+  },
+  {
+    "key": 45,
+    "drive": 10.0,
+    "version": "warm",
+    "raw_rms": 0.04004369239128652,
+    "bass_fraction": 0.6731919957159598,
+    "treble_fraction": 0.00784971918457648,
+    "lamp": 1.0,
+    "audition_gain": 3.99563552822656
+  },
+  {
+    "key": 57,
+    "drive": 5.0,
+    "version": "dry",
+    "raw_rms": 0.034085483958710215,
+    "bass_fraction": 0.4594654909445382,
+    "treble_fraction": 0.01517278494819835,
+    "lamp": 0.0,
+    "audition_gain": 4.694080336187028
+  },
+  {
+    "key": 57,
+    "drive": 5.0,
+    "version": "previous",
+    "raw_rms": 0.11215867509194659,
+    "bass_fraction": 0.9450809483539664,
+    "treble_fraction": 0.0016056673044626383,
+    "lamp": 1.0,
+    "audition_gain": 1.4265503748937258
+  },
+  {
+    "key": 57,
+    "drive": 5.0,
+    "version": "warm",
+    "raw_rms": 0.033814593199932165,
+    "bass_fraction": 0.4687048147876366,
+    "treble_fraction": 0.015156227301420794,
+    "lamp": 1.0,
+    "audition_gain": 4.731684898705834
+  },
+  {
+    "key": 57,
+    "drive": 10.0,
+    "version": "dry",
+    "raw_rms": 0.034085483958710215,
+    "bass_fraction": 0.4594654909445382,
+    "treble_fraction": 0.01517278494819835,
+    "lamp": 0.0,
+    "audition_gain": 4.694080336187028
+  },
+  {
+    "key": 57,
+    "drive": 10.0,
+    "version": "previous",
+    "raw_rms": 0.11276130614438054,
+    "bass_fraction": 0.9214261399264287,
+    "treble_fraction": 0.002915164623725851,
+    "lamp": 1.0,
+    "audition_gain": 1.4189264515536442
+  },
+  {
+    "key": 57,
+    "drive": 10.0,
+    "version": "warm",
+    "raw_rms": 0.04011653962641239,
+    "bass_fraction": 0.4555998017244727,
+    "treble_fraction": 0.01741649248811766,
+    "lamp": 1.0,
+    "audition_gain": 3.988379892433628
+  }
+]

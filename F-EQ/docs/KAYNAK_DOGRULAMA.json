@@ -1,0 +1,106 @@
+[
+  {
+    "project": "F-EQ",
+    "path": "src/analog.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "16c86e93c4ff2bfb2ef185df1ffbb01920f665cccae3ce993e897be94a7b92b7"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/cuts.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "aabf033613c2705dea49155b6f66e4078624d6ad516c78706d238e28b6202132"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/dsp.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "fa48714428aa78985977968052d1d19623e2c534cc3da785ab26e261b2fdba01"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/editor.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "2d6d6f40d4fa53c91189adc61c7a666742d365c84e5513d2f149fdb667139315"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/lib.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "7415741a9592f9ef486362455a5314073fe6b7328919b41641643f16b3f0db29"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/panel.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "2dd7ff25648b946d1633e551e25cc23e776d07e6d88d2fe7c2a7a1eae6c16931"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/params.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "a822e03af38b2dd535ca5ee80ca2f7975907a8676fdb952586e7779fb41c0c22"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/saturation.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "f9134b1fb6e2b135c6d9f66fa286060ef753e62ec825330035a8686f8a98b20c"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/spectrum.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "ca199761aa92c3560287f9733b54e404246a43053aab7a51149030b9b7c8f5b9"
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/window.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "4a91004be2c0980086befbb3bb409b84047d03a917992156525bc8f73e7e7edd"
+  },
+  {
+    "project": "F-EQ",
+    "path": "tests/clap_host.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "10c33fdc7302ac5e6d73f33b24fbdf078ba70b36b3dfe2e3567e5c85a1103d7a"
+  },
+  {
+    "project": "F-EQ",
+    "path": "examples/preview.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "71d1d4d53595e9ea54c43eea56646a9d6fa481dc84089313e2a45b1c06f3e86b"
+  },
+  {
+    "project": "F-EQ",
+    "path": "examples/standalone.rs",
+    "tokens_unchanged": true,
+    "author": "Fazıl Irak",
+    "reviewed": "2026-10-22",
+    "sha256": "384f2b6d0ba08f15d6ba0c140a17b72d60762d8799b84a4495da69d890500de4"
+  }
+]

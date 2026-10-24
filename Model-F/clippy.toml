@@ -1,0 +1,5 @@
+# Türkçe bakım açıklamaları: Fazıl Irak
+# Son düzenleme: 22.10.2026
+# Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true

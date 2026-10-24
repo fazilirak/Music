@@ -1,0 +1,17 @@
+Distribution and licensing — Fazıl Irak — 24.10.2026
+
+Project code: GNU GPL version 3 or (at your option) any later version; see LICENSE.
+Original authors retain their copyrights, including Idle Foundry for Model F's circuit/RT code.
+Fazıl Irak's modifications remain under GPL-3.0-or-later. No exclusive ownership of third-party
+algorithms is claimed. Third-party ISC/MIT/Apache/GPL terms are preserved in third_party and
+in THIRD-PARTY-NOTICES.txt. F EQ also retains the Luftikus MIT attribution.
+
+URW Gothic fonts have their own AGPLv3 licence with a PostScript/PDF document exception;
+that exception is not claimed as an application-embedding exception. Their licences and full
+original 20200910 source collection accompany the corresponding-source archive. GPLv3/AGPLv3
+combined-work permissions are relied on while keeping each part's original licence.
+
+Every binary release is accompanied by exact project sources, Cargo.lock, required dependencies,
+build/packaging scripts and notices. Source is available on the same GitHub release without charge.
+No closed-source redistribution permission is granted. Preserve licences, offer corresponding
+source and document modifications when redistributing covered work. No warranty is provided.

@@ -1,0 +1,70 @@
+# Türkçe bakım açıklamaları: Fazıl Irak
+# Son düzenleme: 22.10.2026
+# Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
+[package]
+name = "model-f"
+description = "Model F: a compact circuit-modelled synthesizer"
+version = "0.1.9"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+autoexamples = false
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[features]
+standalone = ["nih_plug/standalone"]
+
+[[example]]
+name = "model-f-standalone"
+path = "examples/model-f.rs"
+required-features = ["standalone"]
+
+[[example]]
+name = "preview"
+path = "examples/preview.rs"
+
+[[example]]
+name = "render-bank"
+path = "examples/render-bank.rs"
+
+[[example]]
+name = "supersaw-load"
+path = "examples/supersaw-load.rs"
+
+[dependencies]
+model-f-core.workspace = true
+model-f-rt.workspace = true
+nih_plug.workspace = true
+libm.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+baseview = { path = "../../third_party/baseview" }
+softbuffer = { version = "0.4.6", default-features = false, features = ["kms", "x11"] }
+raw-window-handle = "0.5"
+raw-window-handle-06 = { package = "raw-window-handle", version = "0.6" }
+keyboard-types = { version = "0.6.1", default-features = false }
+resvg = { version = "0.45", default-features = false, features = ["text", "raster-images"] }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3.9", features = ["winuser", "windef"] }
+
+# Fazıl Irak | 24.10.2026: ses motoru değiştirilmeden macOS dosya pencereleri açılır.
+[target.'cfg(any(target_os = "windows", target_os = "macos"))'.dependencies]
+rfd = { version = "0.15", default-features = false }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+x11 = { version = "2.21", features = ["xlib"] }
+
+[dev-dependencies]
+clap-sys = { git = "https://github.com/micahrj/clap-sys.git", rev = "25d7f53fdb6363ad63fbd80049cb7a42a97ac156" }
+tempfile.workspace = true
+
+[lints]
+workspace = true
+
+[[example]]
+name = "overload-audition"
+path = "examples/overload-audition.rs"

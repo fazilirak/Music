@@ -1,0 +1,4 @@
+Overload demo: OFF, then 5/10, then 10/10.
+Three identical notes, same preset, same seed, equal held-note RMS for comparison.
+0.35 second gaps between settings. Files render through the actual Model F engine.
+The previous-* comparison entries reproduce the original 0.1.7 feedback, not 0.1.8.

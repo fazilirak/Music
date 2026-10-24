@@ -1,0 +1,98 @@
+# Fazıl Irak | 24.10.2026 | GPL-3.0-or-later
+name: Model F and F EQ Windows and macOS Release
+on:
+  push:
+    branches: [main]
+    paths: ['Model-F/**', 'F-EQ/**', 'scripts/rust_audio_release.py', '.github/workflows/rust-audio-release.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: rust-audio-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [Model-F, F-EQ]
+        include:
+          - os: windows-2022
+            platform: Windows
+          - os: macos-15
+            platform: macOS
+        os: [windows-2022, macos-15]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install pinned Rust toolchain
+        run: rustup toolchain install 1.97.1 --profile minimal
+      - name: Install both Mac target libraries
+        if: runner.os == 'macOS'
+        run: rustup target add --toolchain 1.97.1 aarch64-apple-darwin x86_64-apple-darwin
+      - name: Test, build, package complete matching sources
+        run: python scripts/rust_audio_release.py ${{ matrix.project }}
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.project }}-${{ matrix.platform }}
+          path: |
+            ${{ matrix.project }}/release-dist/*.zip
+            ${{ matrix.project }}/release-dist/*.tar.gz
+            ${{ matrix.project }}/release-dist/*-MANIFEST.json
+          if-no-files-found: error
+          compression-level: 0
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: '*-Windows'
+          path: artifacts/windows
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: '*-macOS'
+          path: artifacts/macos
+      - name: Publish corresponding source alongside tested binaries
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BUILD_COMMIT: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for project in Model-F F-EQ; do
+            win="artifacts/windows/${project}-Windows"
+            mac="artifacts/macos/${project}-macOS"
+            version=$(python -c "import json;print(json.load(open('$win/$project-Windows-MANIFEST.json'))['version'])")
+            tag="${project}-v${version}"
+            cat > release-notes.md <<'NOTES'
+          Existing Rust/NIH-plug edition. Windows x64: VST3, CLAP, standalone EXE.
+          macOS Universal arm64+x86_64: VST3, CLAP, standalone APP; macOS 11+.
+          AU is not included. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised.
+
+          Both build hosts passed the product's automated tests; separate real DAW and Intel/Apple Silicon hardware validation remains necessary.
+          Project code is GPL-3.0-or-later. Original third-party copyrights and licences are preserved, including the URW Gothic AGPLv3 font terms and F EQ Luftikus MIT notice.
+          Complete matching Source ZIPs include project sources, locked vendored dependencies, original font source collection, tests, build scripts and licences. Keep the corresponding source available when redistributing covered binaries.
+          No JUCE rewrite is included. Plugin identities and DSP are preserved; Model F enables preset/envelope file dialogs on macOS.
+          NOTES
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "Existing $tag preserved; use a new version to replace a published build."
+              continue
+            fi
+            gh release create "$tag" \
+              "$win/${project}-${version}-Windows-x64.zip" \
+              "$win/${project}-${version}-Windows-Source.zip" \
+              "$mac/${project}-${version}-macOS-Universal.tar.gz" \
+              "$mac/${project}-${version}-macOS-Source.zip" \
+              "$win/${project}-Windows-MANIFEST.json" "$mac/${project}-macOS-MANIFEST.json" \
+              --target "$BUILD_COMMIT" --title "${project} ${version}" --notes-file release-notes.md
+          done

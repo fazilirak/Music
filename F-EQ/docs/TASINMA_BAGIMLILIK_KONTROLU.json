@@ -1,0 +1,7 @@
+{
+  "Project": "F-EQ",
+  "Target": "x86_64-pc-windows-msvc",
+  "Packages": 123,
+  "AllSourcesInsideMusic": true,
+  "OldFoldersAbsent": true
+}

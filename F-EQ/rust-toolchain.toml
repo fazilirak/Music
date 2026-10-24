@@ -1,0 +1,6 @@
+# Türkçe bakım açıklamaları: Fazıl Irak
+# Son düzenleme: 22.10.2026
+# Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
+[toolchain]
+channel = "1.97.1"
+profile = "minimal"

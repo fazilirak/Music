@@ -1,0 +1,97 @@
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\vst3_com_macros-160451050d46670f.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\vst3_com_macros-160451050d46670f.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `vst3-com-macros` (lib) generated 1 warning
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\nih_plug_derive-1aa5cd6b5679e3e7.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\nih_plug_derive-1aa5cd6b5679e3e7.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `nih_plug_derive` (lib) generated 1 warning
+warning: unused import: `ipersistant::*`
+  --> third_party\vst3-sys\src\base\mod.rs:17:9
+   |
+17 | pub use ipersistant::*;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `ivstmidicontroller::*`
+  --> third_party\vst3-sys\src\vst\mod.rs:36:9
+   |
+36 | pub use ivstmidicontroller::*;
+   |         ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `vst3-sys` (lib) generated 2 warnings (run `cargo fix --lib -p vst3-sys` to apply 2 suggestions)
+   Compiling simple-eq v0.1.4 (C:\Users\FAZIL\Desktop\EQ)
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\simple_eq.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\simple_eq.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `simple-eq` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 3.04s
+     Running `target\release\examples\preview.exe`
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\vst3_com_macros-160451050d46670f.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\vst3_com_macros-160451050d46670f.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `vst3-com-macros` (lib) generated 1 warning
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\nih_plug_derive-1aa5cd6b5679e3e7.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\nih_plug_derive-1aa5cd6b5679e3e7.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `nih_plug_derive` (lib) generated 1 warning
+warning: unused import: `ipersistant::*`
+  --> third_party\vst3-sys\src\base\mod.rs:17:9
+   |
+17 | pub use ipersistant::*;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `ivstmidicontroller::*`
+  --> third_party\vst3-sys\src\vst\mod.rs:36:9
+   |
+36 | pub use ivstmidicontroller::*;
+   |         ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `vst3-sys` (lib) generated 2 warnings (run `cargo fix --lib -p vst3-sys` to apply 2 suggestions)
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\simple_eq.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\simple_eq.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `simple-eq` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.40s
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\vst3_com_macros-160451050d46670f.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\vst3_com_macros-160451050d46670f.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `vst3-com-macros` (lib) generated 1 warning
+warning: unused import: `ipersistant::*`
+  --> third_party\vst3-sys\src\base\mod.rs:17:9
+   |
+17 | pub use ipersistant::*;
+   |         ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `ivstmidicontroller::*`
+  --> third_party\vst3-sys\src\vst\mod.rs:36:9
+   |
+36 | pub use ivstmidicontroller::*;
+   |         ^^^^^^^^^^^^^^^^^^^^^
+
+warning: `vst3-sys` (lib) generated 2 warnings (run `cargo fix --lib -p vst3-sys` to apply 2 suggestions)
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\nih_plug_derive-1aa5cd6b5679e3e7.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\nih_plug_derive-1aa5cd6b5679e3e7.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `nih_plug_derive` (lib) generated 1 warning
+   Compiling simple-eq v0.1.4 (C:\Users\FAZIL\Desktop\EQ)
+warning: linker stdout: C:\Users\FAZIL\Desktop\EQ\target\release\deps\simple_eq.dll.lib kitaplığı ve C:\Users\FAZIL\Desktop\EQ\target\release\deps\simple_eq.dll.exp nesnesi oluşturuluyor
+  |
+  = note: `#[warn(linker_messages)]` on by default
+
+warning: `simple-eq` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 5.53s
+F EQ ready: C:\Users\FAZIL\Desktop\EQ\dist\F-EQ-Windows-0.1.4

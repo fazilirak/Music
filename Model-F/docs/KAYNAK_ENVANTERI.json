@@ -1,0 +1,1532 @@
+[
+  {
+    "path": ".gitignore",
+    "sha256": "da803ff4d95f27eb1cfe8d2c947fe908ff82b15740a36fe7b4ca51f11c17fcbb",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "build-transfer.log",
+    "sha256": "b66897fe27e24a5bdfe105d569fab7bccfb15ddccf2136fcfdf4b426eafb02ab",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "build.ps1",
+    "sha256": "60c0fd187db46f6db9b184084b0730a4b7b94a27649df388d21895c37798f35b",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "bundler.toml",
+    "sha256": "a166b506e1b666a89c1c48319ad8429ec6bbde3f91e233ae387e63955c3948af",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Cargo.lock",
+    "sha256": "1f4452f371cc32d8b62fa555300771edf435513745a31e0c303af70a9d15a48d",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "Cargo.toml",
+    "sha256": "535ea1e028dd7f489ef6388ef4f7b36a2d5755aed8748a757302a8a489e91a10",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "clippy.toml",
+    "sha256": "19a70bee6f410cdbac2427e2e07c6c7151d98def9d32c70ef4b14853b93c53e6",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "generate-factory.cjs",
+    "sha256": "91939a0cd2e2a602c0d6ee2cbfe610380f38a5d1cfd6c21fcf0d4dd5e2f28917",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "LICENSE",
+    "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "README.md",
+    "sha256": "ed1adb8ac1dbadabe894a93422095ae7fa76d840d02cf46d68fcc011d32b4069",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "rust-toolchain.toml",
+    "sha256": "6ef0113b64c8f0a2cc311bc6a0f20056b7905e95357956c28289b13698d947e3",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "rustfmt.toml",
+    "sha256": "b96c4afaac2493b221938707e7a864575c02fa880595e6156703490e166ca4ad",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "THIRD-PARTY-NOTICES.txt",
+    "sha256": "7f5560a707fe9e7fbf08048fdde43d8d0220706cea0cb70a53c61e8d3c1d0b88",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": ".cargo/config.toml",
+    "sha256": "d9eba86dc33981d128805e71abe6e15d9aa034fbfb1aba8d09545467b0572a0f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/about.png",
+    "sha256": "26a85723d48c8125d09bfca484fa13cf25fc48e2964bcb5752b5bebfb78334d9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/about.svg",
+    "sha256": "b0cdcda46841a7969d5932fecf905779eecfee598927ab38abb2f4e44ef24e87",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/browser.png",
+    "sha256": "c0a1d75270d99610c891d39f4f08b1e44a172252c0b3fbc6d80aa4bf8cabcacc",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/browser.svg",
+    "sha256": "755c90b98afe76a79d4e96eb7fe67d1cd1efa3c0818f92f48cf3de51d84ff602",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/envelope.png",
+    "sha256": "6acca1528646aebda70a17f34385657ac077957d80c6613e7d8ba568efe561ec",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/envelope.svg",
+    "sha256": "18057a1c758cff8df6b5fc7cf58afd15bea4343eab3e84ecf76050ed3ec22984",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/GELISTIRICI_REHBERI_TR.md",
+    "sha256": "9648d2691690ea2d9470049a64b7ac8c8a9aab86e26394924c0447becaf3afbe",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/KAYNAK_DOGRULAMA.json",
+    "sha256": "652fbdb0d0e921a921ce59f68eb58161cf5ee755b2523abdb63ff3d09c87ffa5",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/KAYNAK_INCELEME_2026-10-22.json",
+    "sha256": "f6625024425ef9e5a0a844fdf5942ef586cc31594bdce9ce47e6128a76223332",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/mseg-filter-load.json",
+    "sha256": "d2d06ce0e3aad722f2ac49d877ead9abeeba4c8fe0d54ffc399068c5e0929174",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/mseg-volume-load.json",
+    "sha256": "1fff5267547941d2f5d0bcad9ef21b4ec7645a742d5e4b8638de92b3fc89525c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-load.json",
+    "sha256": "805110795cd911c95da41d4e3e6d0e01b923a22a891a3a3704c370ed640a44fa",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload.png",
+    "sha256": "985d9b32d06fbe287bd18d956676599ea873ba433c2e939cdf54400da08b8e51",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload.svg",
+    "sha256": "600f3f7fb3e09f390ef873cc84e5d2bb63775c4a59ac0ee0f49821c237e27898",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/panel.png",
+    "sha256": "20838fc898daa1838d23892bcdea36a6250c4089fb2c5efaa05c247261f1a9b5",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/panel.svg",
+    "sha256": "e6d39ec543670e002203cd7c6bc113ad59207dfc74e970af608dbb20299a84c9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/performance.md",
+    "sha256": "64983b0a6b503fb02d1671c6306622050f7e0988ab73270275c9bc039bfdb64a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/save.png",
+    "sha256": "6dda837233ff3fa1b679e16370b18baf6b5059038ddbfc3d11202cd65bb2d1e1",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/save.svg",
+    "sha256": "624014146c1348665430e3b510eb3b1b6f18f43f5f503c6e2580808603da42fc",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/supersaw-load.json",
+    "sha256": "65645d3dfe2d751090d7574a418fba07147868196a82479ffec66e2bea772f80",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/supersaw.png",
+    "sha256": "cd0cb837bbeacd65001cd7e0096d0f7d9b59152ce17210b508b5aa822380ac2f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/supersaw.svg",
+    "sha256": "6479006b081d205da5e52e4100ea49e451bd1309b6eba10b8bacfee9f1605dc3",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "xtask/Cargo.toml",
+    "sha256": "d95c4e05357368ffad5f2391e32511de7019d37cf6a77df75abcfaa9341821e2",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/Cargo.toml",
+    "sha256": "604b12aa2e8da2b831ed3174418d3c349fe996bb4f876616c456b44fa91f221d",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/Cargo.toml",
+    "sha256": "5bab5d9026a73fbfcf77bc468d82eb693bda25f940ddf328afd8ab5ec6b2b717",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-rt/Cargo.toml",
+    "sha256": "d69d0f9a95dbbc47c8097bead4d0371702a9b099a7fefd3bcda385b48cb75873",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/examples/model-f.rs",
+    "sha256": "ac9af2e717b8473a3cd2b4aa1d11521232f05678af1471913408d021e110f564",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/examples/overload-audition.rs",
+    "sha256": "5703e53c88fa73c2ee5d7256421cea724c329a8fd5bc18bda5ea82726b51e6ff",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/examples/preview.rs",
+    "sha256": "8efb422d1382317c13c4f5c3ec42632394f4eccd529d1e2f85ba249ad789dc5f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/examples/render-bank.rs",
+    "sha256": "8f447afb14a294e548f1df407ae95d84fb78a15bd69443479a52c9564c4fed65",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/examples/supersaw-load.rs",
+    "sha256": "aeaa4fd0f2aa054c1447b582ed330034740ce419e790a6943cb7d9b7abad6992",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/sounds/factory-levels.json",
+    "sha256": "ae5b9255cd26c526af460bcf36fc90d3d43bafd0305b903bbe5b9324e8bbdc00",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/sounds/factory.json",
+    "sha256": "cd8856978277e6dd39d7b65adff172d0d0230e226ec8c2512c175cbd25dfb2a5",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/arp.rs",
+    "sha256": "c236ba690cfa2b41e986e1215872563c0ac6e60d7278d47e696566586995ec47",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/character.rs",
+    "sha256": "ae8c50ef777ffd93c1aeb526f01e3c1cee64f474e03768c199b582e270f8fa1e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/editor.rs",
+    "sha256": "b4389f22ce24f05e96dec63cc9582e141868980e0efc42f8b4d5f2f4a435c3d6",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/engine.rs",
+    "sha256": "08827c5c7bc9c47d062c4f73cfe94f29bedef60348d63f1ef8120846ede6fcb9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/helper.rs",
+    "sha256": "4202b0c44a9871f42d6c1109888bea6d03c5194306fa95a9e83a2d13188706e8",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/lib.rs",
+    "sha256": "21a09fd8ef5d67adc20eaa47f41cc8e99a825990136dbc6de9685380d61c9197",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/mseg.rs",
+    "sha256": "36eb05baf509cefccf7ff70933db7967581ee9c1c40575def2422843040076db",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/mseg_ui.rs",
+    "sha256": "8f2833511aa943082dec240e729a3ef4b2231edd2ded6a25049a86a4e5eac4a4",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/panel.rs",
+    "sha256": "89a3828c9708f9d289a13b0357ef88f998af3bd9b4b99c28fbc475d7768c9a65",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/params.rs",
+    "sha256": "77f4a49c9601a1fd3ee700dd99e96b9afede4e03c85ed3f49574bfea9137e657",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/pool.rs",
+    "sha256": "a7f8df16f0de46f59eb8730abfde4cf9c079efb018541b726f8a623564718e48",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/presets.rs",
+    "sha256": "1ac208eb3711d6d24a0af0fee02ef2db55fee9eb676476a72af66a42ec57105f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/src/window.rs",
+    "sha256": "1c9ec2686b3616397615314193ef3e1d8d067205e2ffd35647b232f7a6737818",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/tests/clap_host.rs",
+    "sha256": "7eeffd04cc7cef4252f7bac5628ef2a789697e5f6eebf47b72ceae8ff7d1f9da",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/tests/mseg_audio.rs",
+    "sha256": "d633bed959985c4d61a55984ca4f8d35d44a8321ab9de66316a868f6e39e846e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/tests/overload_audio.rs",
+    "sha256": "30424152b7877523596ae3d03b97b2fa06ab681f7d87350bf4f36b8795585442",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f/tests/realtime.rs",
+    "sha256": "bad49127d13d4a414b4373cc1d1187b87649da5ed0b104044623bbbc86279abb",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/a440.rs",
+    "sha256": "95bf5d21e474d5155bd97ac8d2103c693369e7928f14e250d8e5be2e7c5c43e9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/a440_table.rs",
+    "sha256": "4398d46f576dcf38202692ff66c28c8dc46dfdfd90371e1ce82cf0da48c0858b",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/contour.rs",
+    "sha256": "bbc98153752a71b37960d3bb0260b74e7308986b8fc2dfbc25a98fc4e1fed74a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/devices.rs",
+    "sha256": "02b32fe37d7842f930da16068e351ab09f85ef94df846185c3bc70eaf03918f7",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/expo.rs",
+    "sha256": "2bdd7d45cfae0890fd4fbb8dd6b225ac4458aa181d4f0cf87697c5cca9c46225",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/fast.rs",
+    "sha256": "205a39b42ce5623d503ec4cf6c47f43050596b32ee5b8d44447526a86ab58816",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/filter_cal.rs",
+    "sha256": "42098d3057bfa3809cb6ee6d0de8baf9333ac8b03477bbd891a45dae65374d36",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/keyboard.rs",
+    "sha256": "2172cf10e51e0bf9557cb58e54aee61d85ed168ac48253f2b4afd9b6b23a192a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/lib.rs",
+    "sha256": "1f5be1030630896b0c346c1316d241f6169f50db90e4ca47d41e1b0ffa294c70",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/linear.rs",
+    "sha256": "b6528776b3bf371630d803287d39b0e6a92db1c1135b152051a5206490dde853",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/mna.rs",
+    "sha256": "e02827a0b059ab84b5828eb581b53e98adc943d92b01cea97fd4f4b82e3c26d5",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/modulation.rs",
+    "sha256": "0d6ff6c24f97f92fc9ca8a180f3180c933825d7a0bacdd7ffccd1ff109af865e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/noise.rs",
+    "sha256": "b8a7d012837c37db2276c2e12b0145220c164284ce5578de18b1dc70444a01db",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/overload.rs",
+    "sha256": "642ee00b98fb73c833d250ab71662b676b222b6239aba78e2f66ff49aa335360",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/preamp.rs",
+    "sha256": "3063d284c014b151db19f83ac6a44798c41fecfa9229ab33f0a40d2fb4feea51",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/prof.rs",
+    "sha256": "c2c9b29995b85b114b400e3b3cc39b18277985e5e3389857169808697e20a5d7",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/resample.rs",
+    "sha256": "61e7290264acce0944eaf72d7da2a2b7ddc86ada81a1e189209b4c72af74ae67",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/revsaw.rs",
+    "sha256": "339e91f71580d653757f4da6a1b2a4de361707c3e4dd3779187b456833da8cb5",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/shared.rs",
+    "sha256": "b51118f1eb59ea77615425bd3aa979beb2d9ee89ca29f376bd3ccc3b65b7ffe1",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/supersaw.rs",
+    "sha256": "ea3a4fa53679a66b17de8bda410f102f099aa433d8c5379a24acafc66b12f60e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/tables.rs",
+    "sha256": "9092df9f08b2bb9f9c3c7dde59f9d10aaf9c9c54f609e11547551e8bbcbafae6",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/threaded.rs",
+    "sha256": "e71c72ccb0cc68299caa8de0a6ab843ec0fa0eef2a01d46108ed6f5399738ea0",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/tuning.rs",
+    "sha256": "05fef591d5e91c0a8a8816e61592f9f79ca8ab40bba5e084b586b08da8157b1f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/ulp.rs",
+    "sha256": "b68493bdc5e1bfc51dcffcb3157ae054a37c50659ada36d127d0033e9d3516d2",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/unconverged.rs",
+    "sha256": "2ddfc6f66bd3d61f719441d020aca3faf4d9df3210f54fee20adffd53ce96659",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/vca.rs",
+    "sha256": "6e3b0dfb8521c851e1420b5794949e1a0242f2428937ef38862696bc879f79c3",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/vcf.rs",
+    "sha256": "3f2b550b387f7f2110e40cfdf39fc6e538a23517d41335df9e3a7138667b3599",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/vco.rs",
+    "sha256": "c6f858b5708289b2aa80f0938e499df57fafba5dd3d06ec6adfa65e1ea58c57a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/voice.rs",
+    "sha256": "42c7e952b08326ace609d4764ddd4ee69d8f03d0147e9d4ac2751c90ebc64366",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/a440.rs",
+    "sha256": "d1160ac65783fece4f70998b53fe67087a4e5e28f3186b7cc0be177baea6f9f8",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/entropy.rs",
+    "sha256": "e899ebe334fd098857be83a2f62a3b5a8e072fd1ed13c14dae0f655d4a15b46b",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/expo_table.rs",
+    "sha256": "360cfdf8c268033de3f8204037e875b2c2b96701c85a11bdefddf7818a549961",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/feedback.rs",
+    "sha256": "cafbbff2a2d7f374af83337acc6f468910e8fd2846221db4c00b2014bffdc53c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/filter_cal.rs",
+    "sha256": "4e6043f9f3c0abee4ad8fe835a73ee34ffabcd3111dba170b1dd6257d1660970",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/midi_range.rs",
+    "sha256": "6b9cae4df5193d58ab2eee12306dc4d5d333663a60fbfc27448aa62e6a79a4fb",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/mna.rs",
+    "sha256": "014cd33c4c02a5fbbb13f32e1833753488b74bd918247fc3b7dd69eba229fd8b",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/noise.rs",
+    "sha256": "93139fbfc4378ec6666de21d6bc2da642c9b210d7819ddf53826d085e90f2e20",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/one_cpu.rs",
+    "sha256": "7b0e330c5b5910dcf669deedeac05f503392aa71959db0e3f41c4c030d817e10",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/resample_factors.rs",
+    "sha256": "a8bfe4c8ffb58e524096b22d7a71b73b6c8b8880ef8f38d109e9cf45f3454458",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/retrigger.rs",
+    "sha256": "1080f282a41f3994dcea0a817e3732e6900be7685d2d359c89ad6a28d16664d1",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/rt_alloc.rs",
+    "sha256": "5ade5071b69d0a0f96459ce1f1296f1cf45ca38a2c0524991dae15b0facc14cb",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/supersaw.rs",
+    "sha256": "2923c1e6f03ed284ca1ea0e62ee8056fc6552dd530c9617cc8d8261a7e8e7a89",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/threaded.rs",
+    "sha256": "a3ee419d0f89a1e496033cd0477378d9e68a9732a41c07dbaeadb6089081a38f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/vcf_jacobian.rs",
+    "sha256": "1e5ba8dcdbe42c627376895e5dfcd80e024f2ec161222da36b69485b2540af3e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/tests/voice.rs",
+    "sha256": "5e4cda256d2ca59e21be83e6a9fc92524799f2a29f4071d7b3c3001795128ba2",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-core/src/voice/loop_lab.rs",
+    "sha256": "d81ebd68bf7d3f89b1e1b3dca71cabff2ba75a4bfa508e43d9475a8d443e6d8c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "crates/model-f-rt/src/lib.rs",
+    "sha256": "cddacdfcb24931fcad9f2b26a370e728576c8e79f824905b1a9dae23e455134d",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Copper-Ratchet.wav",
+    "sha256": "7181fa17fcb42301d8f63d23f33d0fe57b14df32da0bb539b4149b698f8f0d23",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Copper-Tines.wav",
+    "sha256": "c057bd6d8d93c548fcb15b807b8989f70759f694b818c4759bc403dd05974791",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Machine-Garden.wav",
+    "sha256": "4fe4b814e45be0fa4951be6d865270080fcc58151b280f61fb1267cbcf515df9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Model-F-demo.wav",
+    "sha256": "04ea866cfa9d0ca94e4fe8f9a5fdb171f79d6da1b22b4c21cd07b3447c750a3f",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Moving-Horizon.wav",
+    "sha256": "623826a4d06bbf9b8c5a1a034e263bb01911e1a47e959fd874dce5d440f98a69",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Radio-Ghost.wav",
+    "sha256": "8da613368978af9d5bf6cc9b7fe6c4a2af5f6ab5e5c7ea34dc4e5807612eb74e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Seven-Clouds.wav",
+    "sha256": "a9a8842f336c01f49ab9af4aecfb62d5b9d3b92ae4ba0cf7708daa0e181e7c63",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Seven-Runner.wav",
+    "sha256": "1e0d5f1c1d5b4b0c0fc44a8ca732d4de4d73917787244e9858e367be9664c77c",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Seven-Suns.wav",
+    "sha256": "9343900a808bc312d45df6c321cbccbcef58a9022ed15b49155361d94c39967a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/Super-Weight.wav",
+    "sha256": "0b8dc1032bfa55cd1ed62c637ef9dc4d2ecc383e87adbac2c247a71590eb065a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/audio/validation.json",
+    "sha256": "945c12d690af5b12509221d0d325042024215b6822b01a248f0929ab6fcda6bd",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/45-10-dry.wav",
+    "sha256": "dbc4b7b9c1cd47ab9f07d74e0e9fceb5f7d4dc8aba97efb1673ec5511827b2d9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/45-10-previous.wav",
+    "sha256": "654ea2f77a2487a8a11a43387e5135fe75a8e8ee9155c57f90afad4cc361bb87",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/45-10-warm.wav",
+    "sha256": "121546494112679e2b24ba46d217404ba05357c6c24b122de39e990a2aab06c0",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/45-5-dry.wav",
+    "sha256": "dbc4b7b9c1cd47ab9f07d74e0e9fceb5f7d4dc8aba97efb1673ec5511827b2d9",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/45-5-previous.wav",
+    "sha256": "14b925d043f709456dde909e2711fcd9c7981f8cb7b56cb4f7adc5207255dbaf",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/45-5-warm.wav",
+    "sha256": "7089c0aa1b0a049637d84587affb8b6d9977bb8d5ade6f0a1d3de87fc9f92897",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/57-10-dry.wav",
+    "sha256": "793c81f8fc895ed6a9a134e614f79ffd5764ab37e6cc245709e4fda2f4bf8b90",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/57-10-previous.wav",
+    "sha256": "2d5b7b1747f13d441e2ecc5f96f68ba75bb97c0a0643c5c739626a76c1ee2728",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/57-10-warm.wav",
+    "sha256": "123135dcdef71018309525079028908ae9230961d8ae43077492c3d72d6897bd",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/57-5-dry.wav",
+    "sha256": "793c81f8fc895ed6a9a134e614f79ffd5764ab37e6cc245709e4fda2f4bf8b90",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/57-5-previous.wav",
+    "sha256": "45196004ef6678f331c58b4044d3cd67db6e71bf549b687c2495ee3be30fdce4",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/57-5-warm.wav",
+    "sha256": "39a5beb3bb62433af7ea789ca18709cf3d19d6d34305bd2991217647a9ad200a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/comparison.json",
+    "sha256": "f45fa9a0a9bdc70f7be3b24a3c32fc0b1db7328487fed2b9e6963e57d06d86bb",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/level-matched-validation.json",
+    "sha256": "5252ee2c7cb3a0bd30f4a8d4466c54a73f3c554404d8ffcb8d0a662ef02d2b4e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/LISTEN.txt",
+    "sha256": "a9da96a25ef5daa799a562d5552a5bc485577c01e0ec2146d0c0c03d5eeef99b",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "docs/overload-audio/overload-0-5-10.wav",
+    "sha256": "298f74c39e338aae208e7a4db9c0a02c42963e6b0bb44a73221b9e7c0332d54e",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  },
+  {
+    "path": "third_party/baseview/.rustfmt.toml",
+    "sha256": "a85d048e0aefbb6e4f5522b06a68c85395fdc619d1a87ca6a08d54fee34028b7",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/Cargo.toml",
+    "sha256": "aa9c059d392ca09fb871f49d236172fb67a7eb1ee015c48df520b2ca7ab2f193",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/LICENSE-APACHE",
+    "sha256": "95bd3988beee069fa2848f648dab43cc6e0b2add2ad6bcb17360caf749802bcc",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/LICENSE-MIT",
+    "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/PATCHES.md",
+    "sha256": "27fadc018d14517c2311ee5e7e3ab7ba8a1222e6646f58d5191f57d13325b041",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/README.md",
+    "sha256": "408d3bc7dd182f1e5d652dd9e51f2f5a9eb99433662a5aad70d6748b1fd087c5",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/Cargo.toml",
+    "sha256": "63c48b4d3f9e904c05a60f7d4f11983c576fe536894cffc1380f606caad990f6",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/LICENSE",
+    "sha256": "7088dc1293488d86744ee81349fcc2fb6550345dcf4ad676b5984774e08fc1d7",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/PATCHES.md",
+    "sha256": "f1d183b1b72bda268cdae8bb9c16d956682dfacc700c2567b66c9d54a7bc127b",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/README.md",
+    "sha256": "bf1c192c33d2067f259e0dd233c2673e649129ffe178e610ade6257e1494b217",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/urw-gothic/COPYING",
+    "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/urw-gothic/LICENSE",
+    "sha256": "772b1b47eead8722156abaed483154e1dd1137e7035290550cea6444192a2e3f",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/urw-gothic/README.md",
+    "sha256": "6d51b6dc08c39d78a82664c386f4b794333df5b71865648927e05cbfd480e72d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/urw-gothic/URWGothic-Book.otf",
+    "sha256": "04318316cee29950805110c9c8949eea189ef5575132881f4d4d7e03e5299903",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/urw-gothic/URWGothic-Demi.otf",
+    "sha256": "5b009410cf5231dcb1e45b155c1afedcfc63d82042fd8c414d0dd7705c9fbbae",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/urw-gothic/VENDORED.md",
+    "sha256": "e98b14abce5cb64236cb6a782171d76ceb49ba3a1137f4b02bb69fe630c72d34",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/clipboard.rs",
+    "sha256": "cc020386a904cf03c63602c379eda733f6b726a53372b147a6fef3678a1a3beb",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/event.rs",
+    "sha256": "a154e0a64707d476d813c15891c95bc614f9a1d08e644295d778fe558aaa0189",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/keyboard.rs",
+    "sha256": "810eff543fa9cf7fb3f8db8d89ff045afb65200267891269e570affed4aed77e",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/lib.rs",
+    "sha256": "2b014278c790de7555dc105017cb90c67a530b139710bf53dcf35a1ebd35c4d1",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/mouse_cursor.rs",
+    "sha256": "e7ca47303eae71473d1a4847aa1b13ea1301fe953b74b9e0cf1a88999510714d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/window.rs",
+    "sha256": "b32963e049081d5872737df44b1ff63a121eba1841407658f0f36240779388e9",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/window_info.rs",
+    "sha256": "9e95a59e4e643a9c593b0db07e88d64d78f902779a4307064f419ba525d065dc",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/window_open_options.rs",
+    "sha256": "432c43b45cd1e2969f3e5f4e40a2aaa789a2933c8471ebcff2782c1c0de9627b",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/gl/macos.rs",
+    "sha256": "c46db02f39e5662ed571011563dfeedf6834c0e28025e887dfee96ac646c90b8",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/gl/mod.rs",
+    "sha256": "7f3b0b49714f8667aec0742737921efa9da8186a17619fa162ba2575423810aa",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/gl/win.rs",
+    "sha256": "e88cf25cfdd53554081965ad1b6288ee2082920a6ff6e5bd10d95a508a9c913e",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/gl/x11.rs",
+    "sha256": "3d6ae059459cb085d85ad3791d8f49e3c60f4f3b286c7cbb0760493c5cfd4909",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/macos/keyboard.rs",
+    "sha256": "1442b9ac762e01db72026420fe638a4029e9fe4268059689c2dca722a32ae3ac",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/macos/mod.rs",
+    "sha256": "4a5380f5da75fe9c19d081f8d0a3e04936e38743e8eadd521c19cac0a08def12",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/macos/view.rs",
+    "sha256": "fbcbfd17ef5b380163e4dab074e054976642f06308f234eb043dccf3736aa21b",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/macos/window.rs",
+    "sha256": "7349c4126dae851e81d9df6cb8cf3707d3505719c535ac7af55d2816c383fbc4",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/win/cursor.rs",
+    "sha256": "2c6b8a96903cc93b398a95a95b8cdc352603ac1fa4478e9596b3892de93d69c2",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/win/drop_target.rs",
+    "sha256": "b2394b8bef4bdd1b1a5ddef902904630d709b2dbb27d27a647a5e0a131d8ebb3",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/win/keyboard.rs",
+    "sha256": "dc529e947cb9ebea74c33fce1c286ec82a2be9a86bdda6b9f98908cea6d6e2ec",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/win/mod.rs",
+    "sha256": "71535d43a7b7eb9a3a39016ed081e8f40ad69507483479318986347e3f47aa0d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/win/window.rs",
+    "sha256": "9716bef4cff1caa5143c2973f0b9624a3922f782f33e1174d6edd87b4687165a",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/cursor.rs",
+    "sha256": "403c4034f4deaba49164213ee1a0fe1cd4f81cf27d05580a9c69684c7d825014",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/event_loop.rs",
+    "sha256": "919395ab99ae5eb06fed633696ed804dd44eb8d576835eb88b09f1487e3c8393",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/keyboard.rs",
+    "sha256": "c59125cdbc8a235a6f2f69313107e1fd68e5a657c420cdc8cc8499d2386e233c",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/mod.rs",
+    "sha256": "8e80262b5171e3e52114da5b4bee2e69ddb8d1e8571e9816533e6f4b86ffdc8c",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/visual_info.rs",
+    "sha256": "90cf1b5e242f2265c6e3088f02f8f8899233cf998ad99355e89aa4145714b56f",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/window.rs",
+    "sha256": "1af127db8ebc6e45412a7cb7d8be0a4b291665e2b42493930c34ca3aba10d77d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/x11/xcb_connection.rs",
+    "sha256": "d764a43fa21ef5e51f7827500d07bdf7efa9d1a47bc1e72bf95b4b45f80bf8e8",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/baseview/src/gl/x11/errors.rs",
+    "sha256": "3a41366c057fa36a99a4be183bfef061c6206c70864d0f60e2a775c602289b6c",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/nih_plug_derive/Cargo.toml",
+    "sha256": "d4e7a6ebc1be651a6dc821a3f8916143c9e2944373e3bda04f88a0e06f9f0a30",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/audio_setup.rs",
+    "sha256": "3a0c807b00bc8707bc5401977061c5b94ec34ef4c8dbd77fcdd21a89df817d20",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/buffer.rs",
+    "sha256": "485877e3ef8cc7ec1d773c361313a3518c7a6f4efc03161c3fcdcbf0c7f7f59a",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/context.rs",
+    "sha256": "440351bd43282f2dfb77fe1e7e6f7bf06c7b91317a237d6ff35fcb357cf6e73c",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/debug.rs",
+    "sha256": "66f643f16a8c1dd7e316ecd9d5bcf3a106b98c72251c1eb083fdf59dd37428c1",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/editor.rs",
+    "sha256": "3c331bb375c5912a5b43b34d6b2789bb8e7f9de25d50eb8e14c5556a7819b0df",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/event_loop.rs",
+    "sha256": "1f5f41ca42440c23f8a14613ac599412d9698f1a56664c37e3f5bc0c785fa831",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/formatters.rs",
+    "sha256": "b1e6e6c8e88f7fbd1386fcfaab4b8b84e49fc006787c59dcc349b9f6b8065d6c",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/lib.rs",
+    "sha256": "43aa21d889f374cd9921eef87b33b7cdfeb73741c28a0aaa438fee57dd417989",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/midi.rs",
+    "sha256": "fdc8815f161d160e62172cdaa5c1c9bcd6946b7707f4c23b56598a588625f2ae",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params.rs",
+    "sha256": "a45650652bc79c29b7aa9e9329c3464d1fbdc51dfc77ea69ef2fa1a34fec5d4f",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/plugin.rs",
+    "sha256": "f8938deb4a845fc58f5ef44b0a6b35ee92e7754f0478d8cfa3a61a70b9bd40ad",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/prelude.rs",
+    "sha256": "fb2c741a5c20d1fd649c9babeb65f3b79305b6dcfa287abab38b4f43dd936180",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/util.rs",
+    "sha256": "e7661b44a9829d23233258a0f9c9b95b6d267fa16c79dc12dec898fbd1f56aec",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper.rs",
+    "sha256": "f7017abc81cc54338c222cdaffe1641494045c31676942a946ca61ae3189bbf9",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/nih_plug_derive/src/enums.rs",
+    "sha256": "0ac0ec88fd5bcff77c2a36efc010212d8d867c1c52662331d7c74550636fc99f",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/nih_plug_derive/src/lib.rs",
+    "sha256": "6e574a86ceabc35c3432a42beb4973e0de3fe03bc8e97bfe8237ec0cfdd8a79d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/nih_plug_derive/src/params.rs",
+    "sha256": "fd9ce447b9f183fa35de00a0ec9b8cdbcba14f1f3909ef83ed68863aa7b298f2",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/nih_plug_derive/tests/params.rs",
+    "sha256": "f721390116ea156f0719e0f5eca6cd6d3ba588e3f0e81a8899a59e119832b3af",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/nih_plug_derive/tests/persist.rs",
+    "sha256": "eb56e3e3297fffb96f0d73af625a7f0fc6c882349f314c2fca9e301fd99c0dc3",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/buffer/blocks.rs",
+    "sha256": "fedbe11971e7cb89b9feca356760c320281ff97313afff2e8548f63f00a17bfa",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/buffer/samples.rs",
+    "sha256": "65caf483cab8e2bb9a953b40187f1fe1afab95c2acb11ec8a780ce1f36de38c9",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/context/gui.rs",
+    "sha256": "7e09042ddc2c0c725d6a9b326ddba80c552969c88c159a1c38e9c795266712a6",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/context/init.rs",
+    "sha256": "a47d9e0883b1461f7f79f4628536dfb5049bf9be386fbcc091f9e395c07cf13a",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/context/process.rs",
+    "sha256": "c3ae422e656270b690a69d03907c971936ae979581350101751c64af771403c6",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/context/remote_controls.rs",
+    "sha256": "25e8daaa00966405a51eb02f4aa9f1d5d7e5b530525161ce1de7caa9980ce00b",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/event_loop/background_thread.rs",
+    "sha256": "03a6acee3ebd5bff9ef00d3b8e0dabf79cad127c667e721ca8a18bb10403cf0a",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/event_loop/linux.rs",
+    "sha256": "7b68262eac464e6619aab9ef5b3790e5aee7003179b1b11f2744375a010b8d90",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/event_loop/macos.rs",
+    "sha256": "c3f87ba63a2a0bf215c95d996c7f4bbb8a121895ab951c98652d864d638d4969",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/event_loop/windows.rs",
+    "sha256": "eee8d9e1bfc23d4b94b3d5180edd118e97f09516469a0abac753ab61064ff52e",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/midi/sysex.rs",
+    "sha256": "19f5ac345c9e8063b95ce0f4e10de3e875d039cef51483a6365724f2b701c801",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/boolean.rs",
+    "sha256": "e9e8fa90d6d038ac86021573288ad0f032c9f200f869e1d95d29e6673dfc8359",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/enums.rs",
+    "sha256": "cad83204c967a2e8a0c3ae7df727a26ec169363856f097a1b64eaf1ee61f95c3",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/float.rs",
+    "sha256": "5710abcd3bb04765948a2d61fa051bb99707a8c16b85a4f923d4658157f29703",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/integer.rs",
+    "sha256": "7a93ca572e3d5afcc1ed1d3af18d5e261daf09a6144b104bf16306ca11f0bfc2",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/internals.rs",
+    "sha256": "23170236ec3c0be968a558d4581f70981f4bbd3058d4b472f47f49c537ee47aa",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/persist.rs",
+    "sha256": "35f0729e2231cf9fcf57a318f5ca005ae57da2f56102d2f06bd9e1dba8b08aae",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/range.rs",
+    "sha256": "0c5d4fe431c546cb38ec2ad7eedd0aa2891e3249208ed6e8c3b1672399dfdb3e",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/params/smoothing.rs",
+    "sha256": "183484c04bca15b086376f5743751392fba9b2940a7d2c7e5553ecba6cf67719",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/plugin/clap.rs",
+    "sha256": "c53d753b6985e75d70447b868536aa5ac17c165138c87e7b2d23041511945b3d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/plugin/vst3.rs",
+    "sha256": "de809cbff267a714667d36e47f956f17561600f582a3f0e6fd6dcb0352d1d4b2",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/util/stft.rs",
+    "sha256": "263ec1c629f1c5d92003bf869ff3b7dc192a4cc8cc60a59642d971dd80c8f3d7",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/util/window.rs",
+    "sha256": "f6874868e8b073f6f1fd42e5c77fb1f05915ac2211faa8ce3dd534a9bd548829",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/clap.rs",
+    "sha256": "4d8dd92b00b47d72efc94e1b7e987fb3219b12eddbc9967c33718d17cac3cda5",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone.rs",
+    "sha256": "f43bdafef7c765621ae06b31aad972d018a2fca19d775b00096ccf689c98b445",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/state.rs",
+    "sha256": "0bb524ba8b5dfc5cad82f18a7d106f06dc3e0463f6bc66cfa5672db051017e58",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/util.rs",
+    "sha256": "e1c5d1fe320c611efebd14db1584cb4f185a748f08f297d0c984b5ef14a96583",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3.rs",
+    "sha256": "ef974cc515738c2116ecbc1c657dde34a5728f15ace7274f106a7bb8ed05908f",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/clap/context.rs",
+    "sha256": "97fd28fd8fc636e06ed1d900447806cdfbb635dd6f566c234c8a0f50fca61e3d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/clap/descriptor.rs",
+    "sha256": "15616822827e5c44ef1e1403830f7a198593468b3f1ca40ff784ad8c1598d797",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/clap/features.rs",
+    "sha256": "f21e3b936c260db20711d4d73d0c7a612ccdda2a0a0cb14026ff5a17961de333",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/clap/util.rs",
+    "sha256": "348c8defeafa559fa10db07373a9075e9dd963b731d2198274c9fc6501e4a9e2",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/clap/wrapper.rs",
+    "sha256": "05002994215422fff14f5bb1ac03f7e7e6381f21ac8b53e90a5ea83eb8106817",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/backend.rs",
+    "sha256": "05936e3cc157d6cf4152e1b08ce08239cebbc9f11be387bf9e66107ae1a01be5",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/config.rs",
+    "sha256": "085d5f39fe58e78734f0bcb665653185eec94029fa0d95d314106b13097ef4bb",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/context.rs",
+    "sha256": "fc7860d525452757a6f806e57df21a2e5b5c19b02fe0d9c8c363d3bd5d1f0127",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/wrapper.rs",
+    "sha256": "a4c13158a0ea740b96485d99b72501cf7ef684a46c206acf27d62eda22c8dbad",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/util/buffer_management.rs",
+    "sha256": "275a01123df52f1e9d7081a559963f86a73a98d34bdd03d5a428f4806c5a45c9",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/util/context_checks.rs",
+    "sha256": "94f05bc98c422aae40890b184edcea983d8fa8c3e24007e6cd4f9e47d01d963b",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/context.rs",
+    "sha256": "0d7dc35c9531f21feb9d8b2d5323ef4463b60f1f608d6f084e4b83600bc5d077",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/factory.rs",
+    "sha256": "8a77e9fc5aa072a489bfbd44e3fea5f77d858e5c8ff44a6b3e82859712e28fee",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/inner.rs",
+    "sha256": "d713296950d7b75f7c7f0dcf8bafbcd08ee804740df47ee120fb51b2d1cd7b8f",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/note_expressions.rs",
+    "sha256": "d692c36cc37af0e3982a78e841b19a4da8b7c1b598a7c62bc4d8cf30869abcdd",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/param_units.rs",
+    "sha256": "03d13f30c69722ededc0520a066b32c6660a8241379c863c253ef2037b6836e6",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/subcategories.rs",
+    "sha256": "7eb2bc4718c13992c5591b8911428db0a3b8bebc9990152e1b0acb2c1ebd4bc9",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/util.rs",
+    "sha256": "bf32f48eeb4c5a743f691d505ac0fb903e6c9249b4c9c3b66a98e663f564302d",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/view.rs",
+    "sha256": "19dbd5ed0e290768cfe624447d4f38596eeccf52fa3e59100a6739d4c7416ec3",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/vst3/wrapper.rs",
+    "sha256": "6bb7e622698ebfe37d1ae8aeb7a935e832dc75f31bca605721895a3fac566b80",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/backend/cpal.rs",
+    "sha256": "0289006104bd224b2378727c3fc491d65c21dcdd810a197b4d42c5fe1e816ca8",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/backend/dummy.rs",
+    "sha256": "08ad1b41b87c9bf2bde144b1417eec0f925ebfaf60fc5dfdd5fcdf83c078cb45",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "third_party/nih-plug/src/wrapper/standalone/backend/jack.rs",
+    "sha256": "f7cefc2e0a385490fc5663d757718ed792b94c6f8d766f05e0b1cf3cb8045e0a",
+    "reviewed": "2026-10-22",
+    "third_party": true
+  },
+  {
+    "path": "xtask/src/main.rs",
+    "sha256": "323540e79d36186f2138879ff6c4caadcfc4ef0f76f5c0fb1b9552fdd1cb3a9a",
+    "reviewed": "2026-10-22",
+    "third_party": false
+  }
+]

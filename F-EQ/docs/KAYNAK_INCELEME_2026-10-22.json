@@ -1,0 +1,270 @@
+[
+  {
+    "project": "F-EQ",
+    "path": "src/analog.rs",
+    "purpose": "F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.",
+    "functions": [
+      "default",
+      "unit",
+      "noise",
+      "change",
+      "smooth",
+      "reset",
+      "noise_and_variation_match_original_ranges"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/cuts.rs",
+    "purpose": "Low/High Cut kademelerinin 12/24/36/48/96 dB eğim ve yumuşak geçiş durumunu uygular.",
+    "functions": [
+      "default",
+      "reset",
+      "configure",
+      "smooth",
+      "sample",
+      "section",
+      "magnitude",
+      "all_orders_have_butterworth_corner_and_expected_rejection"
+    ],
+    "comment_lines": 12,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/dsp.rs",
+    "purpose": "F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.",
+    "functions": [
+      "default",
+      "default",
+      "normalized",
+      "shelf",
+      "cut",
+      "magnitude",
+      "complex",
+      "coefficients",
+      "shelf_coefficients",
+      "response",
+      "tick",
+      "default",
+      "prepare",
+      "set",
+      "rebuild",
+      "sample",
+      "neutral_is_transparent",
+      "tilt_has_opposite_shelves_and_fixed_pivot",
+      "bass_and_cuts",
+      "extremes_stable_and_stereo_independent",
+      "bypass_becomes_exact_dry",
+      "tilt_and_bass_q_control_separate_shelves",
+      "analog_noise_is_subtle_and_bypass_removes_it_and_saturation",
+      "actual_audio_measures_96_db_per_octave_and_click_free_switching"
+    ],
+    "comment_lines": 36,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/editor.rs",
+    "purpose": "Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.",
+    "functions": [
+      "drop",
+      "new",
+      "spawn",
+      "size",
+      "set_scale_factor",
+      "param_value_changed",
+      "param_modulation_changed",
+      "param_values_changed",
+      "host_key_down",
+      "new",
+      "finish",
+      "set_about",
+      "set",
+      "draw",
+      "on_frame",
+      "on_event",
+      "dismiss_key",
+      "vst3_host_keys_only_close_an_open_about",
+      "native_escape_enter_and_keypad_enter_close_but_releases_do_not"
+    ],
+    "comment_lines": 29,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/lib.rs",
+    "purpose": "F EQ host girişini, parametre/durum kaydını ve DSP callback yaşam döngüsünü bağlar.",
+    "functions": [
+      "default",
+      "filter_state",
+      "params",
+      "editor",
+      "initialize",
+      "reset",
+      "process",
+      "legacy_state_explicitly_resets_added_controls"
+    ],
+    "comment_lines": 14,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/panel.rs",
+    "purpose": "Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.",
+    "functions": [
+      "logo_hit",
+      "about_hit",
+      "about_close_hit",
+      "frequency_limits",
+      "frequency_position",
+      "knob_position",
+      "default_position",
+      "host_normalized",
+      "hit",
+      "power_hit",
+      "analog_hit",
+      "slope_hit",
+      "value",
+      "text",
+      "center",
+      "pointer",
+      "ticks",
+      "knob",
+      "main_knob",
+      "button",
+      "graph",
+      "svg",
+      "svg_with_spectrum",
+      "options",
+      "with_about",
+      "render",
+      "frequency_travel_matches_endpoints_and_actual_hz",
+      "concentric_controls_are_independent_hit_regions",
+      "both_slope_rows_are_independently_selectable"
+    ],
+    "comment_lines": 38,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/params.rs",
+    "purpose": "Host parametre kimliği, aralığı, varsayılanı ve DSP kontrol modeline dönüşüm sözleşmesidir.",
+    "functions": [
+      "default",
+      "db",
+      "hz",
+      "knobs",
+      "settings"
+    ],
+    "comment_lines": 10,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/saturation.rs",
+    "purpose": "F EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.",
+    "functions": [
+      "sample",
+      "integral",
+      "zero_is_exact_and_drive_softens_peaks",
+      "generates_third_harmonic"
+    ],
+    "comment_lines": 8,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/spectrum.rs",
+    "purpose": "F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.",
+    "functions": [
+      "default",
+      "fft",
+      "push",
+      "cursor",
+      "reset",
+      "read",
+      "sine_frequency_and_level_survive_opposite_stereo_polarity",
+      "silence_and_reset_have_no_spurious_spectrum"
+    ],
+    "comment_lines": 14,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "src/window.rs",
+    "purpose": "Native pencere/ebeveyn handle, keyboard focus, mouse capture ve piksel yüzeyi yaşam döngüsünü yönetir.",
+    "functions": [
+      "can_open",
+      "display",
+      "display",
+      "raw_window_handle",
+      "new",
+      "drop",
+      "hwnd",
+      "take_keys",
+      "give_keys_back",
+      "lost_capture",
+      "release_capture",
+      "display_handle",
+      "window_handle",
+      "target",
+      "guarded",
+      "new",
+      "resize",
+      "present",
+      "show"
+    ],
+    "comment_lines": 35,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "tests/clap_host.rs",
+    "purpose": "Bu modülün clap_host veri/işleme sözleşmesini ve çağıran bileşenlere sunduğu yardımcı adımları uygular.",
+    "functions": [
+      "id",
+      "rescan",
+      "clear",
+      "request",
+      "host_extension",
+      "in_size",
+      "in_get",
+      "out_push",
+      "write",
+      "read",
+      "new",
+      "extension",
+      "process",
+      "value",
+      "save",
+      "load",
+      "drop",
+      "clap_audio_automation_bypass_and_session_roundtrip"
+    ],
+    "comment_lines": 40,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "examples/preview.rs",
+    "purpose": "preview geliştirme örneğinin çıktı/ölçüm girişidir; ürün audio callback’i değildir.",
+    "functions": [
+      "main"
+    ],
+    "comment_lines": 5,
+    "tokens_unchanged": true
+  },
+  {
+    "project": "F-EQ",
+    "path": "examples/standalone.rs",
+    "purpose": "standalone geliştirme örneğinin çıktı/ölçüm girişidir; ürün audio callback’i değildir.",
+    "functions": [
+      "main"
+    ],
+    "comment_lines": 4,
+    "tokens_unchanged": true
+  }
+]
