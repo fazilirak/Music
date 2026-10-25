@@ -4,7 +4,7 @@
 [package]
 name = "model-f"
 description = "Model F: a compact circuit-modelled synthesizer"
-version = "0.2.1"
+version = "0.2.2"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true

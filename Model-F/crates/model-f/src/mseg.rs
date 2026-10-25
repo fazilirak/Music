@@ -1,11 +1,26 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Nokta/eğri/wave brush envelope’unun fiziksel zaman ve hedef modülasyon değerini hesaplar.
 //! Breakpoint modulation adapted from FAZIL IRAK's Machine envelope behavior.
 //! Fixed parameter slots and storage; no allocation, locks or file I/O in audio.
 use crate::params::ModelFParams;
 use nih_plug::prelude::*;
 use serde::{Deserialize, Serialize};
+
+
+// Fazıl Irak, 24.10.2026: çarpan bir tam zarf döngüsünün hızıdır; x1=8 dörtlük vuruş.
+// Free eski presetlerdeki saniye değerini aynen kullanır. Fix Tempo her zaman 120 BPM'dir.
+pub const SPEEDS: [&str; 7] = ["FREE", "x1", "x2", "x4", "x8", "x16", "x32"];
+pub fn tempo_bpm(p: &ModelFParams, host: Option<f64>) -> f64 {
+    if p.mseg_fix_tempo.value() > 0.5 { return 120.0; }
+    host.filter(|v| v.is_finite() && *v > 0.0)
+        .unwrap_or(f64::from(p.tempo.value())).clamp(20.0,400.0)
+}
+pub fn duration_seconds(p: &ModelFParams, host: Option<f64>) -> f64 {
+    let speed=p.mseg_speed.value().round().clamp(0.0,6.0) as u32;
+    if speed==0 { return f64::from(p.mseg_duration.value()); }
+    60.0/tempo_bpm(p,host) * 8.0/f64::from(2_u32.pow(speed-1))
+}
 
 pub const CAP: usize = 16;
 pub const WAVES: [&str; 9] = [
@@ -94,7 +109,7 @@ impl Config {
         let (points, bends) = p.envelope_slots();
         Self {
             enabled: get("mseg_enable") > 0.5,
-            duration: get("mseg_duration"),
+            duration: duration_seconds(p,None),
             curve: get("mseg_curve"),
             mode: get("mseg_mode") as usize,
             attack: get("mseg_attack"),
@@ -292,6 +307,9 @@ impl Envelope {
     // Gövdedeki başlıca çağrılar: self.reset → c.shape → powi. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn configure(&mut self, c: Config, rate: f64) {
         if self.config != c || self.rate != rate {
+            // Yalnız tempo değiştiyse fazı ve sesi kesmeden yeni örnek adımına geç.
+            let mut timing_only=self.config;timing_only.duration=c.duration;
+            if timing_only==c && self.rate==rate { self.config=c;return; }
             if self.config.enabled != c.enabled {
                 self.reset();
             }
@@ -441,7 +459,7 @@ impl EnvelopePreset {
     pub fn validate(&self) -> Result<(), String> {
         let p = ModelFParams::default();
         let expected = Self::capture(&p);
-        if self.format != 1 || self.values.len() != expected.values.len() {
+        if self.format != 1 || ![expected.values.len(),expected.values.len()-2].contains(&self.values.len()) || expected.values.keys().any(|id| !self.values.contains_key(id) && !matches!(id.as_str(),"mseg_speed" | "mseg_fix_tempo")) {
             return Err("Unsupported or incomplete envelope preset".into());
         }
         for (id, v) in &self.values {
@@ -462,10 +480,9 @@ impl EnvelopePreset {
     // apply: Nokta/eğri/wave brush envelope’unun fiziksel zaman ve hedef modülasyon değerini hesaplar. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
     pub fn apply(&self, p: &ModelFParams, setter: &ParamSetter<'_>) -> Result<(), String> {
         self.validate()?;
-        for (id, v) in &self.values {
-            let param = p.get(id).unwrap();
+        for (id,param) in p.list().into_iter().filter(|(id,_)| saved_id(id)) {
             setter.begin_set_parameter(param);
-            setter.set_parameter(param, *v);
+            setter.set_parameter(param,self.values.get(id).copied().unwrap_or_else(||param.default_plain_value()));
             setter.end_set_parameter(param);
         }
         Ok(())
@@ -678,5 +695,52 @@ mod tests {
             }
         }
         assert_eq!(TARGETS, ["FILTER", "OSCILLATOR PITCH", "VOLUME (OUTPUT)"]);
+    }
+}
+
+#[cfg(test)]
+mod tempo_tests {
+    use super::*;
+    use std::sync::Arc;
+    use nih_plug::context::process::TestProcessContext;
+    #[test]
+    fn speed_uses_host_bpm_fixed_120_or_legacy_seconds() {
+        let p=Arc::new(ModelFParams::default());
+        let ctx=TestProcessContext::<crate::ModelF>::new(p.clone() as Arc<dyn Params>,48000.0,ProcessMode::Offline);
+        let set=|id:&str,v:f32| {let q=p.get(id).unwrap();assert!(ctx.automate(q.as_ptr(),q.preview_normalized(v)));};
+        set("mseg_duration",7.25);
+        for bpm in [Some(60.0),Some(180.0),None] {assert_eq!(duration_seconds(&p,bpm),f64::from(p.mseg_duration.value()));}
+        for speed in 1..=6 {
+            set("mseg_speed",speed as f32);
+            let beats=8.0/2_f64.powi(speed-1);
+            assert!((duration_seconds(&p,Some(60.0))-beats).abs()<1e-12);
+            assert!((duration_seconds(&p,Some(120.0))-beats*0.5).abs()<1e-12);
+            set("mseg_fix_tempo",1.0);
+            assert_eq!(tempo_bpm(&p,Some(210.0)),120.0);
+            assert!((duration_seconds(&p,Some(60.0))-beats*0.5).abs()<1e-12);
+            set("mseg_fix_tempo",0.0);
+        }
+        set("tempo",90.0);
+        assert_eq!(tempo_bpm(&p,None),f64::from(p.tempo.value()));
+        for bad in [f64::NAN,f64::INFINITY,0.0,-10.0] {assert_eq!(tempo_bpm(&p,Some(bad)),f64::from(p.tempo.value()));}
+        set("mseg_speed",0.0);set("mseg_fix_tempo",1.0);assert_eq!(duration_seconds(&p,Some(60.0)),f64::from(p.mseg_duration.value()));
+    }
+    #[test]
+    fn changing_only_tempo_preserves_phase_and_avoids_shape_edit_fade() {
+        let mut c=Config {enabled:true,mode:1,duration:1.0,..Config::default()};
+        let mut e=Envelope::default();e.configure(c,1000.0);
+        for _ in 0..180 {e.tick(true);}
+        let phase=e.phase;assert!((phase-0.18).abs()<1e-9);
+        c.duration=0.5;e.configure(c,1000.0);
+        assert_eq!(e.phase,phase);assert_eq!(e.edit,1.0);
+        e.tick(true);assert!((e.phase-phase-0.002).abs()<1e-9);
+    }
+    #[test]
+    fn old_envelope_and_full_presets_validate_without_new_clock_fields() {
+        let p=ModelFParams::default();let mut shape=EnvelopePreset::capture(&p);
+        shape.values.remove("mseg_speed");shape.values.remove("mseg_fix_tempo");shape.validate().unwrap();
+        let mut incomplete=EnvelopePreset {format:shape.format,values:shape.values.clone()};incomplete.values.remove("mseg_start");incomplete.values.insert("mseg_speed".into(),1.0);assert!(incomplete.validate().is_err());
+        let mut full=crate::presets::Preset::capture(&p,"Legacy 0.2.1".into(),"Bass".into());
+        full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
     }
 }

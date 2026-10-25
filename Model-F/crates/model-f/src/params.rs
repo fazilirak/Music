@@ -210,6 +210,9 @@ parameters! {
     osc_sync: "osc_sync" => ("OSC 1 to 2 Hard Sync", 0.0, 1.0, 0.0, 1.0),
     fm_on: "fm_on" => ("OSC 2 to 1 FM", 0.0, 1.0, 0.0, 1.0),
     fm_amount: "fm_amount" => ("FM Depth", 0.0, 1.0, 0.2, 0.001),
+    // Fazıl Irak, 24.10.2026: 0=Free eski saniye süresini korur; yeni kimlikler sona eklenir.
+    mseg_speed: "mseg_speed" => ("Envelope Tempo Speed", 0.0, 6.0, 0.0, 1.0),
+    mseg_fix_tempo: "mseg_fix_tempo" => ("Envelope Fix Tempo 120 BPM", 0.0, 1.0, 0.0, 1.0),
 }
 
 impl ModelFParams {

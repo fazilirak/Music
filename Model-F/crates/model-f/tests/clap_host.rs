@@ -448,11 +448,13 @@ fn clap_automation_and_full_session_roundtrip() {
         In::Param(0, "osc_sync", 0.75),
         In::Param(0, "fm_on", 0.75),
         In::Param(0, "fm_amount", 0.75),
+        In::Param(0, "mseg_speed", 0.75),
+        In::Param(0, "mseg_fix_tempo", 1.0),
 
     ]);
     let saved = a.save();
     let json = json_of(&saved);
-    assert_eq!(json["params"].as_object().unwrap().len(), 172);
+    assert_eq!(json["params"].as_object().unwrap().len(), 174);
     let b = Instance::new();
     assert!(b.load(&saved));
     for id in [
@@ -476,6 +478,8 @@ fn clap_automation_and_full_session_roundtrip() {
         "osc_sync",
         "fm_on",
         "fm_amount",
+        "mseg_speed",
+        "mseg_fix_tempo",
     ] {
         assert!((a.value(id) - b.value(id)).abs() < 0.001, "{id}");
     }

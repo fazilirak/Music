@@ -1,0 +1,44 @@
+{
+  "author": "Fazıl Irak",
+  "date": "2026-10-24",
+  "version": "0.2.2",
+  "tests_passed": 65,
+  "new_controls": [
+    "SPEED: Free/x1/x2/x4/x8/x16/x32",
+    "FIX TEMPO: fixed 120 BPM or host/internal",
+    "RESET: clear shape, preserve amount/target/clock/playback"
+  ],
+  "parameters": 174,
+  "legacy_presets": [
+    27,
+    160,
+    161,
+    172
+  ],
+  "legacy_shape_files_supported": true,
+  "free_mode_pcm_comparisons": [
+    {
+      "case": "mono-idle",
+      "hash": "6a90bb7c0813ad0d"
+    },
+    {
+      "case": "mono",
+      "hash": "4d1d692d038d15ad"
+    },
+    {
+      "case": "mono-filter",
+      "hash": "d42fe93aad24d09d"
+    },
+    {
+      "case": "poly",
+      "hash": "66cc06876f204555"
+    },
+    {
+      "case": "supersaw",
+      "hash": "dc996f386cb639d9"
+    }
+  ],
+  "factory_count": 160,
+  "factory_clock_default": "Free; bank sound/timing preserved",
+  "factory_sha256": "3d0181d688f67f96db2869f75ff73a00660c671a94118c4962e91adbf5098a53"
+}

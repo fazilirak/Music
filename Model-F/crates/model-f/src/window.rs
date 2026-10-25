@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 25.10.2026
 // Dosyanın görevi: Native pencere/ebeveyn handle, keyboard focus, mouse capture ve piksel yüzeyi yaşam döngüsünü yönetir.
 #![allow(unsafe_code)]
 use std::num::{NonZeroIsize, NonZeroU32};
@@ -392,4 +392,119 @@ impl Surface {
         }
         let _ = buffer.present();
     }
+}
+
+// Fazıl Irak — 25.10.2026: DAW'ın klavye yönlendirmesine bağlı SVG alanı yerine
+// Windows'un modal EDIT kontrolü kullanılır. Diyalog kendi mesaj döngüsünde
+// Unicode, Backspace, Ctrl+V, Enter ve Escape işlemlerini Windows'a bırakır.
+#[cfg(target_os = "windows")]
+pub fn preset_name_dialog(window: &baseview::Window<'_>, initial: &str, category: usize) -> Result<Option<(String, usize)>, String> {
+    preset_text_dialog(window, initial, category, false)
+}
+
+// Fazıl Irak — 25.10.2026: Search de gerçek Windows EDIT kontrolü kullanır.
+// Boş sorgu ve Clear filtreyi kaldırır; Cancel önceki sorguyu korur.
+#[cfg(target_os = "windows")]
+pub fn preset_search_dialog(window: &baseview::Window<'_>, initial: &str) -> Result<Option<String>, String> {
+    preset_text_dialog(window, initial, 0, true).map(|value|value.map(|(text,_)|text))
+}
+
+#[cfg(target_os = "windows")]
+fn preset_text_dialog(window: &baseview::Window<'_>, initial: &str, category: usize, search: bool) -> Result<Option<(String, usize)>, String> {
+    use winapi::shared::{windef::HWND, minwindef::{UINT, WPARAM, LPARAM}};
+    use winapi::um::winuser::*;
+    struct Input { initial: Vec<u16>, value: [u16; 129], len: usize, category: usize, search: bool, accepted: bool }
+    unsafe extern "system" fn dialog(hwnd: HWND, msg: UINT, wp: WPARAM, lp: LPARAM) -> isize {
+        // SAFETY: DialogBoxIndirectParamW senkron çalışır; Input çağrı boyunca
+        // aynı yığında yaşar. Alt kontrol ve kullanıcı verisi yalnız bu UI thread'indedir.
+        unsafe {
+            if msg == WM_INITDIALOG {
+                SetWindowLongPtrW(hwnd, GWLP_USERDATA, lp);
+                let state=&*(lp as *const Input);
+                let edit=GetDlgItem(hwnd,100);
+                SendMessageW(edit,EM_SETLIMITTEXT as u32,if state.search {128} else {64},0);
+                SetWindowTextW(edit,state.initial.as_ptr());
+                if !state.search {
+                let categories=GetDlgItem(hwnd,102);
+                for category in crate::presets::CATEGORIES {
+                    let title:Vec<u16>=category.encode_utf16().chain(Some(0)).collect();
+                    SendMessageW(categories,CB_ADDSTRING,0,title.as_ptr() as LPARAM);
+                }
+                SendMessageW(categories,CB_SETCURSEL,state.category,0);
+                }
+                SetFocus(edit);
+                SendMessageW(edit,EM_SETSEL as u32,0,-1);
+                return 0;
+            }
+            if msg == WM_COMMAND {
+                match (wp & 0xffff) as i32 {
+                    IDOK => {
+                        let ptr=GetWindowLongPtrW(hwnd,GWLP_USERDATA) as *mut Input;
+                        if !ptr.is_null() {
+                            let state=&mut *ptr;
+                            state.len=GetWindowTextW(GetDlgItem(hwnd,100),state.value.as_mut_ptr(),if state.search {129} else {65}).max(0) as usize;
+                            if !state.search && String::from_utf16_lossy(&state.value[..state.len]).trim().is_empty() {
+                                let message:Vec<u16>="Please enter a preset name.".encode_utf16().chain(Some(0)).collect();
+                                SetWindowTextW(GetDlgItem(hwnd,101),message.as_ptr());
+                                SetFocus(GetDlgItem(hwnd,100));
+                                return 1;
+                            }
+                            if !state.search {
+                            let category=SendMessageW(GetDlgItem(hwnd,102),CB_GETCURSEL,0,0);
+                            if category>=0 {state.category=(category as usize).min(crate::presets::CATEGORIES.len()-1);}
+                            }
+                            state.accepted=true;
+                        }
+                        EndDialog(hwnd,1); return 1;
+                    }
+                    3 => {
+                        let ptr=GetWindowLongPtrW(hwnd,GWLP_USERDATA) as *mut Input;
+                        if !ptr.is_null() && (*ptr).search {
+                            (*ptr).len=0; (*ptr).accepted=true;
+                            EndDialog(hwnd,1);
+                        }
+                        return 1;
+                    }
+                    IDCANCEL => { EndDialog(hwnd,0); return 1; }
+                    _ => (),
+                }
+            }
+            if msg == WM_CLOSE { EndDialog(hwnd,0); return 1; }
+            0
+        }
+    }
+    fn dword(v:&mut Vec<u16>, x:u32) {v.push(x as u16);v.push((x>>16) as u16);}
+    fn wide(v:&mut Vec<u16>, s:&str) {v.extend(s.encode_utf16());v.push(0);}
+    fn control(v:&mut Vec<u16>, style:u32, rect:[u16;4], id:u16, class:u16, label:&str) {
+        if v.len()%2!=0 {v.push(0);}
+        dword(v,style);dword(v,0);v.extend(rect);v.push(id);
+        v.extend([0xffff,class]);wide(v,label);v.push(0);
+    }
+    let mut template=Vec::new();
+    dword(&mut template,WS_POPUP|WS_CAPTION|WS_SYSMENU|DS_MODALFRAME as u32|DS_SETFONT as u32);
+    dword(&mut template,0); template.extend([if search {5} else {6},0,0,280,if search {94} else {122}]);
+    template.extend([0,0]);wide(&mut template,if search {"Model F — Search presets"} else {"Model F — Save your sound"});
+    template.push(9);wide(&mut template,"Segoe UI");
+    control(&mut template,WS_CHILD|WS_VISIBLE,[12,10,252,12],101,0x82,if search {"Search preset names and descriptions:"} else {"Preset name:"});
+    control(&mut template,WS_CHILD|WS_VISIBLE|WS_BORDER|WS_TABSTOP|ES_AUTOHSCROLL as u32,[12,26,252,16],100,0x81,"");
+    if search {
+        control(&mut template,WS_CHILD|WS_VISIBLE|WS_TABSTOP,[12,62,58,20],3,0x80,"Clear");
+        control(&mut template,WS_CHILD|WS_VISIBLE|WS_TABSTOP|BS_DEFPUSHBUTTON as u32,[142,62,58,20],IDOK as u16,0x80,"Search");
+        control(&mut template,WS_CHILD|WS_VISIBLE|WS_TABSTOP,[206,62,58,20],IDCANCEL as u16,0x80,"Cancel");
+    } else {
+    control(&mut template,WS_CHILD|WS_VISIBLE,[12,52,64,12],103,0x82,"Category:");
+    control(&mut template,WS_CHILD|WS_VISIBLE|WS_TABSTOP|WS_VSCROLL|CBS_DROPDOWNLIST as u32,[82,50,182,100],102,0x85,"");
+    control(&mut template,WS_CHILD|WS_VISIBLE|WS_TABSTOP|BS_DEFPUSHBUTTON as u32,[142,90,58,20],IDOK as u16,0x80,"Save");
+    control(&mut template,WS_CHILD|WS_VISIBLE|WS_TABSTOP,[206,90,58,20],IDCANCEL as u16,0x80,"Cancel");
+    }
+    if template.len()%2!=0 {template.push(0);}
+    // DLGTEMPLATE ve her DLGITEMTEMPLATE en az DWORD hizalı olmalıdır.
+    let aligned:Vec<u32>=template.chunks_exact(2).map(|x|u32::from(x[0])|(u32::from(x[1])<<16)).collect();
+    let mut input=Input {initial:initial.encode_utf16().chain(Some(0)).collect(),value:[0;129],len:0,category:category.min(crate::presets::CATEGORIES.len()-1),search,accepted:false};
+    let owner=hwnd(window).ok_or_else(||"Cannot open the preset name editor.".to_string())?;
+    // SAFETY: hizalı şablon ve Input modal çağrı dönene kadar canlıdır. Diyalog
+    // yalnız kendi edit kontrolünü okur; host'a veri veya pencere mesajı göndermez.
+    let result=unsafe {DialogBoxIndirectParamW(std::ptr::null_mut(),aligned.as_ptr().cast(),owner,Some(dialog),(&mut input as *mut Input) as LPARAM)};
+    if result == -1 {return Err(format!("Preset name editor: {}",std::io::Error::last_os_error()));}
+    if input.accepted {Ok(Some((String::from_utf16_lossy(&input.value[..input.len]),input.category)))} else {Ok(None)}
 }

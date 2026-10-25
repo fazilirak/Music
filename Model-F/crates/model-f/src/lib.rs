@@ -215,8 +215,10 @@ impl Plugin for ModelF {
         _: &mut AuxiliaryBuffers,
         context: &mut impl ProcessContext<Self>,
     ) -> ProcessStatus {
-        self.engine.set(&self.params.controls());
         let transport = context.transport();
+        let mut controls=self.params.controls();
+        controls.mseg.duration=crate::mseg::duration_seconds(&self.params,transport.tempo);
+        self.engine.set(&controls);
         let sync = self.params.arp_sync.value() > 0.5;
         let beat = transport.pos_beats();
         if sync

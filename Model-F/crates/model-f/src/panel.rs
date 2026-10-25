@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 25.10.2026
 // Dosyanın görevi: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
 //! Shared vector panel and hit regions: the plug-in and preview use this same drawing.
 use crate::{params::ModelFParams, presets::Preset};
@@ -293,7 +293,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         text(&mut s, 723., y + 16., 10, "#e5e7df", title, "start");
     }
     for (i, c) in CONTROLS.iter().enumerate() {
-
+        
         let n = f64::from(p.display_normalized(c.id));
         let enabled = control_enabled(p, c.id);
         if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
@@ -529,7 +529,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
             318.0,
             10,
             "#9aabae",
-            "NAME  /  TYPE TO EDIT",
+            "NAME  /  CLICK TO EDIT",
             "start",
         );
         button(
@@ -589,15 +589,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
             "Analog circuit synthesizer",
             "middle",
         );
-        text(
-            &mut s,
-            560.0,
-            446.0,
-            11,
-            "#9aabae",
-            "Seven-oscillator SuperSaw · Arpeggiator · 120 presets",
-            "middle",
-        );
+
         let (bx, by, bw, bh) = ABOUT_CLOSE;
         button(&mut s, bx, by, bw, bh, "CLOSE", true);
     }

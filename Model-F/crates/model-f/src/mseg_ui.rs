@@ -21,10 +21,20 @@ pub fn enabled(p: &ModelFParams, id: &str) -> bool {
     match id {
         "mseg_enable" | "mseg_amount" | "mseg_target" => true,
         "mseg_attack" | "mseg_decay" => p.mseg_enable.value() <= 0.5,
+        "mseg_duration" => p.mseg_enable.value()>0.5 && p.mseg_speed.value()<0.5,
+        "mseg_fix_tempo" => p.mseg_enable.value()>0.5 && p.mseg_speed.value()>0.5,
         _ => p.mseg_enable.value() > 0.5,
     }
 }
+pub const RESET: (f64,f64,f64,f64)=(688.,144.,104.,30.);
+// Reset yalnız çizimi temizler; hedef, derinlik, AD, çalma modu ve tempo korunur.
+pub fn reset_shape(p: &ModelFParams) -> Edits {
+    p.list().into_iter().filter(|(id,_)| id.starts_with("mseg_p") || id.starts_with("mseg_n") || matches!(*id,"mseg_start" | "mseg_curve"))
+        .map(|(id,param)| (id.into(),if id.starts_with("mseg_p") && id.ends_with("_on") {0.0} else {param.default_plain_value()})).collect()
+}
 pub const CONTROLS: &[Control] = &[
+    Control {id:"mseg_speed",label:"SPEED",x:750.,y:190.,w:100.,h:30.,knob:false},
+    Control {id:"mseg_fix_tempo",label:"FIX TEMPO",x:864.,y:190.,w:130.,h:30.,knob:false},
     Control {
         id: "mseg_duration",
         label: "DURATION",
@@ -261,6 +271,10 @@ impl State {
     ) -> (Edits, Command) {
         if x > 1000. && y < 177. {
             return (vec![], Command::Close);
+        }
+        if p.mseg_enable.value()>0.5 && panel::in_rect(RESET,x,y) {
+            self.selected=0;self.drag=None;self.last=None;
+            return (reset_shape(p),Command::None);
         }
         if p.mseg_enable.value() > 0.5 && (144.0..174.0).contains(&y) {
             if (812.0..882.0).contains(&x) {
@@ -566,6 +580,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
     );
     panel::text(s, 50., 166., 16, "#e2e5de", "MULTI-STAGE ENVELOPE", "start");
     if !c.enabled { s.push_str(r##"<g opacity="0.25">"##); }
+    panel::button(s, RESET.0,RESET.1,RESET.2,RESET.3,"RESET",false);
     panel::button(s, 812., 144., 70., 30., "SAVE", false);
     panel::button(s, 894., 144., 70., 30., "LOAD", false);
     if !c.enabled { s.push_str("</g>"); }
@@ -584,7 +599,9 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
             "mseg_brush" => format!("BRUSH: {}", mseg::WAVES[v as usize]),
             "mseg_snap" => format!("SNAP {}", if v > 0.5 { "ON" } else { "OFF" }),
             "mseg_enable" => if v > 0.5 { "MULTI ON" } else { "AD MODE" }.into(),
-            "mseg_duration" => format!("{v:0.2} s"),
+            "mseg_duration" => if p.mseg_speed.value()>0.5 { if p.mseg_fix_tempo.value()>0.5 {"120 BPM".into()} else {"HOST".into()} } else {format!("{v:0.2} s")},
+            "mseg_speed" => format!("SPEED {}",mseg::SPEEDS[(v as usize).min(6)]),
+            "mseg_fix_tempo" => format!("FIX TEMPO {}",if v>0.5 {"ON"} else {"OFF"}),
             _ => format!("{:0.0}%", v * 100.),
         };
         if ctl.knob {
@@ -592,7 +609,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
                 s,
                 ctl.x,
                 ctl.y,
-                ctl.label,
+                if ctl.id=="mseg_duration" && p.mseg_speed.value()>0.5 {"CLOCK"} else {ctl.label},
                 &label,
                 param.unmodulated_normalized_value(),
             );
@@ -615,7 +632,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
                 ctl.w,
                 ctl.h,
                 &label,
-                matches!(ctl.id, "mseg_enable" | "mseg_snap") && v > 0.5,
+                matches!(ctl.id, "mseg_enable" | "mseg_snap" | "mseg_fix_tempo") && v > 0.5,
             );
         }
         if !enabled(p, ctl.id) { s.push_str("</g>"); }
@@ -644,8 +661,8 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
     );
     panel::text(
         s,
-        750.,
-        209.,
+        1064.,
+        235.,
         10,
         "#a8b0ae",
         &format!(
@@ -653,7 +670,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
             shape.count - 2,
             state.selected
         ),
-        "start",
+        "end",
     );
     let _ = write!(
         s,
@@ -725,7 +742,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
         9,
         "#899598",
         if c.enabled {
-            "MULTI: graph controls modulation. Arrow keys move the selected point; Shift is fine. ESC closes."
+            "MULTI: Free uses seconds. x1=8 beats; x32=1/4 beat. Fix Tempo=120 BPM; otherwise host or internal TEMPO."
         } else {
             "AD MODE: Attack / Decay control modulation. Enable MULTI to play the editable graph. ESC closes."
         },

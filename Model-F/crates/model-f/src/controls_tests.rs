@@ -57,3 +57,23 @@ fn bank_has_active_ad_and_multi_sequences_across_every_category() {
     }
     for t in 1..=3 {assert!(bank.iter().any(|p|p.values["mseg_enable"]>0.5 && p.values["mseg_target"]==t as f32));}
 }
+
+#[test]
+fn tempo_controls_and_reset_are_isolated_to_multi_shape() {
+    let p=Arc::new(ModelFParams::default());
+    let ctx=TestProcessContext::<ModelF>::new(p.clone() as Arc<dyn Params>,48000.0,ProcessMode::Offline);
+    let set=|id:&str,v:f32| {let q=p.get(id).unwrap();assert!(ctx.automate(q.as_ptr(),q.preview_normalized(v)));};
+    let mut ui=mseg_ui::State::default();
+    assert!(!mseg_ui::enabled(&p,"mseg_speed"));
+    assert!(ui.down(&p,730.0,155.0,false,keyboard_types::Modifiers::empty()).0.is_empty());
+    set("mseg_enable",1.0);assert!(mseg_ui::enabled(&p,"mseg_duration"));assert!(!mseg_ui::enabled(&p,"mseg_fix_tempo"));
+    set("mseg_speed",5.0);set("mseg_fix_tempo",1.0);set("mseg_target",2.0);set("mseg_amount",0.6);set("mseg_mode",1.0);
+    assert!(!mseg_ui::enabled(&p,"mseg_duration"));assert!(mseg_ui::enabled(&p,"mseg_fix_tempo"));
+    let (edits,_)=ui.down(&p,730.0,155.0,false,keyboard_types::Modifiers::empty());assert!(!edits.is_empty());
+    for (id,v) in edits {set(&id,v);}
+    let shape=crate::mseg::Config::from_params(&p).shape();assert_eq!(shape.count,2);assert_eq!(shape.value(0.5),0.0);
+    assert_eq!(p.mseg_speed.value(),5.0);assert_eq!(p.mseg_fix_tempo.value(),1.0);
+    assert_eq!(p.mseg_target.value(),2.0);assert!((p.mseg_amount.value()-0.6).abs()<0.001);assert_eq!(p.mseg_mode.value(),1.0);
+    let svg=panel::svg(&p,&panel::View {envelope:true,..Default::default()});
+    assert!(svg.contains("SPEED x16") && svg.contains("FIX TEMPO ON") && svg.contains("RESET"));
+}

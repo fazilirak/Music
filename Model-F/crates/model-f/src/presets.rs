@@ -73,14 +73,14 @@ impl Preset {
             return Err("Unknown preset category".into());
         }
         let p = ModelFParams::default();
-        if self.values.len() != p.list().len() && !matches!(self.values.len(), 27 | 160 | 161) {
+        if self.values.len() != p.list().len() && !matches!(self.values.len(), 27 | 160 | 161 | 172) {
             return Err("Preset has missing or unknown controls".into());
         }
         if p.list().iter().any(|(id, _)| {
             !self.values.contains_key(*id)
-                && !(*id == "overload" && matches!(self.values.len(), 27 | 160 | 161))
+                && !(*id == "overload" && matches!(self.values.len(), 27 | 160 | 161 | 172))
                 && !(id.starts_with("mseg_") && self.values.len() == 27)
-                && !matches!(*id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount")
+                && !matches!(*id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo")
         }) {
             return Err("Preset has missing controls".into());
         }
@@ -302,7 +302,7 @@ mod tests {
         let mut old = factory().remove(0);
         old.format = 1;
         old.values
-            .retain(|id, _| !id.starts_with("mseg_") && id != "overload" && !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount"));
+            .retain(|id, _| !id.starts_with("mseg_") && id != "overload" && !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo"));
         assert_eq!(old.values.len(), 27);
         old.validate().unwrap();
         let p = std::sync::Arc::new(ModelFParams::default());
@@ -325,7 +325,7 @@ mod tests {
     // Regresyon senaryosu previous_160_control_presets_default_to_dry_feedback: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     fn previous_160_control_presets_default_to_dry_feedback() {
         let mut old = factory().remove(0);
-        old.values.retain(|id,_| !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount"));
+        old.values.retain(|id,_| !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo"));
         old.values.remove("overload");
         assert_eq!(old.values.len(), 160);
         old.validate().unwrap();

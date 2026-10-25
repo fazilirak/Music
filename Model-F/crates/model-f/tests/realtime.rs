@@ -61,6 +61,7 @@ fn new_modes_do_not_allocate_or_free_on_the_audio_thread() {
         c.panel.ext_volume = (block % 100) as f64 / 100.0;
         c.mseg.points[0].y = (block % 100) as f64 / 100.0;
         c.mseg.target = 1 + (block % 3) as usize;
+        c.mseg.duration = 0.125 + block as f64 * 0.001;
         c.mseg.enabled = block < 200;
         c.supersaw = if block < 120 {
             Some(block as f64 / 120.0)

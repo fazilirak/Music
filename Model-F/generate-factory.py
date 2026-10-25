@@ -6,7 +6,7 @@ root=Path(__file__).resolve().parent
 source=(root/'crates/model-f/src/params.rs').read_text(encoding='utf-8')
 defs=re.findall(r'(\w+): "[^"]+" => \("[^"]+",\s*([-\d.]+),\s*([-\d.]+),\s*([-\d.]+),\s*([-\d.]+)\)',source)
 defaults={k:float(v) for k,lo,hi,v,step in defs}
-assert len(defaults)==172,len(defaults)
+assert len(defaults)==174,len(defaults)
 path=root/'crates/model-f/sounds/factory.json'
 
 names={

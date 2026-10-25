@@ -1,17 +1,33 @@
-<!-- Türkçe bakım: Fazıl Irak | 24.10.2026 -->
+<!-- Türkçe bakım: Fazıl Irak | 25.10.2026 -->
 # Model F
 
-Az kontrol, güçlü analog karakter. Windows x64 için VST3, CLAP ve bağımsız synthesizer.
+Az kontrol, güçlü analog karakter. Windows x64 ve macOS Universal için VST3, CLAP ve bağımsız synthesizer.
 
 ![Model F](docs/panel.png)
 
 ## Başlangıç
 
-`dist/Model-F-Windows-0.2.1/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
+`dist/Model-F-Windows-0.2.2/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
 
 VST3 için `Model F.vst3` klasörünü DAW'ın taradığı VST3 klasörüne; CLAP için `Model F.clap` dosyasını CLAP klasörüne kopyalayın. DAW'da eklentileri yeniden taratın. VST3 ve CLAP kimlikleri Model F'e özeldir.
 
 Model F başlığına tıklayarak FAZIL IRAK şirket adını ve sürüm bilgisini gösteren About penceresini açabilirsiniz. ESC, Enter veya CLOSE ile kapanır.
+
+## 0.2.2 Windows metin girişi
+
+Windows'ta ana **SAVE**, isim ve kategori içeren tek standart Windows penceresi açar. Save kullanıcı ses kütüphanesine kaydeder; Cancel değiştirmez. Arkada ikinci bir kaydetme paneli açılmaz. Sound Library içindeki **SEARCH** alanına tıklayın; açılan Windows penceresine sorguyu yazıp Search seçin. Clear sorguyu temizler, Cancel önceki sorguyu korur. Arama seçili kategoride preset adını ve açıklamasını büyük/küçük harften bağımsız eşleştirir; arama yapmak ses yüklemez. Türkçe karakterler ve standart metin düzenleme Windows EDIT kontrolüyle işlenir. Kaydetme ve arama görünümüne özel skin uygulanmamıştır. Mac sürümü mevcut panel tabanlı isim/arama girişini korur.
+
+## İndirme
+
+- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.2/Model-F-0.2.2-Windows-x64.zip)
+- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.2/Model-F-0.2.2-macOS-Universal.tar.gz)
+- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.2)
+
+## 0.2.2 Multi tempo ve Reset
+
+Multi panelinde **SPEED**: Free / x1 / x2 / x4 / x8 / x16 / x32. Free, DURATION saniyesini kullanır ve eski presetlerin zamanlamasını korur. Tempo seçiliyken x1 tam zarfı 8 dörtlük vuruşta, x2 4, x4 2, x8 1, x16 yarım ve x32 çeyrek vuruşta oynatır. Bunlar çizim ızgarasından bağımsızdır. **FIX TEMPO ON** sabit 120 BPM kullanır; OFF, DAW temposunu veya tempo bilgisi yoksa ana TEMPO düğmesini kullanır. Tempo modunda DURATION kilitlenir ve CLOCK gösterir. Once / Loop / Hold seçimi korunur. Tempo değişikliği zarfın fazını sıfırlamaz; nota tetiklemesi yine başlangıçtan oynatır.
+
+**RESET**, grafiği sıfır seviyesinde düz çizgiye temizler; Amount, Target, tempo, çalma modu ve AD ayarlarını değiştirmez. Volume hedefi ve %100 Amount ile sıfır çizgisi sesi susturabilir; gerektiğinde Amount'u sıfırlayın veya grafiği yükseltin. Reset ve tempo düğmeleri AD modunda pasiftir. Yeni tempo alanları ses/şekil dosyaları ve DAW oturumunda saklanır; eski 0.2.1 preset ve şekilleri Free modunda açılır.
 
 ## 0.2.1 arayüz düzeltmesi
 
@@ -23,7 +39,7 @@ OSC seçicileri ve alt knob değerleri kendi çerçevelerinin içine alındı. F
 
 AD modu ile Multi kontrolleri birbirinden ayrıldı. AD+Amount etkinse ana buton logo beyazı; Multi etkinse turuncudur. AD panelinde yalnız Attack/Decay aktiftir; Multi'de bu ikisi pasif, grafik/ızgara/eğri/oynatma aktiftir. Amount ve Target ortaktır.
 
-**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. Multi süresi saniye cinsindedir; otomatik DAW tempo kilidi değildir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
+**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. Fabrika bankası Free zamanlamasını korur. 0.2.2 ile SPEED seçilerek DAW temposuna veya sabit 120 BPM’e bağlanabilir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
 
 Eski preset/oturumlarda OSC 2 dalga/oktav ve Audio ADS başlangıçta eski ortak ayarları izler. İlk düzenlemede bu alanlar ayrılır; yeni kayıtlar çözümlenmiş değerleri saklar. Eski host parametre kimlikleri korunur.
 
@@ -45,7 +61,7 @@ SuperSaw, işlemciye pay bırakmak için 8 nota ile sınırlandırılmıştır. 
 
 ## Kontroller
 
-Düğmeleri yukarı/aşağı sürükleyin; SHIFT hassas ayar yapar. Mouse tekerleği de çalışır. CTRL-tıklama veya ALT-tıklama başlangıç değerine döndürür. Seçiciler sol tıklamayla ileri, sağ tıklamayla geri gider. Envelope noktaları ve eğrileri dahil 172 parametre DAW otomasyonuna açıktır.
+Düğmeleri yukarı/aşağı sürükleyin; SHIFT hassas ayar yapar. Mouse tekerleği de çalışır. CTRL-tıklama veya ALT-tıklama başlangıç değerine döndürür. Seçiciler sol tıklamayla ileri, sağ tıklamayla geri gider. Envelope noktaları ve eğrileri dahil 174 parametre DAW otomasyonuna açıktır.
 
 ## Multi-Stage Envelope
 
@@ -56,7 +72,7 @@ PLAY A–K yazısı ile klavye arasındaki **MULTI-STAGE ENV.** butonu, preset t
 - Bir noktayı seçince ayrı sol/sağ eğri tutamakları görünür. Kareleri sürükleyin; çift tıklama eğriyi sıfırlar. Başlangıç/bitiş seviyeleri birbirine bağlıdır.
 - **X / Y / SNAP:** X 2–16 hücre, Y 2–64 bölme; snap eklenen ve taşınan noktaları ızgaraya hizalar.
 - **CTRL + sol sürükleme:** seçili BRUSH dalgasını hücrelere çizer. Yükseklik derinliği belirler. Sine, Triangle, Saw Up/Down, Square, Pulse, Steps, Random vardır. NODE ve NODE DEPTH seçili noktadan başlayan parçanın dalgasını/derinliğini düzenler.
-- **DURATION:** 0.05–10 saniye. **CURVE:** bütün segmentlere ortak eğrilik. **ONCE:** bir kez; **LOOP:** tuş basılıyken döngü; **HOLD:** son iç noktada bekleme. Loop/Hold tuş bırakıldığında 20 ms'de sıfıra iner. Once grafiğin sonuna kadar devam eder.
+- **DURATION:** Free modunda 0.05–10 saniye; SPEED seçiliyse tempo belirler. **CURVE:** bütün segmentlere ortak eğrilik. **ONCE:** bir kez; **LOOP:** tuş basılıyken döngü; **HOLD:** son iç noktada bekleme. Loop/Hold tuş bırakıldığında 20 ms'de sıfıra iner. Once grafiğin sonuna kadar devam eder.
 - **AMOUNT / TARGET:** yalnızca **Filter**, **Oscillator Pitch**, **Volume (Output)**. Filter cutoff'u, Pitch iki osilatörün perdesini birlikte modüle eder; SuperSaw'da yedi osilatör birlikte izler. Filter/Pitch Amount iki yönlüdür. Volume'da sıfır Amount normal seviyeyi korur; +%100 envelope şeklini, -%100 tersini çıkış seviyesine uygular. Volume modülasyonu 0–1 kazanç aralığındadır; ek seviye yükseltmez. Output düğmesinin değeri değişmez.
 - Envelope içindeki **SAVE / LOAD**, yalnızca şekli ve playback/ızgara ayarlarını `.modelfenv` dosyasında saklar. Synth, Amount, Target ve AD ayarları korunur. Ana preset SAVE bütün envelope ayarlarını sesle birlikte kaydeder; DAW oturumu da bunları saklar.
 
@@ -90,7 +106,7 @@ Rust 1.97.1 ve Windows için Visual Studio C++ Build Tools / Windows SDK gerekir
 .\build.ps1 -Test -PackageSource
 ```
 
-Bu komut release sürümlerini derler, testleri çalıştırır ve `dist` altında Windows paketini ve isteğe bağlı kaynak ZIP'ini oluşturur. GitHub Actions Windows x64 ve macOS Universal (Apple Silicon + Intel) paketlerini üretir. Preset/envelope dosya diyalogları Windows ve macOS üzerinde etkinleştirilmiştir. Bağımsız gerçek DAW/donanım testleri ayrıca gereklidir.
+Bu komut release sürümlerini derler, testleri çalıştırır ve `dist` altında Windows paketini ve isteğe bağlı kaynak ZIP'ini oluşturur. GitHub Actions Windows x64 ve macOS Universal (Apple Silicon + Intel) paketlerini üretir. Preset/envelope dosya diyalogları Windows ve macOS üzerinde açıktır. Canlı DAW/donanım testleri ayrıca gereklidir.
 
 ```powershell
 cargo run -p model-f --example preview --release -- docs

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 25.10.2026
 // Dosyanın görevi: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.
 use crate::{
     panel::{self, CONTROLS, H, View, W},
@@ -142,6 +142,48 @@ struct PanelWindow {
     focus: Option<window::Keys>,
 }
 impl PanelWindow {
+    // Fazıl Irak — 25.10.2026: Eski geri-dönüş kaydı, pencerenin hâlâ odaklı
+    // olduğunu göstermez. Modal alana her tıklamada odağı gerçekten tekrar al;
+    // ilk host odağını ise pencere kapanırken geri vermek üzere koru.
+    // Fazıl Irak — 25.10.2026: Windows'ta modal, gerçek EDIT kontrolü.
+    fn edit_preset_name(&mut self, window: &mut Window<'_>) {
+        window::release_capture(window);
+        #[cfg(target_os = "windows")]
+        match window::preset_name_dialog(window, &self.view.save_name, self.view.save_category) {
+            Ok(Some((text, category))) => {
+                self.view.save_name.clear();
+                append_name_text(&mut self.view.save_name,&text);
+                self.view.save_category=category;
+                self.save_user();
+            }
+            Ok(None) => self.view.status="Save cancelled.".into(),
+            Err(error) => self.view.status=error,
+        }
+        self.focus_text_input(window);
+    }
+    // Fazıl Irak — 25.10.2026: Search kutusuna tıklamak native metin girişini
+    // açar. Sorgu onaylandığında yalnız liste yenilenir; seçili ses yüklenmez.
+    fn edit_preset_search(&mut self, window: &mut Window<'_>) {
+        window::release_capture(window);
+        self.release_keys();
+        self.keyboard_active=false;
+        #[cfg(target_os = "windows")]
+        match window::preset_search_dialog(window, &self.view.search) {
+            Ok(Some(text)) => {
+                self.view.search=text;
+                self.view.offset=0;
+                self.refresh_rows();
+            }
+            Ok(None) => (),
+            Err(error) => self.view.status=error,
+        }
+        self.focus_text_input(window);
+    }
+    fn focus_text_input(&mut self, window: &mut Window<'_>) {
+        window.set_wants_keys(true);
+        let previous = window::take_keys(window);
+        if self.focus.is_none() { self.focus = previous; }
+    }
     // env_finish alt adımı: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.
     fn env_finish(&mut self) {
         self.view.env.drag = None;
@@ -295,8 +337,7 @@ impl PanelWindow {
                     *i >= factory_count
                 } else {
                     p.category == self.view.filter
-                }) && (p.name.to_lowercase().contains(&search)
-                    || p.description.to_lowercase().contains(&search))
+                }) && preset_matches_search(p,&search)
             })
             .map(|(_, p)| p.clone())
             .collect();
@@ -500,6 +541,11 @@ impl PanelWindow {
             return;
         }
         if self.view.save {
+            if !right { self.focus_text_input(window); }
+            if !right && panel::in_rect((340.0,332.0,440.0,40.0),x,y) {
+                self.edit_preset_name(window);
+                return;
+            }
             if (393.0..427.0).contains(&y) {
                 if (340.0..540.0).contains(&x) {
                     self.view.save_category = (self.view.save_category + 1) % 6;
@@ -549,6 +595,10 @@ impl PanelWindow {
             return;
         }
         if self.view.browser {
+            if !right && panel::in_rect((772.0,185.0,300.0,30.0),x,y) {
+                self.edit_preset_search(window);
+                return;
+            }
             if (140.0..174.0).contains(&y) && x > 980.0 {
                 self.view.browser = false;
                 return;
@@ -593,13 +643,19 @@ impl PanelWindow {
                 return;
             }
             if (868.0..924.0).contains(&x) {
+                self.end_drag();
+                self.env_finish();
                 self.release_keys();
-                self.view.save = true;
+                self.keyboard_active = false;
+                // Windows'ta tek native pencere isim ve kategoriyle kaydeder;
+                // arkada ikinci SVG kaydetme paneli açılmaz. Diğer platformlar
+                // mevcut paneli kullanmayı sürdürür.
+                #[cfg(not(target_os = "windows"))]
+                { self.view.save = true; }
                 self.view.save_name.clear();
-                self.view.status = "Choose a name; click category to change it.".into();
-                if self.focus.is_none() {
-                    self.focus = window::take_keys(window);
-                }
+                self.view.status = "Save your sound: enter a name and choose a category.".into();
+                self.focus_text_input(window);
+                self.edit_preset_name(window);
                 return;
             }
             if (934.0..990.0).contains(&x) {
@@ -654,18 +710,6 @@ impl PanelWindow {
             }
             return true;
         }
-        if self.view.envelope && e.state == KeyState::Down {
-            if e.key == Key::Escape {
-                self.env_finish();
-                self.view.envelope = false;
-                return true;
-            }
-            let edits = self.view.env.key(&self.params, &e.key, e.modifiers);
-            if !edits.is_empty() {
-                self.env_apply(edits, true);
-                return true;
-            }
-        }
         if self.view.save || self.view.browser {
             if e.state != KeyState::Down {
                 return true;
@@ -696,9 +740,7 @@ impl PanelWindow {
                 Key::Character(ref c) => {
                     if !e.modifiers.intersects(Modifiers::CONTROL | Modifiers::META) {
                         if self.view.save {
-                            if self.view.save_name.chars().count() < 64 {
-                                self.view.save_name.push_str(c);
-                            }
+                            append_name_text(&mut self.view.save_name, c);
                         } else {
                             self.view.search.push_str(c);
                             self.view.offset = 0;
@@ -709,6 +751,20 @@ impl PanelWindow {
                 _ => (),
             }
             return true;
+        }
+        // Açık metin penceresi Backspace/Enter/Escape ve ok tuşlarını önce tüketir;
+        // arkadaki envelope editörü bu tuşlarla değiştirilemez.
+        if self.view.envelope && e.state == KeyState::Down {
+            if e.key == Key::Escape {
+                self.env_finish();
+                self.view.envelope = false;
+                return true;
+            }
+            let edits = self.view.env.key(&self.params, &e.key, e.modifiers);
+            if !edits.is_empty() {
+                self.env_apply(edits, true);
+                return true;
+            }
         }
         if e.key == Key::Escape && e.state == KeyState::Down {
             self.release_keys(); self.keyboard_active = false; return true;
@@ -931,6 +987,20 @@ impl WindowHandler for PanelWindow {
     }
 }
 
+// Fazıl Irak — 25.10.2026: Unicode girişte çok karakterli olaylar da 64 karakter
+// sınırına uyar. Kontrol karakterleri dosyaya/preset adına taşınmaz.
+fn append_name_text(name: &mut String, text: &str) {
+    let remaining = 64usize.saturating_sub(name.chars().count());
+    name.extend(text.chars().filter(|c| !c.is_control()).take(remaining));
+}
+
+// Fazıl Irak — 25.10.2026: Boş sorgu tüm sesleri, diğer sorgular isim veya
+// açıklamadaki büyük/küçük harften bağımsız eşleşmeleri gösterir.
+fn preset_matches_search(preset: &Preset, search: &str) -> bool {
+    let search=search.to_lowercase();
+    preset.name.to_lowercase().contains(&search) || preset.description.to_lowercase().contains(&search)
+}
+
 // Fiziksel scan-code, Türkçe Q/F karakter dönüşümü ve Shift/CapsLock'tan bağımsız nota tutar.
 // KeyUp sırasında modifier değişmiş olsa da nota kapanır. Metin kutuları bu yoldan önce işlenir.
 fn piano_note(e: &keyboard_types::KeyboardEvent) -> Option<u32> {
@@ -948,6 +1018,33 @@ fn piano_note(e: &keyboard_types::KeyboardEvent) -> Option<u32> {
 #[cfg(test)]
 mod keyboard_tests {
     use super::*;
+    #[test]
+    fn search_matches_name_description_and_can_be_cleared() {
+        let mut preset=Preset::capture(&ModelFParams::default(),"Şafak Bass".into(),"Bass".into());
+        preset.description="Warm analog motion".into();
+        assert!(preset_matches_search(&preset,"ŞAFAK"));
+        assert!(preset_matches_search(&preset,"ANALOG"));
+        assert!(preset_matches_search(&preset,""));
+        assert!(!preset_matches_search(&preset,"unrelated lead"));
+    }
+    #[test]
+    fn preset_name_accepts_turkish_text_and_backspace() {
+        let mut name=String::new();
+        append_name_text(&mut name,"Çağrı Şİş 123");
+        assert_eq!(name,"Çağrı Şİş 123");
+        name.pop();
+        append_name_text(&mut name,"4");
+        assert_eq!(name,"Çağrı Şİş 124");
+    }
+    #[test]
+    fn preset_name_limits_multi_character_events_without_splitting_unicode() {
+        let mut name="ş".repeat(63);
+        append_name_text(&mut name,"\r\nİö");
+        assert_eq!(name.chars().count(),64);
+        assert!(name.ends_with('İ'));
+        append_name_text(&mut name,"more");
+        assert_eq!(name.chars().count(),64);
+    }
     #[test]
     fn physical_keys_survive_layout_shift_and_modifier_release() {
         let mut e=keyboard_types::KeyboardEvent::default();
