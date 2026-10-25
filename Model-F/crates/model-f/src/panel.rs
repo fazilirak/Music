@@ -211,6 +211,7 @@ pub struct View {
     pub meter: f32,
     pub overload: f32,
     pub browser: bool,
+    pub delete_name: Option<String>,
     pub filter: String,
     pub search: String,
     pub rows: Vec<Preset>,
@@ -222,6 +223,14 @@ pub struct View {
     pub keys: u32,
 }
 impl View {
+    // Fazıl Irak — 25.10.2026: Görsel pasiflik ve giriş engeli aynı durumdan türetilir.
+    pub fn header_enabled(&self) -> bool { !self.browser && !self.envelope && !self.save && !self.about }
+    pub fn multi_button_enabled(&self) -> bool { !self.browser && !self.save && !self.about }
+    pub fn blocks_click(&self,x:f64,y:f64) -> bool {
+        (!self.header_enabled() && in_rect((330.,0.,762.,117.),x,y)) ||
+        (!self.multi_button_enabled() && in_rect(crate::mseg_ui::OPEN,x,y))
+    }
+
     // open_about alt adımı: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
     pub fn open_about(&mut self) {
         self.about = true;
@@ -250,6 +259,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         "FAZIL IRAK  /  CIRCUIT SYNTHESIZER",
         "start",
     );
+    if !v.header_enabled() {s.push_str(r##"<g id="preset-header-disabled" opacity="0.3">"##);}
     text(&mut s, 346.0, 29.0, 9, "#8d9799", "SOUND LIBRARY", "start");
     button(
         &mut s,
@@ -276,6 +286,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         button(&mut s, x, 40.0, 56.0, 38.0, label, false);
     }
     text(&mut s, 871.0, 96.0, 9, "#8d9799", "EXPORT .MODELF", "start");
+    if !v.header_enabled() {s.push_str("</g>");}
     s.push_str(r##"<path d="M28 118H1092" stroke="#ed6c46" stroke-width="2"/><path d="M28 123H1092" stroke="#dce0d8" stroke-width="2"/>"##);
     section(&mut s, 28.0, 132.0, 326.0, 310.0, "01", "OSCILLATORS");
     section(&mut s, 374.0, 132.0, 300.0, 310.0, "02", "LADDER FILTER");
@@ -295,7 +306,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     for (i, c) in CONTROLS.iter().enumerate() {
         
         let n = f64::from(p.display_normalized(c.id));
-        let enabled = control_enabled(p, c.id);
+        let enabled = control_enabled_for_view(p, v, c.id);
         if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
         let active = v.hover == Some(i);
         let accent = if active { "#ff956f" } else { "#ed6c46" };
@@ -400,16 +411,8 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         "SAMPLE-CLOCKED  /  MIDI + HOST TEMPO",
         "start",
     );
-    text(
-        &mut s,
-        30.0,
-        709.0,
-        9,
-        "#899598",
-        "CLICK KEYS TO PLAY A–K",
-        "start",
-    );
-    text(&mut s, 30., 724., 8, "#899598", "W E T Y U = BLACK KEYS · ESC releases", "start");
+
+
     text(
         &mut s,
         30.0,
@@ -438,6 +441,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     let (x, y, w, h) = PANIC_RECT;
     button(&mut s, x, y, w, h, "PANIC", false);
     let (x, y, w, h) = crate::mseg_ui::OPEN;
+    if !v.multi_button_enabled() {s.push_str(r##"<g id="multi-button-disabled" opacity="0.3">"##);}
     button(
         &mut s,
         x,
@@ -452,6 +456,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         let _ = write!(s, r##"<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="4" fill="#e5e7df" stroke="#e5e7df"/>"##);
         text(&mut s, x+w/2., y+h/2.+4., 11, "#17191a", "MULTI-STAGE ENV.", "middle");
     }
+    if !v.multi_button_enabled() {s.push_str("</g>");}
     if v.envelope {
         crate::mseg_ui::draw(&mut s, p, &v.env);
     }
@@ -493,11 +498,15 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
                 &mut s,
                 x,
                 y,
-                504.0,
+                if v.filter=="User" && preset.source_path.is_some() {464.0} else {504.0},
                 30.0,
                 &format!("{:02}   {}", v.offset + i + 1, preset.name),
                 preset.name == v.name,
             );
+            if v.filter=="User" && preset.source_path.is_some() {
+                button(&mut s,x+468.,y,36.,30.,"×",false);
+                text(&mut s,x+486.,y+21.,18,"#ed6c46","×","middle");
+            }
         }
         text(
             &mut s,
@@ -593,6 +602,15 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         let (bx, by, bw, bh) = ABOUT_CLOSE;
         button(&mut s, bx, by, bw, bh, "CLOSE", true);
     }
+    if let Some(name)=&v.delete_name {
+        s.push_str(r##"<g id="delete-user-preset-confirm"><rect width="1120" height="760" fill="#070b0c" opacity="0.82"/><rect x="310" y="260" width="500" height="240" rx="9" fill="#22292b" stroke="#566265"/>"##);
+        text(&mut s,340.,300.,18,"#e5e7df","DELETE USER PRESET?","start");
+        text(&mut s,340.,344.,15,"#ed6c46",&name.chars().take(45).collect::<String>(),"start");
+        text(&mut s,340.,382.,11,"#a8b0ae","Moved to Presets/.deleted so you can restore the file.","start");
+        button(&mut s,520.,430.,120.,34.,"CANCEL",false);
+        button(&mut s,660.,430.,120.,34.,"DELETE",true);
+        s.push_str("</g>");
+    }
     s.push_str("</g></svg>");
     s
 }
@@ -621,6 +639,50 @@ pub fn render(svg: &str, width: u32, height: u32) -> Result<resvg::tiny_skia::Pi
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn overlay_batch_states_render_without_breaking_native_save_flow() {
+        let p=ModelFParams::default();
+        for scene in ["multi-ad","multi-on","user-library","delete-confirm"] {
+            let multi=scene.starts_with("multi");
+            let p=if scene=="multi-on" {ModelFParams {mseg_enable:FloatParam::new("Multi",1.,FloatRange::Linear{min:0.,max:1.}),..ModelFParams::default()}} else {ModelFParams::default()};
+            let mut v=View {name:"Example User Bass".into(),category:"Bass".into(),filter:"User".into(),envelope:multi,browser:!multi,..View::default()};
+            let mut user=Preset::capture(&p,"Example User Bass".into(),"Bass".into());user.source_path=Some("preview-only.modelf".into());v.rows=vec![user];
+            if scene=="delete-confirm" {v.delete_name=Some("Example User Bass".into());}
+            let image=svg(&p,&v);
+            assert!(image.contains("preset-header-disabled"));
+            assert_eq!(image.contains("multi-button-disabled"),!multi);
+            assert_eq!(image.contains("delete-user-preset-confirm"),scene=="delete-confirm");
+            let px=render(&image,W,H).unwrap();render(&image,W*2,H*2).unwrap();
+            if let Some(dir)=std::env::var_os("MODEL_F_UI_PREVIEW_DIR") {
+                let dir=std::path::PathBuf::from(dir);std::fs::create_dir_all(&dir).unwrap();
+                px.save_png(dir.join(format!("{scene}.png"))).unwrap();
+            }
+        }
+        assert!(!View::default().save);
+        assert!(control_enabled_for_view(&p,&View::default(),"volume"));
+    }
+    #[test]
+    fn overlay_controls_block_clicks_and_restore_after_close() {
+        let p=ModelFParams::default();let mut v=View::default();
+        assert!(v.header_enabled());assert!(v.multi_button_enabled());
+        for point in [(500.,60.),(797.,60.),(900.,60.),(1050.,60.)] {assert!(!v.blocks_click(point.0,point.1));}
+        v.envelope=true;
+        for point in [(500.,60.),(797.,60.),(900.,60.),(1050.,60.)] {assert!(v.blocks_click(point.0,point.1));}
+        assert!(!control_enabled_for_view(&p,&v,"volume"));assert!(v.multi_button_enabled());
+        v.envelope=false;v.browser=true;assert!(!v.multi_button_enabled());assert!(v.blocks_click(320.,705.));
+        assert!(svg(&p,&v).contains("multi-button-disabled"));
+        v.browser=false;assert!(v.header_enabled());assert!(control_enabled_for_view(&p,&v,"volume"));
+    }
+    #[test]
+    fn delete_buttons_only_hit_user_rows_not_factory_or_row_gaps() {
+        let mut v=View {browser:true,filter:"User".into(),..View::default()};
+        let mut user=Preset::capture(&ModelFParams::default(),"User".into(),"Bass".into());user.source_path=Some("user.modelf".into());
+        v.rows=vec![user;12];
+        assert_eq!(user_delete_hit(&v,530.,245.),Some(0));assert_eq!(user_delete_hit(&v,1050.,245.),Some(10));
+        assert_eq!(user_delete_hit(&v,530.,266.),None);assert_eq!(user_delete_hit(&v,200.,245.),None);
+        v.filter="Bass".into();assert_eq!(user_delete_hit(&v,530.,245.),None);
+        v.filter="User".into();v.rows=crate::presets::factory();assert_eq!(user_delete_hit(&v,530.,245.),None);
+    }
     #[test]
     // Regresyon senaryosu about_opens_and_closes_without_changing_synth_parameters: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     // Gövdedeki başlıca çağrılar: ModelFParams::default → p.controls → View::default → in_rect. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
@@ -805,4 +867,18 @@ mod tests {
 pub fn control_enabled(p: &ModelFParams, id: &str) -> bool {
     if p.mode.value().round() == 1.0 && matches!(id, "osc2_waveform" | "osc2_octave" | "osc2_level" | "osc_sync" | "fm_on" | "fm_amount") { return false; }
     id != "fm_amount" || p.fm_on.value() > 0.5
+}
+
+// Fazıl Irak — 25.10.2026: Output düğmesi de üst panelin kilidini izler.
+pub fn control_enabled_for_view(p:&ModelFParams,v:&View,id:&str)->bool {
+    control_enabled(p,id) && (id!="volume" || v.header_enabled())
+}
+// Satır ve silme hit-test'i render ile aynı boyutları kullanır.
+pub fn user_delete_hit(v:&View,x:f64,y:f64)->Option<usize> {
+    if !v.browser || v.filter!="User" || !(234.0..594.0).contains(&y) {return None;}
+    let col=if (516.0..552.0).contains(&x) {0} else if (1036.0..1072.0).contains(&x) {1} else {return None;};
+    let row=((y-234.)/36.) as usize;
+    if (y-234.)%36.>=30. {return None;}
+    let index=v.offset+col*10+row;
+    v.rows.get(index).filter(|p|p.source_path.is_some()).map(|_|index)
 }

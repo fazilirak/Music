@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 25.10.2026
 // Dosyanın görevi: Preset sürüm geçişi, doğrulama, capture/apply, fabrika/kullanıcı dosyaları ve arama akışıdır.
 use crate::params::ModelFParams;
 use nih_plug::prelude::*;
@@ -20,6 +20,10 @@ pub struct Preset {
     pub category: String,
     pub description: String,
     pub values: BTreeMap<String, f32>,
+    // Fazıl Irak — 25.10.2026: Yalnız kullanıcı kütüphanesi taranırken atanır.
+    // JSON/DAW verisine yazılmaz; fabrika ve dışarıdan yüklenen sesler None kalır.
+    #[serde(skip)]
+    pub(crate) source_path: Option<PathBuf>,
 }
 impl Preset {
     // upgrade: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
@@ -44,6 +48,7 @@ impl Preset {
     pub fn capture(p: &ModelFParams, name: String, category: String) -> Self {
         Self {
             format: 2,
+            source_path: None,
             name,
             category,
             description: "User sound".into(),
@@ -231,7 +236,7 @@ pub fn user() -> (Vec<Preset>, Vec<String>) {
             let path = entry.path();
             if path.extension().is_some_and(|e| e == "modelf") {
                 match read(&path) {
-                    Ok(p) => bank.push(p),
+                    Ok(mut p) => { p.source_path=Some(path); bank.push(p); },
                     Err(e) => errors.push(format!("{}: {e}", entry.file_name().to_string_lossy())),
                 }
             }
@@ -241,9 +246,73 @@ pub fn user() -> (Vec<Preset>, Vec<String>) {
     (bank, errors)
 }
 
+// Fazıl Irak — 25.10.2026: Kalıcı silme yerine kullanıcı dosyasını .deleted altına
+// taşır. Kaynak yolu, kök klasör, dosya türü ve içeriği yeniden doğrulanır.
+pub fn trash_user(preset: &Preset) -> Result<PathBuf, String> {
+    trash_user_in(&directory(),preset)
+}
+fn trash_user_in(root: &Path, preset: &Preset) -> Result<PathBuf, String> {
+    let source=preset.source_path.as_ref().ok_or("Only user-library presets can be deleted")?;
+    let meta=fs::symlink_metadata(source).map_err(|e|e.to_string())?;
+    if !meta.file_type().is_file() || meta.file_type().is_symlink() || source.extension().is_none_or(|x|x!="modelf") {
+        return Err("Only regular user preset files can be deleted".into());
+    }
+    let root=fs::canonicalize(root).map_err(|e|e.to_string())?;
+    let source=fs::canonicalize(source).map_err(|e|e.to_string())?;
+    if source.parent()!=Some(root.as_path()) {return Err("The preset is outside the user library".into());}
+    let current=read(&source)?;
+    if serde_json::to_vec(&current).map_err(|e|e.to_string())? != serde_json::to_vec(preset).map_err(|e|e.to_string())? {
+        return Err("The preset changed on disk; reopen the library before deleting it".into());
+    }
+    let trash=root.join(".deleted");
+    match fs::symlink_metadata(&trash) {
+        Ok(meta) if !meta.is_dir() || meta.file_type().is_symlink() => return Err("Invalid deleted-presets folder".into()),
+        Ok(_) => (),
+        Err(e) if e.kind()==io::ErrorKind::NotFound => fs::create_dir(&trash).map_err(|e|e.to_string())?,
+        Err(e) => return Err(e.to_string()),
+    }
+    let trash=fs::canonicalize(trash).map_err(|e|e.to_string())?;
+    if trash.parent()!=Some(root.as_path()) {return Err("Invalid deleted-presets location".into());}
+    let stamp=std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_err(|e|e.to_string())?.as_nanos();
+    let batch=trash.join(format!("{}-{stamp}",std::process::id()));
+    fs::create_dir(&batch).map_err(|e|e.to_string())?;
+    let target=batch.join(source.file_name().ok_or("Invalid preset filename")?);
+    if let Err(e)=fs::rename(source,&target) {let _=fs::remove_dir(&batch);return Err(e.to_string());}
+    Ok(target)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn user_deletion_preserves_a_recoverable_copy_and_does_not_touch_other_files() {
+        let dir=tempfile::tempdir().unwrap();let root=dir.path();
+        let mut preset=Preset::capture(&ModelFParams::default(),"My Sound".into(),"Bass".into());
+        let source=root.join("renamed-on-disk.modelf");save(&source,&preset).unwrap();
+        let original=fs::read(&source).unwrap();let unrelated=root.join("other.modelf");fs::write(&unrelated,b"unrelated").unwrap();
+        assert!(trash_user_in(root,&preset).is_err());
+        preset.source_path=Some(source.clone());
+        let removed=trash_user_in(root,&preset).unwrap();
+        assert!(!source.exists());assert_eq!(fs::read(removed).unwrap(),original);
+        assert_eq!(fs::read(unrelated).unwrap(),b"unrelated");
+        assert!(trash_user_in(root,&factory()[0]).is_err());
+    }
+    #[test]
+    fn deletion_rejects_changed_external_and_symlinked_presets() {
+        let dir=tempfile::tempdir().unwrap();let outside=tempfile::tempdir().unwrap();
+        let mut preset=Preset::capture(&ModelFParams::default(),"Checked".into(),"Bass".into());
+        let file=dir.path().join("checked.modelf");save(&file,&preset).unwrap();preset.source_path=Some(file.clone());
+        let mut changed=preset.clone();changed.description="Changed after the dialog opened".into();save(&file,&changed).unwrap();
+        assert!(trash_user_in(dir.path(),&preset).is_err());assert!(file.exists());
+        let external=outside.path().join("outside.modelf");save(&external,&preset).unwrap();preset.source_path=Some(external.clone());
+        assert!(trash_user_in(dir.path(),&preset).is_err());assert!(external.exists());
+        #[cfg(unix)] {
+            let linked=dir.path().join("link.modelf");std::os::unix::fs::symlink(&external,&linked).unwrap();
+            preset.source_path=Some(linked);assert!(trash_user_in(dir.path(),&preset).is_err());assert!(external.exists());
+        }
+        // Dosya yolu kaydedilmiş preset JSON'una sızmaz.
+        assert!(!serde_json::to_string(&preset).unwrap().contains("source_path"));
+    }
     #[test]
     // Regresyon senaryosu factory_has_160_distinct_sounds_and_80_multi_stage_sounds: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     // Gövdedeki başlıca çağrılar: factory → bank.len → bank.iter → filter. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.

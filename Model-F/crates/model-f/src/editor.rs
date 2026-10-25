@@ -130,6 +130,7 @@ struct PanelWindow {
     view: View,
     bank: Vec<Preset>,
     selected: Option<Preset>,
+    pending_delete: Option<Preset>,
     pointer: (f64, f64),
     drag: Option<(usize, f64, f32)>,
     mouse_note: Option<u32>,
@@ -178,6 +179,19 @@ impl PanelWindow {
             Err(error) => self.view.status=error,
         }
         self.focus_text_input(window);
+    }
+    // Fazıl Irak — 25.10.2026: Onaylanan kullanıcı presetinin gerçek kaynak
+    // dosyası taşınır. Çalmakta olan ses/parametreler değiştirilmez.
+    fn finish_delete_user(&mut self) {
+        let Some(preset)=self.pending_delete.take() else {return;};
+        self.view.delete_name=None;
+        match presets::trash_user(&preset) {
+            Ok(_) => {
+                self.view.status="User preset moved to Presets/.deleted. Move the file back to restore it.".into();
+                self.reload();self.refresh_rows();
+            }
+            Err(error) => self.view.status=error,
+        }
     }
     fn focus_text_input(&mut self, window: &mut Window<'_>) {
         window.set_wants_keys(true);
@@ -289,6 +303,7 @@ impl PanelWindow {
             },
             bank: Vec::new(),
             selected: None,
+            pending_delete: None,
             pointer: (0.0, 0.0),
             drag: None,
             mouse_note: None,
@@ -518,6 +533,12 @@ impl PanelWindow {
     // Gövdedeki başlıca çağrılar: let → panel::in_rect → self.end_drag → self.env_finish. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     fn click(&mut self, window: &mut Window<'_>, right: bool, modifiers: Modifiers) {
         let (x, y) = self.pointer;
+        if self.pending_delete.is_some() {
+            if !right && panel::in_rect((520.,430.,120.,34.),x,y) {self.pending_delete=None;self.view.delete_name=None;}
+            else if !right && panel::in_rect((660.,430.,120.,34.),x,y) {self.finish_delete_user();}
+            return;
+        }
+        if self.view.blocks_click(x,y) {return;}
         // The visible emergency button remains available above modal input handling.
         if !right && panel::in_rect(panel::PANIC_RECT, x, y) {
             self.end_drag();
@@ -595,6 +616,14 @@ impl PanelWindow {
             return;
         }
         if self.view.browser {
+            if !right {
+                if let Some(index)=panel::user_delete_hit(&self.view,x,y) {
+                    self.end_drag();self.env_finish();self.release_keys();self.keyboard_active=false;
+                    let preset=self.view.rows[index].clone();
+                    self.view.delete_name=Some(preset.name.clone());self.pending_delete=Some(preset);
+                    self.focus_text_input(window);return;
+                }
+            }
             if !right && panel::in_rect((772.0,185.0,300.0,30.0),x,y) {
                 self.edit_preset_search(window);
                 return;
@@ -704,6 +733,10 @@ impl PanelWindow {
     // key: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
     // Gövdedeki başlıca çağrılar: self.env_finish → self.view.env.key → edits.is_empty → self.env_apply. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     fn key(&mut self, e: keyboard_types::KeyboardEvent) -> bool {
+        if self.pending_delete.is_some() {
+            if e.state==KeyState::Down && e.key==Key::Escape {self.pending_delete=None;self.view.delete_name=None;}
+            return true;
+        }
         if self.view.about {
             if e.state == KeyState::Down && matches!(e.key, Key::Escape | Key::Enter) {
                 self.view.about = false;
@@ -930,7 +963,7 @@ impl WindowHandler for PanelWindow {
                 window::release_capture(window);
             }
             Event::Mouse(MouseEvent::WheelScrolled { delta, modifiers }) => {
-                if self.view.about {
+                if self.view.about || self.pending_delete.is_some() {
                     return EventStatus::Captured;
                 }
                 let amount = match delta {
@@ -958,7 +991,7 @@ impl WindowHandler for PanelWindow {
                     }
                 } else if !self.view.save {
                     if let Some(i) = self.view.hover {
-                        if !panel::control_enabled(&self.params, CONTROLS[i].id) { return EventStatus::Captured; }
+                        if !panel::control_enabled_for_view(&self.params, &self.view, CONTROLS[i].id) { return EventStatus::Captured; }
                         if CONTROLS[i].knob {
                             let step = if modifiers.contains(Modifiers::SHIFT) {
                                 0.002

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 25.10.2026
 // Dosyanın görevi: Envelope editörünün nokta/tutamak hit-test, ızgara, snap ve düzenleme işlemlerini yönetir.
 //! Model F's envelope overlay. Hit testing and drawing share the same coordinates.
 use crate::{
@@ -620,7 +620,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
                     ctl.x + ctl.w / 2.,
                     519.,
                     9,
-                    "#899598",
+                    if ctl.id=="mseg_target" {"#ed6c46"} else {"#899598"},
                     ctl.label,
                     "middle",
                 );
@@ -632,7 +632,7 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
                 ctl.w,
                 ctl.h,
                 &label,
-                matches!(ctl.id, "mseg_enable" | "mseg_snap" | "mseg_fix_tempo") && v > 0.5,
+                ctl.id=="mseg_target" || (matches!(ctl.id, "mseg_enable" | "mseg_snap" | "mseg_fix_tempo") && v > 0.5),
             );
         }
         if !enabled(p, ctl.id) { s.push_str("</g>"); }
@@ -752,15 +752,18 @@ pub fn draw(s: &mut String, p: &ModelFParams, state: &State) {
 // knob alt adımı: Envelope editörünün nokta/tutamak hit-test, ızgara, snap ve düzenleme işlemlerini yönetir.
 // Gövdedeki başlıca çağrılar: panel::text → f64::from → to_radians → a.cos. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 fn knob(s: &mut String, x: f64, y: f64, label: &str, value: &str, n: f32) {
-    panel::text(s, x, y - 40., 9, "#899598", label, "middle");
+    let highlight=label=="AMOUNT";
+    let fill=if highlight {"#ed6c46"} else {"#282e30"};
+    let pointer=if highlight {"#17191a"} else {"#ed6c46"};
+    panel::text(s, x, y - 40., 9, if highlight {"#ed6c46"} else {"#899598"}, label, "middle");
     let _ = write!(
         s,
-        r##"<circle cx="{x}" cy="{y}" r="28" fill="#111719" stroke="#414b4e" stroke-width="2"/><circle cx="{x}" cy="{y}" r="23" fill="#282e30"/>"##
+        r##"<circle cx="{x}" cy="{y}" r="28" fill="#111719" stroke="#414b4e" stroke-width="2"/><circle cx="{x}" cy="{y}" r="23" fill="{fill}"/>"##
     );
     let a = (-225. + 270. * f64::from(n)).to_radians();
     let _ = write!(
         s,
-        r##"<path d="M{} {}L{} {}" stroke="#ed6c46" stroke-width="3" stroke-linecap="round"/>"##,
+        r##"<path d="M{} {}L{} {}" stroke="{pointer}" stroke-width="3" stroke-linecap="round"/>"##,
         x + 17. * a.cos(),
         y + 17. * a.sin(),
         x + 24. * a.cos(),

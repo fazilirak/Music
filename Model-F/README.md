@@ -7,21 +7,29 @@ Az kontrol, güçlü analog karakter. Windows x64 ve macOS Universal için VST3,
 
 ## Başlangıç
 
-`dist/Model-F-Windows-0.2.2/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
+`dist/Model-F-Windows-0.2.3/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
 
 VST3 için `Model F.vst3` klasörünü DAW'ın taradığı VST3 klasörüne; CLAP için `Model F.clap` dosyasını CLAP klasörüne kopyalayın. DAW'da eklentileri yeniden taratın. VST3 ve CLAP kimlikleri Model F'e özeldir.
 
 Model F başlığına tıklayarak FAZIL IRAK şirket adını ve sürüm bilgisini gösteren About penceresini açabilirsiniz. ESC, Enter veya CLOSE ile kapanır.
 
+## İndirme
+
+- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.3/Model-F-0.2.3-Windows-x64.zip)
+- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.3/Model-F-0.2.3-macOS-Universal.tar.gz)
+- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.3)
+
 ## 0.2.2 Windows metin girişi
 
 Windows'ta ana **SAVE**, isim ve kategori içeren tek standart Windows penceresi açar. Save kullanıcı ses kütüphanesine kaydeder; Cancel değiştirmez. Arkada ikinci bir kaydetme paneli açılmaz. Sound Library içindeki **SEARCH** alanına tıklayın; açılan Windows penceresine sorguyu yazıp Search seçin. Clear sorguyu temizler, Cancel önceki sorguyu korur. Arama seçili kategoride preset adını ve açıklamasını büyük/küçük harften bağımsız eşleştirir; arama yapmak ses yüklemez. Türkçe karakterler ve standart metin düzenleme Windows EDIT kontrolüyle işlenir. Kaydetme ve arama görünümüne özel skin uygulanmamıştır. Mac sürümü mevcut panel tabanlı isim/arama girişini korur.
 
-## İndirme
+## 0.2.3 toplu arayüz düzenlemesi
 
-- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.2/Model-F-0.2.2-Windows-x64.zip)
-- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.2/Model-F-0.2.2-macOS-Universal.tar.gz)
-- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.2)
+Multi-Stage Envelope açıkken Amount ve Target turuncu gösterilir. Üst preset alanı, önceki/sonraki ses, Save, Load, Export ve Output pasiftir; pencere kapanınca açılır. Sound Library açıkken Multi-Stage düğmesi pasiftir. PANIC ve ekran klavyesi kullanılabilir.
+
+Ana paneldeki iki bilgisayar klavyesi yardım satırı kaldırılmıştır.
+
+User sekmesinde her kullanıcı preset satırının sağındaki × düğmesi silme onayı açar. DELETE dosyayı `Presets/.deleted` altına taşır; Cancel veya ESC vazgeçer. Geri almak için `.deleted` içindeki alt klasörden `.modelf` dosyasını ana Presets klasörüne taşıyın. Fabrika presetlerinde silme düğmesi yoktur. Çalmakta olan ses silme sırasında değişmez.
 
 ## 0.2.2 Multi tempo ve Reset
 
@@ -39,7 +47,7 @@ OSC seçicileri ve alt knob değerleri kendi çerçevelerinin içine alındı. F
 
 AD modu ile Multi kontrolleri birbirinden ayrıldı. AD+Amount etkinse ana buton logo beyazı; Multi etkinse turuncudur. AD panelinde yalnız Attack/Decay aktiftir; Multi'de bu ikisi pasif, grafik/ızgara/eğri/oynatma aktiftir. Amount ve Target ortaktır.
 
-**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. Fabrika bankası Free zamanlamasını korur. 0.2.2 ile SPEED seçilerek DAW temposuna veya sabit 120 BPM’e bağlanabilir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
+**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. Fabrika bankası Free zamanlamasını korur; SPEED ile DAW temposuna veya sabit 120 BPM’e bağlanabilir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
 
 Eski preset/oturumlarda OSC 2 dalga/oktav ve Audio ADS başlangıçta eski ortak ayarları izler. İlk düzenlemede bu alanlar ayrılır; yeni kayıtlar çözümlenmiş değerleri saklar. Eski host parametre kimlikleri korunur.
 

@@ -87,18 +87,17 @@ jobs:
             if [ "$project" = "Model-F" ]; then
               cat >> release-notes.md <<'MODEL'
 
-          Model F 0.2.2
-          - Multi-stage envelope SPEED: Free, x1, x2, x4, x8, x16, x32. x1 spans eight quarter-note beats; x32 spans one quarter beat.
-          - FIX TEMPO uses 120 BPM; otherwise tempo modes follow the host, falling back to the internal TEMPO setting. Free retains existing duration and factory sound timing.
-          - RESET clears the Multi curve to a flat zero line without changing Amount, Target, AD settings or clock settings. At Volume target/100% Amount, a zero curve silences the output until adjusted.
-          - Windows SAVE uses one standard native dialog for preset name/category. Sound Library SEARCH uses a native text dialog with Search, Clear and Cancel; the chosen category is retained.
-          - Windows native EDIT controls retain Unicode typing, Backspace and paste; no custom skin is applied. macOS retains its existing panel-based name/search controls and native file dialogs.
-          - Removed the outdated Seven-oscillator/120-presets About line. The bank still contains 160 sounds (80 AD, 80 Multi).
-          - Retains dual oscillators, Sync/FM, independent Filter/Audio envelopes and the 0.2.1 layout/CPU improvements.
-          - New clock parameters are appended; old preset/session IDs and the user library remain compatible.
+          Model F 0.2.3
+          - Orange Amount knob/label and Target selector while the Multi-Stage Envelope editor is open, in both AD and Multi modes.
+          - Sound Library disables the Multi-Stage button. The envelope editor disables the upper preset field, previous/next, Save, Load, Export and Output controls; closing it restores them. Disabled controls also reject mouse input.
+          - User-library rows have a right-edge delete button and confirmation panel. Confirming moves the exact user file into a timestamped Presets/.deleted subfolder; Cancel/Escape leaves it intact. Move the file back to restore it.
+          - Factory presets cannot be deleted. The source path, regular-file type and unchanged preset contents are validated before moving a user file; the currently sounding preset parameters are preserved.
+          - Removed the two keyboard-help lines to the left of the Multi-Stage button. Existing computer-key functionality is retained.
+          - Keeps the standard single Windows Save dialog and native Search/Clear/Cancel dialog. macOS retains the existing panel-based name/search entry and native file import/export dialogs.
+          - Retains the 160-sound bank, dual oscillators, Sync/FM, independent Filter/Audio envelopes, Multi tempo controls and legacy preset/session compatibility.
 
-          59 Windows unit tests passed locally, including preset search matching and Unicode name handling. Each release build host runs the full product/core tests. The Windows save/search interaction was confirmed by the user in Ableton; independent macOS hardware validation remains necessary.
-          Complete source archives retain licences, documentation and the audition tracks under docs/audio-020.
+          73 Windows product tests passed locally (64 unit, 4 CLAP host, 1 MSEG audio, 3 overload, 1 real-time allocation), plus final UI render validation after removing the two help lines. AD/Multi/User/delete-confirmation scenes were rendered at 1x and 2x using example data. Real Ableton/macOS hardware validation of the new 0.2.3 controls remains necessary.
+          Complete source archives retain licences, docs/ui-023 screenshots and the audition tracks under docs/audio-020.
           MODEL
             fi
             if gh release view "$tag" >/dev/null 2>&1; then
