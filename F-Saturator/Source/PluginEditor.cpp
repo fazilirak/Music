@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Arayüz kurulumu, yerleşim, meter/transfer çizimi, model/preset eylemleri ve dosya penceresi.
 #include "PluginEditor.h"
 #include "FSaturatorFonts.h"
@@ -38,11 +38,42 @@ Editor::Theme::Theme()
 void Editor::Theme::drawButtonBackground(juce::Graphics &g, juce::Button &b, const juce::Colour &, bool over,
                                          bool down)
 {
+    if (b.getComponentID().startsWith("desk-"))
+    {
+        // Fast/Tight seçenekleri küçük LED anahtarlardır: dolu turuncu=açık, koyu=kapalı.
+        const auto centre=juce::Point<float>(5.0f,b.getHeight()*.5f);
+        g.setColour(b.getToggleState()?accent:juce::Colour(0xff293235));
+        g.fillEllipse(centre.x-3,centre.y-3,6,6);
+        g.setColour(b.getToggleState()?accent.brighter(.15f):juce::Colour(over||down?0xffa8b3b5:0xff596568));
+        g.drawEllipse(centre.x-3.5f,centre.y-3.5f,7,7,.8f);
+        return;
+    }
     const auto r = b.getLocalBounds().toFloat().reduced(.7f);
     g.setColour(b.getToggleState() ? accent : juce::Colour(over || down ? 0xff343b3e : 0xff222729));
     g.fillRoundedRectangle(r, 4);
     g.setColour(b.getToggleState() ? accent : juce::Colour(0xff343b3e));
     g.drawRoundedRectangle(r, 4, 1.3f);
+}
+// LED etiketinin de tıklanabilen alana dahil olması küçük hedeflerin kullanımını kolaylaştırır.
+void Editor::Theme::drawButtonText(juce::Graphics& g,juce::TextButton& b,bool over,bool down)
+{
+    if (!b.getComponentID().startsWith("desk-"))
+    { juce::LookAndFeel_V4::drawButtonText(g,b,over,down); return; }
+    g.setColour(b.getToggleState()?ivory:muted);
+    g.setFont(juce::FontOptions(9));
+    g.drawText(b.getButtonText(),13,0,b.getWidth()-13,b.getHeight(),juce::Justification::centredLeft);
+}
+// Alt şerit için F Saturator paletine uygun tek düğme. Orta işaret nötr, turuncu ibre geçerli değerdir.
+void Editor::Theme::drawRotarySlider(juce::Graphics& g,int x,int y,int w,int h,float pos,float start,float end,juce::Slider&)
+{
+    const float radius=juce::jmin((float)w,(float)h)*.43f;
+    const juce::Point<float> centre{(float)x+w*.5f,(float)y+h*.5f};
+    g.setColour(juce::Colour(0xff101415));g.fillEllipse(centre.x-radius,centre.y-radius,radius*2,radius*2);
+    g.setColour(juce::Colour(0xff525b5e));g.drawEllipse(centre.x-radius,centre.y-radius,radius*2,radius*2,2);
+    g.setColour(juce::Colour(0xff292f31));g.fillEllipse(centre.x-radius+5,centre.y-radius+5,radius*2-10,radius*2-10);
+    const float a=start+pos*(end-start);
+    g.setColour(accent);g.drawLine(centre.x+std::sin(a)*radius*.35f,centre.y-std::cos(a)*radius*.35f,
+                                centre.x+std::sin(a)*radius*.82f,centre.y-std::cos(a)*radius*.82f,3);
 }
 // Kontrolleri oluştur, APVTS ile bağla ve callback’leri kur.
 // Arayüz metinlerini değiştirmek parametre kimliklerini değiştirmeyi gerektirmez.
@@ -84,6 +115,29 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
             v->endChangeGesture();
         };
     }
+    const char* stripIds[]{"transient", "comp", "bass", "treble"};
+    const char* stripNames[]{"TRANSIENT", "COMP", "BASS", "TREBLE"};
+    const char* stripTips[]{"Soft (-) / Sharp (+): shapes attacks before saturation. Double-click resets.",
+        "Stereo-linked soft-knee feedback compression. 0% = off. Fast ATT / REL change timing.",
+        "Low shelf +/-12 dB. Tight controls sub-bass and low-mid build-up.",
+        "High shelf +/-12 dB. Tight shifts the curve and preserves presence when cutting."};
+    for (int i=0;i<4;++i)
+    {
+        deskKnobs[(size_t)i]=std::make_unique<DeskKnob>(p.state,stripIds[i],stripNames[i],stripTips[i]);
+        addAndMakeVisible(*deskKnobs[(size_t)i]);
+    }
+    const char* switchIds[]{"fast_attack", "fast_release", "bass_tight", "treble_tight"};
+    const char* switchText[]{"ATT", "REL", "TIGHT", "TIGHT"};
+    for(int i=0;i<4;++i)
+    {
+        auto& b=deskSwitches[(size_t)i]; b.setButtonText(switchText[i]);b.setClickingTogglesState(true);
+        b.setComponentID("desk-"+juce::String(switchIds[i]));addAndMakeVisible(b);
+        deskAttachments[(size_t)i]=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,switchIds[i],b);
+    }
+    deskSwitches[0].setTooltip("Comp attack: 22 ms normal / 1.5 ms fast.");
+    deskSwitches[1].setTooltip("Comp release: 220 ms normal / 55 ms fast.");
+    deskSwitches[2].setTooltip("Bass Tight: sub-bass control and broad low-mid attenuation when boosting.");
+    deskSwitches[3].setTooltip("Treble Tight: lower shelf transition and a presence contour when cutting.");
     addAndMakeVisible(heat);
     addAndMakeVisible(autoGain);
     addAndMakeVisible(bypass);
@@ -121,9 +175,9 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
     { presets.setSelectedItemIndex((presets.getSelectedItemIndex() + 1) % 16, juce::sendNotificationSync); };
     save.onClick = [this] { choosePreset(true); };
     load.onClick = [this] { choosePreset(false); };
-    // Pencere 960×610 ile 1440×900 arasında; varsayılan 1040×640. Timer yalnız GUI yenilemesi içindir.
+    // Pencere 960×640 ile 1440×900 arasında; varsayılan 1040×640. Yeni küçük şerit eski yüksekliğe sığar. Timer yalnız GUI yenilemesi içindir.
     setResizable(true, false);
-    setResizeLimits(960, 610, 1440, 900);
+    setResizeLimits(960, 640, 1440, 900);
     setSize(1040, 640);
     timerCallback();
     startTimerHz(30);
@@ -134,6 +188,7 @@ Editor::~Editor()
     stopTimer();
     for (auto &group : groups)
         group.reset();
+    for(auto& knob : deskKnobs) knob.reset();
     setLookAndFeel(nullptr);
 }
 // Host tarafından değiştirilen modeli/preseti ekrana yansıtır; yeni parametre bildirimi üretmez.
@@ -234,12 +289,16 @@ void Editor::paint(juce::Graphics &g)
     g.fillRect(28, divider + 5, getWidth() - 56, 2);
     g.setColour(panel);
     g.fillRoundedRectangle(22, (float)divider + 20, (float)getWidth() - 44,
-                           (float)getHeight() - divider - (dockLeft ? 38 : 90), 8);
+                           (float)getHeight() - divider - (dockLeft ? 8 : 54), 8);
     const float column = (getWidth() - 56) / 4.0f;
     g.setColour(juce::Colour(0xff30383a));
     for (int i = 1; i < 4; ++i)
         g.drawVerticalLine((int)(28 + column * i), (float)divider + 36,
-                           (float)getHeight() - (dockLeft ? 110 : 158));
+                           (float)divider + 326);
+    // Fazıl Irak: ek çerçeveler ve bölüm başlığı kaldırıldı; tek kompakt satır eski model bankasını korur.
+    const int stripY=getHeight()-(dockLeft?88:140), sideW=juce::jmin(184,(getWidth()-56)/5);
+    g.setColour(muted);g.setFont(juce::FontOptions(8));
+    g.drawText("SOFT          SHARP",29,stripY+70,sideW/2-2,13,juce::Justification::centred);
     if (!dockLeft)
     {
         g.setFont(juce::FontOptions(10));
@@ -262,9 +321,20 @@ void Editor::resized()
     outputMeter = {right - 41, top + 17, 29, 76};
     const int divider = dockLeft ? 210 : 166, groupWidth = (getWidth() - 56) / 4;
     for (int i = 0; i < 4; ++i)
-        groups[(size_t)i]->setBounds(28 + i * groupWidth, divider + 26, groupWidth, 320);
-    const int bankWidth = juce::jmin(650, getWidth() - 100), buttonWidth = (bankWidth - 24) / 5,
-              bankY = dockLeft ? getHeight() - 60 : getHeight() - 112;
+        groups[(size_t)i]->setBounds(28 + i * groupWidth, divider + 26, groupWidth, 304);
+    // Fazıl Irak: 140 px yüksekliğindeki kutular yerine 84 px şerit, yaklaşık 40 px çaplı yeni düğmeler.
+    const int stripY=getHeight()-(dockLeft?88:140), sideW=juce::jmin(184,(getWidth()-56)/5), knobW=sideW/2;
+    const int rightX=getWidth()-28-sideW;
+    deskKnobs[0]->setBounds(29,stripY,knobW-2,70);
+    deskKnobs[1]->setBounds(29+knobW,stripY,knobW-2,70);
+    deskKnobs[2]->setBounds(rightX+1,stripY,knobW-2,70);
+    deskKnobs[3]->setBounds(rightX+1+knobW,stripY,knobW-2,70);
+    const int fastW=(knobW-8)/2;
+    deskSwitches[0].setBounds(29+knobW+4,stripY+70,fastW,13);
+    deskSwitches[1].setBounds(29+knobW+5+fastW,stripY+70,fastW,13);
+    deskSwitches[2].setBounds(rightX+knobW/2-24,stripY+70,50,13);
+    deskSwitches[3].setBounds(rightX+knobW+knobW/2-24,stripY+70,50,13);
+    const int bankWidth = getWidth()-56-2*sideW-20, buttonWidth = (bankWidth-24)/5, bankY=stripY+28;
     for (int i = 0; i < 5; ++i)
         characters[(size_t)i].setBounds((getWidth() - bankWidth) / 2 + i * (buttonWidth + 6), bankY,
                                         buttonWidth, 32);

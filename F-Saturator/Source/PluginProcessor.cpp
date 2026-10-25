@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Parametre aralıkları, oturum/preset kaydı, host programları ve DSP callback köprüsü.
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -44,6 +44,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout Processor::layout()
     add("character", "Character Warm / Sizzle", -1, 1, 0);
     add("harmonics", "Harmonic Balance Even / Odd", -1, 1, 0);
     add("drift", "Analog Drift", 0, 1, 0);
+    // Fazıl Irak: 0.5.0 alanları sona eklenir; eski 16 parametrenin DAW indeksleri korunur.
+    add("transient", "Transient Soft / Sharp", -1, 1, 0);
+    add("comp", "Compression", 0, 1, 0);
+    add("bass", "Bass dB", -12, 12, 0);
+    add("treble", "Treble dB", -12, 12, 0);
+    for (const char* id : {"fast_attack", "fast_release", "bass_tight", "treble_tight"})
+        p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{id, 1}, id, false));
     return p;
 }
 // Stereo varsayılan bus ve IRAK_STATE kökü oluşturulur. Ürün adı değişse de eski durum kimliği korunur.
@@ -82,6 +89,10 @@ Settings Processor::settings() const
     s.character = neutral("character");
     s.harmonics = neutral("harmonics");
     s.drift = neutral("drift");
+    s.transient = neutral("transient"); s.comp = neutral("comp");
+    s.bass = neutral("bass"); s.treble = neutral("treble");
+    s.fastAttack = get("fast_attack") > .5f; s.fastRelease = get("fast_release") > .5f;
+    s.bassTight = get("bass_tight") > .5f; s.trebleTight = get("treble_tight") > .5f;
     s.heat = get("heat") > .5f;
     s.autoGain = get("auto_gain") > .5f;
     s.bypass = get("bypass") > .5f;
@@ -173,6 +184,8 @@ void Processor::setCurrentProgram(int index)
     set("character", 0);
     set("harmonics", 0);
     set("drift", 0);
+    // Fabrika sesi çağrılırken önceki kullanıcı strip ayarları taşınmaz.
+    for (const char* id : {"transient", "comp", "bass", "treble", "fast_attack", "fast_release", "bass_tight", "treble_tight"}) set(id, 0);
     program = index;
 }
 // APVTS XML’ine program indeksi ve durum biçimi sürümü eklenir; JUCE binary XML biçimine paketlenir.
@@ -180,7 +193,7 @@ void Processor::getStateInformation(juce::MemoryBlock &data)
 {
     auto xml = state.copyState().createXml();
     xml->setAttribute("program", program);
-    xml->setAttribute("version", 2);
+    xml->setAttribute("version", 3);
     copyXmlToBinary(*xml, data);
 }
 // Yalnız IRAK_STATE köküne sahip durumları kabul eder; program indeksi 0..15 sınırına çekilir.
@@ -194,7 +207,7 @@ void Processor::setStateInformation(const void *data, int size)
             auto restored = juce::ValueTree::fromXml(*xml);
             // 0.3.x durumunda olmayan parametreler, açık editördeki son değere bırakılmaz.
             // Her eksik yeni alan açıkça nötr oluşturulur; bilinmeyen alanlar ve eski değerler korunur.
-            for (const char *id : {"character", "harmonics", "drift"})
+            for (const char *id : {"character", "harmonics", "drift", "transient", "comp", "bass", "treble", "fast_attack", "fast_release", "bass_tight", "treble_tight"})
                 if (!restored.getChildWithProperty("id", id).isValid())
                 {
                     juce::ValueTree neutral("PARAM");

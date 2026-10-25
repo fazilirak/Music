@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Oversampling, iki ADAA katı, hafızalı manyetik/dinamik modeller, filtreler, kazanç, stereo ve gecikmesi eşlenmiş karışım.
 #include "SaturationDSP.h"
 #include <cmath>
@@ -234,6 +234,7 @@ void SaturationDSP::prepare(double sr, int n, int stages, bool useADAA)
     capacity = juce::jmax(1, n);
     factor = 1 << stages;
     internalRate = sampleRate * factor;
+    desk.prepare(sampleRate);
     antialias = useADAA;
     modelRates = {coefficient(3200, internalRate), coefficient(420, internalRate),
                   coefficient(6500, internalRate), coefficient(65, internalRate),
@@ -266,6 +267,7 @@ void SaturationDSP::reset()
 {
     // Reset yalnız filtre/model/gecikme hafızasını temizler. Parametre kimliklerini veya preset tanımlarını yeniden oluşturmaz.
     models = {};
+    desk.reset();
     highpass = {};
     highpassInput = {};
     lowpass = {};
@@ -345,6 +347,8 @@ void SaturationDSP::render(juce::AudioBuffer<float> &audio, int offset, int coun
             weights[(size_t)m].setTargetValue(m == selected ? 1.0f : 0.0f);
         lastModel = selected;
     }
+    desk.configure(settings.transient, settings.comp, settings.bass, settings.treble,
+                   settings.fastAttack, settings.fastRelease, settings.bassTight, settings.trebleTight);
     primed = true;
     // Alt blok aşama 2: prepare’da ayrılan belleği yeniden kullanır; avoidReallocating=true ve count<=capacity koşulu birlikte korunmalıdır.
     wet.setSize(2, count, false, false, true);
@@ -358,6 +362,14 @@ void SaturationDSP::render(juce::AudioBuffer<float> &audio, int offset, int coun
             wet.setSample(c, i, clean);
             inputMaximum = juce::jmax(inputMaximum, std::abs(clean));
         }
+    // Fazıl Irak: stereo bağlı transient katı model sürüşünden önce, host hızında çalışır.
+    // Ek gecikme/lookahead yoktur; eski dry/bypass hizası aynen kalır.
+    for (int i = 0; i < count; ++i)
+    {
+        float l = wet.getSample(0, i), r = wet.getSample(1, i);
+        desk.processInput(l, r);
+        wet.setSample(0, i, l); wet.setSample(1, i, r);
+    }
     // Önce örnekleme artırılır; aşağıdaki filtre ve model işlemleri internalRate hızında uygulanır.
     juce::dsp::AudioBlock<float> block(wet);
     auto up = oversampling->processSamplesUp(block);
@@ -463,6 +475,8 @@ void SaturationDSP::render(juce::AudioBuffer<float> &audio, int offset, int coun
             wetFractional.pushSample(c, wet.getSample(c, i));
             processed[(size_t)c] = wetFractional.popSample(c) * makeup;
         }
+        // Comp ve iki bant EQ yalnız işlenmiş kola uygulanır. Mix=0 ve Bypass etkilenmez.
+        desk.processOutput(processed);
         // Mid/Side genişlik: 0 mono, 1 mevcut genişlik, 2 genişletilmiş wet sinyal. Kuru kol etkilenmez.
         const float mid = (processed[0] + processed[1]) * .5f,
                     side = (processed[0] - processed[1]) * .5f * stereo;

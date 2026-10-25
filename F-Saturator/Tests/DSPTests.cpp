@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Sentetik sinyallerle DSP, gecikme, preset, UI hedefleme, kararlılık ve çıktı üretimi regresyonları.
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <iostream>
 #include <iomanip>
+#include "ChannelStripChecks.h"
 #if JUCE_WINDOWS
 #include <windows.h>
 #endif
@@ -150,6 +151,19 @@ int main(int argc, char **argv)
     try
     {
         // Testin çalışma dizini build olmalıdır. Doğrudan başka dizinden çalıştırmak ../dist çıktısını beklenmeyen yerde oluşturur; CTest bu dizini sağlar.
+        if (!channelStripChecks()) return verificationFailure(32, __LINE__);
+        // Tam plugin yolunda yeni kontroller açıkken blok boyu sonucu değiştirmemeli.
+        irak::Settings stripSettings;
+        stripSettings.transient=.5f;stripSettings.comp=.6f;stripSettings.bass=6;stripSettings.treble=-4;
+        stripSettings.fastAttack=stripSettings.fastRelease=stripSettings.bassTight=stripSettings.trebleTight=true;
+        for(int model=0;model<5;++model)
+        {
+            stripSettings.model=model;
+            const auto a=render(stripSettings,3,true,48000,87,.15f,64);
+            const auto b=render(stripSettings,3,true,48000,87,.15f,127);
+            if(a.size()!=b.size())return verificationFailure(34,__LINE__);
+            for(size_t i=0;i<a.size();++i)if(std::abs(a[i]-b[i])>2e-5)return verificationFailure(34,__LINE__);
+        }
         const auto output = juce::File::getCurrentWorkingDirectory().getChildFile("../dist");
         output.createDirectory();
         // --calibrate: Auto Gain tablosunu 1 kHz’e yakın koherent sinüsle üretir; normal testlerden ayrı çalışır.
@@ -394,9 +408,9 @@ int main(int argc, char **argv)
                 return verificationFailure(3, __LINE__);
         }
         // Yeni parametreler eski otomasyon indekslerinden sonra gelmelidir.
-        const char *ordered[]{"model", "drive", "tone", "lowcut", "highcut", "bias", "dynamics", "mix", "output", "width", "heat", "auto_gain", "bypass", "character", "harmonics", "drift"};
-        if (p.getParameters().size() != 16) return verificationFailure(23, __LINE__);
-        for (int i = 0; i < 16; ++i)
+        const char *ordered[]{"model", "drive", "tone", "lowcut", "highcut", "bias", "dynamics", "mix", "output", "width", "heat", "auto_gain", "bypass", "character", "harmonics", "drift", "transient", "comp", "bass", "treble", "fast_attack", "fast_release", "bass_tight", "treble_tight"};
+        if (p.getParameters().size() != 24) return verificationFailure(23, __LINE__);
+        for (int i = 0; i < 24; ++i)
             if (p.getParameters()[i] != p.state.getParameter(ordered[i]))
                 return verificationFailure(23, __LINE__);
         const auto set = [&](const char *id, float v) {
@@ -411,7 +425,7 @@ int main(int argc, char **argv)
         if (std::abs(p.settings().character + .6f) > .001f || std::abs(p.settings().harmonics - .7f) > .001f || std::abs(p.settings().drift - .8f) > .001f)
             return verificationFailure(24, __LINE__);
         auto legacy = p.state.copyState();
-        for (const char *id : {"character", "harmonics", "drift"})
+        for (const char *id : {"character", "harmonics", "drift", "transient", "comp", "bass", "treble", "fast_attack", "fast_release", "bass_tight", "treble_tight"})
             legacy.removeChild(legacy.getChildWithProperty("id", id), nullptr);
         auto legacyXml = legacy.createXml();
         legacyXml->setAttribute("version", 1);
@@ -433,6 +447,14 @@ int main(int argc, char **argv)
         p.state.getRawParameterValue("character")->store(.001f);
         if (p.settings().character == 0)
             return verificationFailure(25, __LINE__);
+        // Yeni alanların otomasyon, recall ve eski durumdan nötr geri dönüş sözleşmesi.
+        set("transient",.7f);set("comp",.8f);set("bass",6);set("treble",-4);
+        for(const char* id : {"fast_attack","fast_release","bass_tight","treble_tight"})set(id,1);
+        juce::MemoryBlock stripState;p.getStateInformation(stripState);p.setCurrentProgram(0);
+        p.setStateInformation(stripState.getData(),(int)stripState.getSize());
+        if(std::abs(p.settings().bass-6)>.001f||!p.settings().fastAttack||!p.settings().bassTight) return verificationFailure(30,__LINE__);
+        p.setStateInformation(legacyData.getData(),(int)legacyData.getSize());
+        if(p.settings().bass!=0||p.settings().treble!=0||p.settings().transient!=0||p.settings().comp!=0||p.settings().fastAttack||p.settings().fastRelease||p.settings().bassTight||p.settings().trebleTight) return verificationFailure(30,__LINE__);
         p.setCurrentProgram(2);
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
         // On iki halkada hedef seçimini ve tekerleğin yalnız doğru parametreyi değiştirdiğini sınar (kod 13–15).
@@ -478,7 +500,7 @@ int main(int argc, char **argv)
             }
         }
         // Fazıl Irak: dar, varsayılan ve geniş yerleşimde dört grup da ayrık ve pencere içinde kalmalı.
-        for (const auto dimensions : {juce::Point<int>{960, 610}, {1040, 640}, {1440, 900}})
+        for (const auto dimensions : {juce::Point<int>{960, 640}, {1040, 640}, {1440, 900}})
         {
             editor->setSize(dimensions.x, dimensions.y);
             for (int group = 0; group < 4; ++group)
@@ -495,12 +517,37 @@ int main(int argc, char **argv)
             }
         }
         editor->setSize(1040, 640);
+        // Şerit elemanları minimum boyda da model bankasıyla çakışmamalı.
+        for(const auto size : {juce::Point<int>{960,640},juce::Point<int>{1040,640},juce::Point<int>{1440,900}})
+        {
+            editor->setSize(size.x,size.y);
+            for(const char* id : {"transient","comp","bass","treble","fast_attack","fast_release","bass_tight","treble_tight"})
+            {
+                auto* component=byId(*editor,"desk-"+juce::String(id));
+                if(!component||!editor->getLocalBounds().contains(component->getBounds()))return verificationFailure(31,__LINE__);
+                // Kompakt alt şerit ana halka grubunun alanını işgal etmez.
+                for(int g=0;g<4;++g)if(component->getBounds().intersects(byId(*editor,"saturator-group-"+juce::String(g))->getBounds()))return verificationFailure(31,__LINE__);
+                for(int m=0;m<5;++m)if(component->getBounds().intersects(byId(*editor,"irak-character-"+juce::String(m))->getBounds()))return verificationFailure(31,__LINE__);
+            }
+        }
+        editor->setSize(1040,640);
         // Tape Glue presetini iki pencere boyunda çizerek gerçek dağıtım görsellerini üretir.
         p.setCurrentProgram(2);
         juce::Timer::callPendingTimersSynchronously();
         snapshot(*editor, output.getChildFile("F-Saturator-preview.png"));
-        editor->setSize(960, 610);
+        editor->setSize(960, 640);
         snapshot(*editor, output.getChildFile("F-Saturator-small-preview.png"));
+        set("transient",.4f);set("comp",.35f);set("bass",3);set("treble",2);
+        set("fast_attack",1);set("fast_release",1);set("bass_tight",1);set("treble_tight",1);
+        editor->setSize(1040,640);juce::Timer::callPendingTimersSynchronously();
+        snapshot(*editor,output.getChildFile("F-Saturator-strip-active-preview.png"));
+        // Düğme attachment'ı host değerini geri okumalı; editördeki anahtar bir görsel süs değildir.
+        for(const char* id : {"fast_attack","fast_release","bass_tight","treble_tight"})
+        {
+            auto* button=dynamic_cast<juce::Button*>(byId(*editor,"desk-"+juce::String(id)));
+            if(!button||!button->getToggleState())return verificationFailure(33,__LINE__);
+        }
+        p.setCurrentProgram(2);
         // Heat/Auto Gain/Bypass anahtarlarının varlığını ve dikey sırasını doğrular (kod 16).
         auto *heat = byId(*editor, "saturator-heat");
         auto *autoGain = byId(*editor, "saturator-auto-gain");

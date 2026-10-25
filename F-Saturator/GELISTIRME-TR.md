@@ -1,7 +1,7 @@
-<!-- Fazıl Irak | Son düzenleme: 24.10.2026 -->
+<!-- Fazıl Irak | Son düzenleme: 26.10.2026 -->
 # F Saturator — Türkçe geliştirme rehberi
 
-Bu rehber 0.4.0 kaynakları içindir. Türkçe yorumlar kodun akışını açıklar. Yeni Character / Harmonic Balance / Analog Drift grubu için docs/CHARACTER_TR.md belgesine bakın; üç yeni kontrol sıfırken eski ses korunur. İlk denemelerinizde özgün preset ve DAW projelerinizin kopyasını kullanın.
+Bu rehber 0.5.1 kaynakları içindir. Türkçe yorumlar kodun akışını açıklar. Yeni Character / Harmonic Balance / Analog Drift grubu için docs/CHARACTER_TR.md belgesine bakın; üç yeni kontrol sıfırken eski ses korunur. İlk denemelerinizde özgün preset ve DAW projelerinizin kopyasını kullanın.
 
 ## Nerede değişiklik yapmalıyım?
 
@@ -27,10 +27,10 @@ JUCE `Entry.cpp` üzerinden bir `Processor` oluşturur. Processor, DAW parametre
 Ses akışı:
 
 ```text
-Giriş → 8× FIR oversampling → Low Cut → Drive + Heat
+Giriş → Transient → 8× FIR oversampling → Low Cut → Drive + Heat
       → seçili karakter / iki ADAA katı / dinamik ve manyetik durum
       → Tone → High Cut → DC temizleme → host hızına dönüş
-      → kesirli gecikme düzeltme → Auto Gain → wet stereo genişliği
+      → kesirli gecikme düzeltme → Auto Gain → Comp → Bass/Treble → wet stereo genişliği
       → gecikmesi eşlenmiş dry/wet Mix → Output → hizalanmış Bypass
 ```
 
@@ -105,3 +105,7 @@ Database Doctor ayrı bir depoda ve kendi lisans kararıyla yayımlanmalıdır. 
 
 
 Yeni klasör düzeni ve ayrıntılı hata müdahalesi: [Bakım rehberi](docs/HATA_AYIKLAMA_TR.md).
+
+
+## Yeni dinamik/ton şeridi
+Source/ChannelStripDSP.h özgün algoritmaları içerir. Transient model öncesinde; Comp ve Bass/Treble model ve Auto Gain sonrasında, Mix öncesinde çalışır. Yeni sekiz parametre mevcut DAW indekslerinin sonuna eklenir. docs/DESK_STRIP_TR.md açıklamalarını okuyun.

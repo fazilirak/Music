@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: GUI kontrollerinin, attachment’ların, tema, timer ve asenkron dosya seçicisinin sahipliği.
 #pragma once
 #include "PluginProcessor.h"
 #include "RackEditorCommands.h"
 #include "ConcentricKnob.h"
+#include "DeskKnob.h"
 
 namespace irak
 {
@@ -25,10 +26,12 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
             return font.isBold() ? demi : book;
         }
         // Düğme fontunun boyutunu belirler; ses parametresi veya DSP katsayısı değildir.
-        juce::Font getTextButtonFont(juce::TextButton &, int) override
+        juce::Font getTextButtonFont(juce::TextButton &button, int) override
         {
-            return juce::FontOptions(14);
+            return juce::FontOptions(button.getComponentID().startsWith("desk-") ? 9.5f : button.getComponentID().startsWith("irak-character-") ? 12.0f : 14.0f);
         }
+        void drawButtonText(juce::Graphics&, juce::TextButton&, bool, bool) override;
+        void drawRotarySlider(juce::Graphics&, int, int, int, int, float, float, float, juce::Slider&) override;
         void drawButtonBackground(juce::Graphics &, juce::Button &, const juce::Colour &, bool,
                                   bool) override;
     } theme;
@@ -41,6 +44,10 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
     // Attachment nesneleri kontrollerin ömrü boyunca yaşamalıdır; otomasyonla GUI’yi eşler.
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> heatAttachment, autoAttachment,
         bypassAttachment;
+    // Solda Transient/Comp, sağda Bass/Treble. Her kontrol ayrı otomasyon/preset alanına bağlıdır.
+    std::array<std::unique_ptr<DeskKnob>, 4> deskKnobs;
+    std::array<juce::TextButton, 4> deskSwitches;
+    std::array<std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>, 4> deskAttachments;
     juce::ComboBox presets;
     juce::TextButton previous{"<"}, next{">"}, save{"Save"}, load{"Load"};
     // Asenkron preset penceresi callback bitene kadar saklanır; callback SafePointer kullanır.

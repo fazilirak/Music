@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: DSP sözleşmesi, fiziksel ayarlar, kanal/model hafızaları, hazırlanan tamponlar ve atomik gösterge alanları.
 #pragma once
 #include <juce_dsp/juce_dsp.h>
 #include <array>
+#include "ChannelStripDSP.h"
 
 // Ses motoru: JUCE arayüzünden bağımsız durum, model ve tampon yönetimi.
 // Örnek akışı ve her kontrolün etkisi için GELISTIRME-TR.md belgesine bakın.
@@ -27,6 +28,9 @@ struct Settings
     // Character -1=Warm, +1=Sizzle; harmonics -1=Even, +1=Odd; drift 0..1.
     // Üçü de sıfırken 0.3.0 sinyal yolu korunur.
     float character = 0, harmonics = 0, drift = 0;
+    // Alt şerit: transient -1..1, comp 0..1, Bass/Treble dB. Sıfır ayarları eski sesi korur.
+    float transient = 0, comp = 0, bass = 0, treble = 0;
+    bool fastAttack = false, fastRelease = false, bassTight = false, trebleTight = false;
     bool heat = false, autoGain = true, bypass = false;
 };
 
@@ -94,6 +98,7 @@ class SaturationDSP
     juce::SmoothedValue<float> drive, tone, lowCut, highCut, bias, dynamics, mix, output, width, autoLevel,
         bypass, character, harmonics, drift;
     // İlk blokta değerler hedefe doğrudan yerleşir; sonraki değişikliklerde rampalar kullanılır.
+    ChannelStripDSP desk; // Host hızındaki yeni dinamik/ton katı; dry ve bypass yolunu değiştirmez.
     bool primed = false;
     void render(juce::AudioBuffer<float> &, int offset, int count, const Settings &);
 
