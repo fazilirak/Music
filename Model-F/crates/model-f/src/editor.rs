@@ -939,7 +939,7 @@ impl WindowHandler for PanelWindow {
                     .iter()
                     .position(|c| c.hit(self.pointer.0, self.pointer.1));
                 if let Some((i, y, base)) = self.drag {
-                    let value=CONTROLS[i].drag_normalized(base,y-self.pointer.1,modifiers.contains(Modifiers::SHIFT));
+                    let value=CONTROLS[i].drag_for_character(base,y-self.pointer.1,modifiers.contains(Modifiers::SHIFT),self.params.character.value().round() as u8);
                     self.set_normalized(i,value,false);
                     self.view.status = format!(
                         "{}: {}   /   SHIFT fine  •  CTRL-click reset",
@@ -991,14 +991,10 @@ impl WindowHandler for PanelWindow {
                     if let Some(i) = self.view.hover {
                         if !panel::control_enabled_for_view(&self.params, &self.view, CONTROLS[i].id) { return EventStatus::Captured; }
                         if CONTROLS[i].draggable() {
-                            let step = if modifiers.contains(Modifiers::SHIFT) {
-                                0.002
-                            } else {
-                                0.02
-                            };
+                            let step=CONTROLS[i].wheel_step(modifiers.contains(Modifiers::SHIFT),self.params.character.value().round() as u8);
                             self.set_normalized(
                                 i,
-                                self.params.display_normalized(CONTROLS[i].id) + amount * if CONTROLS[i].id=="global_tuning" {if modifiers.contains(Modifiers::SHIFT) {0.000125} else {0.00125}} else {step},
+                                self.params.display_normalized(CONTROLS[i].id) + amount * step,
                                 true,
                             );
                         } else {

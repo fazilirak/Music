@@ -31,6 +31,8 @@ pub struct CharacterFilter {
     previous_input:f64,
     edge_low:f64,
     edge_hp:f64,
+    acid_resonance:f64,
+    acid_resonance_initialized:bool,
     shape:f64,
     shape_step:f64,
     dc_x:f64,
@@ -43,11 +45,13 @@ pub struct CharacterFilter {
 impl CharacterFilter {
     pub fn new(rate:f64)->Self {
         Self {rate,ladder:[0.0;4],svf:[Svf::default();2],previous_input:0.0,edge_low:0.0,edge_hp:1.0-libm::exp(-std::f64::consts::TAU*80.0/(rate*2.0)),
+            acid_resonance:0.0,acid_resonance_initialized:false,
             shape:0.0,shape_step:1.0-libm::exp(-1.0/(rate*0.02)),dc_x:0.0,dc_y:0.0,
             dc_r:libm::exp(-std::f64::consts::TAU*8.0/rate),coefficient_key:(0,0),g:0.0,gh:0.0}
     }
     pub fn reset(&mut self) {
         self.ladder=[0.0;4];self.svf=[Svf::default();2];self.previous_input=0.0;self.edge_low=0.0;
+        self.acid_resonance_initialized=false;
         self.dc_x=0.0;self.dc_y=0.0;self.coefficient_key=(0,0);
     }
     // Mixer Norton akımı gerilime çevrilir. i0 bütün key tracking, zarf ve MSEG'yi içerir.
@@ -64,7 +68,14 @@ impl CharacterFilter {
             if mode==2 {self.gh=libm::tan(std::f64::consts::PI*(20.0*libm::pow(125.0,self.shape)).min(self.rate*0.15)/(self.rate*2.0));}
         }
         let x=(current/conductance.max(1e-9)).clamp(-12.0,12.0)*0.42;
-        let r=resonance.clamp(0.0,1.0);
+        let mut r=resonance.clamp(0.0,1.0);
+        // Fazıl Irak, 26.10.2026: yalnız Acid rezonansı 20 ms ile yumuşar.
+        // İlk örnek mevcut ayara kurulur: yeni notanın başlangıcı gereksiz rampalanmaz.
+        if mode==4 {
+            if !self.acid_resonance_initialized {self.acid_resonance=r;self.acid_resonance_initialized=true;}
+            else {self.acid_resonance+=(r-self.acid_resonance)*self.shape_step;}
+            r=self.acid_resonance;
+        }
         let mut sum=0.0;
         // İki alt örnek: doğrusal giriş enterpolasyonu, nonlinear aşamalar için 2x hız.
         for input in [(self.previous_input+x)*0.5,x] {
@@ -88,11 +99,19 @@ impl CharacterFilter {
                     // Acid: dört kutuplu nonlinear ladder; asimetrik giriş, güçlü rezonans ve drive.
                     // TB-303 esinli özgün ses hedefi; tam diyot devresi emülasyonu değildir.
                     let g=self.g/(1.0+self.g);let a=1.0-g;
-                    let feedback=3.95*r;
+                    // Fazıl Irak, 26.10.2026: her kata eklenen (1+0.09*r) kazancı
+                    // döngüde dördüncü kuvvete çıkıp ~7.7 Emphasis'te erken salınım
+                    // yaratıyordu. Birim küçük-sinyal eğimi, analitik TPT çözümündeki
+                    // 1 + k*G^4 paydasıyla tutarlı; maksimum k=3.95, kritik 4'ün altında.
+                    // Son çeyrekte eğim uçta sıfıra yaklaşır: az fare hareketi
+                    // en yüksek rezonansa bir anda atlamaz. 0 ve 10 uçları korunur.
+                    let top=((r-0.75)/0.25).clamp(0.0,1.0);
+                    let expanded=if r>0.75 {0.75+0.25*(top+top*top-top*top*top)}else{r};
+                    let feedback=3.95*expanded;
                     let memory=a*(self.ladder[3]+g*self.ladder[2]+g*g*self.ladder[1]+g*g*g*self.ladder[0]);
                     let mut y=((colour(input*2.4+0.16)-colour(0.16))-feedback*memory)/(1.0+feedback*g.powi(4));
                     for z in &mut self.ladder {
-                        let v=(colour(y*(1.0+0.09*r))-*z)*g;y=v+*z;*z=y+v;
+                        let v=(colour(y)-*z)*g;y=v+*z;*z=y+v;
                     }
                     y*(1.0+0.95*r)
                 },
@@ -155,5 +174,64 @@ mod spectral_checks {
     fn state_variable_low_and_high_pass_exchange_frequency_regions() {
         assert!(level(0.0,100.0)>level(2.0/3.0,100.0)*20.0);
         assert!(level(2.0/3.0,4000.0)>level(0.0,4000.0)*20.0);
+    }
+}
+
+
+/// Fazıl Irak, 26.10.2026: görsel yüksek-rezonans bölgesinin normalize başlangıcı.
+/// Bir limiter veya mutlak güvenlik sınırı değildir. Ladder fabrikada yaklaşık
+/// 7.5'te rejenerasyon hedefler; TPT türlerinde Q~2.5 ve üstü bölge işaretlenir.
+/// Bite'de iki rezonans katı bulunduğundan erken olan LP eşiği kullanılır.
+pub const fn emphasis_caution_start(mode:u8)->f64 {
+    match mode {1=>0.83,2=>0.82,3=>0.90,4=>0.80,5=>0.94,_=>0.75}
+}
+
+#[cfg(test)]
+mod resonance_regressions {
+    use super::*;
+    fn i0(hz:f64)->f64 {hz*4.0*std::f64::consts::PI*0.02585*68e-9}
+    #[test]
+    fn acid_small_signal_sweep_has_no_abrupt_early_oscillation() {
+        // Fazıl Irak, 26.10.2026: 0.2.5'te 7.7/7.8 geçişi 500 Hz'de >25 dB,
+        // 2 kHz'de >45 dB sıçrıyordu. 0.1 knob adımları şimdi 3 dB altında.
+        for hz in [100.0,500.0,2000.0] {
+            let mut previous=0.0_f64;
+            for step in 0..=100 {
+                let mut f=CharacterFilter::new(48000.0);let r=step as f64/100.0;let mut energy=0.0;
+                for n in 0..24000 {
+                    let x=1e-9*(std::f64::consts::TAU*hz*n as f64/48000.0).sin();
+                    let y=f.tick(4,x,0.00012,i0(hz),r,0.0);
+                    assert!(y.is_finite() && y.abs()<0.02);
+                    if n>=12000 {energy+=y*y;}
+                }
+                let level=(energy/12000.0).sqrt();
+                if previous>0.0 {let delta=20.0*(level/previous).log10();assert!(delta.abs()<3.0,"{hz} Hz, emphasis {r}: {delta} dB");}
+                previous=level;
+            }
+        }
+    }
+    #[test]
+    fn acid_live_resonance_is_smoothed_and_first_value_and_reset_are_exact() {
+        for rate in [8000.0,44100.0,48000.0,96000.0,192000.0] {
+            let mut f=CharacterFilter::new(rate);
+            f.tick(4,0.0,0.00012,i0(500.0),0.2,0.0);assert_eq!(f.acid_resonance,0.2);
+            f.tick(4,0.0,0.00012,i0(500.0),1.0,0.0);assert!(f.acid_resonance>0.2 && f.acid_resonance<0.21);
+            for _ in 1..(rate*0.02) as usize {f.tick(4,0.0,0.00012,i0(500.0),1.0,0.0);}
+            assert!((f.acid_resonance-(1.0-0.8*(-1.0_f64).exp())).abs()<0.001);
+            f.reset();f.tick(4,0.0,0.00012,i0(500.0),0.7,0.0);assert_eq!(f.acid_resonance,0.7);
+        }
+    }
+    #[test]
+    fn acid_maximum_resonance_decays_after_excitation_at_all_rates() {
+        for rate in [8000.0,44100.0,48000.0,96000.0,192000.0] {
+            let mut f=CharacterFilter::new(rate);let mut on=0.0;let mut tail=0.0;
+            for n in 0..(rate*1.2) as usize {
+                let time=n as f64/rate;let x=if time<0.2 {1e-7*(std::f64::consts::TAU*1000.0*time).sin()}else{0.0};
+                let y=f.tick(4,x,0.00012,i0(1000.0),1.0,0.0);assert!(y.is_finite()&&y.abs()<5.0);
+                if (0.15..0.2).contains(&time) {on+=y*y;}
+                if time>=1.15 {tail+=y*y;}
+            }
+            assert!(tail<on*0.01,"rate {rate}: tail {tail} / driven {on}");
+        }
     }
 }

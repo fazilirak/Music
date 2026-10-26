@@ -44,7 +44,7 @@ try {
     Cargo-Step -Arguments @('run', '-p', 'model-f', '--example', 'preview', '--release', '--locked', '--', 'docs')
     Cargo-Step -Arguments @('build', '-p', 'model-f', '--lib', '--release', '--locked')
     $dist = Join-Path $projectRoot 'dist'
-    $package = Join-Path $dist 'Model-F-Windows-0.2.5'
+    $package = Join-Path $dist 'Model-F-Windows-0.2.6'
     $vst = Join-Path $package 'Model F.vst3/Contents/x86_64-win'
     New-Item -ItemType Directory -Force -Path $vst | Out-Null
     $library = Join-Path $env:CARGO_TARGET_DIR 'release/model_f.dll'
@@ -56,10 +56,10 @@ try {
         Copy-Item -LiteralPath (Join-Path $projectRoot $file) -Destination $package -Force
     }
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs') -Destination $package -Recurse -Force
-    Compress-Archive -LiteralPath $package -DestinationPath (Join-Path $dist 'Model-F-Windows-0.2.5.zip') -Force
+    Compress-Archive -LiteralPath $package -DestinationPath (Join-Path $dist 'Model-F-Windows-0.2.6.zip') -Force
     if ($PackageSource) {
         $sourceItems = @('crates','third_party','xtask','.cargo','docs','Cargo.toml','Cargo.lock','rust-toolchain.toml','rustfmt.toml','clippy.toml','bundler.toml','build.ps1','generate-factory.cjs','generate-factory.py','README.md','LICENSE','THIRD-PARTY-NOTICES.txt') | ForEach-Object { Join-Path $projectRoot $_ }
-        Compress-Archive -LiteralPath $sourceItems -DestinationPath (Join-Path $dist 'Model-F-Source-0.2.5.zip') -Force
+        Compress-Archive -LiteralPath $sourceItems -DestinationPath (Join-Path $dist 'Model-F-Source-0.2.6.zip') -Force
     }
     Write-Output "Model F is ready: $package"
 } finally { Pop-Location }

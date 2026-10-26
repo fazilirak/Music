@@ -6,7 +6,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 | --- | --- | --- | --- |
 | [F Saturator](F-Saturator/README.md) | [0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Universal 0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Browse](F-Saturator) |
 | [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.2) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
-| [Model F](Model-F/README.md) | [0.2.5](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.5) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.5) | [Browse / licences](Model-F) |
+| [Model F](Model-F/README.md) | [0.2.6](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.6) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.6) | [Browse / licences](Model-F) |
 | [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Browse / licences](F-EQ) |
 
 ## F Saturator

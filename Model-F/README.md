@@ -1,16 +1,27 @@
+# Model F 0.2.6 — Rezonans kontrolü
+
+Fazıl Irak · 26.10.2026
+
+Emphasis çevresindeki ince turuncu yay, karaktere göre yüksek rezonans bölgesini gösterir; mutlak güvenlik veya otomatik ses sınırlama göstergesi değildir. Kompakt knob boyutu korunur. Acid seçiliyken dikey sürükleme 2.5 kat, tekerlek normal adımı 4 kat hassastır; Shift hassas ayar ve Ctrl/Alt reset çalışır.
+
+Acid filtresinde her katın fazladan kazancı kaldırılarak TPT geri besleme çözümüyle küçük-sinyal eğimi tutarlı hale getirildi. Üst çeyrekteki eğri maksimum rezonansa daha yumuşak yaklaşır; canlı değişiklikler 20 ms süzülür. Bu düzeltme Acid sesini etkiler; eski Acid presetleri aynı değerlerle açılır ancak düzeltilmiş filtre cevabını kullanır. Ladder ve diğer karakterlerin DSP yolu korunur.
+
+## İndirme / Downloads
+
+- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.6/Model-F-0.2.6-Windows-x64.zip)
+- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.6/Model-F-0.2.6-macOS-Universal.tar.gz)
+- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.6)
+- [Rezonans göstergesi, Acid düzeltmesi ve ölçümler](docs/REZONANS-026-TR.md)
+
+macOS 11+: Apple Silicon ve Intel. VST3, CLAP, standalone APP; AU yoktur. Mac paketleri ad-hoc imzalıdır; Apple notarizasyonu yoktur.
+
+---
+
 # Model F 0.2.5 — Global Tuning fare düzeltmesi
 
 Fazıl Irak · 26.10.2026
 
-Kaldırılmış klavye yardımının görünmez tıklama bölgesi Global Tuning ile çakışıyordu; o bölge kaldırıldı. Global Tuning ve filtre biçimi alanları ortak sürükleme yolu kullanır. Yukarı sürükleme akordu yükseltir, aşağı sürükleme düşürür. Normal hız 0.1 Hz/piksel; Shift ile 0.01 Hz/piksel. Fare tekerleği 0.1 Hz adımlarla çalışır; Ctrl/Alt-tıklama 440 Hz'e döner. Preset bağımsızlığı ve ses motoru 0.2.4 ile aynıdır.
-
-## İndirme / Downloads
-
-- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.5/Model-F-0.2.5-Windows-x64.zip)
-- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.5/Model-F-0.2.5-macOS-Universal.tar.gz)
-- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.5)
-
-macOS 11+: Apple Silicon ve Intel. VST3, CLAP, standalone APP; AU yoktur. Mac paketleri ad-hoc imzalıdır; Apple notarizasyonu yoktur.
+Kaldırılmış klavye yardımının görünmez tıklama bölgesi Global Tuning ile çakışıyordu; o bölge kaldırıldı. Global Tuning ve filtre biçimi alanları ortak sürükleme yolu kullanır. Yukarı sürükleme akordu yükseltir, aşağı sürükleme düşürür. Normal hız 0.1 Hz/piksel; Shift ile 0.01 Hz/piksel. Fare tekerleği 0.1 Hz, Shift ile daha hassas adımlar; Ctrl/Alt-tıklama 440 Hz'e döner. Preset bağımsızlığı ve ses motoru 0.2.4 ile aynıdır.
 
 ---
 
@@ -34,7 +45,7 @@ Az kontrol, güçlü analog karakter. Windows x64 ve macOS Universal için VST3,
 
 ## Başlangıç
 
-`dist/Model-F-Windows-0.2.5/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
+`dist/Model-F-Windows-0.2.6/Model F.exe` bağımsız çalışır. Ekrandaki tuşlara basarak çalabilirsiniz. Tuş alanına tıkladıktan sonra bilgisayar klavyesindeki A W S E D F T G Y H U J K tuşları da çalışır. PANIC, basılı notaları, uzun contour sönümlerini, multi-stage modülasyonu ve arpeggiator HOLD durumundaki sesi kısa bir fade ile susturur. İstek fare bırakma/klavye güncellemelerinden ayrı tutulur; çok kısa tıklama da kaybolmaz. Yeni notalar yeniden çalar; DAW yeni MIDI notaları göndermeye devam ederse yeni sesler üretebilir.
 
 VST3 için `Model F.vst3` klasörünü DAW'ın taradığı VST3 klasörüne; CLAP için `Model F.clap` dosyasını CLAP klasörüne kopyalayın. DAW'da eklentileri yeniden taratın. VST3 ve CLAP kimlikleri Model F'e özeldir.
 
@@ -62,7 +73,7 @@ OSC seçicileri ve alt knob değerleri kendi çerçevelerinin içine alındı. F
 
 AD modu ile Multi kontrolleri birbirinden ayrıldı. AD+Amount etkinse ana buton logo beyazı; Multi etkinse turuncudur. AD panelinde yalnız Attack/Decay aktiftir; Multi'de bu ikisi pasif, grafik/ızgara/eğri/oynatma aktiftir. Amount ve Target ortaktır.
 
-**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. SPEED seçimiyle DAW temposu veya sabit 120 BPM kullanılabilir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
+**160 yeni fabrika presetinin 80'i AD, 80'i Multi kullanır.** Bass, Lead, Key, Pad, FX ve Arp kategorilerinde FM, Sync, Ring, SuperSaw, noise ve farklı çift osilatör düzenleri vardır. Multi sesler perde cümleleri, vurgulu amplitude kapıları ve filtre desenleri çalar. Uzun hareketleri duymak için notayı basılı tutun. Pad cümleleri 5.2–8.5 saniyedir. Arp kategorisinin ilk yarısı klasik arpeggiator, ikinci yarısı tekrar tetiklenmeden ilerleyen Multi sekanslardır. Multi süresi saniye cinsindedir; otomatik DAW tempo kilidi değildir. Fabrika bankası yenilenir; kullanıcı preset dosyaları korunur.
 
 Eski preset/oturumlarda OSC 2 dalga/oktav ve Audio ADS başlangıçta eski ortak ayarları izler. İlk düzenlemede bu alanlar ayrılır; yeni kayıtlar çözümlenmiş değerleri saklar. Eski host parametre kimlikleri korunur.
 

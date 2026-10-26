@@ -87,16 +87,15 @@ jobs:
             if [ "$project" = "Model-F" ]; then
               cat >> release-notes.md <<'MODEL'
 
-          Model F 0.2.5
-          - Six compact selectable characters: Ladder (original), Edge, Bite, State Variable, Acid and VA Stack. These are tonal designs, not claims of exact hardware emulation.
-          - Global Tuning (A4 400-480 Hz) stays independent of presets and is stored with the DAW session. Drag vertically; Shift gives finer movement; mouse wheel adjusts tuning; Ctrl/Alt-click resets to 440 Hz.
-          - Fixes the invisible obsolete keyboard-help click area that blocked Global Tuning. Tuning and filter-shape fields now share the drag gesture path.
-          - Character/shape are saved with presets; legacy presets open in Ladder. Shape controls the relevant Bite, State Variable and VA Stack filter response. VA Stack uses the seven-saw voice bank; Acid adds oscillator/filter coloration without a new sequencer or accent.
-          - Short crossfades between filter characters, cached DSP coefficients, block-level pan calculations, Thin LTO and a 20 FPS editor refresh cap. Paired local Ladder benchmarks showed roughly 2-4% gains in mono/poly cases with bit-identical rendered output; SuperSaw showed no measured improvement.
-          - Retains the 160-sound bank, dual oscillators, Sync/FM, independent Filter/Audio envelopes, Multi tempo controls, user-preset delete/restore and native Windows Save/Search dialogs.
+          Model F 0.2.6
+          - Adds a thin orange high-resonance arc and scale marks around Emphasis, with a different starting point for each of the six characters. It is an advisory region, not a limiter or universal safety threshold. Panel and knob sizes are unchanged.
+          - Corrects Acid's nonlinear ladder feedback calculation: the per-stage extra small-signal gain that caused premature oscillation near Emphasis 7.7-7.8 has been removed. The upper-quarter control curve approaches maximum resonance more gently, with 20 ms smoothing for live changes.
+          - Acid Emphasis dragging is 2.5x finer. Wheel steps are 0.05, or 0.01 with Shift. Parameter IDs, automation values and preset data remain unchanged; the corrected Acid filter can sound different. Other character DSP paths are unchanged.
+          - At 48 kHz with a specified small sine input and 0.1 Emphasis steps, the largest adjacent RMS rises at cutoff 100/500/2000 Hz changed from 7.95/25.74/45.57 dB to 1.80/2.05/2.04 dB. See docs/REZONANS-026-TR.md for scope and reproducible regression checks; these are not absolute output-level guarantees.
+          - Retains all 0.2.5 features: Ladder, Edge, Bite, State Variable, Acid, VA Stack; preset-independent Global Tuning; the mouse hit-area fix; 160 presets; dual oscillators; Sync/FM; Filter/Audio envelopes; Multi tempo controls; native Windows Save/Search and macOS file dialogs.
 
-          Local validation: 83 tests passed for the 0.2.4 feature batch; four additional targeted gesture/preset/pitch tests passed after the 0.2.5 fix. CI reruns the product suite on both build hosts and core character tests. Real DAW and macOS hardware interaction testing remains necessary.
-          Complete matching sources retain licences, UI screenshots, character audition WAVs and the documented CPU measurement scope.
+          Local Windows validation: 67 product unit tests, 8 character/audio tests, 4 CLAP host tests, 1 audio-allocation test and 5 core character tests passed (85 total). CI runs the full product suite and core checks on both hosts. Real DAW and macOS hardware validation remains separate.
+          Complete matching sources retain licences, updated UI previews, character audition WAVs and measurement notes.
           MODEL
             fi
             if gh release view "$tag" >/dev/null 2>&1; then

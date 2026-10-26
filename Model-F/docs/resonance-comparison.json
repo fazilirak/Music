@@ -1,0 +1,41 @@
+{
+  "developer": "Fazıl Irak",
+  "date": "2026-10-26",
+  "test_scope": "Direct CharacterFilter; 48 kHz; 0.5 s sine at cutoff; steady RMS last 0.25 s; input Norton current 1e-9 A; conductance 0.00012 S; shape 0; 101 fixed Emphasis positions. Not a DAW CPU/loudness guarantee.",
+  "non_acid_samples_identical": true,
+  "rows": [
+    {
+      "cutoff_hz": 100,
+      "before": {
+        "largest_rms_rise_db_per_0_1_emphasis_step": 7.952828331307651,
+        "at_emphasis": 8.299999999999999
+      },
+      "after": {
+        "largest_rms_rise_db_per_0_1_emphasis_step": 1.8008160171862153,
+        "at_emphasis": 9.399999999999999
+      }
+    },
+    {
+      "cutoff_hz": 500,
+      "before": {
+        "largest_rms_rise_db_per_0_1_emphasis_step": 25.742484049070477,
+        "at_emphasis": 7.800000000000001
+      },
+      "after": {
+        "largest_rms_rise_db_per_0_1_emphasis_step": 2.0481816619299185,
+        "at_emphasis": 9.7
+      }
+    },
+    {
+      "cutoff_hz": 2000,
+      "before": {
+        "largest_rms_rise_db_per_0_1_emphasis_step": 45.569118584020885,
+        "at_emphasis": 7.800000000000001
+      },
+      "after": {
+        "largest_rms_rise_db_per_0_1_emphasis_step": 2.035235939347386,
+        "at_emphasis": 9.7
+      }
+    }
+  ]
+}

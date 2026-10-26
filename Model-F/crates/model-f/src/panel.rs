@@ -47,6 +47,16 @@ impl Control {
         (base+(up*scale) as f32).clamp(0.0,1.0)
     }
 
+    // Fazıl Irak, 26.10.2026: fiziksel boyutu büyütmeden Acid Emphasis hareketini 2.5 kat hassaslaştır.
+    pub fn drag_for_character(&self,base:f32,up:f64,shift:bool,character:u8)->f32 {
+        self.drag_normalized(base,up*if self.id=="emphasis" && character==4 {0.4}else{1.0},shift)
+    }
+    pub fn wheel_step(&self,shift:bool,character:u8)->f32 {
+        if self.id=="global_tuning" {if shift {0.000125}else{0.00125}}
+        else if self.id=="emphasis" && character==4 {if shift {0.001}else{0.005}}
+        else if shift {0.002}else{0.02}
+    }
+
     // hit: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
     pub fn hit(&self, x: f64, y: f64) -> bool {
         if self.knob {
@@ -327,16 +337,24 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
             button(&mut s,c.x,c.y,c.w,c.h,&label,false);
         } else if c.knob {
             let r = c.w;
+            let caution=if c.id=="emphasis" {Some(model_f_core::character_filter::emphasis_caution_start(p.character.value().round() as u8))}else{None};
+            if let Some(start)=caution {
+                // Fazıl Irak, 26.10.2026: turuncu yay yüksek Q bölgesidir; geometri büyümez.
+                let radius=r+13.0;let a=(-225.0+270.0*start).to_radians();let b=45.0f64.to_radians();
+                let _=write!(s,r##"<path data-role="emphasis-high-resonance" data-start="{start:.2}" d="M {} {} A {radius} {radius} 0 0 1 {} {}" fill="none" stroke="#ed6c46" stroke-width="2.5" stroke-linecap="round"/>"##,
+                    c.x+radius*a.cos(),c.y+radius*a.sin(),c.x+radius*b.cos(),c.y+radius*b.sin());
+            }
             for t in 0..=10 {
                 let a = (-225.0 + 27.0 * f64::from(t)).to_radians();
                 let (sn, cs) = a.sin_cos();
                 let _ = write!(
                     s,
-                    r###"<path d="M {} {} L {} {}" stroke="#525b5e" stroke-width="1.4"/>"###,
+                    r###"<path d="M {} {} L {} {}" stroke="{}" stroke-width="1.4"/>"###,
                     c.x + cs * (r + 7.0),
                     c.y + sn * (r + 7.0),
                     c.x + cs * (r + 11.0),
-                    c.y + sn * (r + 11.0)
+                    c.y + sn * (r + 11.0),
+                    if caution.is_some_and(|start|f64::from(t)/10.0>=start) {"#ed6c46"}else{"#525b5e"}
                 );
             }
             let a = (-225.0 + n * 270.0).to_radians();
@@ -916,5 +934,30 @@ mod tuning_gesture_tests {
         assert_eq!(hz(c.drag_normalized(base,-10000.0,false)),400.0);
         assert!(control_enabled_for_view(&p,&View::default(),c.id));
         assert!(!control_enabled_for_view(&p,&View{envelope:true,..Default::default()},c.id));
+    }
+}
+
+#[cfg(test)]
+mod resonance_ui_tests {
+    use super::*;
+    #[test]
+    fn caution_arc_is_character_specific_and_keeps_the_same_geometry() {
+        let c=CONTROLS.iter().find(|c|c.id=="emphasis").unwrap();
+        assert_eq!((c.x,c.y,c.w),(607.0,245.0,27.0));
+        for (character,start) in [0.75,0.83,0.82,0.90,0.80,0.94].into_iter().enumerate() {
+            let p=ModelFParams{character:FloatParam::new("Character",character as f32,FloatRange::Linear{min:0.0,max:5.0}),..Default::default()};
+            let svg=svg(&p,&View::default());
+            assert_eq!(svg.matches("data-role=\"emphasis-high-resonance\"").count(),1);
+            assert!(svg.contains(&format!("data-start=\"{start:.2}\"")));
+        }
+    }
+    #[test]
+    fn acid_emphasis_drag_and_wheel_are_finer_without_reinterpreting_the_parameter() {
+        let c=CONTROLS.iter().find(|c|c.id=="emphasis").unwrap();
+        assert!((c.drag_for_character(0.7,10.0,false,4)-0.72).abs()<1e-6);
+        assert!((c.drag_for_character(0.7,10.0,false,0)-0.75).abs()<1e-6);
+        assert!((c.drag_for_character(0.7,10.0,true,4)-0.702).abs()<1e-6);
+        assert_eq!(c.wheel_step(false,4),0.005);assert_eq!(c.wheel_step(true,4),0.001);
+        for mode in [0,1,2,3,5] {assert_eq!(c.wheel_step(false,mode),0.02);}
     }
 }

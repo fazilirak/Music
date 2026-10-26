@@ -22,7 +22,7 @@ fn main() {
         ..View::default()
     };
     for name in [
-        "panel", "supersaw", "browser", "save", "about", "envelope", "overload", "ad-active", "multi-active", "envelope-multi", "envelope-tempo",
+        "panel", "supersaw", "browser", "save", "about", "envelope", "overload", "ad-active", "multi-active", "envelope-multi", "envelope-tempo", "acid-resonance",
     ] {
         let params = if name == "supersaw" {
             ModelFParams {
@@ -54,6 +54,9 @@ fn main() {
             mseg_enable:FloatParam::new("Multi",1.0,FloatRange::Linear{min:0.0,max:1.0}),
             mseg_speed:FloatParam::new("Speed",5.0,FloatRange::Linear{min:0.0,max:6.0}),
             mseg_fix_tempo:FloatParam::new("Fix Tempo",1.0,FloatRange::Linear{min:0.0,max:1.0}),..params}} else {params};
+        let params=if name=="acid-resonance" {ModelFParams {
+            character:FloatParam::new("Character",4.0,FloatRange::Linear{min:0.0,max:5.0}),
+            emphasis:FloatParam::new("Emphasis",8.6,FloatRange::Linear{min:0.0,max:10.0}),..params}} else {params};
         view.overload = if name == "overload" { 1.0 } else { 0.0 };
         view.envelope = name == "envelope" || name == "envelope-multi" || name=="envelope-tempo";
         view.env.selected = 1;
