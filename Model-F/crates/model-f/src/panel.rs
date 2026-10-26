@@ -338,12 +338,6 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         } else if c.knob {
             let r = c.w;
             let caution=if c.id=="emphasis" {Some(model_f_core::character_filter::emphasis_caution_start(p.character.value().round() as u8))}else{None};
-            if let Some(start)=caution {
-                // Fazıl Irak, 26.10.2026: turuncu yay yüksek Q bölgesidir; geometri büyümez.
-                let radius=r+13.0;let a=(-225.0+270.0*start).to_radians();let b=45.0f64.to_radians();
-                let _=write!(s,r##"<path data-role="emphasis-high-resonance" data-start="{start:.2}" d="M {} {} A {radius} {radius} 0 0 1 {} {}" fill="none" stroke="#ed6c46" stroke-width="2.5" stroke-linecap="round"/>"##,
-                    c.x+radius*a.cos(),c.y+radius*a.sin(),c.x+radius*b.cos(),c.y+radius*b.sin());
-            }
             for t in 0..=10 {
                 let a = (-225.0 + 27.0 * f64::from(t)).to_radians();
                 let (sn, cs) = a.sin_cos();
@@ -354,7 +348,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
                     c.y + sn * (r + 7.0),
                     c.x + cs * (r + 11.0),
                     c.y + sn * (r + 11.0),
-                    if caution.is_some_and(|start|f64::from(t)/10.0>=start) {"#ed6c46"}else{"#525b5e"}
+                    "#525b5e"
                 );
             }
             let a = (-225.0 + n * 270.0).to_radians();
@@ -374,6 +368,12 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
                 c.y + sn * (r - 5.0),
                 accent
             );
+            if let Some(start)=caution {
+                // Fazıl Irak, 26.10.2026: turuncu parça gri dış halkanın üstüne aynı yarıçap/kalınlıkla çizilir.
+                let radius=r;let a=(-225.0+270.0*start).to_radians();let b=45.0f64.to_radians();
+                let _=write!(s,r##"<path data-role="emphasis-high-resonance" data-start="{start:.2}" d="M {} {} A {radius} {radius} 0 0 1 {} {}" fill="none" stroke="#ed6c46" stroke-width="2" stroke-linecap="butt"/>"##,
+                    c.x+radius*a.cos(),c.y+radius*a.sin(),c.x+radius*b.cos(),c.y+radius*b.sin());
+            }
             text(
                 &mut s,
                 c.x,
@@ -949,6 +949,8 @@ mod resonance_ui_tests {
             let svg=svg(&p,&View::default());
             assert_eq!(svg.matches("data-role=\"emphasis-high-resonance\"").count(),1);
             assert!(svg.contains(&format!("data-start=\"{start:.2}\"")));
+            let arc=svg.split("data-role=\"emphasis-high-resonance\"").nth(1).unwrap().split("/>").next().unwrap();
+            assert!(arc.contains("A 27 27") && arc.contains("stroke-width=\"2\""));
         }
     }
     #[test]

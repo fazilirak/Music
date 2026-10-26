@@ -1,3 +1,11 @@
+# Model F 0.2.7 — Rezonans işareti dış halkanın içinde
+
+Fazıl Irak · 26.10.2026
+
+Turuncu yüksek-rezonans işareti artık knobun en dış gri halkasının bir parçası olarak, aynı 27 piksel yarıçap ve 2 piksel çizgi kalınlığıyla çizilir. Ayrı dış yay kaldırıldı; ölçek çizgileri gri kalır. Acid ses motoru düzeltmesi ve hassas fare ayarı 0.2.6 ile aynıdır.
+
+---
+
 # Model F 0.2.6 — Rezonans kontrolü
 
 Fazıl Irak · 26.10.2026
@@ -8,9 +16,9 @@ Acid filtresinde her katın fazladan kazancı kaldırılarak TPT geri besleme ç
 
 ## İndirme / Downloads
 
-- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.6/Model-F-0.2.6-Windows-x64.zip)
-- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.6/Model-F-0.2.6-macOS-Universal.tar.gz)
-- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.6)
+- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.7/Model-F-0.2.7-Windows-x64.zip)
+- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.7/Model-F-0.2.7-macOS-Universal.tar.gz)
+- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.7)
 - [Rezonans göstergesi, Acid düzeltmesi ve ölçümler](docs/REZONANS-026-TR.md)
 
 macOS 11+: Apple Silicon ve Intel. VST3, CLAP, standalone APP; AU yoktur. Mac paketleri ad-hoc imzalıdır; Apple notarizasyonu yoktur.
