@@ -9,6 +9,12 @@ use model_f_core::{
 use nih_plug::prelude::*;
 use std::sync::{Arc, RwLock};
 
+// Fazıl Irak, 26.10.2026: 528 Hz seçimi için genişletilen A4 aralığı.
+// Fare hızını Hz/piksel cinsinden korumak için panel de aynı sabitleri kullanır.
+pub const GLOBAL_TUNING_MIN:f32=400.0;
+pub const GLOBAL_TUNING_MAX:f32=540.0;
+pub const GLOBAL_TUNING_SPAN:f32=GLOBAL_TUNING_MAX-GLOBAL_TUNING_MIN;
+
 // All controls use stable IDs and are saved/automated by the host. Switches and
 // selectors are stepped floats so the small editor can share one gesture path.
 macro_rules! parameters {
@@ -216,7 +222,7 @@ parameters! {
     // Fazıl Irak, 26.10.2026: eski host indeksleri korunur; yeniler sona eklenir.
     character: "character" => ("Character", 0.0, 5.0, 0.0, 1.0),
     character_shape: "character_shape" => ("Character Filter Shape", 0.0, 1.0, 0.0, 0.001),
-    global_tuning: "global_tuning" => ("Global Tuning A4 Hz", 400.0, 480.0, 440.0, 0.1),
+    global_tuning: "global_tuning" => ("Global Tuning A4 Hz", GLOBAL_TUNING_MIN, GLOBAL_TUNING_MAX, 440.0, 0.1),
 }
 
 impl ModelFParams {

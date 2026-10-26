@@ -1,3 +1,17 @@
+# Model F 0.2.8 — Global Tuning seçim alanı
+
+Fazıl Irak · 26.10.2026
+
+Global Tuning'in sağ kenarındaki turuncu alana sol tıklama ileri, sağ tıklama geri gider: 432 → 440 → 442 → 444 → 528 Hz. Uçta döngü başa/sona sarar. Elle ayarlanmış ara değerde tıklanan yöndeki ilk hazır değere geçilir. Ana gri alandaki dikey sürükleme ve Ctrl/Alt reset korunur.
+
+Değer renkleri: 432 yeşil, 440 kırmızı, 442/444 turuncu, 528 mavi; diğer değerler gri. Renk yalnız değer yazısına uygulanır. A4 aralığı 528 seçimini kapsamak için 400–540 Hz'e çıkarıldı; normal sürükleme 0.1 Hz/piksel, Shift 0.01 Hz/piksel ve tekerlek 0.1 Hz adımı korur.
+
+Genel akort presetlerden bağımsızdır; DAW oturumuyla saklanır. Parametre kimliği değişmedi, ancak aralığın genişlemesi eski normalize otomasyon eğrilerinin yorumunu etkileyebilir; eski oturumlarda otomasyon değerlerini kontrol edin. Saklanan Hz değerleri korunur.
+
+Windows ve macOS paketleri, eşleşen kaynaklarıyla GitHub Releases üzerinde paylaşılır.
+
+---
+
 # Model F 0.2.7 — Rezonans işareti dış halkanın içinde
 
 Fazıl Irak · 26.10.2026
@@ -16,9 +30,9 @@ Acid filtresinde her katın fazladan kazancı kaldırılarak TPT geri besleme ç
 
 ## İndirme / Downloads
 
-- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.7/Model-F-0.2.7-Windows-x64.zip)
-- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.7/Model-F-0.2.7-macOS-Universal.tar.gz)
-- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.7)
+- [Windows x64](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Windows-x64.zip)
+- [macOS Universal](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-macOS-Universal.tar.gz)
+- [Sürüm ve eşleşen kaynak paketleri](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8)
 - [Rezonans göstergesi, Acid düzeltmesi ve ölçümler](docs/REZONANS-026-TR.md)
 
 macOS 11+: Apple Silicon ve Intel. VST3, CLAP, standalone APP; AU yoktur. Mac paketleri ad-hoc imzalıdır; Apple notarizasyonu yoktur.

@@ -27,6 +27,26 @@ pub fn in_rect((x, y, w, h): (f64, f64, f64, f64), px: f64, py: f64) -> bool {
 }
 pub const CHARACTER_NAMES:[&str;6]=["Ladder","Edge","Bite","State Variable","Acid","VA Stack"];
 pub const CHARACTER_RECTS:[(f64,f64,f64,f64);6]=[(340.,85.,62.,22.),(406.,85.,52.,22.),(462.,85.,52.,22.),(518.,85.,106.,22.),(628.,85.,52.,22.),(684.,85.,82.,22.)];
+// Fazıl Irak, 26.10.2026: sağdaki 22 px turuncu bölüm tek çift-yönlü seçim alanıdır.
+pub const GLOBAL_TUNING_CYCLE_RECT:(f64,f64,f64,f64)=(193.0,697.0,22.0,28.0);
+pub const GLOBAL_TUNING_CHOICES:[f32;5]=[432.0,440.0,442.0,444.0,528.0];
+pub fn next_global_tuning(current:f32,reverse:bool)->f32 {
+    // Ara değerlerde tıklanan yöndeki ilk hazır değere geç; uçta başa/sona sar.
+    if reverse {GLOBAL_TUNING_CHOICES.iter().rev().copied().find(|v|*v<current-0.05).unwrap_or(528.0)}
+    else {GLOBAL_TUNING_CHOICES.iter().copied().find(|v|*v>current+0.05).unwrap_or(432.0)}
+}
+pub fn global_tuning_cycle_at(p:&ModelFParams,v:&View,x:f64,y:f64,reverse:bool)->Option<f32> {
+    (in_rect(GLOBAL_TUNING_CYCLE_RECT,x,y)&&control_enabled_for_view(p,v,"global_tuning"))
+        .then(||next_global_tuning(p.global_tuning.value(),reverse))
+}
+pub fn global_tuning_colour(hz:f32)->&'static str {
+    // Saklanan adım 0.1 Hz: yalnız ekranda tam hazır değeri gösteren konum renklenir.
+    if (hz-432.0).abs()<0.05 {"#71c88b"}
+    else if (hz-440.0).abs()<0.05 {"#ef5350"}
+    else if (hz-442.0).abs()<0.05 || (hz-444.0).abs()<0.05 {"#ed6c46"}
+    else if (hz-528.0).abs()<0.05 {"#69aefb"}
+    else {"#c8cbc6"}
+}
 pub const WAVES: [&str; 6] = ["TRIANGLE", "SHARK", "SAW", "SQUARE", "PULSE 25", "PULSE 10"];
 #[derive(Clone, Copy, Debug)]
 pub struct Control {
@@ -43,7 +63,7 @@ impl Control {
     pub fn draggable(&self)->bool {self.knob || matches!(self.id,"global_tuning"|"character_shape")}
     pub fn drag_normalized(&self,base:f32,up:f64,shift:bool)->f32 {
         let scale=if shift {0.0005} else {0.005};
-        let scale=if self.id=="global_tuning" {scale*0.25} else {scale};
+        let scale=if self.id=="global_tuning" {(if shift {0.01}else{0.1}) / f64::from(crate::params::GLOBAL_TUNING_SPAN)} else {scale};
         (base+(up*scale) as f32).clamp(0.0,1.0)
     }
 
@@ -52,7 +72,7 @@ impl Control {
         self.drag_normalized(base,up*if self.id=="emphasis" && character==4 {0.4}else{1.0},shift)
     }
     pub fn wheel_step(&self,shift:bool,character:u8)->f32 {
-        if self.id=="global_tuning" {if shift {0.000125}else{0.00125}}
+        if self.id=="global_tuning" {0.1/crate::params::GLOBAL_TUNING_SPAN}
         else if self.id=="emphasis" && character==4 {if shift {0.001}else{0.005}}
         else if shift {0.002}else{0.02}
     }
@@ -332,9 +352,15 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
         let active = v.hover == Some(i);
         let accent = if active { "#ff956f" } else { "#ed6c46" };
-        if matches!(c.id,"global_tuning" | "character_shape") {
-            let label=if c.id=="global_tuning" {format!("GLOBAL TUNING  {}",value(p,c.id))} else {value(p,c.id)};
-            button(&mut s,c.x,c.y,c.w,c.h,&label,false);
+        if c.id=="global_tuning" {
+            button(&mut s,c.x,c.y,c.w,c.h,"",false);
+            // Sağ köşeler mevcut 4 px yuvarlamayı izler; sadece sağ şerit turuncudur.
+            s.push_str(r##"<path data-role="global-tuning-cycle" d="M193 697H211A4 4 0 0 1 215 701V721A4 4 0 0 1 211 725H193Z" fill="#ed6c46"/>"##);
+            text(&mut s,c.x+8.0,c.y+18.0,8,"#afb8b8","GLOBAL TUNING","start");
+            text(&mut s,185.0,c.y+18.0,11,global_tuning_colour(p.global_tuning.value()),&value(p,c.id),"end");
+            text(&mut s,204.0,c.y+18.0,12,"#151b1c","›","middle");
+        } else if c.id=="character_shape" {
+            button(&mut s,c.x,c.y,c.w,c.h,&value(p,c.id),false);
         } else if c.knob {
             let r = c.w;
             let caution=if c.id=="emphasis" {Some(model_f_core::character_filter::emphasis_caution_start(p.character.value().round() as u8))}else{None};
@@ -930,7 +956,7 @@ mod tuning_gesture_tests {
         assert!((hz(c.drag_normalized(base,20.0,false))-442.0).abs()<0.051);
         assert!((hz(c.drag_normalized(base,-20.0,false))-438.0).abs()<0.051);
         assert!((hz(c.drag_normalized(base,20.0,true))-440.2).abs()<0.051);
-        assert_eq!(hz(c.drag_normalized(base,10000.0,false)),480.0);
+        assert_eq!(hz(c.drag_normalized(base,10000.0,false)),crate::params::GLOBAL_TUNING_MAX);
         assert_eq!(hz(c.drag_normalized(base,-10000.0,false)),400.0);
         assert!(control_enabled_for_view(&p,&View::default(),c.id));
         assert!(!control_enabled_for_view(&p,&View{envelope:true,..Default::default()},c.id));
@@ -963,3 +989,42 @@ mod resonance_ui_tests {
         for mode in [0,1,2,3,5] {assert_eq!(c.wheel_step(false,mode),0.02);}
     }
 }
+
+#[cfg(test)]
+mod tuning_quick_select_tests {
+    use super::*;
+    #[test]
+    fn quick_select_cycles_both_ways_and_handles_manual_values() {
+        for (i,hz) in GLOBAL_TUNING_CHOICES.into_iter().enumerate() {
+            assert_eq!(next_global_tuning(hz,false),GLOBAL_TUNING_CHOICES[(i+1)%5]);
+            assert_eq!(next_global_tuning(hz,true),GLOBAL_TUNING_CHOICES[(i+4)%5]);
+        }
+        assert_eq!(next_global_tuning(439.1,false),440.0);assert_eq!(next_global_tuning(439.1,true),432.0);
+        assert_eq!(next_global_tuning(540.0,false),432.0);assert_eq!(next_global_tuning(400.0,true),528.0);
+    }
+    #[test]
+    fn only_orange_strip_cycles_and_modal_windows_block_it() {
+        let p=ModelFParams::default();let v=View::default();
+        assert_eq!(global_tuning_cycle_at(&p,&v,204.0,710.0,false),Some(442.0));
+        assert_eq!(global_tuning_cycle_at(&p,&v,204.0,710.0,true),Some(432.0));
+        assert_eq!(global_tuning_cycle_at(&p,&v,190.0,710.0,false),None);
+        assert_eq!(global_tuning_cycle_at(&p,&v,216.0,710.0,false),None);
+        for v in [View{browser:true,..Default::default()},View{envelope:true,..Default::default()},View{save:true,..Default::default()},View{about:true,..Default::default()}] {
+            assert_eq!(global_tuning_cycle_at(&p,&v,204.0,710.0,false),None);
+        }
+    }
+    #[test]
+    fn tuning_value_colours_and_extended_range_match_the_requested_values() {
+        for (hz,colour) in [(432.0,"#71c88b"),(440.0,"#ef5350"),(442.0,"#ed6c46"),(444.0,"#ed6c46"),(528.0,"#69aefb"),(439.1,"#c8cbc6"),(432.1,"#c8cbc6")] {
+            assert_eq!(global_tuning_colour(hz),colour);
+            let p=ModelFParams{global_tuning:FloatParam::new("Global Tuning",hz,FloatRange::Linear{min:crate::params::GLOBAL_TUNING_MIN,max:crate::params::GLOBAL_TUNING_MAX}).with_step_size(0.1),..Default::default()};
+            let svg=svg(&p,&View::default());assert!(svg.contains("data-role=\"global-tuning-cycle\""));
+            assert!(svg.contains(&format!("fill=\"{colour}\" font-size=\"11\" text-anchor=\"end\">{hz:.1} Hz")));
+            assert!((p.global_tuning.preview_plain(p.global_tuning.preview_normalized(hz))-hz).abs()<0.051);
+        }
+        let p=ModelFParams::default();let c=CONTROLS.iter().find(|c|c.id=="global_tuning").unwrap();
+        let next=p.global_tuning.preview_plain(p.display_normalized(c.id)+c.wheel_step(false,0));
+        assert!((next-440.1).abs()<0.051);
+    }
+}
+

@@ -22,7 +22,7 @@ fn main() {
         ..View::default()
     };
     for name in [
-        "panel", "supersaw", "browser", "save", "about", "envelope", "overload", "ad-active", "multi-active", "envelope-multi", "envelope-tempo", "acid-resonance",
+        "panel", "supersaw", "browser", "save", "about", "envelope", "overload", "ad-active", "multi-active", "envelope-multi", "envelope-tempo", "acid-resonance", "tuning-432", "tuning-440", "tuning-442", "tuning-444", "tuning-528", "tuning-custom",
     ] {
         let params = if name == "supersaw" {
             ModelFParams {
@@ -57,6 +57,8 @@ fn main() {
         let params=if name=="acid-resonance" {ModelFParams {
             character:FloatParam::new("Character",4.0,FloatRange::Linear{min:0.0,max:5.0}),
             emphasis:FloatParam::new("Emphasis",8.6,FloatRange::Linear{min:0.0,max:10.0}),..params}} else {params};
+        let tuning=match name {"tuning-432"=>Some(432.0),"tuning-440"=>Some(440.0),"tuning-442"=>Some(442.0),"tuning-444"=>Some(444.0),"tuning-528"=>Some(528.0),"tuning-custom"=>Some(439.1),_=>None};
+        let params=if let Some(hz)=tuning {ModelFParams {global_tuning:FloatParam::new("Global Tuning",hz,FloatRange::Linear{min:model_f::params::GLOBAL_TUNING_MIN,max:model_f::params::GLOBAL_TUNING_MAX}).with_step_size(0.1),..params}} else {params};
         view.overload = if name == "overload" { 1.0 } else { 0.0 };
         view.envelope = name == "envelope" || name == "envelope-multi" || name=="envelope-tempo";
         view.env.selected = 1;

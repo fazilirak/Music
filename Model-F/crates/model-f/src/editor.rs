@@ -723,6 +723,17 @@ impl PanelWindow {
                 }
                 return;
             }
+            // Fazıl Irak, 26.10.2026: turuncu şerit Range gibi sol/sağ tıklamayla döner.
+            // Ana gri alan sürükleme alanı olarak kalır; bu tıklama sürükleme başlatmaz.
+            if c.id=="global_tuning" {
+                if let Some(next)=panel::global_tuning_cycle_at(&self.params,&self.view,x,y,right) {
+                    self.end_drag();
+                    let normalized=self.params.global_tuning.preview_normalized(next);
+                    self.set_normalized(i,normalized,true);
+                    self.view.status=format!("GLOBAL TUNING: {next:.1} Hz / left: next • right: previous");
+                    return;
+                }
+            }
             if c.draggable() && !right {
                 let p = self.params.get(c.id).expect("known control");
                 ParamSetter::new(self.context.as_ref()).begin_set_parameter(p);

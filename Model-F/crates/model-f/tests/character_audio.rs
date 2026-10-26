@@ -56,11 +56,11 @@ fn preset_recall_keeps_global_tuning_and_recalls_character() {
     set("global_tuning",432.0);set("character",4.0);set("character_shape",0.7);
     let own=presets::Preset::capture(&p,"Acid Test".into(),"Bass".into());own.validate().unwrap();
     assert!(!own.values.contains_key("global_tuning"));
-    set("global_tuning",442.0);set("character",2.0);
+    set("global_tuning",528.0);set("character",2.0);
     let gui=TestGui(p.clone());own.apply(&p,&ParamSetter::new(&gui)).unwrap();
-    assert_eq!(p.global_tuning.value(),442.0);assert_eq!(p.character.value(),4.0);
+    assert_eq!(p.global_tuning.value(),528.0);assert_eq!(p.character.value(),4.0);
     assert!((p.character_shape.value()-0.7).abs()<0.001);assert!(!own.differs(&p));
-    for sound in presets::factory() {sound.apply(&p,&ParamSetter::new(&gui)).unwrap();assert_eq!(p.character.value(),0.0);assert_eq!(p.global_tuning.value(),442.0);}
+    for sound in presets::factory() {sound.apply(&p,&ParamSetter::new(&gui)).unwrap();assert_eq!(p.character.value(),0.0);assert_eq!(p.global_tuning.value(),528.0);}
 }
 #[test]
 fn old_session_defaults_and_new_state_roundtrip() {
@@ -96,7 +96,7 @@ fn compact_selector_and_modal_locks() {
     let p=ModelFParams::default();let normal=panel::View::default();let svg=panel::svg(&p,&normal);
     assert!(!svg.contains("160 FACTORY SOUNDS"));
     for label in panel::CHARACTER_NAMES {assert!(svg.contains(label));}
-    assert!(svg.contains("GLOBAL TUNING  440.0 Hz"));
+    assert!(svg.contains("GLOBAL TUNING")&&svg.contains("440.0 Hz"));
     for (i,a) in panel::CHARACTER_RECTS.iter().enumerate() {
         assert!(a.0>=340.0 && a.0+a.2<=770.0 && a.1+a.3<118.0);
         for b in &panel::CHARACTER_RECTS[..i] {assert!(a.0>=b.0+b.2||b.0>=a.0+a.2);}
@@ -117,9 +117,15 @@ fn tuning_changes_the_rendered_note_by_the_expected_ratio() {
         (crossings.len()-1) as f64*48000.0/(crossings.last().unwrap()-crossings[0])
     }
     let mut c=ModelFParams::default().controls();c.lock=true;c.panel.osc[1].on=false;
-    let base=frequency(&c);c.global_cents=1200.0*(432.0f64/440.0).log2();let tuned=frequency(&c);
-    println!("Global tuning: {base} -> {tuned} Hz");
-    assert!((tuned/base-432.0/440.0).abs()<0.0005);
+    let base=frequency(&c);
+    for tuning in panel::GLOBAL_TUNING_CHOICES {
+        let p=Arc::new(ModelFParams::default());let ctx=TestProcessContext::<ModelF>::new(p.clone() as Arc<dyn Params>,48000.0,ProcessMode::Offline);
+        assert!(ctx.automate(p.global_tuning.as_ptr(),p.global_tuning.preview_normalized(tuning)));
+        assert!((p.global_tuning.value()-tuning).abs()<0.051);
+        c.global_cents=p.controls().global_cents;let tuned=frequency(&c);
+        println!("Global tuning {tuning} Hz: {base} -> {tuned} Hz");
+        assert!((tuned/base-f64::from(tuning)/440.0).abs()<0.0005);
+    }
 }
 #[test]
 fn character_switches_begin_continuously_and_survive_fast_changes() {

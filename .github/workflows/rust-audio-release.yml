@@ -87,7 +87,13 @@ jobs:
             if [ "$project" = "Model-F" ]; then
               cat >> release-notes.md <<'MODEL'
 
-          Model F 0.2.7
+          Model F 0.2.8
+          - Adds an orange quick-select strip at the right edge of Global Tuning. Left-click goes forward and right-click goes backward through 432, 440, 442, 444 and 528 Hz; the sequence wraps at both ends. From a manual value, it selects the next value in the clicked direction.
+          - Tuning value colours: 432 Hz green, 440 Hz red, 442/444 Hz orange, 528 Hz blue; other values remain grey. The main field retains vertical dragging and Ctrl/Alt reset. Modal windows also block the quick selector.
+          - Extends the A4 range to 400-540 Hz while retaining the parameter ID, preset independence and DAW session storage. Drag speed remains 0.1 Hz/pixel, Shift 0.01 Hz/pixel, wheel 0.1 Hz per step. Existing saved plain-Hz states are retained; review older normalized host automation because the range has expanded.
+          - Local Windows validation: 70 unit tests, 8 character/audio tests and 4 CLAP host tests passed (82 total). All five choices were verified against rendered pitch, and preset recall retains 528 Hz. CI repeats the full suite on both build hosts.
+
+          Retains the Model F 0.2.7 resonance interface:
           - The orange high-resonance indicator now overlays the existing outer grey knob ring at exactly the same 27 px radius and 2 px stroke width. The separate outer arc is removed; matching high-resonance scale ticks are orange and the other ticks stay grey. No knob resizing or extra outline.
           - DSP, fine Acid gestures and resonance thresholds are unchanged from 0.2.6; the two UI regression tests were rerun for this placement change.
 
