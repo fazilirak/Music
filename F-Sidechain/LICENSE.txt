@@ -1,0 +1,40 @@
+F-Sidechain 1.1.0 — licensing notice
+Copyright (c) 2026 Fazıl Irak, for original F-Sidechain/Shaper additions and modifications.
+Copyright (c) 2025 Tilr (tiagolr), for the underlying GATE-12 code.
+
+F-Sidechain-authored source, including the compact interface and modified
+factory envelope data, is licensed under GNU GPL version 3 only
+(SPDX: GPL-3.0-only). GATE-12-derived files retain their GPLv3 notices.
+See licenses/LICENSE for the complete GNU GPL version 3 text.
+
+The JUCE framework used in this build is licensed under its GNU AGPLv3
+open-source option, not under an assumed commercial JUCE licence.
+See licenses/LICENSE-AGPL-3.0.txt and licenses/JUCE-LICENSE.md.
+GPLv3 section 13 and AGPLv3 section 13 permit this combined distribution;
+the respective parts retain their licences and the relevant AGPLv3 network
+interaction provisions apply to the combination. This is a GPLv3 + AGPLv3
+combined work, not a proprietary/closed-source licence grant.
+
+The bundled VST3 SDK is used under its GPL version 3 option.
+The Ubuntu Medium typeface remains under Ubuntu Font Licence 1.0.
+Other embedded JUCE dependencies retain their original notices and licences.
+No exclusive ownership or relicensing of third-party work is claimed.
+
+This software is distributed WITHOUT ANY WARRANTY, including the implied
+warranties of MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+
+The binary package includes a complete corresponding source archive for this
+build: F-Sidechain application source, build scripts, tests, resources and the
+pinned unmodified JUCE source (including its embedded VST3 SDK). Provide this
+archive alongside the binary when redistributing this build. Preserve all
+copyright notices, licence texts and records of modifications.
+
+Official licence texts:
+https://www.gnu.org/licenses/gpl-3.0.html
+https://www.gnu.org/licenses/agpl-3.0.html
+
+Modification record, 2026-10-26:
+1.0.0: Volume-only fork of Shaper 0.8.3 with compact interface.
+1.1.0: Remove pattern selector and band visibility switch; permanent band
+editor, deeper factory envelopes, circular point icon, English About/licence
+page opened by clicking the F-Sidechain logo.

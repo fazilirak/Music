@@ -1,0 +1,29 @@
+F-Sidechain 1.1.0
+Copyright (c) 2026 Fazıl Irak
+
+Volume, envelope, multiband and preset source forked from local Shaper 0.8.3 on 2026-10-26.
+Volume's envelope engine derives from GATE-12, Copyright 2025 Tilr (tiagolr), GPLv3.
+https://github.com/tiagolr/gate12
+Shaper contributions retain GPL-3.0-only notices in the corresponding files.
+
+JUCE: Raw Material Software Ltd.; this build uses the AGPLv3 open-source option.
+Pinned JUCE commit: 10a589619b452c261b2940767eb253171eb5a823.
+The Source archive includes this unmodified source at Dependencies/JUCE.
+JUCE and its embedded dependencies retain their original notices in source and mirrored licences/.
+
+Ubuntu Medium font: Ubuntu Font Licence 1.0; see licenses/Ubuntu-Font-Licence-1.0.txt.
+VST3 SDK: Steinberg Media Technologies GmbH; this build uses its GPLv3 option.
+See licenses/VST3-LICENSE.txt and the original SDK source/embedded notices.
+
+F-Sidechain-authored source is GPL-3.0-only; the combined binary retains the
+respective GPLv3 and AGPLv3 terms as permitted by section 13 of each licence.
+See LICENSE.txt for the distribution notice and full licence locations.
+GPL/AGPL combination reference: https://www.gnu.org/licenses/gpl-faq.html#v3Notwithstanding
+
+Modified 2026-10-26: compact editor, permanently visible band panel,
+factory envelope depth stretched to zero gain, circular point icon and
+embedded English About/licence reader opened from the F-Sidechain logo.
+Existing user envelope data is not stretched.
+
+The complete inherited Shaper notice collection is included under licenses/ for provenance;
+Pitch, Saturation, Reverb, Filter and their DSP dependencies are not linked in F-Sidechain.

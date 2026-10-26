@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 Fazıl Irak — Volume motoru, arayüz, lisans kaynakları ve test hedefleri.
+cmake_minimum_required(VERSION 3.24)
+project(FSidechain VERSION 1.1.0 LANGUAGES C CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/JUCE/CMakeLists.txt")
+    set(default_juce "${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/JUCE")
+else()
+    set(default_juce "${CMAKE_CURRENT_SOURCE_DIR}/../_Dependencies/JUCE")
+endif()
+set(JUCE_PATH "${default_juce}" CACHE PATH "JUCE source directory")
+add_subdirectory("${JUCE_PATH}" "${CMAKE_BINARY_DIR}/JUCE")
+juce_add_binary_data(volume_resources NAMESPACE gate12_data HEADER_NAME gate12_data.h SOURCES Resources/Ubuntu-Medium.ttf)
+juce_add_binary_data(license_resources NAMESPACE fs_licenses HEADER_NAME fs_licenses.h SOURCES
+    LICENSE.txt THIRD-PARTY-NOTICES.txt licenses/LICENSE licenses/LICENSE-AGPL-3.0.txt
+    licenses/Ubuntu-Font-Licence-1.0.txt licenses/JUCE-LICENSE.md licenses/VST3-LICENSE.txt)
+set(FSIDECHAIN_FORMATS VST3 Standalone)
+if(APPLE)
+    list(APPEND FSIDECHAIN_FORMATS AU)
+endif()
+juce_add_plugin(FSidechain COMPANY_NAME "FAZIL IRAK" BUNDLE_ID "com.fazilirak.fsidechain"
+    PLUGIN_MANUFACTURER_CODE FzIr PLUGIN_CODE FsCh PRODUCT_NAME "F-Sidechain"
+    FORMATS ${FSIDECHAIN_FORMATS} IS_SYNTH FALSE NEEDS_MIDI_INPUT TRUE NEEDS_MIDI_OUTPUT FALSE
+    COPY_PLUGIN_AFTER_BUILD FALSE)
+if(WIN32)
+    get_target_property(plugin_generated FSidechain JUCE_GENERATED_SOURCES_DIRECTORY)
+    get_target_property(plugin_info FSidechain JUCE_INFO_FILE)
+    add_custom_command(OUTPUT "${plugin_generated}/FSidechain_resources.rc" APPEND DEPENDS "${plugin_info}")
+endif()
+file(GLOB_RECURSE volume_sources CONFIGURE_DEPENDS Source/Volume/*.cpp)
+target_sources(FSidechain PRIVATE Source/MultibandProcessor.cpp Source/AboutPanel.cpp Source/Entry.cpp ${volume_sources})
+target_include_directories(FSidechain PUBLIC Source/Embedded Source Source/Volume)
+target_compile_definitions(FSidechain PUBLIC JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_VST3_CAN_REPLACE_VST2=0 PROJECT_VERSION="${PROJECT_VERSION}")
+target_link_libraries(FSidechain PRIVATE volume_resources license_resources PUBLIC juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
+enable_testing()
+juce_add_console_app(FSidechainTests PRODUCT_NAME "F-Sidechain Tests")
+target_sources(FSidechainTests PRIVATE Tests/AudioTests.cpp)
+target_link_libraries(FSidechainTests PRIVATE FSidechain volume_resources)
+add_test(NAME volume_audio_and_state COMMAND FSidechainTests)

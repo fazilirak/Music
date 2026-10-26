@@ -5,6 +5,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 | Project | Windows | macOS | Source |
 | --- | --- | --- | --- |
 | [F Saturator](F-Saturator/README.md) | [0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Universal 0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Browse](F-Saturator) |
+| [F-Sidechain](F-Sidechain/README.md) | [1.1.0](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.0) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.0) | [Browse / licences](F-Sidechain) |
 | [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.3) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
 | [Model F](Model-F/README.md) | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Browse / licences](Model-F) |
 | [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Browse / licences](F-EQ) |
@@ -60,3 +61,11 @@ see [COPYING](Shaper/COPYING.txt) and [third-party notices](Shaper/THIRD-PARTY-N
 ![F EQ](F-EQ/docs/panel.png)
 
 Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/CLAP/standalone. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. AU is not included. Complete corresponding source accompanies each binary release. Project code is GPL-3.0-or-later; individual third-party and embedded URW Gothic AGPLv3 licences are preserved. See each project's COPYING and third-party notices.
+
+## F-Sidechain
+
+**Draw the groove. Make room for your sound.** Compact multiband volume shaper, eight editable envelopes, Low/Mid/High bands, sync/MIDI/audio triggering and full preset/state saving.
+
+![F-Sidechain](F-Sidechain/preview.png)
+
+[Downloads and source](F-Sidechain/README.md) · [Türkçe](https://fazilirak.com/f-sidechain/) · [English](https://fazilirak.com/f-sidechain-english/)

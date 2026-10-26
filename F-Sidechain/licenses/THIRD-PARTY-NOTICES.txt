@@ -1,0 +1,87 @@
+Pitch DSP dependencies
+======================
+Signalsmith Stretch
+https://github.com/Signalsmith-Audio/signalsmith-stretch
+
+MIT License
+
+Copyright (c) 2022 Geraint Luff / Signalsmith Audio Ltd.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Signalsmith Linear
+https://github.com/Signalsmith-Audio/linear
+
+MIT License
+
+Copyright (c) 2025 Signalsmith Audio
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+These MIT notices cover the Pitch dependencies only. Other Shaper components
+retain their original licenses; see LICENSE and README.md.
+
+
+Shaper dependency licence map (reviewed 2026-10-23)
+================================================
+GATE-12, TIME-12, REEV-R: Copyright (C) Tilr 2025, GPL version 3; see upstream licences.
+FILT-R: Copyright (C) Tilr 2025, AGPL version 3.
+Pan, Volume and Saturation/Pitch curve editors: derived from GATE-12.
+JUCE 8.0.7: Raw Material Software Ltd., AGPLv3 OR commercial JUCE licence.
+FFTConvolver: Copyright (c) 2012 HiFi-LoFi, GPL-3.0-or-later.
+AudioFFT: Copyright (c) 2016 HiFi-LoFi, MIT (embedded notice retained).
+Signalsmith Stretch / Linear: MIT, full notices above.
+Bundled VST3 SDK revision: Steinberg VST3 licence OR GPLv3, as specified
+in upstream/gate12/libs/JUCE/modules/juce_audio_processors/format_types/VST3_SDK/LICENSE.txt.
+Other JUCE dependencies retain their own licences: see the JUCE LICENSE.md
+and the mirrored licence files under licenses/upstream/gate12/libs/JUCE/.
+The mirrors supplement, and do not replace, embedded notices in source files.
+
+These components do not all have the same licence. The GPLv3/AGPLv3 combined
+work provisions in section 13 apply when using the open-source JUCE option;
+no upstream component is relicensed by this notice. A commercial JUCE licence
+does not remove the GPL/AGPL obligations of the other components.
+
+Ubuntu-Medium.ttf: Copyright 2011 Canonical Ltd.; Ubuntu Font Licence 1.0.
+The font copyright was read from its embedded name table. Full licence:
+licenses/Ubuntu-Font-Licence-1.0.txt (official Canonical text).
+
+The original Samplicity / Deltaworks Hall Quad.flac is excluded from source
+and binary distributions. The replacement Resources/impulses/Shaper_Hall_Quad.wav
+is synthetic, generated from scripts/generate_ir.py without external recordings.
+Copyright (c) 2026 Fazıl Irak; GPL-3.0-only. See its adjacent manifest.json.
+
+Shaper additions/adaptations: Fazil Irak (Fazıl Irak), 2026.
+Original third-party authorship and copyright remain unchanged.

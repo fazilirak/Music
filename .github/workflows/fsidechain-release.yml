@@ -1,0 +1,161 @@
+# Fazıl Irak tarafından oluşturuldu: 23.10.2026
+# SPDX-License-Identifier: GPL-3.0-only
+# Copyright (c) 2026 Fazıl Irak
+name: F-Sidechain Windows and macOS Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'F-Sidechain/**'
+      - '.github/workflows/fsidechain-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fsidechain-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: F-Sidechain
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Fetch pinned JUCE source
+        run: python scripts/bootstrap_juce.py
+      - name: Install build tools
+        run: python -m pip install 'cmake>=3.24,<4' ninja
+      - name: Read version
+        id: version
+        shell: python
+        run: |
+          import os, pathlib, json
+          version = json.loads(pathlib.Path('source-lock.json').read_text())['version']
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('version=' + version + '\n')
+      - name: Build and test Windows
+        shell: cmd
+        run: scripts\build-windows.cmd
+      - name: Package Windows and source
+        run: python scripts/package_distribution.py
+      - uses: actions/upload-artifact@v7
+        with:
+          name: F-Sidechain-Windows
+          path: F-Sidechain/dist/windows/*
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload Windows diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: F-Sidechain-Windows-diagnostics
+          path: F-Sidechain/build/Testing/Temporary/*.log
+          if-no-files-found: ignore
+
+  macos:
+    runs-on: macos-15
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: F-Sidechain
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Fetch pinned JUCE source
+        run: python scripts/bootstrap_juce.py
+      - name: Install build tools
+        run: python3 -m pip install 'cmake>=3.24,<4' ninja
+      - name: Build, test and package Mac Universal
+        run: bash scripts/build-macos.sh
+      - uses: actions/upload-artifact@v7
+        with:
+          name: F-Sidechain-macOS
+          path: F-Sidechain/dist/macos/*
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload Mac diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: F-Sidechain-macOS-diagnostics
+          path: |
+            F-Sidechain/build-macos/Testing/Temporary/*.log
+            F-Sidechain/build-macos/CMakeFiles/CMakeConfigureLog.yaml
+          if-no-files-found: ignore
+
+  release:
+    needs: [windows, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: F-Sidechain-Windows
+          path: artifacts/windows
+      - uses: actions/download-artifact@v7
+        with:
+          name: F-Sidechain-macOS
+          path: artifacts/macos
+      - name: Publish matching binaries and corresponding source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          FSIDECHAIN_VERSION: ${{ needs.windows.outputs.version }}
+          FSIDECHAIN_COMMIT: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir release
+          # Resolve each expected file uniquely, including preserved artifact directories.
+          copy_asset() {
+            local root="$1" pattern="$2" target="$3"
+            mapfile -d '' matches < <(find "$root" -type f -name "$pattern" -print0)
+            if [ "${#matches[@]}" -ne 1 ]; then
+              echo "Expected one $pattern in $root, found ${#matches[@]}" >&2
+              exit 1
+            fi
+            cp "${matches[0]}" "$target"
+          }
+          copy_asset artifacts/windows '*-Source.zip' release/
+          copy_asset artifacts/windows '*-Windows-x64.zip' release/
+          copy_asset artifacts/macos '*-macOS-Universal.tar.gz' release/
+          copy_asset artifacts/macos '*-macOS-Source.zip' release/
+          copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
+          copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
+          cat > release-notes.md <<'NOTES'
+          F-Sidechain 1.1.0 — Draw the groove. Make room for your sound.
+
+          Free compact multiband volume shaper with eight editable factory envelopes, independent Low/Mid/High bands, full-range mode, tempo/MIDI/audio triggering, paint and sequencer editing, and complete preset/state saving.
+          Preset selection, Save, Load and options are in the top bar; 760 × 426 interface preserves the envelope editor area.
+
+          Windows x64: VST3 and standalone.
+          macOS Universal (arm64 + x86_64): VST3, AU and standalone; macOS 11.0+.
+          Both build hosts passed the audio, preset/state and embedded licence test suite.
+          Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Separate real DAW and Intel Mac testing remains necessary.
+          Complete corresponding source includes application code, scripts, pinned JUCE/VST3 source, resources and licence notices. Preserve GPLv3/AGPLv3 component requirements and upstream credits.
+          NOTES
+          tag="F-Sidechain-v${FSIDECHAIN_VERSION}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; use a new F-Sidechain version for a new published build." >&2
+            exit 1
+          fi
+          gh release create "$tag" release/* --target "$FSIDECHAIN_COMMIT" \
+            --title "F-Sidechain ${FSIDECHAIN_VERSION}" --notes-file release-notes.md

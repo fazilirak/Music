@@ -1,0 +1,11 @@
+{
+  "product": "F-Sidechain",
+  "version": "1.1.0",
+  "revision": "full-range-default-logo-about-english",
+  "forkDate": "2026-10-26",
+  "volumeSource": "Local Shaper 0.8.3 generated volumef module; independently maintained snapshot",
+  "gate12Upstream": "https://github.com/tiagolr/gate12",
+  "gate12Commit": "df652453236fa03859dbd5fb8eb3dde1fb574ab5",
+  "juceRepository": "https://github.com/juce-framework/JUCE",
+  "juceCommit": "10a589619b452c261b2940767eb253171eb5a823"
+}
