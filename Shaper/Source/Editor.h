@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 Fazıl Irak; Shaper eklemeleri/değişiklikleri.
-// Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
+// Fazıl Irak tarafından oluşturuldu / değiştirildi: 24.10.2026
 // Kapsam: Shaper için eklenen kod ve uyarlamalar; özgün üçüncü taraf telif/lisansları korunur.
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Ana rack editörünü, efekt sırasını, seçimlerini ve mevcut ortak kontrol yerleşimini yönetir.
 #pragma once
 #include "Processor.h"
@@ -37,10 +37,9 @@ class ShaperEditor final : public juce::AudioProcessorEditor, private juce::Time
   private:
     ShaperProcessor &processor;
     RackLookAndFeel theme;
-    juce::Label title, mixLabel, gainLabel, presetLabel, rackLabel;
+    juce::Label title, presetLabel, rackLabel;
     EffectPalette palette;
     juce::Label emptyLabel;
-    juce::Slider mix, gain;
     juce::ComboBox preset, rackPreset;
     CompactIconButton previous{"<"}, next{">"}, saveRack{"Save rack"}, loadRack{"Load rack"},
         options{"Options"}, aboutButton{"About"};
@@ -53,9 +52,6 @@ class ShaperEditor final : public juce::AudioProcessorEditor, private juce::Time
     std::unique_ptr<juce::FileChooser> chooser;
     juce::Viewport viewport;
     std::unique_ptr<juce::AudioProcessorEditor> child;
-    using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
-    using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
-    std::unique_ptr<SliderAttachment> mixAttachment, gainAttachment;
     void select();
     void refreshPresets();
     void chooseRack(bool save);

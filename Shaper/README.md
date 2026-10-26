@@ -1,13 +1,17 @@
-<!-- Türkçe bakım: Fazıl Irak | 22.10.2026 -->
-# Shaper 0.8.2 — FAZIL IRAK
+<!-- Türkçe bakım: Fazıl Irak | 24.10.2026 -->
+# Shaper 0.8.3 — FAZIL IRAK
 
 [![Build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml/badge.svg)](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml)
 
-[Windows x64](https://github.com/fazilirak/Music/releases/download/Shaper-v0.8.2/Shaper-0.8.2-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/Shaper-v0.8.2/Shaper-0.8.2-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.2) · [Source](https://github.com/fazilirak/Music/tree/main/Shaper)
+[Windows x64](https://github.com/fazilirak/Music/releases/download/Shaper-v0.8.3/Shaper-0.8.3-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/Shaper-v0.8.3/Shaper-0.8.3-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.3) · [Source](https://github.com/fazilirak/Music/tree/main/Shaper)
 
 ![Shaper](doc/shaper.png)
 
 JUCE tabanlı VST3 ve standalone efekt rack'i: **Gate, Time, Filter, Reverb, Volume, Pan, Saturation, Pitch**. Şirket adı: **FAZIL IRAK**. Pan ve Volume geliştiricisi: **Fazıl Irak**, temel motor GATE-12 / Tilr.
+
+## Arayüz sadeleştirmesi (0.8.3)
+
+Alt araç çubuğundaki rack Mix ve Out kontrolleri kaldırıldı. Seçili efektin sağ üst Stereo / dB / Mix paneli yerinde kalır. Eski genel rack mix/gain parametre kimlikleri, preset dosyaları ve ses işleme davranışı korunur; bu iki rack parametresi DAW otomasyonunda erişilebilir. Alt araç çubuğu preset ve eğri düzenleme araçlarını içerir.
 
 ## Dağıtım ve Hakkında (0.8.2)
 
@@ -53,7 +57,7 @@ Pitch motoru Signalsmith Stretch kullanır. Bağımlılık sürümleri ve MIT bi
 - Sekiz efektin sağ üstünde aynı **Stereo / çıkış seviye göstergesi / dB / Mix** paneli bulunur. Mix yüzdesi daha büyük ve efektin kendi rengindedir. Değerleri sürükleyerek veya fare tekerleğiyle değiştirin; çift tıklama varsayılan değeri geri getirir. Çıkış seviyesi seçili banda uygulanır ve presetle birlikte saklanır. Stereo alanı Gate, Filter, Pan ve Volume'de mevcut sol/sağ modülasyon fazını; Time, Reverb, Saturation ve Pitch'da stereo genişliğini düzenler. Üzerine gelince sayısal değer görünür.
 - Ortak kontroller **MODULATION**, efekte özgü kontroller **EFFECT SETTINGS** bölümünde toplanır. Ortak düğmelerin, pattern satırının ve eğri araçlarının boyutları ve konumları bütün efektlerde aynıdır. Time'ın Phase / Smooth / Attack / Release / Tension kontrolleri de bu ortak düzende yer alır; mevcut motor parametrelerine bağlıdır. Ek EQ/Decay ve tetikleme görünümleri kendi bölümünde açılır.
 - **Snap** işlevi korunur; açık/kapalı durumu dolgulu zemin yerine çerçeve vurgusuyla gösterilir.
-- **MIX / OUTPUT** master dry/wet ve çıkış seviyesidir. Bypass ve dry sinyal efekt gecikmeleriyle hizalanır.
+- Eski rack **MIX / OUTPUT** parametreleri DAW otomasyonunda korunur; 0.8.3 arayüzünde alt kontrolleri gösterilmez. Sağ üst Mix/dB seçili efekt/bant içindir. Bypass ve dry sinyal efekt gecikmeleriyle hizalanır.
 - **EFFECT PRESET**, bütün rack'ten bağımsız olarak yalnızca seçili efektin hazır presetini değiştirir.
 
 ## Pan

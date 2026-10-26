@@ -137,6 +137,11 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
+          Shaper 0.8.3
+          - Removes the lower rack Mix and Out controls and their labels, simplifying the footer. The existing upper Stereo / dB / Mix panel remains in its established position.
+          - Preserves rack mix/gain parameter IDs, host automation, preset formats and DSP behavior. Existing saved rack mix/gain values still apply; they remain accessible through DAW automation. The upper panel controls the selected effect/band, not the hidden rack master parameters.
+          - Updates the main interface screenshot to match the streamlined footer.
+
           Windows x64: VST3 and standalone.
           macOS Universal (arm64 + x86_64): VST3, AU and standalone; deployment target macOS 11.0.
 

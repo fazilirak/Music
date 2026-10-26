@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 Fazıl Irak; Shaper eklemeleri/değişiklikleri.
-// Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
+// Fazıl Irak tarafından oluşturuldu / değiştirildi: 24.10.2026
 // Kapsam: Shaper için eklenen kod ve uyarlamalar; özgün üçüncü taraf telif/lisansları korunur.
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 24.10.2026
 // Dosyanın görevi: Ana rack editörünü, efekt sırasını, seçimlerini ve mevcut ortak kontrol yerleşimini yönetir.
 #include "Editor.h"
 #include "MultibandProcessor.h"
@@ -57,19 +57,9 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
     emptyLabel.setJustificationType(juce::Justification::centred);
     emptyLabel.setColour(juce::Label::textColourId, juce::Colour(0xff8993a1));
     addAndMakeVisible(emptyLabel);
-    for (auto *slider : {&mix, &gain})
-    {
-        slider->setSliderStyle(juce::Slider::LinearHorizontal);
-        slider->setTextBoxStyle(juce::Slider::TextBoxRight, false, 78, 24);
-        addAndMakeVisible(slider);
-    }
-    gain.setTextValueSuffix(" dB");
-    mixLabel.setText("MIX", juce::dontSendNotification);
-    gainLabel.setText("OUTPUT", juce::dontSendNotification);
-    addAndMakeVisible(mixLabel);
-    addAndMakeVisible(gainLabel);
-    mixAttachment = std::make_unique<SliderAttachment>(p.state, "mix", mix);
-    gainAttachment = std::make_unique<SliderAttachment>(p.state, "gain", gain);
+    // Fazıl Irak, 24.10.2026: alt rack Mix/Out görselleri kaldırıldı.
+    // Efektin sağ üst ortak çıkış paneli korunur. Eski rack mix/gain parametreleri
+    // işlemcide kalır; DAW otomasyonu ve eski presetlerin sesi değişmez.
     presetLabel.setText("EFFECT PRESET", juce::dontSendNotification);
     addChildComponent(presetLabel);
     preset.setComponentID("effect-preset");
@@ -524,11 +514,6 @@ void ShaperEditor::resized()
     options.setBounds(411, row, 28, 28);
     for (int i = 0; i < 6; ++i)
         editButtons[i].setBounds(447 + i * 36, row, 28, 28);
-    mixLabel.setBounds(670, row, 30, 28);
-    mix.setBounds(702, row, 145, 28);
-    gainLabel.setText("OUT", juce::dontSendNotification);
-    gainLabel.setBounds(856, row, 35, 28);
-    gain.setBounds(893, row, getWidth() - 919, 28);
     viewport.setBounds(20, 190, getWidth() - 40, getHeight() - 266);
     emptyLabel.setBounds(viewport.getBounds());
     if (child)

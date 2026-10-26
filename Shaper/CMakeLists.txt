@@ -2,10 +2,10 @@
 # Copyright (c) 2026 Fazıl Irak; Shaper eklemeleri/değişiklikleri.
 # Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
 # Türkçe bakım açıklamaları: Fazıl Irak
-# Son düzenleme: 22.10.2026
+# Son düzenleme: 24.10.2026
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 cmake_minimum_required(VERSION 3.24)
-project(Shaper VERSION 0.8.2 LANGUAGES C CXX)
+project(Shaper VERSION 0.8.3 LANGUAGES C CXX)
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
