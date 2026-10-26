@@ -2,7 +2,7 @@
 
 Fazıl Irak · 26.10.2026
 
-Turuncu yüksek-rezonans işareti artık knobun en dış gri halkasının bir parçası olarak, aynı 27 piksel yarıçap ve 2 piksel çizgi kalınlığıyla çizilir. Ayrı dış yay kaldırıldı; ölçek çizgileri gri kalır. Acid ses motoru düzeltmesi ve hassas fare ayarı 0.2.6 ile aynıdır.
+Turuncu yüksek-rezonans işareti artık knobun en dış gri halkasının bir parçası olarak, aynı 27 piksel yarıçap ve 2 piksel çizgi kalınlığıyla çizilir. Ayrı dış yay kaldırıldı; turuncu bölgeye denk gelen ölçek çizgileri de turuncudur, diğer çizgiler gri kalır. Acid ses motoru düzeltmesi ve hassas fare ayarı 0.2.6 ile aynıdır.
 
 ---
 

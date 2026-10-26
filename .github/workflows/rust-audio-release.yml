@@ -88,7 +88,7 @@ jobs:
               cat >> release-notes.md <<'MODEL'
 
           Model F 0.2.7
-          - The orange high-resonance indicator now overlays the existing outer grey knob ring at exactly the same 27 px radius and 2 px stroke width. The separate outer arc is removed and scale ticks remain grey. No knob resizing or extra outline.
+          - The orange high-resonance indicator now overlays the existing outer grey knob ring at exactly the same 27 px radius and 2 px stroke width. The separate outer arc is removed; matching high-resonance scale ticks are orange and the other ticks stay grey. No knob resizing or extra outline.
           - DSP, fine Acid gestures and resonance thresholds are unchanged from 0.2.6; the two UI regression tests were rerun for this placement change.
 
           Includes the Model F 0.2.6 resonance improvements:

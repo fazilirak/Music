@@ -348,7 +348,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
                     c.y + sn * (r + 7.0),
                     c.x + cs * (r + 11.0),
                     c.y + sn * (r + 11.0),
-                    "#525b5e"
+                    if caution.is_some_and(|start|f64::from(t)/10.0>=start) {"#ed6c46"}else{"#525b5e"}
                 );
             }
             let a = (-225.0 + n * 270.0).to_radians();
