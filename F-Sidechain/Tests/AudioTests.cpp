@@ -21,7 +21,7 @@ void require(bool v,const char* msg) {if(!v) throw std::runtime_error(msg);}
 // Fazıl Irak — 27.10.2026: XML'nin bayt dizilimi yerine tüm kayıt alanlarını doğrula.
 // Normalleştirilmiş float parametreleri farklı işlemcilerde birkaç ULP değişebilir;
 // eksik alan, farklı metin, farklı nota/eğri veya anlamlı sayısal değişiklik yine hatadır.
-bool equivalentValue(const juce::String& a,const juce::String& b) {
+bool equivalentValue(const juce::String& a,const juce::String& b,double rangeScale=1.0) {
     if(a==b)return true;
     std::istringstream sa(a.toStdString()),sb(b.toStdString());
     sa.imbue(std::locale::classic());sb.imbue(std::locale::classic());
@@ -30,7 +30,7 @@ bool equivalentValue(const juce::String& a,const juce::String& b) {
         sa>>std::ws;sb>>std::ws;
         if(sa.eof()||sb.eof())return any&&sa.eof()&&sb.eof();
         if(!(sa>>va)||!(sb>>vb)||!std::isfinite(va)||!std::isfinite(vb))return false;
-        if(std::abs(va-vb)>8.0*std::numeric_limits<float>::epsilon()*std::max({1.0,std::abs(va),std::abs(vb)}))return false;
+        if(std::abs(va-vb)>8.0*std::numeric_limits<float>::epsilon()*std::max({rangeScale,std::abs(va),std::abs(vb)}))return false;
         any=true;
     }
 }
@@ -38,7 +38,9 @@ bool equivalentXml(const juce::XmlElement& a,const juce::XmlElement& b) {
     if(a.getTagName()!=b.getTagName()||a.getNumAttributes()!=b.getNumAttributes()||a.getNumChildElements()!=b.getNumChildElements())return false;
     for(int i=0;i<a.getNumAttributes();++i) {
         const auto name=a.getAttributeName(i);
-        if(!b.hasAttribute(name)||!equivalentValue(a.getAttributeValue(i),b.getStringAttribute(name))) {
+        // Fazıl Irak — 27.10.2026: Output gain -60..+12 dB aralığında 0..1 float dönüşümü yapar.
+        // Sıfıra yakın dB değerinin hassasiyeti değer büyüklüğüyle değil 72 dB aralıkla ölçeklenir.
+        if(!b.hasAttribute(name)||!equivalentValue(a.getAttributeValue(i),b.getStringAttribute(name),name=="outputGain"?72.0:1.0)) {
             std::cerr<<"State differs: "<<a.getTagName()<<" / "<<name<<": "<<a.getAttributeValue(i)<<" -> "<<b.getStringAttribute(name)<<'\n';return false;
         }
     }
