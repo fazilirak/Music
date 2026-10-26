@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 25.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
 //! Shared vector panel and hit regions: the plug-in and preview use this same drawing.
 use crate::{params::ModelFParams, presets::Preset};
@@ -25,6 +25,8 @@ pub const ABOUT_CLOSE: (f64, f64, f64, f64) = (475.0, 495.0, 170.0, 38.0);
 pub fn in_rect((x, y, w, h): (f64, f64, f64, f64), px: f64, py: f64) -> bool {
     px >= x && px <= x + w && py >= y && py <= y + h
 }
+pub const CHARACTER_NAMES:[&str;6]=["Ladder","Edge","Bite","State Variable","Acid","VA Stack"];
+pub const CHARACTER_RECTS:[(f64,f64,f64,f64);6]=[(340.,85.,62.,22.),(406.,85.,52.,22.),(462.,85.,52.,22.),(518.,85.,106.,22.),(628.,85.,52.,22.),(684.,85.,82.,22.)];
 pub const WAVES: [&str; 6] = ["TRIANGLE", "SHARK", "SAW", "SQUARE", "PULSE 25", "PULSE 10"];
 #[derive(Clone, Copy, Debug)]
 pub struct Control {
@@ -37,6 +39,14 @@ pub struct Control {
     pub knob: bool,
 }
 impl Control {
+    // Dikdörtgen değer alanları da knob ile aynı sürükleme sözleşmesini kullanır.
+    pub fn draggable(&self)->bool {self.knob || matches!(self.id,"global_tuning"|"character_shape")}
+    pub fn drag_normalized(&self,base:f32,up:f64,shift:bool)->f32 {
+        let scale=if shift {0.0005} else {0.005};
+        let scale=if self.id=="global_tuning" {scale*0.25} else {scale};
+        (base+(up*scale) as f32).clamp(0.0,1.0)
+    }
+
     // hit: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
     pub fn hit(&self, x: f64, y: f64) -> bool {
         if self.knob {
@@ -73,6 +83,8 @@ macro_rules! b {
     };
 }
 pub const CONTROLS: &[Control] = &[
+    b!("global_tuning", "GLOBAL TUNING", 30, 697, 185, 28),
+    b!("character_shape", "FILTER SHAPE", 470, 146, 72, 28),
     k!("volume", "OUTPUT", 1045, 59, 22),
     b!("mode", "VOICE", 48, 170, 286, 28),
     b!("waveform", "WAVE", 48, 241, 106, 28),
@@ -171,15 +183,20 @@ fn section(s: &mut String, x: f64, y: f64, w: f64, h: f64, n: &str, title: &str)
 pub fn value(p: &ModelFParams, id: &str) -> String {
     let v = p.effective(id);
     match id {
+        "global_tuning"=>format!("{v:.1} Hz"),
+        "character_shape"=>if p.character.value().round()==5.0 {if v<0.01 {"12 dB".into()} else if v>0.99 {"24 dB".into()} else {"12/24 MIX".into()}} else if p.character.value().round()==2.0 {format!("HP {:.0} Hz",20.0*libm::pow(125.0,f64::from(v)))} else {
+            let at=v*3.0;let names=["LP","NOTCH","HP","BP"];let i=(at as usize).min(3);
+            if (at-i as f32).abs()<0.03 || i==3 {names[i].into()} else {format!("{} / {}",names[i],names[i+1])}
+        },
         "osc_sync" | "fm_on" => if v > 0.5 { "ON" } else { "OFF" }.into(),
         "osc1_tune" => format!("{v:+.1} st"),
         "osc1_level" | "osc2_level" => format!("{:.0}%", v * 10.0),
         "fm_amount" => format!("{:.0}%", v * 100.0),
         "osc2_waveform" => WAVES[(v.round() as usize).min(5)].into(),
         "osc2_octave" => ["32′", "16′", "8′", "4′", "2′", "1′"][(v.round() as usize).min(5)].into(),
-        "mode" => MODES[(v.round() as usize).min(6)].into(),
+        "mode" => if p.character.value().round()==5.0 {"SUPERSAW".into()} else {MODES[(v.round() as usize).min(6)].into()},
         "waveform" => {
-            if p.mode.value().round() == 1.0 {
+            if p.mode.value().round() == 1.0 || p.character.value().round()==5.0 {
                 "SAW × 7".into()
             } else {
                 WAVES[(v.round() as usize).min(5)].into()
@@ -270,15 +287,10 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         &format!("{}{}", v.name, if v.dirty { " •" } else { "" }),
         false,
     );
-    text(
-        &mut s,
-        350.0,
-        96.0,
-        10,
-        "#ed6c46",
-        &format!("{}  /  160 FACTORY SOUNDS", v.category.to_uppercase()),
-        "start",
-    );
+    // Preset kategori satırının yerine küçük, doğrudan seçilen karakter etiketleri.
+    for (i,rect) in CHARACTER_RECTS.iter().enumerate() {
+        button(&mut s,rect.0,rect.1,rect.2,rect.3,CHARACTER_NAMES[i],p.character.value().round() as usize==i);
+    }
     for (x, label) in [(782.0, "‹"), (820.0, "›")] {
         button(&mut s, x, 40.0, 30.0, 38.0, label, false);
     }
@@ -289,7 +301,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     if !v.header_enabled() {s.push_str("</g>");}
     s.push_str(r##"<path d="M28 118H1092" stroke="#ed6c46" stroke-width="2"/><path d="M28 123H1092" stroke="#dce0d8" stroke-width="2"/>"##);
     section(&mut s, 28.0, 132.0, 326.0, 310.0, "01", "OSCILLATORS");
-    section(&mut s, 374.0, 132.0, 300.0, 310.0, "02", "LADDER FILTER");
+    section(&mut s, 374.0, 132.0, 300.0, 310.0, "02", "FILTER");
     section(&mut s, 694.0, 132.0, 398.0, 310.0, "03", "ENVELOPES");
     section(&mut s, 28.0, 464.0, 326.0, 202.0, "04", "MODULATION");
     section(&mut s, 374.0, 464.0, 718.0, 210.0, "05", "ARPEGGIATOR");
@@ -310,7 +322,10 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
         let active = v.hover == Some(i);
         let accent = if active { "#ff956f" } else { "#ed6c46" };
-        if c.knob {
+        if matches!(c.id,"global_tuning" | "character_shape") {
+            let label=if c.id=="global_tuning" {format!("GLOBAL TUNING  {}",value(p,c.id))} else {value(p,c.id)};
+            button(&mut s,c.x,c.y,c.w,c.h,&label,false);
+        } else if c.knob {
             let r = c.w;
             for t in 0..=10 {
                 let a = (-225.0 + 27.0 * f64::from(t)).to_radians();
@@ -832,7 +847,7 @@ mod tests {
             CONTROLS.len(),
             p.list()
                 .iter()
-                .filter(|(id, _)| !id.starts_with("mseg_"))
+                .filter(|(id, _)| !id.starts_with("mseg_") && *id!="character")
                 .count()
         );
         for c in CONTROLS {
@@ -865,13 +880,15 @@ mod tests {
 
 // SuperSaw'ın tek bankı ve kapalı FM'nin derinlik kontrolü bilinçli olarak pasiftir.
 pub fn control_enabled(p: &ModelFParams, id: &str) -> bool {
+    if id=="character_shape" {return matches!(p.character.value().round() as u8,2|3|5);}
+    if p.character.value().round()==5.0 && matches!(id,"mode" | "waveform" | "osc2_waveform" | "osc2_octave" | "osc2_level" | "osc_sync" | "fm_on" | "fm_amount") {return false;}
     if p.mode.value().round() == 1.0 && matches!(id, "osc2_waveform" | "osc2_octave" | "osc2_level" | "osc_sync" | "fm_on" | "fm_amount") { return false; }
     id != "fm_amount" || p.fm_on.value() > 0.5
 }
 
 // Fazıl Irak — 25.10.2026: Output düğmesi de üst panelin kilidini izler.
 pub fn control_enabled_for_view(p:&ModelFParams,v:&View,id:&str)->bool {
-    control_enabled(p,id) && (id!="volume" || v.header_enabled())
+    control_enabled(p,id) && (!matches!(id,"volume" | "global_tuning" | "character_shape") || v.header_enabled())
 }
 // Satır ve silme hit-test'i render ile aynı boyutları kullanır.
 pub fn user_delete_hit(v:&View,x:f64,y:f64)->Option<usize> {
@@ -881,4 +898,23 @@ pub fn user_delete_hit(v:&View,x:f64,y:f64)->Option<usize> {
     if (y-234.)%36.>=30. {return None;}
     let index=v.offset+col*10+row;
     v.rows.get(index).filter(|p|p.source_path.is_some()).map(|_|index)
+}
+
+#[cfg(test)]
+mod tuning_gesture_tests {
+    use super::*;
+    #[test]
+    fn tuning_hit_drag_direction_resolution_and_limits() {
+        let p=ModelFParams::default();
+        let c=CONTROLS.iter().find(|c|c.hit(120.0,710.0)).unwrap();
+        assert_eq!(c.id,"global_tuning");assert!(c.draggable());
+        let base=p.display_normalized(c.id);let hz=|n|p.global_tuning.preview_plain(n);
+        assert!((hz(c.drag_normalized(base,20.0,false))-442.0).abs()<0.051);
+        assert!((hz(c.drag_normalized(base,-20.0,false))-438.0).abs()<0.051);
+        assert!((hz(c.drag_normalized(base,20.0,true))-440.2).abs()<0.051);
+        assert_eq!(hz(c.drag_normalized(base,10000.0,false)),480.0);
+        assert_eq!(hz(c.drag_normalized(base,-10000.0,false)),400.0);
+        assert!(control_enabled_for_view(&p,&View::default(),c.id));
+        assert!(!control_enabled_for_view(&p,&View{envelope:true,..Default::default()},c.id));
+    }
 }

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Nota/voice, MIDI, çalışma kipleri, arpej, MSEG, filtre ve ses render akışını koordine eder.
 //! The plug-in's audio engine, apart from any plug-in format: the circuit model's voice in its
 //! real-time (Potato) quality, played by MIDI notes, pitch bend and the modulation wheel, with
@@ -85,6 +85,8 @@ pub struct Controls {
     pub sync: bool,
     pub fm: f64,
     pub transpose: f64,
+    /// Genel A4 akordu; preset transpose/interval değerlerinden ayrıdır.
+    pub global_cents: f64,
     pub interval: f64,
     pub supersaw: Option<f64>,
     pub panel: Panel,
@@ -116,6 +118,7 @@ impl Default for Controls {
             sync: false,
             fm: 0.0,
             transpose: 0.0,
+            global_cents: 0.0,
             interval: 0.0,
             supersaw: None,
             panel: Panel::default(),
@@ -339,6 +342,7 @@ impl Playing {
     // Gövdedeki başlıca çağrılar: ext.iter → enumerate → take → self.key.step. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn play(&mut self, n: usize, ext: &[f64; CHUNK], rate: f64, m: &Mix) {
         let mut peak = 0.0f64;
+        let (gl, gr) = self.character.gains(m.spread);
         for (k, &x) in ext.iter().enumerate().take(n) {
             let gate = if self.drop {
                 self.drop = false;
@@ -362,7 +366,6 @@ impl Playing {
             // A quiet section of the Volume envelope is not the end of the voice's
             // amplifier release. Keep lifetime detection on the unmodulated signal.
             let y = y * envelope_gain;
-            let (gl, gr) = self.character.gains(m.spread);
             self.out[0][k] = y * f64::from(gl);
             self.out[1][k] = y * f64::from(gr);
         }
@@ -1415,8 +1418,8 @@ impl Engine {
         v.voice.fm = self.controls.fm;
         v.voice.supersaw = self.controls.supersaw;
         v.voice.pitch_offsets = [
-            self.controls.transpose * 100.0,
-            (self.controls.transpose + self.controls.interval) * 100.0,
+            self.controls.transpose * 100.0+self.controls.global_cents,
+            (self.controls.transpose + self.controls.interval) * 100.0+self.controls.global_cents,
             0.0,
         ];
         v.panel_gen = self.panel_gen;

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 25.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.
 use crate::{
     panel::{self, CONTROLS, H, View, W},
@@ -553,14 +553,8 @@ impl PanelWindow {
             self.view.about_click(x, y);
             return;
         }
-        // Klavye bir kez etkinleştirilince knob'a tıklamak odağı host'a geri vermez.
-        if !right && panel::in_rect((28., 687., 198., 43.), x, y) {
-            self.keyboard_active = true;
-            window.set_wants_keys(true);
-            if self.focus.is_none() { self.focus = window::take_keys(window); }
-            self.view.status = "Computer keyboard on: A W S E D F T G Y H U J K. ESC releases.".into();
-            return;
-        }
+        // Fazıl Irak, 26.10.2026: kaldırılan klavye yardımının görünmez hit alanı
+        // Global Tuning'i yutuyordu. Klavye odağı yalnız gerçek piyano tuşlarından alınır.
         if self.view.save {
             if !right { self.focus_text_input(window); }
             if !right && panel::in_rect((340.0,332.0,440.0,40.0),x,y) {
@@ -650,6 +644,14 @@ impl PanelWindow {
             }
             return;
         }
+        if let Some(index)=panel::CHARACTER_RECTS.iter().position(|rect|panel::in_rect(*rect,x,y)) {
+            if self.view.header_enabled() {
+                self.end_drag();let p=&self.params.character;let set=ParamSetter::new(self.context.as_ref());
+                set.begin_set_parameter(p);set.set_parameter(p,index as f32);set.end_set_parameter(p);
+                self.view.status=format!("Character: {}",panel::CHARACTER_NAMES[index]);
+            }
+            return;
+        }
         if (40.0..78.0).contains(&y) {
             if (340.0..770.0).contains(&x) {
                 self.env_finish();
@@ -710,7 +712,7 @@ impl PanelWindow {
         }
         if let Some(i) = CONTROLS.iter().position(|c| c.hit(x, y)) {
             let c = &CONTROLS[i];
-            if !panel::control_enabled(&self.params, c.id) { return; }
+            if !panel::control_enabled_for_view(&self.params, &self.view, c.id) { return; }
             if c.id == "waveform" && self.params.mode.value().round() == 1.0 {
                 self.view.status = "SuperSaw always uses seven Model F saw oscillators.".into();
                 return;
@@ -721,7 +723,7 @@ impl PanelWindow {
                 }
                 return;
             }
-            if c.knob && !right {
+            if c.draggable() && !right {
                 let p = self.params.get(c.id).expect("known control");
                 ParamSetter::new(self.context.as_ref()).begin_set_parameter(p);
                 self.drag = Some((i, y, self.params.display_normalized(c.id)));
@@ -889,7 +891,7 @@ impl WindowHandler for PanelWindow {
                 window::give_keys_back(window, keys);
             }
         }
-        if self.last_draw.elapsed() >= Duration::from_millis(33) {
+        if self.last_draw.elapsed() >= Duration::from_millis(50) {
             self.draw();
             self.last_draw = Instant::now();
         }
@@ -937,12 +939,8 @@ impl WindowHandler for PanelWindow {
                     .iter()
                     .position(|c| c.hit(self.pointer.0, self.pointer.1));
                 if let Some((i, y, base)) = self.drag {
-                    let fine = if modifiers.contains(Modifiers::SHIFT) {
-                        0.0005
-                    } else {
-                        0.005
-                    };
-                    self.set_normalized(i, base + ((y - self.pointer.1) * fine) as f32, false);
+                    let value=CONTROLS[i].drag_normalized(base,y-self.pointer.1,modifiers.contains(Modifiers::SHIFT));
+                    self.set_normalized(i,value,false);
                     self.view.status = format!(
                         "{}: {}   /   SHIFT fine  •  CTRL-click reset",
                         CONTROLS[i].label,
@@ -992,7 +990,7 @@ impl WindowHandler for PanelWindow {
                 } else if !self.view.save {
                     if let Some(i) = self.view.hover {
                         if !panel::control_enabled_for_view(&self.params, &self.view, CONTROLS[i].id) { return EventStatus::Captured; }
-                        if CONTROLS[i].knob {
+                        if CONTROLS[i].draggable() {
                             let step = if modifiers.contains(Modifiers::SHIFT) {
                                 0.002
                             } else {
@@ -1000,7 +998,7 @@ impl WindowHandler for PanelWindow {
                             };
                             self.set_normalized(
                                 i,
-                                self.params.display_normalized(CONTROLS[i].id) + amount * step,
+                                self.params.display_normalized(CONTROLS[i].id) + amount * if CONTROLS[i].id=="global_tuning" {if modifiers.contains(Modifiers::SHIFT) {0.000125} else {0.00125}} else {step},
                                 true,
                             );
                         } else {

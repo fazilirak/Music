@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Model F host yaşam döngüsü, MIDI/parametre ve Engine render köprüsünü yönetir.
 //! Model F. GPL-3.0-or-later. Includes circuit DSP copyright 2026 Idle Foundry Ltd.
 pub mod arp;
@@ -135,7 +135,7 @@ impl Plugin for ModelF {
         // when absent, including when loading into an instance with modulation on.
         let defaults = ModelFParams::default();
         for (id, p) in defaults.list() {
-            if id.starts_with("mseg_") || id == "overload" || matches!(id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount") {
+            if matches!(id,"character" | "character_shape" | "global_tuning") || id.starts_with("mseg_") || id == "overload" || matches!(id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount") {
                 state
                     .params
                     .entry(id.into())

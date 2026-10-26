@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Host parametre kimliği, aralığı, varsayılanı ve DSP kontrol modeline dönüşüm sözleşmesidir.
 use crate::engine::Controls;
 use model_f_core::{
@@ -213,6 +213,10 @@ parameters! {
     // Fazıl Irak, 24.10.2026: 0=Free eski saniye süresini korur; yeni kimlikler sona eklenir.
     mseg_speed: "mseg_speed" => ("Envelope Tempo Speed", 0.0, 6.0, 0.0, 1.0),
     mseg_fix_tempo: "mseg_fix_tempo" => ("Envelope Fix Tempo 120 BPM", 0.0, 1.0, 0.0, 1.0),
+    // Fazıl Irak, 26.10.2026: eski host indeksleri korunur; yeniler sona eklenir.
+    character: "character" => ("Character", 0.0, 5.0, 0.0, 1.0),
+    character_shape: "character_shape" => ("Character Filter Shape", 0.0, 1.0, 0.0, 0.001),
+    global_tuning: "global_tuning" => ("Global Tuning A4 Hz", 400.0, 480.0, 440.0, 0.1),
 }
 
 impl ModelFParams {
@@ -432,7 +436,10 @@ impl ModelFParams {
     pub fn controls(&self) -> Controls {
         let mut c = Controls::default();
         let p = &mut c.panel;
-        let mode = self.mode.value().round() as usize;
+        p.character=self.character.value().round().clamp(0.0,5.0) as u8;
+        p.character_shape=f64::from(self.character_shape.value());
+        c.global_cents=1200.0*libm::log2(f64::from(self.global_tuning.value())/440.0);
+        let mode = if p.character==5 {1} else {self.mode.value().round() as usize};
         let octave = self.octave.value().round() as usize;
         // 1' is the circuit's 2' range transposed one octave with its tuning bus.
         let range = [

@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Nokta/eğri/wave brush envelope’unun fiziksel zaman ve hedef modülasyon değerini hesaplar.
 //! Breakpoint modulation adapted from FAZIL IRAK's Machine envelope behavior.
 //! Fixed parameter slots and storage; no allocation, locks or file I/O in audio.
@@ -741,6 +741,6 @@ mod tempo_tests {
         shape.values.remove("mseg_speed");shape.values.remove("mseg_fix_tempo");shape.validate().unwrap();
         let mut incomplete=EnvelopePreset {format:shape.format,values:shape.values.clone()};incomplete.values.remove("mseg_start");incomplete.values.insert("mseg_speed".into(),1.0);assert!(incomplete.validate().is_err());
         let mut full=crate::presets::Preset::capture(&p,"Legacy 0.2.1".into(),"Bass".into());
-        full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
+        full.values.remove("character");full.values.remove("character_shape");full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
     }
 }

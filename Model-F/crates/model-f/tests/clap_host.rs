@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: clap_host regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.
 //! CLAP lifecycle, MIDI timing, automation and session-state integration tests.
 #![allow(unsafe_code, clippy::unwrap_used)]
@@ -450,11 +450,14 @@ fn clap_automation_and_full_session_roundtrip() {
         In::Param(0, "fm_amount", 0.75),
         In::Param(0, "mseg_speed", 0.75),
         In::Param(0, "mseg_fix_tempo", 1.0),
+        In::Param(0,"character",0.8),
+        In::Param(0,"character_shape",0.6),
+        In::Param(0,"global_tuning",0.4),
 
     ]);
     let saved = a.save();
     let json = json_of(&saved);
-    assert_eq!(json["params"].as_object().unwrap().len(), 174);
+    assert_eq!(json["params"].as_object().unwrap().len(), 177);
     let b = Instance::new();
     assert!(b.load(&saved));
     for id in [
@@ -480,6 +483,7 @@ fn clap_automation_and_full_session_roundtrip() {
         "fm_amount",
         "mseg_speed",
         "mseg_fix_tempo",
+        "character", "character_shape", "global_tuning",
     ] {
         assert!((a.value(id) - b.value(id)).abs() < 0.001, "{id}");
     }

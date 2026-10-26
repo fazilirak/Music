@@ -1,0 +1,37 @@
+[
+  {
+    "case": "mono-idle",
+    "before_ms": 104.99,
+    "after_ms": 101.189,
+    "change_percent": 3.62,
+    "bit_identical": true
+  },
+  {
+    "case": "mono",
+    "before_ms": 127.426,
+    "after_ms": 125.002,
+    "change_percent": 1.9,
+    "bit_identical": true
+  },
+  {
+    "case": "mono-filter",
+    "before_ms": 127.408,
+    "after_ms": 124.995,
+    "change_percent": 1.89,
+    "bit_identical": true
+  },
+  {
+    "case": "poly",
+    "before_ms": 515.992,
+    "after_ms": 498.665,
+    "change_percent": 3.36,
+    "bit_identical": true
+  },
+  {
+    "case": "supersaw",
+    "before_ms": 641.185,
+    "after_ms": 642.408,
+    "change_percent": -0.19,
+    "bit_identical": true
+  }
+]

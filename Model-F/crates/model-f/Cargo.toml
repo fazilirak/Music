@@ -1,10 +1,10 @@
 # Türkçe bakım açıklamaları: Fazıl Irak
-# Son düzenleme: 25.10.2026
+# Son düzenleme: 26.10.2026
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 [package]
 name = "model-f"
 description = "Model F: a compact circuit-modelled synthesizer"
-version = "0.2.3"
+version = "0.2.5"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -70,3 +70,7 @@ path = "examples/overload-audition.rs"
 [[example]]
 name = 'performance-check'
 path = 'examples/performance-check.rs'
+
+[[example]]
+name = "character-audition"
+path = "examples/character-audition.rs"

@@ -80,6 +80,7 @@ def main():
         run(cargo + ['test'] + common, root)
         if model:
             run(cargo + ['test', '-p', 'model-f-core', '--test', 'supersaw', '--release', '--locked'], root)
+            run(cargo + ['test', '-p', 'model-f-core', '--lib', 'character_filter', '--release', '--locked'], root)
         targets = ['aarch64-apple-darwin', 'x86_64-apple-darwin'] if mac else [None]
         for target in targets:
             flags = ['--target', target] if target else []
@@ -118,6 +119,8 @@ def main():
     for name in ['README.md', 'LICENSE', 'COPYING', 'THIRD-PARTY-NOTICES.txt', 'Luftikus-LICENSE.txt']:
         if (root / name).exists():
             shutil.copy2(root / name, package / name)
+    if model:
+        shutil.copytree(root / 'docs', package / 'docs')
     shutil.copytree(root / 'third_party/urw-gothic', package / 'licences/urw-gothic')
     shutil.copy2(root / 'docs/RELEASE-LICENSING.md', package / 'RELEASE-LICENSING.md')
     revision_file = root / 'BUILD-REVISION.json'

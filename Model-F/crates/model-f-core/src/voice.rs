@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Bir notanın osilatör/filtre/VCA/contour/noise devrelerini tek örnek akışında birleştirir.
 //! The instrument, first voice (v0): the parts derived and tested so far, wired as the
 //! instrument wires them (docs/circuit/voice.md).
@@ -108,6 +108,10 @@ pub enum Quality {
 /// -5..+5 as 0..1), switches as booleans.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Panel {
+    /// Fazıl Irak, 26.10.2026: 0 eski Ladder; 1 Edge, 2 Bite, 3 State Variable, 4 Acid, 5 VA Stack.
+    pub character: u8,
+    /// Bite HP frekansı / State Variable çıkış karışımı (0..1).
+    pub character_shape: f64,
     /// Oscillators 1, 2 and 3.
     pub osc: [OscPanel; 3],
     /// OSC. 3 CONTROL: on, the keyboard and the other inputs reach oscillator 3.
@@ -167,6 +171,8 @@ impl Default for Panel {
             freq: FREQ_CENTRE,
         };
         Panel {
+            character: 0,
+            character_shape: 0.0,
             osc: [osc(true), osc(false), osc(false)],
             osc3_control: true,
             cutoff: 0.5,
@@ -664,6 +670,8 @@ pub struct FrontPart {
     /// The filter's control node's voltage and current (the last sample's), and the
     /// modulation line's.
     filter_node: f64,
+    // Aynı Norton kontrol düğümünde aynı sonuç: tolerans/kalite azaltmadan bit-doğru cache.
+    control_node_cache: Option<((u64,u64,Quality),(f64,f64))>,
     i0: f64,
     line: f64,
     /// Oscillator 3's switch output, the last sample's (the modulation mix's input).
@@ -679,6 +687,8 @@ pub struct FrontPart {
     fm_depth: f64,
     fm_step: f64,
     mixer: [ChannelMemo; 4],
+    acid_blend: f64,
+
 }
 
 /// What the front gives the back each sample: the mixer bus's Norton current (A) and
@@ -693,6 +703,13 @@ pub struct FrontOut {
 /// The filter, the VCA and the A-440.
 #[derive(Debug, Clone)]
 pub struct BackPart {
+    // Yalnız karakter değişirken iki filtre çalışır; normal durumda tek yol.
+    alternatives: [crate::character_filter::CharacterFilter;2],
+    character: u8,
+    previous_character: u8,
+    character_slot: usize,
+    crossfade: usize,
+    crossfade_len: usize,
     vcf: Vcf,
     /// The VCA's signal path ([`Vca::signal`]) on the bias [`ControlPart`] works out.
     vca: Vca,
@@ -848,6 +865,7 @@ impl Voice {
                     table: ExpoTable::shared(crate::filter_cal::FACTORY.expo(), 25.0),
                     modulation,
                     filter_node: 0.0,
+                    control_node_cache: None,
                     i0: 0.0,
                     line: 0.0,
                     last_osc3: 0.0,
@@ -857,8 +875,12 @@ impl Voice {
                     fm_depth: 0.0,
                     fm_step: 1.0 - libm::exp(-1.0 / (rate * 0.005)),
                     mixer: [ChannelMemo::NEW; 4],
+                    acid_blend: 0.0,
                 },
                 back: BackPart {
+                    alternatives: std::array::from_fn(|_|crate::character_filter::CharacterFilter::new(rate)),
+                    character:0, previous_character:0, character_slot:0, crossfade:0,
+                    crossfade_len:(rate*0.012).ceil().max(1.0) as usize,
                     vcf: {
                         // The filter as the factory calibrated it (Folkman's procedure:
                         // filter_cal).
@@ -1552,6 +1574,10 @@ impl FrontPart {
         let mut g_bus = 1.0 / 33e3;
         let (_, mod_load_b) = Modulation::source_loads(p.mod_mix);
         let mut osc3_node = 0.0;
+        // Karakter değişirken dalga şeklinin kendisi de 5 ms içinde yumuşar.
+        let acid_target=if p.character==4 {1.0} else {0.0};
+        self.acid_blend+=(acid_target-self.acid_blend)*self.fm_step;
+        if (acid_target-self.acid_blend).abs()<1e-12 {self.acid_blend=acid_target;}
         let master_resets = self.vcos[0].last_reset().1;
         let target_fm = j.fm.clamp(0.0, 1.0);
         self.fm_depth += (target_fm-self.fm_depth)*self.fm_step;
@@ -1610,6 +1636,19 @@ impl FrontPart {
                 None
             };
             let (mut v_src, r_src) = waveform_source(op.waveform, &o, rev.as_ref());
+            // Fazıl Irak, 26.10.2026: Acid'de saw/pulse asimetrik eğrilik ve doluluk.
+            // Orijinal BLEP osilatör ve nota perdesi korunur; diğer karakterlere dokunulmaz.
+            if self.acid_blend>0.0 && n<2 {
+                match op.waveform {
+                    Waveform::Sawtooth | Waveform::ReverseSawtooth | Waveform::SharkTooth => {
+                        let q=(v_src/4.0).clamp(-1.5,1.5);
+                        v_src += self.acid_blend*0.32*(q*q-0.3333333333333333);
+                    },
+                    Waveform::Square | Waveform::WideRectangle | Waveform::NarrowRectangle => {
+                        v_src*=if v_src>0.0 {1.0-0.06*self.acid_blend} else {1.0+0.06*self.acid_blend};
+                    },_=>{}
+                }
+            }
             if n == 1 { self.fm_sample = v_src; }
             if n == 0
                 && let Some(detune) = j.supersaw
@@ -1705,7 +1744,13 @@ impl FrontPart {
             },
         ];
         let (i_node, g_node) = self.expo.node(&ins);
-        let (i0, v_node) = self.table.current_and_node(i_node, g_node);
+        let key=(i_node.to_bits(),g_node.to_bits(),p.quality);
+        let (i0,v_node)=if let Some((old,result))=self.control_node_cache && old==key {
+            result
+        } else {
+            let result=self.table.current_and_node(i_node,g_node);
+            self.control_node_cache=Some((key,result));result
+        };
         self.i0 = i0;
         self.filter_node = v_node;
         laps.lap(crate::prof::Part::ControlNode);
@@ -1714,6 +1759,10 @@ impl FrontPart {
 }
 
 impl BackPart {
+    fn character_sample(&mut self,mode:u8,slot:usize,p:&Panel,f:&FrontOut)->f64 {
+        if mode==0 {self.vcf.tick(f.i_bus,f.g_bus,f.i0)}
+        else {self.alternatives[slot].tick(mode,f.i_bus,f.g_bus,f.i0,p.emphasis,p.character_shape)}
+    }
     /// The back over one sample: the front's `f` and the VCA's bias `d` (from
     /// [`ControlPart`]). The filter's output, V, and the output sample.
     // İşleme akışını bir örnek/adım ilerletir; hafıza güncelleme sırası duyulan çıktıyı etkiler.
@@ -1724,7 +1773,20 @@ impl BackPart {
         self.vcf.circuit.r14 = self.emphasis.get(p.emphasis, emphasis_r14);
         self.vcf.set_oversample(oversampling(p.quality).1);
         self.vcf.set_quality(p.quality);
-        let y = self.vcf.tick(f.i_bus, f.g_bus, f.i0);
+        let requested=p.character.min(5);
+        if self.crossfade==0 && requested!=self.character {
+            self.previous_character=self.character;self.character=requested;
+            self.character_slot^=1;
+            if requested!=0 {self.alternatives[self.character_slot].reset();}
+            self.crossfade=self.crossfade_len;
+        }
+        let mut y=self.character_sample(self.character,self.character_slot,p,f);
+        if self.crossfade>0 {
+            let old=self.character_sample(self.previous_character,self.character_slot^1,p,f);
+            // 12 ms doğrusal çapraz geçiş; hızlı tekrarlanan seçimler bitişte son hedefe gider.
+            let t=1.0-self.crossfade as f64/self.crossfade_len as f64;
+            y=old+(y-old)*t;self.crossfade-=1;
+        }
         laps.lap(crate::prof::Part::Filter);
         self.vca.a440 = self.a440.tick(p.a440);
         self.vca.plain_signal = p.quality != Quality::NoCompromises;

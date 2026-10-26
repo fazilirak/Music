@@ -87,17 +87,16 @@ jobs:
             if [ "$project" = "Model-F" ]; then
               cat >> release-notes.md <<'MODEL'
 
-          Model F 0.2.3
-          - Orange Amount knob/label and Target selector while the Multi-Stage Envelope editor is open, in both AD and Multi modes.
-          - Sound Library disables the Multi-Stage button. The envelope editor disables the upper preset field, previous/next, Save, Load, Export and Output controls; closing it restores them. Disabled controls also reject mouse input.
-          - User-library rows have a right-edge delete button and confirmation panel. Confirming moves the exact user file into a timestamped Presets/.deleted subfolder; Cancel/Escape leaves it intact. Move the file back to restore it.
-          - Factory presets cannot be deleted. The source path, regular-file type and unchanged preset contents are validated before moving a user file; the currently sounding preset parameters are preserved.
-          - Removed the two keyboard-help lines to the left of the Multi-Stage button. Existing computer-key functionality is retained.
-          - Keeps the standard single Windows Save dialog and native Search/Clear/Cancel dialog. macOS retains the existing panel-based name/search entry and native file import/export dialogs.
-          - Retains the 160-sound bank, dual oscillators, Sync/FM, independent Filter/Audio envelopes, Multi tempo controls and legacy preset/session compatibility.
+          Model F 0.2.5
+          - Six compact selectable characters: Ladder (original), Edge, Bite, State Variable, Acid and VA Stack. These are tonal designs, not claims of exact hardware emulation.
+          - Global Tuning (A4 400-480 Hz) stays independent of presets and is stored with the DAW session. Drag vertically; Shift gives finer movement; mouse wheel adjusts tuning; Ctrl/Alt-click resets to 440 Hz.
+          - Fixes the invisible obsolete keyboard-help click area that blocked Global Tuning. Tuning and filter-shape fields now share the drag gesture path.
+          - Character/shape are saved with presets; legacy presets open in Ladder. Shape controls the relevant Bite, State Variable and VA Stack filter response. VA Stack uses the seven-saw voice bank; Acid adds oscillator/filter coloration without a new sequencer or accent.
+          - Short crossfades between filter characters, cached DSP coefficients, block-level pan calculations, Thin LTO and a 20 FPS editor refresh cap. Paired local Ladder benchmarks showed roughly 2-4% gains in mono/poly cases with bit-identical rendered output; SuperSaw showed no measured improvement.
+          - Retains the 160-sound bank, dual oscillators, Sync/FM, independent Filter/Audio envelopes, Multi tempo controls, user-preset delete/restore and native Windows Save/Search dialogs.
 
-          73 Windows product tests passed locally (64 unit, 4 CLAP host, 1 MSEG audio, 3 overload, 1 real-time allocation), plus final UI render validation after removing the two help lines. AD/Multi/User/delete-confirmation scenes were rendered at 1x and 2x using example data. Real Ableton/macOS hardware validation of the new 0.2.3 controls remains necessary.
-          Complete source archives retain licences, docs/ui-023 screenshots and the audition tracks under docs/audio-020.
+          Local validation: 83 tests passed for the 0.2.4 feature batch; four additional targeted gesture/preset/pitch tests passed after the 0.2.5 fix. CI reruns the product suite on both build hosts and core character tests. Real DAW and macOS hardware interaction testing remains necessary.
+          Complete matching sources retain licences, UI screenshots, character audition WAVs and the documented CPU measurement scope.
           MODEL
             fi
             if gh release view "$tag" >/dev/null 2>&1; then

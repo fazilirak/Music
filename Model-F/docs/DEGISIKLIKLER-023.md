@@ -14,5 +14,4 @@ Fazıl Irak · 25.10.2026
 
 64 birim testi, 4 CLAP host testi, 1 MSEG ses testi, 3 overload testi ve 1 gerçek zamanlı bellek testi: toplam 73 test başarılı. AD, Multi, User listesi ve silme onayı 1120×760 ve 2240×1520 olarak render edildi; örnek verili görseller incelendi. Testlerde yalnız geçici preset dosyaları kullanıldı; gerçek kullanıcı presetleri silinmedi.
 
-Windows x64 VST3, CLAP ve bağımsız EXE paketi derlendi. Bu toplu düzenlemenin Ableton içinde canlı fare/klavye testi ayrıca gereklidir. Windows ve macOS paketleri GitHub Actions üzerinden eşleşen kaynaklarıyla birlikte hazırlanır.
-Ana ekranda Multi-Stage düğmesinin solundaki iki klavye yardım satırı kaldırıldı.
+Windows x64 VST3, CLAP ve bağımsız EXE paketi derlendi. Bu toplu düzenlemenin Ableton içinde canlı fare/klavye testi ayrıca gereklidir. GitHub ve web yayını bu yerel derlemeye dahil değildir.

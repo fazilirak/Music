@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 25.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Preset sürüm geçişi, doğrulama, capture/apply, fabrika/kullanıcı dosyaları ve arama akışıdır.
 use crate::params::ModelFParams;
 use nih_plug::prelude::*;
@@ -55,6 +55,7 @@ impl Preset {
             values: p
                 .list()
                 .into_iter()
+                .filter(|(id,_)| *id!="global_tuning")
                 .map(|(id, _)| (id.into(), p.effective(id)))
                 .collect(),
         }
@@ -78,11 +79,9 @@ impl Preset {
             return Err("Unknown preset category".into());
         }
         let p = ModelFParams::default();
-        if self.values.len() != p.list().len() && !matches!(self.values.len(), 27 | 160 | 161 | 172) {
-            return Err("Preset has missing or unknown controls".into());
-        }
         if p.list().iter().any(|(id, _)| {
             !self.values.contains_key(*id)
+                && !matches!(*id,"global_tuning" | "character" | "character_shape")
                 && !(*id == "overload" && matches!(self.values.len(), 27 | 160 | 161 | 172))
                 && !(id.starts_with("mseg_") && self.values.len() == 27)
                 && !matches!(*id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo")
@@ -112,6 +111,8 @@ impl Preset {
         }
         self.validate()?;
         for (id, param) in p.list() {
+            // Global Tuning DAW oturumuna aittir; ses/preset yüklemesi akordu değiştirmez.
+            if id=="global_tuning" {continue;}
             setter.begin_set_parameter(param);
             setter.set_parameter(
                 param,
@@ -136,7 +137,7 @@ impl Preset {
                 .upgrade()
                 .map_or(true, |preset| preset.differs(p));
         }
-        p.list().iter().any(|(id, param)| {
+        p.list().iter().filter(|(id,_)| *id!="global_tuning").any(|(id, param)| {
             self.values.get(*id).map_or(
                 (param.default_plain_value() - param.unmodulated_plain_value()).abs() > 0.011,
                 |v| (*v - param.unmodulated_plain_value()).abs() > 0.011,

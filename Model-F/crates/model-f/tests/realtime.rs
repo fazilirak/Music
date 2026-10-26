@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 24.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: realtime regresyonlarının sentetik/izole girdilerini, sınır koşullarını ve beklenen sonuç denetimlerini içerir.
 //! Seven-saw detune changes, ring and poly switching must not allocate in render.
 #![allow(unsafe_code)]
@@ -56,6 +56,9 @@ fn new_modes_do_not_allocate_or_free_on_the_audio_thread() {
     finite &= left.iter().chain(&right).all(|x| x.is_finite());
     engine.event(Event::AllSoundOff);
     for block in 0..240 {
+        c.panel.character=(block%6) as u8;
+        c.panel.character_shape=(block%100) as f64/100.0;
+        c.global_cents=(block%23) as f64-11.0;
         c.feedback = if block % 3 == 0 { 0.0 } else { 1.0 };
         c.panel.ext_on = c.feedback > 0.0;
         c.panel.ext_volume = (block % 100) as f64 / 100.0;

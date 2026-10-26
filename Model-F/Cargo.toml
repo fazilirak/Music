@@ -1,5 +1,5 @@
 # Türkçe bakım açıklamaları: Fazıl Irak
-# Son düzenleme: 22.10.2026
+# Son düzenleme: 26.10.2026
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 [workspace]
 resolver = "3"
@@ -67,6 +67,9 @@ opt-level = 3
 
 [profile.release]
 debug = 0
+# Fazıl Irak, 26.10.2026: DSP matematiğini değiştirmeden crate sınırlarında inline optimizasyon.
+lto = "thin"
+codegen-units = 1
 
 # The plug-in's bundles (`cargo xtask bundle model-f --profile bundle`): link-time
 # optimised, about 3 % faster, the same samples (decisions.md R13). The tests and the

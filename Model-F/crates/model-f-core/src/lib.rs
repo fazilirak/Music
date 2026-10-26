@@ -1,5 +1,5 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 26.10.2026
 // Dosyanın görevi: Model F devre çekirdeğinin modül/kamuya açık tür sözleşmesini bir araya getirir.
 //! Real-time models of the Minimoog Model D's circuits (`docs/circuit/`).
 //!
@@ -34,5 +34,7 @@ pub mod vca;
 pub mod vcf;
 pub mod vco;
 pub mod voice;
+// Fazıl Irak, 26.10.2026: seçilebilir özgün filtre karakterleri.
+pub mod character_filter;
 
 mod overload;
