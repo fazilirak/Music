@@ -4,6 +4,8 @@
 #include "MultibandProcessor.h"
 #include "Volume/PluginProcessor.h"
 #include <iostream>
+#include <sstream>
+#include <limits>
 juce::Component* findComponent(juce::Component& c,const juce::String& id) {
     if(c.getComponentID()==id)return &c;
     for(auto* child:c.getChildren())if(auto* result=findComponent(*child,id))return result;
@@ -16,6 +18,41 @@ void snapshot(juce::Component& c,const char* filename) {
 }
 std::unique_ptr<MultibandProcessor> make() {return std::make_unique<MultibandProcessor>([]{return new volumef::VOLUMEFAudioProcessor();},5);}
 void require(bool v,const char* msg) {if(!v) throw std::runtime_error(msg);}
+// Fazıl Irak — 27.10.2026: XML'nin bayt dizilimi yerine tüm kayıt alanlarını doğrula.
+// Normalleştirilmiş float parametreleri farklı işlemcilerde birkaç ULP değişebilir;
+// eksik alan, farklı metin, farklı nota/eğri veya anlamlı sayısal değişiklik yine hatadır.
+bool equivalentValue(const juce::String& a,const juce::String& b) {
+    if(a==b)return true;
+    std::istringstream sa(a.toStdString()),sb(b.toStdString());
+    sa.imbue(std::locale::classic());sb.imbue(std::locale::classic());
+    double va=0,vb=0;bool any=false;
+    for(;;) {
+        sa>>std::ws;sb>>std::ws;
+        if(sa.eof()||sb.eof())return any&&sa.eof()&&sb.eof();
+        if(!(sa>>va)||!(sb>>vb)||!std::isfinite(va)||!std::isfinite(vb))return false;
+        if(std::abs(va-vb)>8.0*std::numeric_limits<float>::epsilon()*std::max({1.0,std::abs(va),std::abs(vb)}))return false;
+        any=true;
+    }
+}
+bool equivalentXml(const juce::XmlElement& a,const juce::XmlElement& b) {
+    if(a.getTagName()!=b.getTagName()||a.getNumAttributes()!=b.getNumAttributes()||a.getNumChildElements()!=b.getNumChildElements())return false;
+    for(int i=0;i<a.getNumAttributes();++i) {
+        const auto name=a.getAttributeName(i);
+        if(!b.hasAttribute(name)||!equivalentValue(a.getAttributeValue(i),b.getStringAttribute(name))) {
+            std::cerr<<"State differs: "<<a.getTagName()<<" / "<<name<<": "<<a.getAttributeValue(i)<<" -> "<<b.getStringAttribute(name)<<'\n';return false;
+        }
+    }
+    if(a.hasTagName("Band")) {
+        juce::MemoryBlock ba,bb;
+        if(!ba.fromBase64Encoding(a.getAllSubText())||!bb.fromBase64Encoding(b.getAllSubText()))return false;
+        auto xa=juce::AudioProcessor::getXmlFromBinary(ba.getData(),(int)ba.getSize());
+        auto xb=juce::AudioProcessor::getXmlFromBinary(bb.getData(),(int)bb.getSize());
+        return xa&&xb&&equivalentXml(*xa,*xb);
+    }
+    if(a.isTextElement()&&!equivalentValue(a.getText(),b.getText()))return false;
+    for(int i=0;i<a.getNumChildElements();++i)if(!equivalentXml(*a.getChildElement(i),*b.getChildElement(i)))return false;
+    return true;
+}
 void set(juce::AudioProcessor& p,const char* id,float v) {
     for(auto* param:p.getParameters())if(auto* r=dynamic_cast<juce::RangedAudioParameter*>(param))if(r->paramID==id){r->setValueNotifyingHost(r->convertTo0to1(v));return;}
     throw std::runtime_error(id);
@@ -49,7 +86,10 @@ int main(int argc,char** argv) {
         p->selectedBand=2;p->setCurrentProgram(6);
         juce::MemoryBlock state;p->getStateInformation(state);auto restored=make();restored->setStateInformation(state.getData(),(int)state.getSize());
         juce::MemoryBlock roundtrip;restored->getStateInformation(roundtrip);
-        require(state==roundtrip,"Complete envelope/pattern state must roundtrip exactly");
+        auto stateXml=juce::AudioProcessor::getXmlFromBinary(state.getData(),(int)state.getSize());
+        auto roundtripXml=juce::AudioProcessor::getXmlFromBinary(roundtrip.getData(),(int)roundtrip.getSize());
+        if(state!=roundtrip)std::cout<<"State encoding differs; verifying every decoded field with an eight-float-ULP numeric tolerance\n";
+        require(stateXml&&roundtripXml&&equivalentXml(*stateXml,*roundtripXml),"Complete envelope/pattern state must roundtrip semantically");
         require(restored->hasLowBand() && restored->hasHighBand(),"Band edges did not restore");
         require(restored->band(0).getCurrentProgram()==3 && restored->band(2).getCurrentProgram()==6,"Independent band presets did not restore");
         restored->setRateAndBufferSizeDetails(44100,512);restored->prepareToPlay(44100,512);
