@@ -100,5 +100,11 @@ if(SHAPER_BUILD_TESTS)
     target_link_libraries(EnvelopeTests PRIVATE Shaper)
     target_include_directories(EnvelopeTests PRIVATE Source "${CMAKE_BINARY_DIR}/Shaper_artefacts/JuceLibraryCode" "${CMAKE_SOURCE_DIR}/upstream/gate12/libs/JUCE/modules")
     target_compile_definitions(EnvelopeTests PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1)
+    # Fazıl Irak: GNU ld, DSP sembollerini önceki statik arşivden yeniden çözmelidir.
+    # Windows/macOS link davranışını ve DSP kodunu değiştirmeden Linux arşiv grubunu tamamla.
+    if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+        target_link_libraries(EnvelopeTests PRIVATE
+            "$<LINK_GROUP:RESCAN,Shaper,gate12_embedded,time12_embedded,filtr_embedded,reevr_embedded,pan12_embedded,volumef_embedded,satcurve_embedded,pitchcurve_embedded,irak_embedded,pitch_embedded>")
+    endif()
     add_test(NAME curve_effects COMMAND EnvelopeTests)
 endif()

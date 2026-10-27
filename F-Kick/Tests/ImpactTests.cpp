@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Fazıl Irak · Peak eşit kuru kick ve izole rumble dönüşü; 0.4 sesinin korunması.
 #include "PluginProcessor.h"
+#include "WaveComparison.h"
 #include "FactoryBank.h"
 #include <iostream>
 namespace {
@@ -21,7 +22,7 @@ void save(const juce::File& f,juce::AudioBuffer<float>& a){a.applyGainRamp(a.get
 }
 void runImpactTests(const juce::File& folder){
     const juce::File fixtures(FKICK_TEST_FIXTURES);FKickProcessor legacy,now;
-    FKickProcessor oldHouse;check(oldHouse.loadPreset(fixtures.getChildFile("Legacy-0.4-Deep-House.fkick")),"Legacy golden fixture");const auto legacyWav=folder.getChildFile("F-Kick-Legacy-Deep-House.wav");check(oldHouse.exportWav(legacyWav),"Legacy export");juce::MemoryBlock golden,actual;check(fixtures.getChildFile("Legacy-0.4-Deep-House.wav").loadFileAsData(golden)&&legacyWav.loadFileAsData(actual)&&golden==actual,"Legacy sound changed in new engine");
+    FKickProcessor oldHouse;check(oldHouse.loadPreset(fixtures.getChildFile("Legacy-0.4-Deep-House.fkick")),"Legacy golden fixture");const auto legacyWav=folder.getChildFile("F-Kick-Legacy-Deep-House.wav");check(oldHouse.exportWav(legacyWav),"Legacy export");check(fkickTest::sameLegacyWav(fixtures.getChildFile("Legacy-0.4-Deep-House.wav"),legacyWav),"Legacy sound changed in new engine");
     check(legacy.loadPreset(fixtures.getChildFile("Legacy-0.4-Solid.fkick")),"Legacy kick fixture");check(legacy.value("punch")==0&&legacy.value("rumbleGain")==0,"Legacy neutral impact migration");now.setCurrentProgram(0);
     check(now.value("tracking")==0,"Factory kick must preserve its root at low MIDI notes");auto c1=render(now,1,36),c3=render(now,1,60);float keyDiff=0;for(int c=0;c<2;++c)for(int i=0;i<c1.getNumSamples();++i)keyDiff=juce::jmax(keyDiff,std::abs(c1.getSample(c,i)-c3.getSample(c,i)));check(keyDiff<1e-7,"Kick root changes between MIDI 36 and 60");
     auto oldC1=render(legacy,4,36),newC1=render(now,4,36);save(folder.getChildFile("F-Kick-C1-0.4.wav"),oldC1);save(folder.getChildFile("F-Kick-C1-0.5.wav"),newC1);
