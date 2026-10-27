@@ -103,6 +103,17 @@ if impact_levels.exists():
         if entry is not None:p['values']['output']=entry
 out=root/'Resources/FactoryBank.json';out.write_text(json.dumps(bank,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 # JSON insan tarafından düzenlenebilir ana kaynak; derleme header'ı I/O olmadan aynı veriyi sunar.
-lines=['// SPDX-License-Identifier: AGPL-3.0-or-later','// Fazıl Irak · scripts/make_factory_bank.py ile üretilir.','#pragma once','#include <juce_core/juce_core.h>','namespace fkick {','inline const juce::var& factoryBank() { static const auto bank=juce::JSON::parse(R"FKICK(']
-lines += [json.dumps(bank,ensure_ascii=False),')FKICK"); return bank; }','}']
+# Fazıl Irak: MSVC 2022'nin tek literal sınırı için JSON'u küçük bloklara ayır.
+payload=json.dumps(bank,ensure_ascii=False)
+chunks=[payload[i:i+10000] for i in range(0,len(payload),10000)]
+lines=['// Geliştirici: Fazıl Irak - 27.10.2026',
+       '// Dosyanın görevi: Özgün fabrika bankasını dosya I/O olmadan sunar.',
+       '// Copyright (c) 2026 Fazıl Irak',
+       '// SPDX-License-Identifier: AGPL-3.0-or-later',
+       '// Fazıl Irak · scripts/make_factory_bank.py ile üretilir.',
+       '#pragma once','#include <juce_core/juce_core.h>','namespace fkick {',
+       '// Küçük bitişik literal blokları MSVC 2022 sınırını aşmaz.',
+       'inline const juce::var& factoryBank() { static const auto bank=juce::JSON::parse(']
+lines += [f'R"FKICK{i}({chunk})FKICK{i}"' for i,chunk in enumerate(chunks)]
+lines += ['); return bank; }','}']
 (root/'Source/FactoryBank.h').write_text('\n'.join(lines)+'\n',encoding='utf-8')
