@@ -1,0 +1,111 @@
+# Geliştirici: Fazıl Irak - 27.10.2026
+# SPDX-License-Identifier: AGPL-3.0-or-later
+name: Linux x64 VST3 - all Music projects
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/linux-vst3-release.yml'
+      - 'scripts/linux_vst3_release.py'
+      - 'scripts/rust_audio_linux_release.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: linux-vst3-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    name: Linux - ${{ matrix.project }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        project: [F-Kick, F-Sidechain, F-TransForm, F-Saturator, F-EQ, Model-F, Shaper]
+    env:
+      MUSIC_BUILD_JOBS: '2'
+      CARGO_BUILD_JOBS: '2'
+      LIBGL_ALWAYS_SOFTWARE: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install native Linux build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build pkg-config xvfb xauth binutils \
+            libasound2-dev libjack-jackd2-dev ladspa-sdk libcurl4-openssl-dev \
+            libfreetype-dev libfontconfig1-dev libx11-dev libx11-xcb-dev libxcomposite-dev \
+            libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev libxi-dev \
+            libegl-dev libglu1-mesa-dev mesa-common-dev libgl1-mesa-dev \
+            libxcb1-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev libxkbcommon-x11-dev libudev-dev libdrm-dev
+      - name: Install pinned Rust toolchain
+        if: matrix.project == 'Model-F' || matrix.project == 'F-EQ'
+        run: |
+          rustup toolchain install 1.97.1 --profile minimal
+          rustup default 1.97.1
+      - name: Native Linux build, tests and complete source packaging
+        run: xvfb-run -a python scripts/linux_vst3_release.py '${{ matrix.project }}'
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.project }}-Linux
+          path: linux-artifacts/${{ matrix.project }}/*
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.project }}-Linux-diagnostics
+          path: |
+            ${{ matrix.project }}/build-linux/Testing/Temporary/*.log
+            ${{ matrix.project }}/build-linux/CMakeFiles/CMakeConfigureLog.yaml
+          if-no-files-found: ignore
+  publish:
+    name: Publish Linux - ${{ matrix.project }}
+    needs: build
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [F-Kick, F-Sidechain, F-TransForm, F-Saturator, F-EQ, Model-F, Shaper]
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: ${{ matrix.project }}-Linux
+          path: release
+      - name: Attach tested Linux packages to matching version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_PROJECT: ${{ matrix.project }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifest=$(find release -name '*-Linux-RELEASE-MANIFEST.json' -type f)
+          version=$(python -c 'import json,sys;print(json.load(open(sys.argv[1]))["version"])' "$manifest")
+          tag="${RELEASE_PROJECT}-v${version}"
+          ready=false
+          for attempt in $(seq 1 30); do
+            if gh release view "$tag" >/dev/null 2>&1; then ready=true; break; fi
+            sleep 20
+          done
+          if [ "$ready" != true ]; then echo "Matching release $tag is not available yet." >&2; exit 1; fi
+          mapfile -d '' files < <(find release -type f -print0)
+          for file in "${files[@]}"; do
+            name=$(basename "$file")
+            if gh release view "$tag" --json assets --jq '.assets[].name' | grep -Fxq "$name"; then
+              echo "Preserving published asset: $name"
+            else
+              gh release upload "$tag" "$file"
+            fi
+          done
