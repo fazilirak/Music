@@ -13,7 +13,8 @@ permissions:
   contents: read
 concurrency:
   group: linux-vst3-release-${{ github.ref }}
-  cancel-in-progress: false
+  # Fazıl Irak: Düzeltme geldiğinde eski test ortamının derlemesi yerine güncel sürümü doğrula.
+  cancel-in-progress: true
 jobs:
   build:
     name: Linux - ${{ matrix.project }}
