@@ -3,9 +3,31 @@
 # Geliştirici: Fazıl Irak - 27.10.2026
 # Dosyanın görevi: Yedi Music projesini yerel Linux x64 üzerinde derlemek, test etmek ve kaynaklarıyla paketlemek.
 from pathlib import Path
-import argparse,hashlib,json,os,re,shutil,struct,subprocess,sys,tarfile,tempfile
+import argparse,contextlib,hashlib,json,os,re,shutil,struct,subprocess,sys,tarfile,tempfile,time
 REPO=Path(__file__).resolve().parents[1]
 PROJECTS=['F-Kick','F-Sidechain','F-TransForm','F-Saturator','F-EQ','Model-F','Shaper']
+
+@contextlib.contextmanager
+def linux_desktop():
+    # Fazıl Irak: Xvfb yalnız ekran sunar. JUCE native pencere testleri için
+    # WM_PROTOCOLS atomlarını sağlayan gerçek bir pencere yöneticisi de gerekir.
+    # Testleri atlamak yerine normal Linux masaüstü sözleşmesini kuruyoruz.
+    with tempfile.TemporaryFile() as log:
+        manager=subprocess.Popen(['openbox','--sm-disable'],stdout=log,stderr=log)
+        try:
+            for _ in range(100):
+                if manager.poll() is not None:raise RuntimeError('Openbox exited before GUI tests')
+                result=subprocess.run(['xprop','-root','_NET_SUPPORTING_WM_CHECK'],capture_output=True,text=True,check=True)
+                if re.search(r'window id # 0x[1-9a-fA-F][0-9a-fA-F]*',result.stdout):
+                    print('Linux desktop ready: '+result.stdout.strip(),flush=True)
+                    break
+                time.sleep(.1)
+            else:raise RuntimeError('Window manager did not initialise')
+            yield
+        finally:
+            manager.terminate()
+            try:manager.wait(timeout=5)
+            except subprocess.TimeoutExpired:manager.kill();manager.wait()
 def run(args,cwd=REPO,capture=False):
     print('+',' '.join(map(str,args)),flush=True)
     return subprocess.run(list(map(str,args)),cwd=cwd,check=True,text=True,stdout=subprocess.PIPE if capture else None).stdout
@@ -75,4 +97,6 @@ def main():
     info={'project':args.project,'version':version,'commit':commit,'platform':'Linux x64 / Ubuntu 24.04','tests':'Native build and project tests passed; ELF64 x86_64, VST3 factory symbol and runtime dependencies verified','assets':assets}
     (out/(args.project+'-Linux-RELEASE-MANIFEST.json')).write_text(json.dumps(info,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(info,indent=2),flush=True)
-if __name__=='__main__':main()
+if __name__=='__main__':
+    with linux_desktop():main()
+
