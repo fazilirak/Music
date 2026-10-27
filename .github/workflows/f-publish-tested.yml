@@ -1,0 +1,72 @@
+# Geliştirici: Fazıl Irak - 27.10.2026
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Başarılı derlemeyi tekrar etmeden aynı proje ağacının test edilmiş paketlerini yayımlar.
+name: Publish verified original plugin artifacts
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/f-publish-tested.yml']
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: Successful Windows build run
+        default: '40570539826'
+        required: true
+      tested_sha:
+        description: Commit used for those Windows binaries
+        default: 'e9e43a2b4ac927f36b30910b8c6cec270395695b'
+        required: true
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [F-Kick, F-TransForm]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@v7
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ inputs.run_id || '40570539826' }}
+          name: ${{ matrix.project }}-Windows
+          path: release
+      - name: Verify exact project tree and publish matching artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PROJECT: ${{ matrix.project }}
+          TESTED_SHA: ${{ inputs.tested_sha || 'e9e43a2b4ac927f36b30910b8c6cec270395695b' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Fazıl Irak: Eski commit'e etiket koyma kısıtını kaynakları değiştirmeden çöz.
+          # Ürün ağacının test edilen commit ile birebir aynı olması zorunludur.
+          test "$(git rev-parse "$TESTED_SHA:$PROJECT")" = "$(git rev-parse "HEAD:$PROJECT")"
+          test "$(gh api "repos/$GH_REPO/commits/main" --jq .sha)" = "$GITHUB_SHA"
+          cd release
+          sha256sum --check SHA256SUMS.txt
+          version=$(python -c 'import json; print(json.load(open("RELEASE-MANIFEST.json"))["version"])')
+          tag="${PROJECT}-v${version}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Preserving existing release: $tag"
+            exit 0
+          fi
+          printf '%s %s\n\n' "$PROJECT" "$version" > ../release-notes.md
+          cat >> ../release-notes.md <<'NOTES'
+          Original application code and DSP: Copyright (c) 2026 Fazıl Irak.
+          Windows x64 VST3 and standalone; native Windows build and CTest passed.
+          Complete corresponding source includes the pinned JUCE source, application code, tests, resources and dependency licence notices.
+          Original application code is AGPL-3.0-or-later; framework, SDK and font terms remain applicable.
+          Windows binaries are unsigned. Separate real DAW/audio-device testing remains necessary.
+          NOTES
+          printf '\nTested binary commit: %s\nThe tagged product source tree is identical to this tested commit.\n' "$TESTED_SHA" >> ../release-notes.md
+          gh release create "$tag" ./* --target main --title "$PROJECT $version" --notes-file ../release-notes.md
