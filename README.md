@@ -5,7 +5,9 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 | Project | Windows | macOS | Source |
 | --- | --- | --- | --- |
 | [F Saturator](F-Saturator/README.md) | [0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Universal 0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Browse](F-Saturator) |
-| [F-Sidechain](F-Sidechain/README.md) | [1.1.0](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.0) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.0) | [Browse / licences](F-Sidechain) |
+| [F-Kick](F-Kick/README.md) | [0.8.1](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.1) | Not released | [Browse / licences](F-Kick) |
+| [F-TransForm](F-TransForm/README.md) | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | Not released | [Browse / licences](F-TransForm) |
+| [F-Sidechain](F-Sidechain/README.md) | [1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) | [Browse / licences](F-Sidechain) |
 | [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.3) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
 | [Model F](Model-F/README.md) | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Browse / licences](Model-F) |
 | [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Browse / licences](F-EQ) |
@@ -69,3 +71,23 @@ Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/
 ![F-Sidechain](F-Sidechain/preview.png)
 
 [Downloads and source](F-Sidechain/README.md) · [Türkçe](https://fazilirak.com/f-sidechain/) · [English](https://fazilirak.com/f-sidechain-english/)
+
+
+
+## F-Kick
+
+**Sample the attack. Shape the body.** Original kick synthesis, sample layering, editable envelopes and 128 original factory patches by Fazıl Irak.
+
+![F-Kick](F-Kick/preview.png)
+
+[Downloads, source and build instructions](F-Kick/README.md) · [Authors and ownership](F-Kick/AUTHORS.md)
+
+## F-TransForm
+
+**One gesture. Build the tension.** Seven original multi-effect transforms under Intensity and stepped Character controls. Logo opens offline About and licences.
+
+![F-TransForm](F-TransForm/preview.png)
+
+[Downloads, source and build instructions](F-TransForm/README.md) · [Authors and ownership](F-TransForm/AUTHORS.md)
+
+Original F-Kick and F-TransForm application code is © 2026 Fazıl Irak and AGPL-3.0-or-later. Third-party framework, SDK and font licences remain applicable. F-Sidechain retains GATE-12/Tilr provenance and the GPLv3/AGPLv3 component terms.

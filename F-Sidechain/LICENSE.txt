@@ -1,4 +1,4 @@
-F-Sidechain 1.1.0 — licensing notice
+F-Sidechain 1.1.1 — licensing notice
 Copyright (c) 2026 Fazıl Irak, for original F-Sidechain/Shaper additions and modifications.
 Copyright (c) 2025 Tilr (tiagolr), for the underlying GATE-12 code.
 

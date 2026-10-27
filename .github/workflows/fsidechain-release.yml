@@ -141,7 +141,7 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          F-Sidechain 1.1.0 — Draw the groove. Make room for your sound.
+          F-Sidechain 1.1.1 — Draw the groove. Make room for your sound.
 
           Free compact multiband volume shaper with eight editable factory envelopes, independent Low/Mid/High bands, full-range mode, tempo/MIDI/audio triggering, paint and sequencer editing, and complete preset/state saving.
           Preset selection, Save, Load and options are in the top bar; 760 × 426 interface preserves the envelope editor area.
@@ -159,3 +159,4 @@ jobs:
           fi
           gh release create "$tag" release/* --target "$FSIDECHAIN_COMMIT" \
             --title "F-Sidechain ${FSIDECHAIN_VERSION}" --notes-file release-notes.md
+

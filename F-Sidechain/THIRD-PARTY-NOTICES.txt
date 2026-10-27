@@ -1,4 +1,4 @@
-F-Sidechain 1.1.0
+F-Sidechain 1.1.1
 Copyright (c) 2026 Fazıl Irak
 
 Volume, envelope, multiband and preset source forked from local Shaper 0.8.3 on 2026-10-26.

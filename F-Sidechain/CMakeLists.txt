@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 Fazıl Irak — Volume motoru, arayüz, lisans kaynakları ve test hedefleri.
 cmake_minimum_required(VERSION 3.24)
-project(FSidechain VERSION 1.1.0 LANGUAGES C CXX)
+project(FSidechain VERSION 1.1.1 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")

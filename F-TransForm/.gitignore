@@ -1,0 +1,9 @@
+# Geliştirici: Fazıl Irak | 27.10.2026
+# Yerel derleme çıktıları ve üretilen dinleme dosyaları kaynak denetimine girmez.
+/build/
+/dist/
+/.publish/
+/Dependencies/
+.vs/
+*.user
+/vendor/

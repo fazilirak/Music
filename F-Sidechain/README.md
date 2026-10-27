@@ -1,17 +1,18 @@
-# F-Sidechain 1.1.0
+<!-- Geliştirici ve bakım: Fazıl Irak | 27.10.2026 | GATE-12/Tilr atıfları korunur -->
+# F-Sidechain 1.1.1
 
 **Draw the groove. Make room for your sound.**
 
-Free, open-source multiband volume shaping by **Fazıl Ahmet Irak**. A compact 760 × 426 interface, eight editable envelope presets and independent Low/Mid/High curves. Start in Full Range, add frequency bands only when needed, and synchronise movement to your DAW or use MIDI/audio triggers.
+Free, open-source multiband volume shaping by **Fazıl Irak**. A compact 760 × 426 interface, eight editable envelope presets and independent Low/Mid/High curves. Start in Full Range, add frequency bands only when needed, and synchronise movement to your DAW or use MIDI/audio triggers.
 
 ![F-Sidechain](preview.png)
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.0/F-Sidechain-1.1.0-Windows-x64.zip) |
-| macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.0/F-Sidechain-1.1.0-macOS-Universal.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.0/F-Sidechain-1.1.0-Source.zip) |
-| Release notes and checksums | [F-Sidechain 1.1.0](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.0) |
+| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Windows-x64.zip) |
+| macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-macOS-Universal.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Source.zip) |
+| Release notes and checksums | [F-Sidechain 1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) |
 | Website | [Türkçe](https://fazilirak.com/f-sidechain/) · [English](https://fazilirak.com/f-sidechain-english/) |
 
 ## Features

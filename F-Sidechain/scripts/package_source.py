@@ -1,3 +1,6 @@
+# Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+# Dosyanın görevi: Ürün derleme, kaynak hazırlama ve dağıtım yardımcıları.
+# Katkı kapsamı: F-Sidechain bakımı ve uyarlamaları. GATE-12/Shaper özgün telifleri korunur.
 """Package exact application and JUCE dependency source without build caches."""
 from pathlib import Path
 import sys
@@ -10,7 +13,7 @@ if not dependency.is_dir():
 if not (dependency / 'CMakeLists.txt').is_file():
     raise SystemExit('Complete JUCE source is required for the source archive')
 items = ['Source', 'Resources', 'Tests', 'scripts', 'CMakeLists.txt', 'README.md',
-         'THIRD-PARTY-NOTICES.txt', 'LICENSE.txt', 'source-lock.json', 'licenses']
+         'THIRD-PARTY-NOTICES.txt', 'LICENSE.txt', 'source-lock.json', 'licenses', 'LICENSE', 'AUTHORS.md', 'docs', 'preview.png', 'preview-about.png']
 with zipfile.ZipFile(sys.argv[1], 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
     for name in items:
         path = root / name
@@ -22,3 +25,4 @@ with zipfile.ZipFile(sys.argv[1], 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as
         if file.is_file() and '.git' not in file.relative_to(dependency).parts:
             archive.write(file, 'Dependencies/JUCE/' + file.relative_to(dependency).as_posix())
 print('Complete source archive:', Path(sys.argv[1]).name)
+

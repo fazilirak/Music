@@ -1,0 +1,100 @@
+# Geliştirici: Fazıl Irak - 27.10.2026
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Test edilmiş Windows paketlerini tam karşılık gelen kaynaklarıyla yayınlar.
+name: F-Kick and F-TransForm Windows Releases
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'F-Kick/**'
+      - 'F-TransForm/**'
+      - 'scripts/package_cpp_release.py'
+      - '.github/workflows/f-originals-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: f-originals-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [F-Kick, F-TransForm]
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Fetch pinned JUCE source
+        run: python scripts/bootstrap_juce.py
+      - name: Fetch matching font source collection
+        if: matrix.project == 'F-TransForm'
+        run: python scripts/bootstrap_fonts.py
+      - name: Install build tools
+        run: python -m pip install 'cmake>=3.24,<4' ninja
+      - name: Build and test Windows
+        shell: cmd
+        run: scripts\build-windows.cmd
+      - name: Package binaries and complete corresponding source
+        run: python ../scripts/package_cpp_release.py .
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.project }}-Windows
+          path: ${{ matrix.project }}/dist/release/*
+          if-no-files-found: error
+          compression-level: 0
+      - name: Upload diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.project }}-Windows-diagnostics
+          path: ${{ matrix.project }}/build/Testing/Temporary/*.log
+          if-no-files-found: ignore
+  release:
+    needs: windows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        project: [F-Kick, F-TransForm]
+    steps:
+      - uses: actions/download-artifact@v7
+        with:
+          name: ${{ matrix.project }}-Windows
+          path: release
+      - name: Publish tested binaries with matching source
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_PROJECT: ${{ matrix.project }}
+          RELEASE_COMMIT: ${{ github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifest=$(find release -name RELEASE-MANIFEST.json -type f)
+          version=$(python -c 'import json,sys;print(json.load(open(sys.argv[1]))["version"])' "$manifest")
+          tag="${RELEASE_PROJECT}-v${version}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release $tag already exists; preserving its assets."
+            exit 0
+          fi
+          printf '%s\n\n' "$RELEASE_PROJECT $version" > release-notes.md
+          cat >> release-notes.md <<'NOTES'
+          Original application code and DSP: Copyright (c) 2026 Fazıl Irak.
+          Windows x64 VST3 and standalone. CTest passed before packaging.
+          Complete corresponding source includes application code, tests, resources, pinned JUCE source and original dependency notices.
+          Original application source is AGPL-3.0-or-later; third-party licences remain applicable.
+          Windows binaries are unsigned. macOS is not included in this release. Reference-product audio matching and real DAW/device testing remain separate checks.
+          NOTES
+          gh release create "$tag" release/* --target "$RELEASE_COMMIT" --title "$RELEASE_PROJECT $version" --notes-file release-notes.md
+

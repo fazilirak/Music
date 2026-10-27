@@ -1,0 +1,12 @@
+F-Kick · Copyright (c) 2026 Fazıl Irak
+
+Original F-Kick source code is licensed under the GNU Affero General Public
+License version 3 or later (AGPL-3.0-or-later). The complete text is provided
+in licenses/AGPL-3.0.txt. Provided without warranty.
+
+JUCE is used under its AGPLv3 open-source option for this local build.
+Third-party font and SDK notices remain applicable; see THIRD-PARTY-NOTICES.txt.
+
+F-Kick is an independent instrument. No Ableton Simpler or Sonic Academy KICK
+source code, factory presets, samples, logos or proprietary assets are included.
+The product names belong to their respective owners.

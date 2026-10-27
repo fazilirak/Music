@@ -1,0 +1,24 @@
+F-TransForm 0.2.2
+Geliştirici: Fazıl Irak | Oluşturma / son düzenleme: 27.10.2026
+Copyright (c) 2026 Fazıl Irak
+Original application design, DSP and source: Copyright (c) 2026 Fazıl Irak.
+Application source: AGPL-3.0-or-later. See LICENSE and AUTHORS.md.
+
+JUCE 8.0.7, Copyright (c) Raw Material Software Limited.
+AGPLv3 option. See JUCE-LICENSE.md and ../_Dependencies/JUCE/LICENSE.md.
+Public corresponding-source archives include unchanged JUCE in Dependencies/JUCE.
+When redistributing binaries, supply complete corresponding source including JUCE
+and all original notices, or comply with the applicable alternative licence terms.
+
+URW Gothic Book / Demi, (URW)++ and respective contributors.
+Unmodified font bytes, local filenames Book.otf and Demi.otf.
+ArtifexSoftware/urw-base35-fonts, tag 20200910.
+AGPLv3 with font exception: Resources/fonts/LICENSE and COPYING.
+Provenance and hashes: Resources/fonts/VENDORED.md.
+Complete corresponding-source archives include vendor/urw-base35-fonts.
+The VST3 SDK GPLv3 option and notice are preserved in licenses/GPL.txt and VST3.txt.
+
+Endless Smile and microKORG are user-supplied workflow/visual references.
+Their images, branding, code and audio assets are not embedded in F-TransForm.
+
+

@@ -1,0 +1,16 @@
+F-Kick 0.8.1 · Fazıl Irak · 27 October 2026
+
+JUCE framework: Raw Material Software Limited. Local shared checkout
+10a589619b452c261b2940767eb253171eb5a823. Used under the AGPLv3 option.
+See licenses/JUCE-LICENSE.md and licenses/AGPL-3.0.txt. All bundled JUCE
+dependency notices remain in the unchanged JUCE source tree.
+
+VST3 SDK: Steinberg Media Technologies GmbH. Notice reproduced in
+licenses/VST3-LICENSE.txt; original SDK notices govern the exact bundled SDK.
+
+Ubuntu Medium typeface: Ubuntu Font Licence 1.0. The unmodified font and full
+licence are included. See licenses/Ubuntu-Font-Licence-1.0.txt.
+
+DSP, envelope editor and factory patches were written for F-Kick. Factory
+patches contain synthesis settings only; no commercial sample content is used.
+Sources and build instructions accompany this local development delivery.

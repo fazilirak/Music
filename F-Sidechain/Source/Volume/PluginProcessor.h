@@ -1,3 +1,6 @@
+// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Dosyanın görevi: Host parametreleri, ses callback, durum kaydı ve kaynak sahipliği köprüsü.
+// Katkı kapsamı: F-Sidechain bakımı ve uyarlamaları. GATE-12/Shaper özgün telifleri korunur.
 // Fazıl Irak tarafından değiştirildi: 23.10.2026; Shaper uyarlaması.
 // Özgün telif ve lisans bildirimleri aşağıda korunur.
 #include <JuceHeader.h>

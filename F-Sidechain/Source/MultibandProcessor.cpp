@@ -1,3 +1,6 @@
+// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Dosyanın görevi: Full Range / Low / Mid / High motorları, bant filtreleri ve oturum durumu.
+// Katkı kapsamı: F-Sidechain bakımı ve uyarlamaları. GATE-12/Shaper özgün telifleri korunur.
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 Fazıl Irak; Shaper eklemeleri/değişiklikleri.
 // Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
@@ -40,7 +43,10 @@ class BandEditor final : public juce::AudioProcessorEditor, private juce::Timer
         void paintButton(juce::Graphics& g,bool,bool) override {
             g.setColour(juce::Colour(0xffffd42a));
             g.setFont(juce::FontOptions(21.0f,juce::Font::bold));
-            g.drawText("F-Sidechain",getLocalBounds(),juce::Justification::centredLeft);
+            g.drawText("F-Sidechain",0,0,getWidth(),23,juce::Justification::centredLeft);
+            // Fazıl Irak: Diğer F serisi ürünleri gibi geliştirici ve ürün türü logonun altındadır.
+            g.setColour(juce::Colour(0xff89929e));g.setFont(juce::FontOptions(9.f));
+            g.drawText(juce::String::fromUTF8("FAZIL IRAK / VOLUME SHAPER"),0,23,getWidth(),12,juce::Justification::centredLeft);
         }
     } logo;
     MultibandProcessor& owner;
@@ -141,11 +147,11 @@ public:
     void paint(juce::Graphics& g) override {
         g.fillAll(juce::Colour(0xff181818));g.setColour(juce::Colour(0xffffd42a));
         g.setColour(juce::Colour(0xff89929e));g.setFont(juce::FontOptions(10.0f));
-        g.drawText("VOLUME SHAPER",184,12,112,24,juce::Justification::centredLeft);
+        // Ürün türü artık logo alt yazısında gösterilir.
         g.drawHorizontalLine(43,12.0f,(float)getWidth()-12);
     }
     void resized() override {
-        logo.setBounds(14,7,164,30);
+        logo.setBounds(14,3,164,36);
         if(child) { child->setBounds(0,48,getWidth(),getHeight()-56); if(commands())commands()->rackDockHeader(248); }
         for(int b=0;b<3;++b)tabs[b].setBounds(12+b*48,54,44,24);
         fullRange.setBounds(156,54,80,24);graph.setBounds(12,84,224,73);
@@ -307,6 +313,7 @@ void MultibandProcessor::releaseResources()
 }
 // Host audio callback’ini işler; burada dosya/GUI veya bekleyen kilit eklemeyin.
 // Gövdedeki başlıca çağrılar: buffer.getNumSamples → spectrumVisible.load → buffer.getSample → spectrumWrite.load. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
+// Fazıl Irak: Full Range kuru yolunu veya bağımsız üç bant eğrisini işler; bant başına parametreler korunur.
 void MultibandProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midi)
 {
     if (capacity == 0)
@@ -444,6 +451,7 @@ juce::AudioProcessorEditor *MultibandProcessor::createEditor()
 }
 // Host oturumu için mevcut parametre ve kullanıcı durumunu seri hale getirir.
 // Gövdedeki başlıca çağrılar: xml → xml.setAttribute → enabled->get → low->get. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
+// Fazıl Irak: Yalnız görünen bant değil, bütün motorların eğri ve parametre durumunu oturuma yazar.
 void MultibandProcessor::getStateInformation(juce::MemoryBlock &data)
 {
     juce::XmlElement xml("MULTIBAND");
@@ -469,6 +477,7 @@ void MultibandProcessor::getStateInformation(juce::MemoryBlock &data)
 }
 // Host/preset durumunu okuyup uygular; kök/sürüm denetimleri eski oturum uyumluluğu içindir.
 // Gövdedeki başlıca çağrılar: getXmlFromBinary → xml->hasTagName → band → p->setValueNotifyingHost. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
+// Fazıl Irak: Kaydedilmiş bant verilerini okur; kullanıcı eğrilerinin derinliğini otomatik değiştirmez.
 void MultibandProcessor::setStateInformation(const void *data, int size)
 {
     if (auto xml = getXmlFromBinary(data, size))

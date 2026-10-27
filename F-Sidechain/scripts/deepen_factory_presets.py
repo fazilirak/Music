@@ -1,3 +1,6 @@
+# Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+# Dosyanın görevi: Ürün derleme, kaynak hazırlama ve dağıtım yardımcıları.
+# Katkı kapsamı: F-Sidechain bakımı ve uyarlamaları. GATE-12/Shaper özgün telifleri korunur.
 """Stretch only factory envelope depth to the visual floor (stored Y=1).
 Saved user envelopes are never transformed. Re-running this script is idempotent.
 """

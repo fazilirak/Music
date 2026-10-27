@@ -1,3 +1,6 @@
+// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Dosyanın görevi: Ses ve durum davranışını doğrulayan testler.
+// Katkı kapsamı: F-Sidechain bakımı ve uyarlamaları. GATE-12/Shaper özgün telifleri korunur.
 // SPDX-License-Identifier: GPL-3.0-only
 // Copyright (c) 2026 Fazıl Irak
 // Fazıl Irak: Ses, bant/preset geri çağırma, logo erişimi ve gömülü lisans metinlerini doğrular.

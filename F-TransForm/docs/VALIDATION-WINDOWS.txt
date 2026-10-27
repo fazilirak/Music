@@ -1,0 +1,36 @@
+Start testing: Oct 27 21:58 Türkiye Standart Saati
+----------------------------------------------------------
+1/1 Testing: transform_checks
+1/1 Test: transform_checks
+Command: "C:/Users/FAZIL/Desktop/Codex/Music/F-TransForm/build/FTTests_artefacts/Release/FTTests.exe" "C:/Users/FAZIL/Desktop/Codex/Music/F-TransForm/dist"
+Directory: C:/Users/FAZIL/Desktop/Codex/Music/F-TransForm/build
+"transform_checks" start time: Oct 27 21:58 Türkiye Standart Saati
+Output:
+----------------------------------------------------------
+PASS: 7 macros x 5 characters, exact dry at zero
+PASS: all macros at four rates, character extremes and mono/stereo
+PASS: block-size independence and distinct audio for all seven macros
+PASS: adjacent Character settings change audio in all seven macros (28 comparisons)
+PASS: Echo Lift first repeat / direct = -5.09883 dB at 75% intensity
+PASS: soft low-cut response and full climax dissolve
+PASS: existing 250 Hz hall tail reduced by -15.3663 dB when intensity rises
+PASS: tails, state recall/migration, no presets, bypass and mode/tempo automation
+PASS: logo opens About, seven offline licence texts, owner attribution and close navigation
+AUDITION Air Bloom: peak -3.88826 dBFS
+AUDITION Echo Lift: peak -3.97495 dBFS
+AUDITION Skyline: peak -4.04003 dBFS
+AUDITION Heatwave: peak -4.05179 dBFS
+AUDITION Spiral Rise: peak -4.06087 dBFS
+AUDITION Fracture: peak -4.06459 dBFS
+AUDITION Critical Mass: peak -4.08095 dBFS
+PASS: editor PNG, seven stereo techno macro auditions and dry reference exported
+PASS: Silk/Extreme comparisons at fixed 60% intensity exported for Echo Lift and Spiral Rise
+<end of output>
+Test time =  46.49 sec
+----------------------------------------------------------
+Test Passed.
+"transform_checks" end time: Oct 27 21:59 Türkiye Standart Saati
+"transform_checks" time elapsed: 00:00:46
+----------------------------------------------------------
+
+End testing: Oct 27 21:59 Türkiye Standart Saati

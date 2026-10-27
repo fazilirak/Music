@@ -1,0 +1,19 @@
+Start testing: Oct 27 22:18 Türkiye Standart Saati
+----------------------------------------------------------
+1/1 Testing: volume_audio_and_state
+1/1 Test: volume_audio_and_state
+Command: "C:/Users/FAZIL/Desktop/Codex/Music/F-Sidechain/build/FSidechainTests_artefacts/Release/FSidechainTests.exe"
+Directory: C:/Users/FAZIL/Desktop/Codex/Music/F-Sidechain/build
+"volume_audio_and_state" start time: Oct 27 22:18 Türkiye Standart Saati
+Output:
+----------------------------------------------------------
+PASS: eight deeper presets, finite audio, dry identity, wet mute, independent band/state recall, 44.1/48 kHz, active-band latency, permanent band UI, removed pattern selector, seven embedded licence documents
+<end of output>
+Test time =   1.28 sec
+----------------------------------------------------------
+Test Passed.
+"volume_audio_and_state" end time: Oct 27 22:18 Türkiye Standart Saati
+"volume_audio_and_state" time elapsed: 00:00:01
+----------------------------------------------------------
+
+End testing: Oct 27 22:18 Türkiye Standart Saati

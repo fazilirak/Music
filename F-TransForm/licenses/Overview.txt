@@ -1,0 +1,21 @@
+F-TransForm
+Copyright (c) 2026 Fazıl Irak
+Design, original application code and DSP: Fazıl Irak.
+
+F-TransForm is an independently developed multi-effect transition processor.
+Its original application source is licensed under GNU AGPL version 3 or later
+(SPDX: AGPL-3.0-or-later). The full text is available in the AGPLv3 document.
+
+JUCE, the VST3 SDK and URW Gothic fonts remain the work of their respective
+authors and retain their individual licences. Ownership of those components
+is not claimed. This build uses the JUCE AGPLv3 open-source option.
+
+No source code, factory presets, audio samples, logos or artwork from Endless
+Smile or other reference products are embedded in F-TransForm.
+
+Complete corresponding application and dependency source accompanies public
+binary releases. Preserve the notices and full licence texts when redistributing.
+
+Source: https://github.com/fazilirak/Music/tree/main/F-TransForm
+Website: https://fazilirak.com
+Provided without warranty. No activation or licence key is required.

@@ -1,3 +1,6 @@
+REM Gelistirici: Fazil Irak - Son duzenleme: 27.10.2026
+REM Dosyanin gorevi: Urun derleme, kaynak hazirlama ve dagitim yardimcilari.
+REM Katki kapsami: F-Sidechain bakimi ve uyarlamalari. GATE-12/Shaper ozgun telifleri korunur.
 @echo off
 REM Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
 REM SPDX-License-Identifier: GPL-3.0-only
