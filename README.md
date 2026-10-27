@@ -72,6 +72,8 @@ Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/
 
 [Downloads and source](F-Sidechain/README.md) · [Türkçe](https://fazilirak.com/f-sidechain/) · [English](https://fazilirak.com/f-sidechain-english/)
 
+F-Sidechain retains GATE-12/Tilr provenance and the GPLv3/AGPLv3 component terms.
+
 
 
 ## F-Kick
@@ -82,6 +84,8 @@ Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/
 
 [Downloads, source and build instructions](F-Kick/README.md) · [Authors and ownership](F-Kick/AUTHORS.md)
 
+Original F-Kick application code is © 2026 Fazıl Irak and AGPL-3.0-or-later. Third-party framework, SDK and font licences remain applicable.
+
 ## F-TransForm
 
 **One gesture. Build the tension.** Seven original multi-effect transforms under Intensity and stepped Character controls. Logo opens offline About and licences.
@@ -90,4 +94,4 @@ Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/
 
 [Downloads, source and build instructions](F-TransForm/README.md) · [Authors and ownership](F-TransForm/AUTHORS.md)
 
-Original F-Kick and F-TransForm application code is © 2026 Fazıl Irak and AGPL-3.0-or-later. Third-party framework, SDK and font licences remain applicable. F-Sidechain retains GATE-12/Tilr provenance and the GPLv3/AGPLv3 component terms.
+Original F-TransForm application code is © 2026 Fazıl Irak and AGPL-3.0-or-later. Third-party framework, SDK and font licences remain applicable.
