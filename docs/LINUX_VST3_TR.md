@@ -7,7 +7,7 @@ GitHub Actions, yerel Ubuntu 24.04 x86_64 üzerinde derler ve proje testlerini �
 
 | Ürün | Linux ikilisi | Tam karşılık gelen kaynak |
 | --- | --- | --- |
-| F-Saturator 0.5.1 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.1/F-Saturator-0.5.1-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.1/F-Saturator-0.5.1-Linux-Source.tar.gz) |
+| F-Saturator 0.5.2 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-Linux-Source.tar.gz) |
 | F-Kick 0.8.3 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-Source.tar.gz) |
 | F-TransForm 0.2.2 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-Source.tar.gz) |
 | F-Sidechain 1.1.2 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-Source.tar.gz) |
