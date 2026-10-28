@@ -13,7 +13,7 @@ GitHub Actions, yerel Ubuntu 24.04 x86_64 üzerinde derler ve proje testlerini �
 | F-Sidechain 1.1.2 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-Source.tar.gz) |
 | Jellybone 0.8.4 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-Source.tar.gz) |
 | Model-F 0.2.8 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-Source.zip) |
-| F-EQ 0.1.10 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.10/F-EQ-0.1.10-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.10/F-EQ-0.1.10-Linux-Source.zip) |
+| F-EQ 0.1.11 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.11/F-EQ-0.1.11-Linux-x64.tar.gz) | [Kaynak](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.11/F-EQ-0.1.11-Linux-Source.zip) |
 
 VST3 klasörünü bütün olarak `~/.vst3/` konumuna kopyalayıp yerel Linux host'unda yeniden tarayın. Ubuntu 24.04 çalışma zamanı esas alınır; diğer dağıtım, gerçek DAW, ses aygıtı ve MIDI cihazı testleri ayrı kontrollerdir.
 

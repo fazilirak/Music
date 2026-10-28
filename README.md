@@ -2,15 +2,17 @@
 
 Independent music software and development resources by [FAZIL AHMET IRAK](https://fazilirak.com).
 
-| Project | Windows | macOS | Linux x64 | Source |
-| --- | --- | --- | --- | --- |
-| [F-Saturator](F-Saturator/README.md) | [0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [Universal 0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [0.5.3](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Linux-x64.tar.gz) | [Browse](F-Saturator) |
-| [F-Kick](F-Kick/README.md) | [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) | Not released | [0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
-| [F-TransForm](F-TransForm/README.md) | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | Not released | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
-| [F-Sidechain](F-Sidechain/README.md) | [1.1.2](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [1.1.2](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
-| [Jellybone](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [0.8.4](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-x64.tar.gz) | [Browse](Shaper) |
-| [Model F](Model-F/README.md) | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [0.2.8](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-x64.tar.gz) | [Browse / licences](Model-F) |
-| [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [0.1.10](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.10/F-EQ-0.1.10-Linux-x64.tar.gz) | [Browse / licences](F-EQ) |
+[Explore all seven products — Türkçe](https://fazilirak.com/muzik-yazilimlari/) · [English](https://fazilirak.com/music-software/). Each product carries Fazıl Irak’s developer identity; original upstream/component copyrights and licences remain applicable.
+
+| Project | Developer / maintainer | Windows | macOS | Linux x64 | Source |
+| --- | --- | --- | --- | --- | --- |
+| [F-Saturator](F-Saturator/README.md) | Fazıl Irak | [0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [Universal 0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [0.5.3](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Linux-x64.tar.gz) | [Browse](F-Saturator) |
+| [F-Kick](F-Kick/README.md) | Fazıl Irak | [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) | Not released | [0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
+| [F-TransForm](F-TransForm/README.md) | Fazıl Irak | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | Not released | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
+| [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.2](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [1.1.2](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
+| [Jellybone](Shaper/README.md) | Fazıl Irak | [Releases](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [0.8.4](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-x64.tar.gz) | [Browse](Shaper) |
+| [Model F](Model-F/README.md) | Fazıl Irak | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [0.2.8](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-x64.tar.gz) | [Browse / licences](Model-F) |
+| [F-EQ](F-EQ/README.md) | Fazıl Irak | [0.1.11](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [0.1.11](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.11/F-EQ-0.1.11-Linux-x64.tar.gz) | [Browse / licences](F-EQ) |
 
 ## F-Saturator
 
@@ -56,11 +58,11 @@ see [COPYING](Shaper/COPYING.txt) and [third-party notices](Shaper/THIRD-PARTY-N
 
 ![Model F](Model-F/docs/panel.png)
 
-## F EQ
+## F-EQ
 
-**Simple control. Focused tone shaping.** Tilt equalizer, independent bass shelf, steep cut filters, analog character, saturation and output spectrum. Existing Rust/NIH-plug edition.
+**Simple control. Focused tone shaping.** Product design and development: **Fazıl Irak**. F-EQ 0.1.11 standardises the visible and bundle names while preserving plugin identities. Tilt equalizer, independent bass shelf, steep cut filters, analog character, saturation and output spectrum. Existing Rust/NIH-plug edition.
 
-![F EQ](F-EQ/docs/panel.png)
+![F-EQ](F-EQ/docs/panel.png)
 
 Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/CLAP/standalone. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. AU is not included. Complete corresponding source accompanies each binary release. Project code is GPL-3.0-or-later; individual third-party and embedded URW Gothic AGPLv3 licences are preserved. See each project's COPYING and third-party notices.
 
