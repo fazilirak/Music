@@ -4,7 +4,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 
 | Project | Windows | macOS | Linux x64 | Source |
 | --- | --- | --- | --- | --- |
-| [F-Saturator](F-Saturator/README.md) | [0.5.2](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.2) | [Universal 0.5.2](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.2) | [0.5.2](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-Linux-x64.tar.gz) | [Browse](F-Saturator) |
+| [F-Saturator](F-Saturator/README.md) | [0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [Universal 0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [0.5.3](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Linux-x64.tar.gz) | [Browse](F-Saturator) |
 | [F-Kick](F-Kick/README.md) | [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) | Not released | [0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
 | [F-TransForm](F-TransForm/README.md) | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | Not released | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
 | [F-Sidechain](F-Sidechain/README.md) | [1.1.2](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [1.1.2](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
@@ -16,7 +16,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 
 **Add colour. Shape the character.** Free saturation/distortion for Windows x64 and macOS Universal. VST3 and standalone, plus AU on macOS.
 
-Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface. Character (Warm–Sizzle), Harmonic Balance (Even–Odd) and subtle Analog Drift shape the saturation. Compact Transient, Comp, Bass and Treble controls include ATT/REL and Tight LED switches. Version 0.5.2 standardises the F-Saturator name and fixes the editor at 1040 × 640.
+Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface. Character (Warm–Sizzle), Harmonic Balance (Even–Odd) and subtle Analog Drift shape the saturation. Compact Transient, Comp, Bass and Treble controls include ATT/REL and Tight LED switches. Version 0.5.3 keeps the fixed 1040 × 640 editor and separates the preset/footer row from the knob panel.
 
 ![F-Saturator](F-Saturator/doc/f-saturator.png)
 
