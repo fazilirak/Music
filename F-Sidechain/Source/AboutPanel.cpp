@@ -32,9 +32,9 @@ AboutPanel::AboutPanel()
     text.setCaretVisible(false);
     text.setPopupMenuEnabled(true);
     text.setFont(juce::FontOptions(13.0f));
-    text.setColour(juce::TextEditor::backgroundColourId,juce::Colour(0xff10151c));
-    text.setColour(juce::TextEditor::textColourId,juce::Colour(0xffd0d6de));
-    text.setColour(juce::TextEditor::outlineColourId,juce::Colour(0xff3b424c));
+    text.setColour(juce::TextEditor::backgroundColourId,juce::Colour(0xff111617));
+    text.setColour(juce::TextEditor::textColourId,juce::Colour(0xffe5e7df));
+    text.setColour(juce::TextEditor::outlineColourId,juce::Colour(0xff394446));
     documents.setSelectedId(1,juce::dontSendNotification);
     selectDocument();
 }
@@ -60,8 +60,8 @@ void AboutPanel::selectDocument()
 
 void AboutPanel::paint(juce::Graphics& g)
 {
-    g.fillAll(juce::Colour(0xff181818));
-    g.setColour(juce::Colour(0xffffd42a));
+    g.fillAll(juce::Colour(0xff141819));
+    g.setColour(juce::Colour(0xffed6c46));
     g.setFont(juce::FontOptions(26.0f,juce::Font::bold));
     g.drawText("F-Sidechain",22,14,240,36,juce::Justification::centredLeft);
     g.setFont(juce::FontOptions(13.0f));

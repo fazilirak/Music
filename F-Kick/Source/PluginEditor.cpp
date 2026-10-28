@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 28.10.2026
 // Dosyanın görevi: Kompakt İngilizce ürün arayüzü, kontrol bağlantıları ve kullanıcı etkileşimi.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -7,7 +7,9 @@
 #include <BinaryData.h>
 
 namespace {
-const juce::Colour background(0xff181818),panel(0xff202124),line(0xff41454a),yellow(0xffffd42a),text(0xffe9eaec),muted(0xff979fa8);
+// Fazıl Irak: Fiziksel panel %20 büyür; mantıksal etkileşim koordinatları korunur.
+constexpr float designScale=1.2f;
+const juce::Colour background(0xff141819),panel(0xff1b2123),line(0xff394446),accent(0xffed6c46),text(0xffe5e7df),muted(0xff8d9799);
 void label(juce::Graphics& g,const juce::String& t,juce::Rectangle<int> r,float size=12,juce::Colour colour=muted,juce::Justification align=juce::Justification::centredLeft) {
     g.setFont(juce::FontOptions(size));g.setColour(colour);g.drawText(t,r,align,true);
 }
@@ -15,33 +17,37 @@ void label(juce::Graphics& g,const juce::String& t,juce::Rectangle<int> r,float 
 }
 FKickTheme::FKickTheme() {
     typeface=juce::Typeface::createSystemTypefaceFor(fkick_data::UbuntuMedium_ttf,fkick_data::UbuntuMedium_ttfSize);
-    setColour(juce::TextButton::textColourOffId,text);setColour(juce::TextButton::textColourOnId,yellow);
-    setColour(juce::ComboBox::backgroundColourId,juce::Colour(0xff262a30));setColour(juce::ComboBox::outlineColourId,line);
+    setColour(juce::TextButton::textColourOffId,text);setColour(juce::TextButton::textColourOnId,accent);
+    setColour(juce::ComboBox::backgroundColourId,juce::Colour(0xff22292b));setColour(juce::ComboBox::outlineColourId,line);
     setColour(juce::ComboBox::textColourId,text);setColour(juce::PopupMenu::backgroundColourId,panel);
-    setColour(juce::PopupMenu::textColourId,text);setColour(juce::PopupMenu::highlightedBackgroundColourId,juce::Colour(0xff514923));
+    setColour(juce::PopupMenu::textColourId,text);setColour(juce::PopupMenu::highlightedBackgroundColourId,juce::Colour(0xff483128));
     setColour(juce::Slider::textBoxTextColourId,text);setColour(juce::Slider::textBoxOutlineColourId,juce::Colours::transparentBlack);
     setColour(juce::Slider::textBoxBackgroundColourId,juce::Colours::transparentBlack);
     setColour(juce::TooltipWindow::backgroundColourId,juce::Colour(0xff303238));setColour(juce::TooltipWindow::textColourId,text);
 }
 void FKickTheme::drawButtonBackground(juce::Graphics& g,juce::Button& b,const juce::Colour&,bool hover,bool down) {
-    // Küçük yazı seçimleri: kalıcı buton kasası yok; yalnız hover ve aktif alt çizgi.
+    // Fazıl Irak: Sekmeler sade kalır; dosya/gezinme eylemleri ortak ince çerçeveyi kullanır.
+    const auto caption=b.getButtonText();
+    if(caption=="Save"||caption=="Load"||caption=="WAV"||caption=="<"||caption==">"||caption=="..."){
+        g.setColour(text.withAlpha(.18f));g.drawRoundedRectangle(b.getLocalBounds().toFloat().reduced(.5f),3, .7f);
+    }
     if(hover||down){g.setColour(text.withAlpha(.055f));g.fillRect(b.getLocalBounds());}
-    if(b.getToggleState()&&b.isEnabled()){g.setColour(yellow);g.fillRect(3,b.getHeight()-2,b.getWidth()-6,1);}
+    if(b.getToggleState()&&b.isEnabled()){g.setColour(accent);g.fillRect(3,b.getHeight()-2,b.getWidth()-6,1);}
 }
 void FKickTheme::drawComboBox(juce::Graphics& g,int w,int h,bool,int,int,int,int,juce::ComboBox&) {
-    g.setColour(juce::Colour(0xff222428));g.fillRect(0,0,w,h);
+    g.setColour(panel);g.fillRoundedRectangle(0,0,float(w),float(h),3);g.setColour(text.withAlpha(.18f));g.drawRoundedRectangle(.5f,.5f,float(w)-1,float(h)-1,3,.7f);
     juce::Path arrow;arrow.startNewSubPath(float(w-13),h*.43f);arrow.lineTo(float(w-9),h*.61f);arrow.lineTo(float(w-5),h*.43f);
     g.setColour(muted);g.strokePath(arrow,juce::PathStrokeType(1));
 }
 FKickSidechainGraph::FKickSidechainGraph(FKickProcessor& p):processor(p),shift(*p.state.getParameter("scShift"),[this](float){repaint();},&p.undo){setComponentID("sidechain-graph");setMouseCursor(juce::MouseCursor::LeftRightResizeCursor);shift.sendInitialUpdate();}
 FKickSidechainGraph::~FKickSidechainGraph(){if(dragging)shift.endGesture();}
 void FKickSidechainGraph::paint(juce::Graphics& g){
-    g.fillAll(juce::Colour(0xff141516));auto r=getLocalBounds().toFloat().reduced(18,20);r.removeFromTop(5);r.removeFromBottom(3);
-    label(g,"FX ONLY  /  1/4 NOTE",{18,1,280,18},10,yellow);label(g,"Drag left / right   |   Double-click: reset shift",{315,1,getWidth()-330,18},10,muted,juce::Justification::centredRight);
+    g.fillAll(juce::Colour(0xff111617));auto r=getLocalBounds().toFloat().reduced(18,20);r.removeFromTop(5);r.removeFromBottom(3);
+    label(g,"FX ONLY  /  1/4 NOTE",{18,1,280,18},10,accent);label(g,"Drag left / right   |   Double-click: reset shift",{315,1,getWidth()-330,18},10,muted,juce::Justification::centredRight);
     g.setColour(line.withAlpha(.5f));g.drawRect(r,1);for(int i=1;i<4;++i)g.drawVerticalLine(juce::roundToInt(r.getX()+r.getWidth()*i/4),r.getY(),r.getBottom());
     const auto s=processor.settings().fx;juce::Path curve,area;area.startNewSubPath(r.getX(),r.getBottom());
     for(int i=0;i<=400;++i){const float gain=fkick::FXShaper::curve(s.scShape,i/400.,s.scShift);auto point=juce::Point<float>{r.getX()+r.getWidth()*i/400,r.getBottom()-gain*r.getHeight()};if(i==0)curve.startNewSubPath(point);else curve.lineTo(point);area.lineTo(point);}
-    area.lineTo(r.getRight(),r.getBottom());area.closeSubPath();g.setColour(yellow.withAlpha(.08f));g.fillPath(area);g.setColour(yellow);g.strokePath(curve,juce::PathStrokeType(1.7f));
+    area.lineTo(r.getRight(),r.getBottom());area.closeSubPath();g.setColour(accent.withAlpha(.08f));g.fillPath(area);g.setColour(accent);g.strokePath(curve,juce::PathStrokeType(1.7f));
     g.setColour(text.withAlpha(.5f));const float x=r.getX()+r.getWidth()*processor.scPhase.load();g.drawLine(x,r.getY(),x,r.getBottom(),1);
     label(g,s.scMix==0?"MIX 0% / BYPASS":"SIDECHAIN MIX "+juce::String(s.scMix*100,0)+"%",{18,getHeight()-18,250,17},9);
 }
@@ -52,10 +58,10 @@ void FKickSidechainGraph::mouseDoubleClick(const juce::MouseEvent&){if(dragging)
 FKickLogo::FKickLogo(){setComponentID("brand-logo");setName("F-Kick - About");setWantsKeyboardFocus(true);setMouseCursor(juce::MouseCursor::PointingHandCursor);setTooltip("F-Kick / About and offline licences");}
 void FKickLogo::paint(juce::Graphics& g){
     // Fazıl Irak: Kompakt başlıkta ürün adı ve geliştirici / ürün türü aynı sade logo alanındadır.
-    label(g,"F-Kick",{0,0,getWidth(),22},21,yellow);
+    label(g,"F-Kick",{0,0,getWidth(),22},21,text);
     g.setColour(muted);g.setFont(juce::FontOptions(7.5f));
     g.drawFittedText(juce::String::fromUTF8("FAZIL IRAK / KICK & SAMPLER"),0,22,getWidth(),10,juce::Justification::centredLeft,1,.8f);
-    if(hasKeyboardFocus(false)){g.setColour(yellow.withAlpha(.4f));g.drawHorizontalLine(getHeight()-1,0,float(getWidth()-1));}
+    if(hasKeyboardFocus(false)){g.setColour(accent.withAlpha(.4f));g.drawHorizontalLine(getHeight()-1,0,float(getWidth()-1));}
 }
 void FKickLogo::mouseUp(const juce::MouseEvent& e){if(!e.mouseWasDraggedSinceMouseDown()&&getLocalBounds().contains(e.getPosition())&&onClick)onClick();}
 bool FKickLogo::keyPressed(const juce::KeyPress& k){if(k==juce::KeyPress::returnKey||k==juce::KeyPress::spaceKey){if(onClick)onClick();return true;}return false;}
@@ -134,14 +140,14 @@ juce::Rectangle<float> FKickGraph::plot() const {return {30.f,42.f,float(getWidt
 juce::Point<float> FKickGraph::point(const fkick::Curve& c,int i) const {auto r=plot();return {r.getX()+c.x[(size_t)i]*r.getWidth(),r.getBottom()-c.y[(size_t)i]*r.getHeight()};}
 int FKickGraph::hit(juce::Point<float> p) const {auto c=processor.curve(tab==1?1:0);for(int i=0;i<c.count;++i)if(point(c,i).getDistanceFrom(p)<11)return i;return -1;}
 void FKickGraph::paint(juce::Graphics& g) {
-    g.fillAll(juce::Colour(0xff141516));auto r=plot();const auto s=processor.settings();const auto view=processor.sampleView();
+    g.fillAll(juce::Colour(0xff111617));auto r=plot();const auto s=processor.settings();const auto view=processor.sampleView();
     g.setColour(line.withAlpha(.45f));
     for(int i=0;i<=8;++i){const float x=r.getX()+r.getWidth()*i/8;g.drawVerticalLine(int(x),r.getY(),r.getBottom());}
     for(int i=0;i<=4;++i){const float y=r.getY()+r.getHeight()*i/4;g.drawHorizontalLine(int(y),r.getX(),r.getRight());}
     label(g,juce::String(int((tab==0&&view.loaded?view.duration:s.length)*1000))+" ms",{getWidth()-92,getHeight()-17,70,15},10);
     label(g,"0",{int(r.getX()),getHeight()-17,24,15},10);
     if(view.loaded) {
-        g.setColour(tab==0?yellow.withAlpha(.65f):juce::Colour(0xff697079).withAlpha(.22f));
+        g.setColour(tab==0?accent.withAlpha(.65f):juce::Colour(0xff697079).withAlpha(.22f));
         for(int i=0;i<512;++i){const float x=r.getX()+i/511.f*r.getWidth(),h=juce::jmin(1.f,view.peaks[(size_t)i])*r.getHeight()*.45f;g.drawVerticalLine(int(x),r.getCentreY()-h,r.getCentreY()+h);}
     }
     if(tab==0) {
@@ -152,20 +158,20 @@ void FKickGraph::paint(juce::Graphics& g) {
             g.setColour(juce::Colours::black.withAlpha(.42f));
             g.fillRect(juce::Rectangle<float>(r.getX(),r.getY(),startX-r.getX(),r.getHeight()));
             g.fillRect(juce::Rectangle<float>(endX,r.getY(),r.getRight()-endX,r.getHeight()));
-            for(int i=0;i<2;++i){float x=r.getX()+(i==0?s.start:s.end)*r.getWidth();g.setColour(yellow);g.drawVerticalLine(int(x),r.getY(),r.getBottom());g.fillRect(x-3,r.getY(),6.f,8.f);}
-            label(g,"START "+juce::String(s.start*view.duration,3)+" s",{int(r.getX())+7,24,170,14},10,yellow);
-            label(g,"END "+juce::String(s.end*view.duration,3)+" s",{getWidth()-220,24,180,14},10,yellow,juce::Justification::centredRight);
+            for(int i=0;i<2;++i){float x=r.getX()+(i==0?s.start:s.end)*r.getWidth();g.setColour(accent);g.drawVerticalLine(int(x),r.getY(),r.getBottom());g.fillRect(x-3,r.getY(),6.f,8.f);}
+            label(g,"START "+juce::String(s.start*view.duration,3)+" s",{int(r.getX())+7,24,170,14},10,accent);
+            label(g,"END "+juce::String(s.end*view.duration,3)+" s",{getWidth()-220,24,180,14},10,accent,juce::Justification::centredRight);
         }
         return;
     }
     const auto c=processor.curve(tab==1?1:0);
     juce::Path curve;for(int i=0;i<=640;++i){float t=i/640.f;float x=r.getX()+t*r.getWidth(),y=r.getBottom()-c.at(t)*r.getHeight();if(i==0)curve.startNewSubPath(x,y);else curve.lineTo(x,y);}
-    auto fill=curve;fill.lineTo(r.getRight(),r.getBottom());fill.lineTo(r.getX(),r.getBottom());fill.closeSubPath();g.setColour(yellow.withAlpha(.06f));g.fillPath(fill);
-    g.setColour(text);g.strokePath(curve,juce::PathStrokeType(1.8f));
-    for(int i=0;i<c.count;++i){auto p=point(c,i);g.setColour(i==selected?yellow:text);g.fillEllipse(p.x-4,p.y-4,8,8);g.setColour(background);g.fillEllipse(p.x-1.5f,p.y-1.5f,3,3);}
+    auto fill=curve;fill.lineTo(r.getRight(),r.getBottom());fill.lineTo(r.getX(),r.getBottom());fill.closeSubPath();g.setColour(accent.withAlpha(.06f));g.fillPath(fill);
+    g.setColour(accent);g.strokePath(curve,juce::PathStrokeType(1.8f));
+    for(int i=0;i<c.count;++i){auto p=point(c,i);g.setColour(i==selected?accent:text);g.fillEllipse(p.x-4,p.y-4,8,8);g.setColour(background);g.fillEllipse(p.x-1.5f,p.y-1.5f,3,3);}
     label(g,tab==1?"HIGH":"1.0",{1,int(r.getY())-5,34,15},9);
     label(g,tab==1?juce::String(int(s.root))+" Hz":"0.0",{1,int(r.getBottom())-9,34,15},9);
-    if(selected>=0&&selected<c.count){const float y=c.y[(size_t)selected];juce::String info=juce::String(c.x[(size_t)selected]*s.length*1000,1)+" ms   /   ";info+=tab==1?juce::String(s.root*std::exp2(s.sweep*y/12),1)+" Hz":juce::String(y*100,1)+" %";label(g,info,{110,getHeight()-17,430,15},10,yellow);}
+    if(selected>=0&&selected<c.count){const float y=c.y[(size_t)selected];juce::String info=juce::String(c.x[(size_t)selected]*s.length*1000,1)+" ms   /   ";info+=tab==1?juce::String(s.root*std::exp2(s.sweep*y/12),1)+" Hz":juce::String(y*100,1)+" %";label(g,info,{110,getHeight()-17,430,15},10,accent);}
 }
 void FKickGraph::mouseDown(const juce::MouseEvent& e) {
     processor.undo.beginNewTransaction(tab==0?"Trim sample":"Edit envelope");dragOrigin=e.position;
@@ -208,9 +214,9 @@ void FKickSampleDropArea::filesDropped(const juce::StringArray& files,int,int){
 void FKickSampleDropArea::paintOverChildren(juce::Graphics& g){
     if(!hovering)return;
     g.setColour(juce::Colours::black.withAlpha(.12f));g.fillRect(getLocalBounds());
-    g.setColour(yellow.withAlpha(.85f));g.drawRect(getLocalBounds().reduced(1),1);
+    g.setColour(accent.withAlpha(.85f));g.drawRect(getLocalBounds().reduced(1),1);
     auto r=juce::Rectangle<int>(getWidth()/2-95,getHeight()/2-12,190,24);
-    g.setColour(juce::Colour(0xff202124));g.fillRect(r);label(g,"Drop to load sample",r,12,yellow,juce::Justification::centred);
+    g.setColour(juce::Colour(0xff1b2123));g.fillRect(r);label(g,"Drop to load sample",r,12,accent,juce::Justification::centred);
 }
 FKickAbout::FKickAbout() {
     setComponentID("about-panel");setOpaque(true);addAndMakeVisible(close);close.onClick=[this]{setVisible(false);};addAndMakeVisible(documents);addAndMakeVisible(text);
@@ -221,7 +227,7 @@ FKickAbout::FKickAbout() {
     documents.onChange=[this]{int size=0;auto* content=fkick_data::getNamedResource(fkick_data::namedResourceList[documents.getSelectedId()-1],size);text.setText(juce::String::fromUTF8(content,size),false);text.moveCaretToTop(false);};documents.setSelectedItemIndex(0,juce::sendNotificationSync);
 }
 void FKickAbout::paint(juce::Graphics& g) {
-    g.fillAll(background);label(g,"F-Kick",{20,12,150,30},24,yellow);label(g,"SAMPLER / KICK SYNTH   -   v" FKICK_VERSION,{130,17,400,24},11);
+    g.fillAll(background);label(g,"F-Kick",{20,12,150,30},24,accent);label(g,"SAMPLER / KICK SYNTH   -   v" FKICK_VERSION,{130,17,400,24},11);
     label(g,juce::String::fromUTF8("Design and development: Fazıl Irak  /  © 2026"),{20,49,getWidth()-40,22},14,::text);
     label(g,"Independent engine. Local processing. No account or network required.",{20,76,getWidth()-40,18},11);
     label(g,"AGPLv3+ original sources / JUCE AGPLv3 / Ubuntu Font Licence.",{20,97,getWidth()-40,18},11);
@@ -282,10 +288,12 @@ FKickEditor::FKickEditor(FKickProcessor& p):AudioProcessorEditor(p),processor(p)
     nativeDrop.accepts=[this](const juce::StringArray& files){return isInterestedInFileDrag(files);};
     nativeDrop.hover=[this](const juce::StringArray& files,juce::Point<int> p,bool yes){if(yes&&samplePanel.isInterestedInFileDrag(files)){const auto q=samplePanel.getLocalPoint(this,p);samplePanel.fileDragEnter(files,q.x,q.y);}else samplePanel.fileDragExit(files);};
     nativeDrop.drop=[this](const juce::StringArray& files,juce::Point<int> p){filesDropped(files,p.x,p.y);};
-    addChildComponent(about);setSize(760,360);updateControls();startTimerHz(30);
+    addChildComponent(about);setSize(912,432);updateControls();startTimerHz(30);
 }
 FKickEditor::~FKickEditor() {stopTimer();processor.keyboard.allNotesOff(0);processor.requestPanic();setLookAndFeel(nullptr);}
 void FKickEditor::resized() {
+    // Yalnız kök çocuklar ölçeklenir; sample panelinin alt ağacı ikinci kez ölçeklenmez.
+    for(auto* child:getChildren())child->setTransform(juce::AffineTransform());
     samplePanel.setBounds(8,44,744,208);
     logo.setBounds(12,3,94,33);previousPreset.setBounds(209,8,23,23);presets.setBounds(236,8,242,23);nextPreset.setBounds(482,8,23,23);
     soundPage.setBounds(109,8,38,23);fxPage.setBounds(149,8,24,23);modPage.setBounds(175,8,31,23);
@@ -309,20 +317,25 @@ void FKickEditor::resized() {
     roomMixValue.setBounds(660,77,81,38);fxHPValue.setBounds(660,121,38,38);fxLPValue.setBounds(705,121,38,38);bassLiftValue.setBounds(660,165,51,38);bassQValue.setBounds(716,165,27,38);
     // Yerleşim tarifleri editör koordinatındadır; sample paneli çocuklarını yerel koordinata çevir.
     for(auto* child:samplePanel.getChildren())child->setTopLeftPosition(child->getPosition()-samplePanel.getPosition());
+    for(auto* child:getChildren())if(child!=&about)child->setTransform(juce::AffineTransform::scale(designScale));
     about.setBounds(getLocalBounds());
 }
 void FKickEditor::paint(juce::Graphics& g) {
-    g.fillAll(background);g.setColour(line.withAlpha(.65f));g.drawHorizontalLine(38,8,752);
-    g.setColour(juce::Colour(0xff141516));g.fillRect(8,44,744,208);g.setColour(line.withAlpha(.5f));g.drawVerticalLine(74,44,252);g.drawVerticalLine(650,72,248);
+    g.fillAll(background);
+    juce::Graphics::ScopedSaveState saved(g);g.addTransform(juce::AffineTransform::scale(designScale));
+    // Ortak F serisi imzası: turuncu üst çizgi, kırık beyaz alt çizgi.
+    g.setColour(accent);g.drawLine(8,38,752,38,1.5f);
+    g.setColour(text.withAlpha(.85f));g.drawLine(8,41,752,41,.7f);
+    g.setColour(juce::Colour(0xff111617));g.fillRoundedRectangle(8,44,744,208,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,44,744,208,5,.7f);g.setColour(line.withAlpha(.5f));g.drawVerticalLine(74,44,252);g.drawVerticalLine(650,72,248);
     label(g,"MODE",{20,52,50,15},9);label(g,"VOICE",{20,155,50,14},9);label(g,"PLAY",{20,190,50,14},9);
-    g.setColour(juce::Colour(0xff1c1d1f));g.fillRect(8,260,744,71);g.setColour(line.withAlpha(.6f));
-    if(page==0){g.drawVerticalLine(309,269,324);g.drawVerticalLine(535,269,324);label(g,"BODY",{18,263,150,15},9,yellow);label(g,"ENVELOPE",{326,263,194,15},9,yellow);label(g,"FILTER / OUTPUT",{548,260,196,13},9,yellow);}
-    else if(page==1){g.drawVerticalLine(355,269,324);label(g,"RUMBLE",{18,263,150,15},9,yellow);label(g,"ECHO",{370,263,58,15},9,yellow);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
-    else if(page==2){label(g,"SIDECHAIN CURVE",{18,263,340,15},9,yellow);g.drawVerticalLine(385,269,324);label(g,"FX AMOUNT / TIMING",{400,263,185,15},9,yellow);label(g,"1/4 note",{620,284,110,17},12,text);label(g,"FX returns only",{620,304,110,15},10);}
+    g.setColour(juce::Colour(0xff1b2123));g.fillRoundedRectangle(8,260,744,71,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,260,744,71,5,.7f);g.setColour(line.withAlpha(.6f));
+    if(page==0){g.drawVerticalLine(309,269,324);g.drawVerticalLine(535,269,324);label(g,"BODY",{18,263,150,15},9,accent);label(g,"ENVELOPE",{326,263,194,15},9,accent);label(g,"FILTER / OUTPUT",{548,260,196,13},9,accent);}
+    else if(page==1){g.drawVerticalLine(355,269,324);label(g,"RUMBLE",{18,263,150,15},9,accent);label(g,"ECHO",{370,263,58,15},9,accent);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
+    else if(page==2){label(g,"SIDECHAIN CURVE",{18,263,340,15},9,accent);g.drawVerticalLine(385,269,324);label(g,"FX AMOUNT / TIMING",{400,263,185,15},9,accent);label(g,"1/4 note",{620,284,110,17},12,text);label(g,"FX returns only",{620,304,110,15},10);}
 
     const auto view=processor.sampleView();label(g,view.status.isNotEmpty()?view.status:page==2?"Drag curve left/right  |  Double-click: reset shift  |  Mix 0%: bypass":"Drag: adjust  |  Double-click: type  |  Room / FX HP / FX LP: effect returns only",{12,339,594,15},10);
-    const float db=juce::Decibels::gainToDecibels(peak,-60.f);g.setColour(line);g.fillRect(615,345,64,2);g.setColour(yellow);g.fillRect(615,345,int(64*juce::jlimit(0.f,1.f,(db+60)/60)),2);
-    label(g,juce::String(db,1)+" dB",{686,338,64,17},10,peak>.98f?yellow:muted,juce::Justification::centredRight);
+    const float db=juce::Decibels::gainToDecibels(peak,-60.f);g.setColour(line);g.fillRect(615,345,64,2);g.setColour(accent);g.fillRect(615,345,int(64*juce::jlimit(0.f,1.f,(db+60)/60)),2);
+    label(g,juce::String(db,1)+" dB",{686,338,64,17},10,peak>.98f?accent:muted,juce::Justification::centredRight);
 }
 void FKickEditor::stepPreset(int direction){processor.setCurrentProgram((processor.getCurrentProgram()+direction+processor.getNumPrograms())%processor.getNumPrograms());updateControls();}
 void FKickEditor::updateControls() {

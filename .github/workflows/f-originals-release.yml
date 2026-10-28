@@ -103,7 +103,7 @@ jobs:
           latest=$(gh api "repos/$GH_REPO/commits/main" --jq .sha)
           test "$(git rev-parse "$RELEASE_COMMIT:$RELEASE_PROJECT")" = "$(git rev-parse "$latest:$RELEASE_PROJECT")"
           if [ "$RELEASE_PROJECT" = F-Kick ]; then
-            printf '\n0.8.2: 112 General/Techno presets remove forced Punch/Drive/Rumble saturation and hidden drive modulation; levels are recalibrated to -6 dBFS peak. Saved user sessions keep their stored sound.\n' >> release-notes.md
+            printf '\n0.8.3: expanded 912 x 432 F-series charcoal/orange/ivory interface with paired header lines; audio processing unchanged. The 0.8.2 clean bank is retained: 112 General/Techno presets remove forced Punch/Drive/Rumble saturation and hidden drive modulation; levels are recalibrated to -6 dBFS peak. Saved user sessions keep their stored sound.\n' >> release-notes.md
           fi
           gh release create "$tag" release/* --target main --title "$RELEASE_PROJECT $version" --notes-file release-notes.md
 

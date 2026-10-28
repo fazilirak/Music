@@ -81,11 +81,11 @@ class SidechainPresetButton final : public juce::Button
     void paintButton(juce::Graphics &g, bool over, bool down) override
     {
         auto bounds = getLocalBounds().toFloat().reduced(0.5f);
-        auto yellow = juce::Colour(0xffffd42a);
-        g.setColour(selected ? yellow.withAlpha(0.24f)
-                             : juce::Colour(over || down ? 0xff38372b : 0xff22231d));
+        auto accent = juce::Colour(0xffed6c46);
+        g.setColour(selected ? accent.withAlpha(0.24f)
+                             : juce::Colour(over || down ? 0xff2b3638 : 0xff1b2123));
         g.fillRoundedRectangle(bounds, 2);
-        g.setColour(selected ? yellow : yellow.withAlpha(0.45f));
+        g.setColour(selected ? accent : juce::Colour(0xffe5e7df).withAlpha(0.22f));
         g.drawRoundedRectangle(bounds, 2, 1);
         auto r = bounds.reduced(3, 3);
         juce::Path line;
@@ -100,7 +100,7 @@ class SidechainPresetButton final : public juce::Button
             else
                 line.lineTo(x, y);
         }
-        g.setColour(yellow);
+        g.setColour(accent);
         g.strokePath(line, juce::PathStrokeType(1.15f));
     }
 

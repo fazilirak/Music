@@ -12,16 +12,16 @@ namespace volumef {
 CustomLookAndFeel::CustomLookAndFeel()
 {
   setColour(ComboBox::backgroundColourId, Colour(COLOR_BG));
-  setColour(ComboBox::textColourId, Colour(COLOR_ACTIVE));
+  setColour(ComboBox::textColourId, Colour(0xffe5e7df));
   setColour(ComboBox::arrowColourId, Colour(COLOR_ACTIVE));
-  setColour(ComboBox::outlineColourId, Colour(COLOR_ACTIVE));
+  setColour(ComboBox::outlineColourId, Colour(0xff394446));
   setColour(TooltipWindow::backgroundColourId, Colour(COLOR_BG).brighter(0.15f));
-  setColour(PopupMenu::backgroundColourId, Colour(COLOR_ACTIVE).darker(0.5f).withAlpha(0.99f));
-  setColour(PopupMenu::highlightedBackgroundColourId, Colour(COLOR_ACTIVE).darker(0.8f));
+  setColour(PopupMenu::backgroundColourId, Colour(0xff1b2123));
+  setColour(PopupMenu::highlightedBackgroundColourId, Colour(0xff483128));
   setColour(TextButton::buttonColourId, Colour(COLOR_ACTIVE));
-  setColour(TextButton::buttonOnColourId, Colour(COLOR_ACTIVE));
-  setColour(TextButton::textColourOnId, Colour(COLOR_BG));
-  setColour(TextButton::textColourOffId, Colour(COLOR_ACTIVE));
+  setColour(TextButton::buttonOnColourId, Colour(COLOR_ACTIVE).withAlpha(.18f));
+  setColour(TextButton::textColourOnId, Colour(0xffe5e7df));
+  setColour(TextButton::textColourOffId, Colour(0xffe5e7df));
 
   typeface = juce::Typeface::createSystemTypefaceFor(gate12_data::UbuntuMedium_ttf, gate12_data::UbuntuMedium_ttfSize);
   setDefaultSansSerifTypeface(typeface);
@@ -54,7 +54,7 @@ void CustomLookAndFeel::drawButtonBackground (Graphics& g, Button& button, const
     auto cornerSize = 3.0f;
 
     if (tag == "button") {
-        g.setColour(backgroundColour);
+        g.setColour(button.getToggleState()?Colour(COLOR_ACTIVE).withAlpha(.18f):Colour(0xffe5e7df).withAlpha(.35f));
         if (button.getToggleState())
             g.fillRoundedRectangle(bounds, cornerSize);
         else

@@ -229,10 +229,10 @@ void View::drawSegments(Graphics& g)
     shadePath.lineTo((float)(winw + winx), (float)(winy + winh)); // Bottom-right
     shadePath.closeSubPath();
 
-    g.setColour(Colours::white.withAlpha(0.125f));
+    g.setColour(Colour(COLOR_ACTIVE).withAlpha(0.065f));
     g.fillPath(shadePath);
-    g.setColour(Colours::white);
-    g.strokePath(linePath, PathStrokeType(1.f));
+    g.setColour(Colour(COLOR_ACTIVE));
+    g.strokePath(linePath, PathStrokeType(1.5f));
 }
 
 void View::drawPoints(Graphics& g)

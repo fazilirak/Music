@@ -44,7 +44,7 @@ class BandGraph final : public juce::Component, public juce::SettableTooltipClie
     {
         const auto colour = rackEffectColour(owner.effect);
         auto bounds = getLocalBounds().toFloat().reduced(0.5f);
-        g.setColour(juce::Colour(0xff10151c));
+        g.setColour(juce::Colour(0xff111617));
         g.fillRoundedRectangle(bounds, 3);
         float l = frequencyX(owner.low->get()), r = frequencyX(owner.high->get());
         const float top = 23, bottom = (float)getHeight() - 18;

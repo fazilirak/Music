@@ -18,6 +18,7 @@
 #include "EffectOutputPanel.h"
 #include "Volume/PluginProcessor.h"
 #include "AboutPanel.h"
+#include "Volume/ui/CustomLookAndFeel.h"
 
 namespace
 {
@@ -41,16 +42,16 @@ class BandEditor final : public juce::AudioProcessorEditor, private juce::Timer
             setMouseCursor(juce::MouseCursor::PointingHandCursor);
         }
         void paintButton(juce::Graphics& g,bool,bool) override {
-            g.setColour(juce::Colour(0xffffd42a));
+            g.setColour(juce::Colour(0xffe5e7df));
             g.setFont(juce::FontOptions(21.0f,juce::Font::bold));
             g.drawText("F-Sidechain",0,0,getWidth(),23,juce::Justification::centredLeft);
             // Fazıl Irak: Diğer F serisi ürünleri gibi geliştirici ve ürün türü logonun altındadır.
-            g.setColour(juce::Colour(0xff89929e));g.setFont(juce::FontOptions(9.f));
+            g.setColour(juce::Colour(0xff8d9799));g.setFont(juce::FontOptions(9.f));
             g.drawText(juce::String::fromUTF8("FAZIL IRAK / VOLUME SHAPER"),0,23,getWidth(),12,juce::Justification::centredLeft);
         }
     } logo;
     MultibandProcessor& owner;
-    juce::LookAndFeel_V4 theme;
+    volumef::CustomLookAndFeel theme;
     juce::TextButton fullRange{"Full range"}, save{"Save"}, load{"Load"}, options{"..."};
     std::array<juce::TextButton,3> tabs;
     juce::ComboBox presets;
@@ -102,11 +103,11 @@ class BandEditor final : public juce::AudioProcessorEditor, private juce::Timer
     }
 public:
     explicit BandEditor(MultibandProcessor& p):AudioProcessorEditor(p),owner(p),graph(p),output(p) {
-        theme.setColour(juce::TextButton::buttonColourId,juce::Colour(0xff252b33));
-        theme.setColour(juce::TextButton::buttonOnColourId,juce::Colour(0xff685a23));
-        theme.setColour(juce::TextButton::textColourOffId,juce::Colour(0xffffd42a));
-        theme.setColour(juce::ComboBox::backgroundColourId,juce::Colour(0xff252b33));
-        theme.setColour(juce::ComboBox::outlineColourId,juce::Colour(0xff505760));
+        theme.setColour(juce::TextButton::buttonColourId,juce::Colour(0xff22292b));
+        theme.setColour(juce::TextButton::buttonOnColourId,juce::Colour(0xff483128));
+        theme.setColour(juce::TextButton::textColourOffId,juce::Colour(0xffe5e7df));
+        theme.setColour(juce::ComboBox::backgroundColourId,juce::Colour(0xff22292b));
+        theme.setColour(juce::ComboBox::outlineColourId,juce::Colour(0xff394446));
         setLookAndFeel(&theme);
         for(auto* c:{&fullRange,&save,&load,&options}) addAndMakeVisible(*c);
         addAndMakeVisible(graph); addAndMakeVisible(output); addAndMakeVisible(presets);
@@ -141,27 +142,30 @@ public:
                 }
             });
         };
-        setSize(760,426); rebuild(); timerCallback(); startTimerHz(10);
+        setSize(912,511); rebuild(); timerCallback(); startTimerHz(10);
     }
     ~BandEditor() override {stopTimer(); child.reset();setLookAndFeel(nullptr);}
     void paint(juce::Graphics& g) override {
-        g.fillAll(juce::Colour(0xff181818));g.setColour(juce::Colour(0xffffd42a));
-        g.setColour(juce::Colour(0xff89929e));g.setFont(juce::FontOptions(10.0f));
-        // Ürün türü artık logo alt yazısında gösterilir.
-        g.drawHorizontalLine(43,12.0f,(float)getWidth()-12);
+        g.fillAll(juce::Colour(0xff141819));
+        juce::Graphics::ScopedSaveState saved(g);g.addTransform(juce::AffineTransform::scale(1.2f));
+        // Fazıl Irak: F serisinin ortak turuncu/beyaz başlık ayırıcısı.
+        g.setColour(juce::Colour(0xffed6c46));g.drawLine(12,44,748,44,1.5f);
+        g.setColour(juce::Colour(0xffe5e7df).withAlpha(.85f));g.drawLine(12,47,748,47,.7f);
     }
     void resized() override {
+        for(auto* c:getChildren())c->setTransform(juce::AffineTransform());
         logo.setBounds(14,3,164,36);
-        if(child) { child->setBounds(0,48,getWidth(),getHeight()-56); if(commands())commands()->rackDockHeader(248); }
+        if(child) { child->setBounds(0,48,760,426-56); if(commands())commands()->rackDockHeader(248); }
         for(int b=0;b<3;++b)tabs[b].setBounds(12+b*48,54,44,24);
         fullRange.setBounds(156,54,80,24);graph.setBounds(12,84,224,73);
-        output.setBounds(getWidth()-184,52,174,76);
+        output.setBounds(760-184,52,174,76);
         // Fazıl Irak — 26.10.2026: Preset ve dosya araçları üst başlıkta tek satırdır.
         // Alt araç satırı kaldırıldı; envelope düzenleyicisinin çalışma yüksekliği korunur.
-        presets.setBounds(304,10,getWidth()-502,25);
-        save.setBounds(getWidth()-190,10,56,25);
-        load.setBounds(getWidth()-126,10,56,25);
-        options.setBounds(getWidth()-62,10,48,25);
+        presets.setBounds(304,10,760-502,25);
+        save.setBounds(760-190,10,56,25);
+        load.setBounds(760-126,10,56,25);
+        options.setBounds(760-62,10,48,25);
+        for(auto* c:getChildren())if(c!=about.get())c->setTransform(juce::AffineTransform::scale(1.2f));
         if(about)about->setBounds(getLocalBounds());
     }
 };

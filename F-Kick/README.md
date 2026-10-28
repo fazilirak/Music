@@ -1,18 +1,22 @@
 <!-- Developer: Fazıl Irak | Updated: 27.10.2026 -->
-# F-Kick 0.8.2
+# F-Kick 0.8.3
 
 **Sample the attack. Shape the body.**
 
-An independently developed kick synthesizer and sampler by **Fazıl Irak**. Compact 760 × 360 interface, original DSP, editable Pitch/Amp curves and 128 original synthesis patches.
+An independently developed kick synthesizer and sampler by **Fazıl Irak**. Compact 912 × 432 interface, original DSP, editable Pitch/Amp curves and 128 original synthesis patches.
 
 ![F-Kick](preview.png)
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Windows-x64.zip) |
-| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Linux-x64.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Source.zip) |
-| Release notes and checksums | [F-Kick 0.8.2](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.2) |
+| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Source.zip) |
+| Release notes and checksums | [F-Kick 0.8.2](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) |
+
+## F-series interface (0.8.3)
+
+Charcoal panels, ivory text, orange curves/selection and the paired orange/white header rule now follow the common F-series design. The 912 × 432 panel gives the existing controls 20% more display space. Preset/state formats, parameter IDs and audio processing are unchanged; logo clicks still open the offline licence reader.
 
 ## Clean and full-bodied factory bank (0.8.2)
 
@@ -40,14 +44,14 @@ Original F-Kick application code, DSP, interface and factory synthesis settings:
 
 ## Türkçe kullanım ve bakım
 
-# F-Kick 0.8.2
+# F-Kick 0.8.3
 
 **Sample the attack. Shape the body.**
 
 Fazıl Irak · Windows x64 · VST3 + Standalone · Yerel geliştirme sürümü
 
 Sample + sentezlenen kick gövdesi, çizilebilir Pitch/Amp eğrileri, 128 özgün preset.
-Ubuntu fontlu 760 × 360 koyu/sarı panel; ekran klavyesi ve knob bankası yoktur.
+Ubuntu fontlu 912 × 432 koyu/sarı panel; ekran klavyesi ve knob bankası yoktur.
 
 ## Başlangıç
 

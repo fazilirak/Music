@@ -18,7 +18,7 @@ if (-not (Test-Path -LiteralPath $taskPython)) { $taskPython = (Get-Command pyth
 & $taskPython (Join-Path $taskRoot 'scripts\package_source.py') (Join-Path $packageDir "F-Sidechain-$version-Source.zip")
 if ($LASTEXITCODE -ne 0) { throw 'Source packaging failed' }
 @'
-F-Sidechain 1.1.1 / Windows x64
+F-Sidechain 1.1.2 / Windows x64
 Build: Release, MSVC x64, JUCE local pinned source
 Validation: CTest volume_audio_and_state PASS
 8 factory presets: finite audio; every factory trough reaches Y=1 / zero gain

@@ -141,10 +141,10 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          F-Sidechain 1.1.1 — Draw the groove. Make room for your sound.
+          F-Sidechain 1.1.2 — Draw the groove. Make room for your sound.
 
           Free compact multiband volume shaper with eight editable factory envelopes, independent Low/Mid/High bands, full-range mode, tempo/MIDI/audio triggering, paint and sequencer editing, and complete preset/state saving.
-          Preset selection, Save, Load and options are in the top bar; 760 × 426 interface preserves the envelope editor area.
+          Preset selection, Save, Load and options are in the top bar; 912 × 511 interface follows the F-series charcoal/orange/ivory design, with paired orange/white header lines. Audio processing and state formats are unchanged.
 
           Windows x64: VST3 and standalone.
           macOS Universal (arm64 + x86_64): VST3, AU and standalone; macOS 11.0+.

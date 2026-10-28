@@ -106,7 +106,7 @@ int main(int argc,char** argv) {
         FKickProcessor demo;demo.setCurrentProgram(1);prepare(demo);require(demo.exportWav(folder.getChildFile("F-Kick-Deep-House.wav")),"WAV export failed");
         juce::WavAudioFormat format;std::unique_ptr<juce::AudioFormatReader> reader(format.createReaderFor(folder.getChildFile("F-Kick-Deep-House.wav").createInputStream().release(),true));require(reader&&reader->sampleRate==48000&&reader->numChannels==2&&reader->bitsPerSample==24,"Export format wrong");
         std::cout<<"PASS stereo 48 kHz / 24-bit export\n";
-        std::unique_ptr<juce::AudioProcessorEditor> editor(demo.createEditor());require(editor->getWidth()==760&&editor->getHeight()==360,"Compact UI dimensions");
+        std::unique_ptr<juce::AudioProcessorEditor> editor(demo.createEditor());require(editor->getWidth()==912&&editor->getHeight()==432,"F-series UI dimensions");
         for(auto* child:editor->getChildren())require(editor->getLocalBounds().contains(child->getBounds()),"UI component outside editor");
         require(find(*editor,"brand-logo")&&find(*editor,"envelope-editor")&&find(*editor,"preset-selector"),"Required UI components missing");
         require(!containsType<juce::MidiKeyboardComponent>(*editor)&&!containsType<juce::Slider>(*editor)&&find(*editor,"hp")!=nullptr,"HP must be an editable text control");
@@ -118,7 +118,7 @@ int main(int argc,char** argv) {
         previous->onClick();previous->onClick();require(demo.getCurrentProgram()==demo.getNumPrograms()-1,"Previous preset must wrap to last");next->onClick();require(demo.getCurrentProgram()==0,"Next preset must wrap to first");selector->setSelectedId(2,juce::sendNotificationSync);
         auto* cutoffText=dynamic_cast<juce::Label*>(find(*editor,"cutoff-value"));require(cutoffText,"Editable cutoff text missing");cutoffText->showEditor();require(cutoffText->getCurrentTextEditor()!=nullptr,"Numeric text editor did not open");cutoffText->getCurrentTextEditor()->setText("2.5k");cutoffText->hideEditor(false);require(std::abs(demo.value("cutoff")-2500)<.02f,"Numeric text did not update parameter");
         auto* startText=dynamic_cast<juce::Label*>(find(*editor,"start-value"));auto* endText=dynamic_cast<juce::Label*>(find(*editor,"end-value"));require(startText&&endText,"Region text fields missing");startText->setText("25%",juce::sendNotificationSync);endText->setText("10%",juce::sendNotificationSync);require(demo.value("end")>demo.value("start"),"Typed trim bounds crossed");
-        const juce::Rectangle<int> sampleStrip(76,74,570,27);for(const char* id:{"sampleGain","sampleTune","samplePan","start","end"}){auto* field=find(*editor,id);require(sampleStrip.contains(editor->getLocalArea(field,field->getLocalBounds())),"Sample parameter outside sample panel");}
+        const auto sampleStrip=juce::Rectangle<float>(76,74,570,27).transformedBy(juce::AffineTransform::scale(1.2f)).getSmallestIntegerContainer();for(const char* id:{"sampleGain","sampleTune","samplePan","start","end"}){auto* field=find(*editor,id);require(sampleStrip.contains(editor->getLocalArea(field,field->getLocalBounds())),"Sample parameter outside sample panel");}
         selector->setSelectedId(1,juce::sendNotificationSync);selector->setSelectedId(2,juce::sendNotificationSync);
         auto* license=dynamic_cast<juce::TextEditor*>(find(*editor,"license-text"));require(license&&license->getText().contains("F-Kick"),"Embedded licence text missing");
         snapshot(*editor,folder.getChildFile("F-Kick-main.png"));auto* about=find(*editor,"about-panel");require(about!=nullptr,"Offline About missing");brand->onClick();require(about->isVisible(),"Clicking logo did not open About");snapshot(*editor,folder.getChildFile("F-Kick-about.png"));about->setVisible(false);
@@ -168,7 +168,7 @@ int main(int argc,char** argv) {
             juce::MemoryBlock componentState;require(componentState.fromBase64Encoding(returnedWrapper->getChildByName("IComponent")->getAllSubText()),"VST3 component state decode");
             auto droppedXml=juce::AudioProcessor::getXmlFromBinary(componentState.getData(),(int)componentState.getSize());require(droppedXml&&droppedXml->getChildByName("Sample")&&droppedXml->getChildByName("Sample")->getStringAttribute("name").contains(juce::String::fromUTF8("örnek")),"VST3 lost sample loaded by native drop");
             hostMidi.clear();hostMidi.addEvent(juce::MidiMessage::noteOn(1,60,(juce::uint8)110),0);instance->processBlock(hostAudio,hostMidi);require(hostAudio.getMagnitude(0,0,256)>.01f,"VST3 embedded dropped sample was silent");finite(hostAudio);
-            std::unique_ptr<juce::AudioProcessorEditor> hostEditor(instance->createEditorIfNeeded());require(hostEditor!=nullptr&&hostEditor->getWidth()==760&&hostEditor->getHeight()==360,"VST3 host editor failed");hostEditor.reset();instance->releaseResources();instance.reset();
+            std::unique_ptr<juce::AudioProcessorEditor> hostEditor(instance->createEditorIfNeeded());require(hostEditor!=nullptr&&hostEditor->getWidth()==912&&hostEditor->getHeight()==432,"VST3 host editor failed");hostEditor.reset();instance->releaseResources();instance.reset();
             std::cout<<"PASS built VST3: scan / instantiate / MIDI / audio / state / editor\n";
         }
         runCleanTests(folder);

@@ -6,4 +6,4 @@
 // F-Sidechain: Volume arayüzünün ortak vurgu rengini tek yerde tanımlar.
 #pragma once
 #include <JuceHeader.h>
-inline juce::Colour rackEffectColour(int) { return juce::Colour(0xffffd42a); }
+inline juce::Colour rackEffectColour(int) { return juce::Colour(0xffed6c46); }

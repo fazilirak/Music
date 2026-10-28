@@ -10,15 +10,15 @@
 namespace volumef {
 
 namespace globals {
-	constexpr unsigned int COLOR_BG = 0xff181818;
-	constexpr unsigned int COLOR_ACTIVE = 0xffffd42a;
-	constexpr unsigned int COLOR_ACTIVE_LIGHT = 0xffffeb93;
-	constexpr unsigned int COLOR_ACTIVE_DARK = 0xff88701b;
-	constexpr unsigned int COLOR_NEUTRAL = 0xff666666;
-	constexpr unsigned int COLOR_NEUTRAL_LIGHT = 0x99999999;
-	constexpr unsigned int COLOR_SEEK = 0xff80ffff;
-	constexpr unsigned int COLOR_KNOB = 0xff272727;
-	constexpr unsigned int COLOR_AUDIO = 0xffffd42a;
+	constexpr unsigned int COLOR_BG = 0xff141819;
+	constexpr unsigned int COLOR_ACTIVE = 0xffed6c46;
+	constexpr unsigned int COLOR_ACTIVE_LIGHT = 0xfff5a58a;
+	constexpr unsigned int COLOR_ACTIVE_DARK = 0xff794532;
+	constexpr unsigned int COLOR_NEUTRAL = 0xff667275;
+	constexpr unsigned int COLOR_NEUTRAL_LIGHT = 0xff8d9799;
+	constexpr unsigned int COLOR_SEEK = 0xffe5e7df;
+	constexpr unsigned int COLOR_KNOB = 0xff22292b;
+	constexpr unsigned int COLOR_AUDIO = 0xffed6c46;
 	constexpr unsigned int COLOR_MIDI = 0xff50a9ff;
 	constexpr unsigned int COLOR_SELECTION = 0xff50a9ff;
 	constexpr unsigned int COLOR_SEQ_MAX = 0xffffffff;
@@ -28,7 +28,7 @@ namespace globals {
 	constexpr unsigned int COLOR_SEQ_TENA = 0xffffee50;
 	constexpr unsigned int COLOR_SEQ_TENR = 0xffffB950;
 	constexpr unsigned int COLOR_SEQ_SKEW = 0xffffB950;
-	constexpr unsigned int COLOR_BEVEL = 0xff101010;
+	constexpr unsigned int COLOR_BEVEL = 0xff101516;
 
 	constexpr int ANTICLICK_LOW_MILLIS = 5;
 	constexpr int ANTICLICK_HIGH_MILLIS = 10;

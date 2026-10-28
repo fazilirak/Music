@@ -70,7 +70,7 @@ class EffectOutputPanel final : public juce::Component, private juce::Timer
             else if (kind == "gain")
             {
                 const float db = p->paramID == "gain" ? juce::Decibels::gainToDecibels(value, -60.0f) : value;
-                g.setColour(juce::Colour(0xff343c48));
+                g.setColour(juce::Colour(0xff394446));
                 g.drawRoundedRectangle(getLocalBounds().toFloat().reduced(.5f), 3, 1);
                 const int b = panel.owner.editorBand();
                 const float l = panel.owner.outputPeakLeft[(size_t)b].load(std::memory_order_relaxed),

@@ -1,6 +1,6 @@
 # Fazıl Irak · 27.10.2026 · F-Kick derleme ve doğrulama hedefleri.
 cmake_minimum_required(VERSION 3.24)
-project(FKick VERSION 0.8.2 LANGUAGES C CXX)
+project(FKick VERSION 0.8.3 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")

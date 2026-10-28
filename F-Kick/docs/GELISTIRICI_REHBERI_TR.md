@@ -56,7 +56,7 @@ snapshot'ıdır, maket değildir. Dağıtım dizinine ancak build/test ve görse
 
 ## 0.2.0 yerleşim ve kontrol sözleşmesi
 
-Pencere 760 × 360; önceki 880 × 570 alanından yaklaşık %45 daha az yer kaplar. Görsel
+Pencere 912 × 432; önceki 880 × 570 alanından yaklaşık %45 daha az yer kaplar. Görsel
 referans, Ableton Live 12 kılavuzundaki Simpler Classic/One-Shot/Controls ekranlarıdır:
 https://www.ableton.com/en/live-manual/12/live-instrument-reference/#simpler
 Referans görselleri inceleme içindir; projeye üçüncü taraf UI varlığı kopyalanmadı.

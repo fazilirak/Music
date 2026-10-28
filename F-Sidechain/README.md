@@ -1,20 +1,24 @@
 <!-- Geliştirici ve bakım: Fazıl Irak | 27.10.2026 | GATE-12/Tilr atıfları korunur -->
-# F-Sidechain 1.1.1
+# F-Sidechain 1.1.2
 
 **Draw the groove. Make room for your sound.**
 
-Free, open-source multiband volume shaping by **Fazıl Irak**. A compact 760 × 426 interface, eight editable envelope presets and independent Low/Mid/High curves. Start in Full Range, add frequency bands only when needed, and synchronise movement to your DAW or use MIDI/audio triggers.
+Free, open-source multiband volume shaping by **Fazıl Irak**. A compact 912 × 511 interface, eight editable envelope presets and independent Low/Mid/High curves. Start in Full Range, add frequency bands only when needed, and synchronise movement to your DAW or use MIDI/audio triggers.
 
 ![F-Sidechain](preview.png)
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Windows-x64.zip) |
-| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Linux-x64.tar.gz) |
-| macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-macOS-Universal.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Source.zip) |
-| Release notes and checksums | [F-Sidechain 1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) |
+| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) |
+| macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-macOS-Universal.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Source.zip) |
+| Release notes and checksums | [F-Sidechain 1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) |
 | Website | [Türkçe](https://fazilirak.com/f-sidechain/) · [English](https://fazilirak.com/f-sidechain-english/) |
+
+## F-series interface (1.1.2)
+
+Charcoal panels, ivory text, orange curves/selection and the paired orange/white header rule now follow the common F-series design. The 912 × 511 panel gives the existing controls 20% more display space. Preset/state formats, parameter IDs and audio processing are unchanged; logo clicks still open the offline licence reader.
 
 ## Features
 
@@ -43,7 +47,7 @@ F-Sidechain is independently maintained from the Shaper Volume / GATE-12 foundat
 
 Fazıl Irak · Windows x64 · VST3 + Standalone
 
-Shaper'ın Volume motorundan ayrılmış, 760 × 426 boyutunda kompakt volume-shaping efekti. Shaper projesini değiştirmez; çalışırken Shaper gerektirmez.
+Shaper'ın Volume motorundan ayrılmış, 912 × 511 boyutunda kompakt volume-shaping efekti. Shaper projesini değiştirmez; çalışırken Shaper gerektirmez.
 
 ## Kullanım
 

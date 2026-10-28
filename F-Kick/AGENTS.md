@@ -1,7 +1,7 @@
 # F-Kick development standards
 
 - F-Kick is an independent instrument. Keep all work in this folder; sibling plugins and shared JUCE sources are references, not edit targets.
-- Preserve the compact 760 x 360 charcoal/yellow device panel and embedded Ubuntu font. The logo is plain text, never a framed button; clicking it opens offline About/licences. No on-screen MIDI keyboard or rotary banks. HP now uses the same editable text control as Cutoff; no rotary controls. Sound/FX/SC pages share the compact lower strip; do not enlarge the window. Use drag/scroll/editable numeric text within the sample panel and thin Body/Envelope/Filter strips.
+- Preserve the compact 912 x 432 charcoal/orange/ivory device panel and embedded Ubuntu font. The logo is plain text, never a framed button; clicking it opens offline About/licences. No on-screen MIDI keyboard or rotary banks. HP now uses the same editable text control as Cutoff; no rotary controls. Sound/FX/SC pages share the compact lower strip; the 760 x 360 logical canvas is rendered at 1.2x to preserve hit-testing. Use drag/scroll/editable numeric text within the sample panel and thin Body/Envelope/Filter strips.
 - Put real Previous/Next preset arrows immediately left/right of the preset selector. Undo/Redo belong in the options menu. Keep parameter IDs and audio behaviour stable during layout changes.
 - Sample controls live under FKickSampleDropArea, the explicit native file-drop target. Preserve this parent chain so Explorer drops over waveform/text controls reach the same async loader. Dim only the excluded Start/End waveform regions; keep flags bright and the selected interval unchanged.
 - Product UI is English. Write maintenance documentation and useful ownership/DSP comments in Turkish. Preserve Fazıl Irak author credits and original third-party notices.
@@ -15,5 +15,5 @@
 - SC is the four-curve FX-only shaper: Mix, horizontal Shift, quarter-note host PPQ sync and MIDI fallback. Keep direct kick/sample untouched. Preserve legacy LFO/AD DSP/state only; no editor/menu. Room is numeric Mix (0-100%, legacy On=100%); FX HP/LP filter only the combined effect return.
 
 
-- Room Mix heads the right column; HP/LP share the next row, Bass Lift/Q the row below. Bass EQ is a 300 Hz low shelf on the full kick + sample + FX output; 0 dB must be exact bypass. The graphic is 570 x 178; inline sample numbers stay above the graph in paint and hit-test order. Keep the 760 x 360 outer size.
+- Room Mix heads the right column; HP/LP share the next row, Bass Lift/Q the row below. Bass EQ is a 300 Hz low shelf on the full kick + sample + FX output; 0 dB must be exact bypass. The graphic is 570 x 178; inline sample numbers stay above the graph in paint and hit-test order. Keep the 912 x 432 outer size; the graphic remains 570 x 178 in logical coordinates.
 
