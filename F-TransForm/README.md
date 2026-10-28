@@ -24,7 +24,7 @@ An independently developed multi-effect transition processor by **Fazıl Irak**.
 
 ## Install and build
 
-Copy the entire VST3 bundle into your DAW's VST3 directory and rescan. Standalone: Standalone/F-TransForm.exe. Windows binaries are unsigned. macOS targets are configured but untested and not included in this Windows release.
+Copy the entire VST3 bundle into your DAW's VST3 directory and rescan. Standalone: Standalone/F-TransForm.exe. Windows binaries are unsigned. macOS Universal VST3/AU/Standalone is available separately; see the Mac package below.
 
 From Git: python scripts/bootstrap_juce.py, then scripts/build-windows.cmd with Visual Studio C++ tools. Complete source archives contain pinned JUCE and the URW font source collection. See [development guide](docs/GELISTIRME_TR.md).
 
@@ -95,7 +95,7 @@ Visual Studio C++ araçları, CMake 3.24+, Ninja, JUCE 8.0.7. Ortak JUCE `../_De
 1. `scripts/build-windows.cmd`: Release derlemesi ve CTest.
 2. PowerShell 7 ile `./scripts/package-windows.ps1`: dosyaları dist içine kopyalar, SHA-256 manifesti üretir.
 
-Windows VST3/Standalone derlenir. macOS VST3/AU/Standalone hedefleri tanımlıdır ancak burada sınanmamıştır. Windows dosyaları imzasızdır.
+Windows VST3/Standalone ve macOS Universal VST3/AU/Standalone yayımlanır. Yerel Mac CI CTest kontrollerini geçmiştir; fiziksel Intel Mac ve üçüncü taraf DAW testleri ayrıdır. Windows dosyaları imzasızdır.
 
 ## Ses ve uyumluluk
 
@@ -109,3 +109,9 @@ AGPL-3.0-or-later. JUCE ve URW Gothic özgün lisansları korunur; bkz. THIRD-PA
 
 
 
+
+## macOS Universal
+
+[Download F-TransForm 0.2.2 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
+
+Copy the complete VST3 bundle to `~/Library/Audio/Plug-Ins/VST3/` or the AU component to `~/Library/Audio/Plug-Ins/Components/`, then rescan your host. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. The matching `F-TransForm-0.2.2-macOS-Source.zip` includes complete pinned dependency sources and `BUILD-MACOS.txt`; hashes and build provenance are in `macOS-RELEASE-MANIFEST.json`. [Repository build guide](../docs/ORIGINALS_MACOS_TR.md).

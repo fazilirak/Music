@@ -34,7 +34,7 @@ Select a factory preset again, or open a new instance, to hear the new bank. Exi
 
 ## Install and build
 
-Copy the entire VST3 bundle to the VST3 directory scanned by your DAW. Standalone: Standalone/F-Kick.exe. Windows binaries are unsigned. macOS targets are configured but are not part of this Windows release.
+Copy the entire VST3 bundle to the VST3 directory scanned by your DAW. Standalone: Standalone/F-Kick.exe. Windows binaries are unsigned. macOS Universal VST3/AU/Standalone is available separately; see the Mac package below.
 
 From a Git checkout run python scripts/bootstrap_juce.py, then scripts/build-windows.cmd from Windows with Visual Studio C++ tools. Complete source archives include pinned JUCE source under Dependencies/JUCE. Tests cover audio, state, GUI and VST3 loading; see validation/TEST_SONUCLARI_TR.md.
 
@@ -118,7 +118,7 @@ preset, kategori/SC örnekleri ve C3/069 eşit-peak A/B dosyaları bulunur. Öl�
 
 VS C++ Desktop + Windows SDK + CMake 3.24+. scripts/build-windows.cmd Release VST3/Standalone ve CTest çalıştırır.
 Kaynak ZIP JUCE içerir; workspace alternatifi ../_Dependencies/JUCE veya CMake JUCE_PATH.
-Geliştirici rehberi docs/, test kapsamı validation/ içindedir. macOS derlenmedi; Warp/slicing/otomatik kick analizi yoktur.
+Geliştirici rehberi docs/, test kapsamı validation/ içindedir. macOS Universal yerel Mac CI üzerinde derlenip CTest ile doğrulanmıştır; fiziksel Intel Mac ve üçüncü taraf DAW testleri ayrıdır. Warp/slicing/otomatik kick analizi yoktur.
 F-Kick AGPL-3.0-or-later; JUCE/font/SDK koşulları LICENSE.txt, THIRD-PARTY-NOTICES.txt ve licenses/ içinde korunur.
 
 ## Bass EQ — 0.8.0
@@ -129,3 +129,9 @@ Kick, sample ve FX toplamına uygulanır; çıkış seviyesi/peak korumasından 
 0 dB tam bypass: eski preset ve kayıtların sesini korur. 20 ms parametre rampası vardır.
 HP/LP yalnız FX dönüşlerine etki etmeye devam eder; Bass Lift/Q onlardan bağımsızdır.
 Sağ sütunda Room Mix, altında yan yana HP/LP, onun altında Bass Lift/Q bulunur.
+
+## macOS Universal
+
+[Download F-Kick 0.8.3 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
+
+Copy the complete VST3 bundle to `~/Library/Audio/Plug-Ins/VST3/` or the AU component to `~/Library/Audio/Plug-Ins/Components/`, then rescan your host. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. The matching `F-Kick-0.8.3-macOS-Source.zip` includes complete pinned dependency sources and `BUILD-MACOS.txt`; hashes and build provenance are in `macOS-RELEASE-MANIFEST.json`. [Repository build guide](../docs/ORIGINALS_MACOS_TR.md).
