@@ -95,3 +95,15 @@ jobs:
               gh release upload "$tag" "$file"
             fi
           done
+          gh release view "$tag" --json body --jq .body > notes.md
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('notes.md')
+          text = path.read_text()
+          text = text.replace('macOS is not included in this release. ', '')
+          heading = '### macOS Universal added'
+          if heading not in text:
+              text += '\n\n' + heading + '\n\nNative macOS build: VST3, AU and standalone for Apple Silicon + Intel; macOS 11.0+. DSP/state/GUI CTest passed on the macOS CI host. All bundle versions, both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.\n\nMac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. The matching macOS Source ZIP includes complete pinned JUCE sources, applicable font sources, tests, build instructions and preserved licence notices. SHA-256 values and build provenance are in macOS-RELEASE-MANIFEST.json. Existing Windows/Linux assets are preserved.\n'
+          path.write_text(text)
+          PY
+          gh release edit "$tag" --notes-file notes.md

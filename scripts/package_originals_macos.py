@@ -28,9 +28,8 @@ def digest(path):
 
 def source_files(base):
     for path in sorted(base.rglob('*')):
-        if path.is_file() and not any(part in {'.git', '__pycache__', '.vs'}
-                                      or part.startswith('build')
-                                      for part in path.relative_to(base).parts):
+        if path.is_file() and not any(part in {'.git', '__pycache__', '.vs', 'build', 'build-macos', 'build-linux'}
+                                      for part in path.relative_to(base).parts[:-1]):
             yield path
 
 
