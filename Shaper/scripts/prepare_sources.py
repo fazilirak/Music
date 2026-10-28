@@ -146,7 +146,15 @@ private:''',1)
     audioDisplay->setBounds(364,6,juce::jmax(80,getWidth()-460),62);
     useSidechain.setBounds(getWidth()-88,6,88,25); useMonitor.setBounds(getWidth()-88,39,88,25);
 ''')
+        if name in ('filtr','reevr') and path.name == 'Rotary.h':
+            # Fazıl Irak: Bu iki modül rengi constructor'dan alır; Gate/Time bool alanını kullanmaz.
+            text=text.replace('    bool isAudioKnob;','')
         if path.name == 'Rotary.cpp':
+            if name in ('filtr','reevr'):
+                # Kaynakta kendisiyle başlatılan bool rastgele sarı seçimine yol açıyordu.
+                # Atanmış renk normal kontrollerde modül rengini, audio kontrollerinde sarıyı korur.
+                text=text.replace('    , isAudioKnob(isAudioKnob)\n','')
+            knob_colour='color' if name in ('filtr','reevr') else 'isAudioKnob?COLOR_AUDIO:COLOR_ACTIVE'
             text='#include "RackKnob.h"\n'+text
             signature='void Rotary::draw_rotary_slider(juce::Graphics& g, float slider_pos)'
             start=text.index(signature)
@@ -155,8 +163,8 @@ private:''',1)
             while depth:
                 depth+=(text[end]=='{')-(text[end]=='}')
                 end+=1
-            text=text[:opening+1]+'''\n    shaperui::drawKnob(g,getLocalBounds(),slider_pos,juce::Colour(isAudioKnob?COLOR_AUDIO:COLOR_ACTIVE),isSymmetric,juce::Colour(COLOR_KNOB));
-}'''+text[end:]
+            text=text[:opening+1]+('''\n    shaperui::drawKnob(g,getLocalBounds(),slider_pos,juce::Colour(KNOB_COLOUR),isSymmetric,juce::Colour(COLOR_KNOB));
+}'''.replace('KNOB_COLOUR',knob_colour))+text[end:]
             # Preserve circular knobs inside the narrower settings panel.
             text=insert_function(text,'void Rotary::paint', '''    auto transform=getTransform();
     if(transform.mat00>0 && transform.mat11>transform.mat00)

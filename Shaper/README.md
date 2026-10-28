@@ -1,5 +1,5 @@
 <!-- Geliştirici ve bakım: Fazıl Irak | 28.10.2026 -->
-# Jellybone 0.8.4
+# Jellybone 0.8.5
 
 **Shape the rhythm. Build your rack.**
 
@@ -9,11 +9,11 @@ A modular effects rack by **Fazıl Irak**, formerly named Shaper. Add, order and
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Windows-x64.zip) |
-| macOS Universal — VST3 + AU + standalone | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-macOS-Universal.tar.gz) |
-| Linux x64 — VST3 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-x64.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Source.zip) |
-| Notes, platform sources and checksums | [Jellybone 0.8.4](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) |
+| Windows x64 — VST3 + standalone | [ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Windows-x64.zip) |
+| macOS Universal — VST3 + AU + standalone | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-macOS-Universal.tar.gz) |
+| Linux x64 — VST3 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Linux-x64.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Source.zip) |
+| Notes, platform sources and checksums | [Jellybone 0.8.5](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) |
 
 ## Features
 
@@ -36,3 +36,7 @@ Build from complete source with `scripts/build-windows.cmd` or `bash scripts/bui
 Jellybone preserves the GATE-12/Tilr foundation and individual GPLv3, AGPLv3, MIT, font and SDK terms. Maintenance and modifications © 2026 Fazıl Irak. See [authors](AUTHORS.md), [COPYING](COPYING.txt), [third-party notices](THIRD-PARTY-NOTICES.txt) and [full licence texts](licenses). Complete corresponding source accompanies each binary release.
 
 [Türkçe kullanım ve önceki Shaper sürüm notları](docs/SHAPER_HISTORY_TR.md)
+
+## 0.8.5 — Filter / Reverb knob colours
+
+Fazıl Irak: Filter and Reverb now use each rotary control’s explicitly assigned colour. Removes an uninitialised legacy audio-knob flag that could randomly turn normal controls yellow. Normal Filter controls stay cyan; Reverb controls stay lavender. Explicit audio-trigger controls retain their yellow colour. DSP, parameter/plugin IDs and preset/session formats are unchanged.

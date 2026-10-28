@@ -141,10 +141,10 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          Jellybone 0.8.4 — Shape the rhythm. Build your rack.
-          - Renames the visible Shaper product and binaries to Jellybone.
-          - Plain clickable logo with FAZIL IRAK / SHAPER RACK underneath.
-          - Preserves plugin manufacturer/code/bundle IDs, parameter IDs, DSP, saved-state schema and existing preset extensions/directory.
+          Jellybone 0.8.5 — Filter and Reverb knob colour correction.
+          - Fixes an uninitialised legacy UI flag that randomly selected yellow for normal Filter/Reverb knobs.
+          - Uses each control's explicitly assigned colour: cyan Filter, lavender Reverb; intentional audio-trigger controls retain yellow.
+          - Preserves the shared knob geometry, DSP, plugin/parameter IDs and preset/session formats.
           - Preserves all GATE-12/Tilr and third-party copyright/licence notices.
 
           Windows x64: VST3 and standalone.
