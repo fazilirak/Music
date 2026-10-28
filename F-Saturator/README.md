@@ -1,13 +1,17 @@
 <!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 24.10.2026 -->
-# F-Saturator 0.5.2 — FAZIL IRAK
+# F-Saturator 0.5.3 — FAZIL IRAK
 
 [![Build](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml/badge.svg)](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml)
 
-[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.2) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
+[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
 
 ![F-Saturator](doc/f-saturator.png)
 
 Saturation and distortion with five character models, 16 factory presets and a compact concentric-control interface. Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone, macOS 11.0 or later.
+
+## New in 0.5.3
+
+The preset/file controls and 8x FIR / ADAA label sit below the knob panel with a clear gap. The fixed 1040 × 640 window, control positions and audio processing are otherwise unchanged.
 
 ## New in 0.5.2
 
@@ -32,7 +36,7 @@ Models are not measured hardware replicas. Tape does not simulate tape speed, hi
 
 ## Downloads and installation
 
-Use the [0.5.2 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.2). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
+Use the [0.5.3 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
 
 - Windows: extract the ZIP; copy the entire `VST3/F-Saturator.vst3` bundle into your shared VST3 directory. Open `Standalone/F-Saturator.exe` without a DAW.
 - macOS: extract the TAR.GZ; copy the VST3 to `~/Library/Audio/Plug-Ins/VST3/` and the AU to `~/Library/Audio/Plug-Ins/Components/`. Open `Standalone/F-Saturator.app` without a DAW.

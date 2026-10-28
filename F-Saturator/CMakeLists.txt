@@ -1,7 +1,7 @@
 # Geliştirici: Fazıl Irak | Son düzenleme: 26.10.2026
-# F-Saturator 0.5.2: Windows VST3/Standalone, macOS Universal VST3/AU/Standalone.
+# F-Saturator 0.5.3: Windows VST3/Standalone, macOS Universal VST3/AU/Standalone.
 cmake_minimum_required(VERSION 3.24)
-project(FSaturator VERSION 0.5.2 LANGUAGES C CXX)
+project(FSaturator VERSION 0.5.3 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 # MSVC çalışma zamanı statik bağlanır; /utf-8 Türkçe kaynak açıklamalarının doğru okunmasını sağlar.
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")

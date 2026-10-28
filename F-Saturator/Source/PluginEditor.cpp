@@ -289,7 +289,7 @@ void Editor::paint(juce::Graphics &g)
     g.fillRect(28, divider + 5, getWidth() - 56, 2);
     g.setColour(panel);
     g.fillRoundedRectangle(22, (float)divider + 20, (float)getWidth() - 44,
-                           (float)getHeight() - divider - (dockLeft ? 8 : 54), 8);
+                           (float)getHeight() - divider - (dockLeft ? 8 : 66), 8);
     const float column = (getWidth() - 56) / 4.0f;
     g.setColour(juce::Colour(0xff30383a));
     for (int i = 1; i < 4; ++i)
@@ -303,7 +303,7 @@ void Editor::paint(juce::Graphics &g)
     {
         g.setFont(juce::FontOptions(10));
         g.setColour(muted);
-        g.drawText("8x FIR / ADAA", getWidth() - 195, getHeight() - 43, 165, 20,
+        g.drawText("8x FIR / ADAA", getWidth() - 195, getHeight() - 31, 165, 20,
                    juce::Justification::centredRight);
     }
 }
@@ -341,7 +341,8 @@ void Editor::resized()
     for (auto *c : {(juce::Component *)&presets, (juce::Component *)&previous, (juce::Component *)&next,
                     (juce::Component *)&save, (juce::Component *)&load})
         c->setVisible(dockLeft == 0);
-    const int bottom = getHeight() - 48;
+    // Fazıl Irak: Alt araç satırı panelin dışında; panel altı ile 10 px boşluk kalır.
+    const int bottom = getHeight() - 36;
     previous.setBounds(28, bottom, 30, 28);
     presets.setBounds(66, bottom, 280, 28);
     next.setBounds(354, bottom, 30, 28);
