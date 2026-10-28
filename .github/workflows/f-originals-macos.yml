@@ -10,6 +10,11 @@ on:
       - 'scripts/package_originals_macos.py'
       - '.github/workflows/f-originals-macos.yml'
   workflow_dispatch:
+    inputs:
+      reuse_transform_run:
+        description: 'Optional successful F-TransForm artifact run; build F-Kick only and verify unchanged Transform sources'
+        type: string
+        default: ''
 permissions:
   contents: read
 concurrency:
@@ -22,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [F-Kick, F-TransForm]
+        project: ${{ fromJSON(inputs.reuse_transform_run && '["F-Kick"]' || '["F-Kick","F-TransForm"]') }}
     defaults:
       run:
         working-directory: ${{ matrix.project }}
@@ -74,14 +79,35 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      actions: read
     strategy:
       matrix:
         project: [F-Kick, F-TransForm]
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify reusable Transform artifact has matching application and packaging sources
+        if: matrix.project == 'F-TransForm' && inputs.reuse_transform_run != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_RUN: ${{ inputs.reuse_transform_run }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_RUN" =~ ^[0-9]+$ ]]
+          source=$(gh api "repos/$GH_REPO/actions/runs/$SOURCE_RUN" --jq .head_sha)
+          for path in F-TransForm scripts/package_originals_macos.py; do
+            test "$(git rev-parse "$source:$path")" = "$(git rev-parse "$GITHUB_SHA:$path")"
+          done
       - uses: actions/download-artifact@v7
         with:
           name: ${{ matrix.project }}-macOS
           path: release
+          run-id: ${{ matrix.project == 'F-TransForm' && inputs.reuse_transform_run || github.run_id }}
+          github-token: ${{ github.token }}
       - name: Add tested Mac assets to the matching existing release
         env:
           GH_TOKEN: ${{ github.token }}
