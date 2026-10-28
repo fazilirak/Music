@@ -2,15 +2,15 @@
 
 Independent music software and development resources by [FAZIL AHMET IRAK](https://fazilirak.com).
 
-| Project | Windows | macOS | Source |
-| --- | --- | --- | --- |
-| [F Saturator](F-Saturator/README.md) | [0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Universal 0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Browse](F-Saturator) |
-| [F-Kick](F-Kick/README.md) | [0.8.1](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.1) | Not released | [Browse / licences](F-Kick) |
-| [F-TransForm](F-TransForm/README.md) | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | Not released | [Browse / licences](F-TransForm) |
-| [F-Sidechain](F-Sidechain/README.md) | [1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) | [Browse / licences](F-Sidechain) |
-| [Shaper](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Shaper-v0.8.3) | [Universal build](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml) | [Browse](Shaper) |
-| [Model F](Model-F/README.md) | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Browse / licences](Model-F) |
-| [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Browse / licences](F-EQ) |
+| Project | Windows | macOS | Linux x64 | Source |
+| --- | --- | --- | --- | --- |
+| [F Saturator](F-Saturator/README.md) | [0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [Universal 0.5.1](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) | [0.5.1](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.1/F-Saturator-0.5.1-Linux-x64.tar.gz) | [Browse](F-Saturator) |
+| [F-Kick](F-Kick/README.md) | [0.8.2](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.2) | Not released | [0.8.2](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
+| [F-TransForm](F-TransForm/README.md) | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | Not released | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
+| [F-Sidechain](F-Sidechain/README.md) | [1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) | [1.1.1](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
+| [Jellybone](Shaper/README.md) | [Releases](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [0.8.4](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-x64.tar.gz) | [Browse](Shaper) |
+| [Model F](Model-F/README.md) | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [0.2.8](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-x64.tar.gz) | [Browse / licences](Model-F) |
+| [F EQ](F-EQ/README.md) | [0.1.10](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.10) | [0.1.10](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.10/F-EQ-0.1.10-Linux-x64.tar.gz) | [Browse / licences](F-EQ) |
 
 ## F Saturator
 
@@ -28,7 +28,7 @@ Five original character models — Console, Transformer, Tape, Triode and Pentod
 
 ## Türkçe
 
-Müzik yazılımlarımı bu depoda ayrı proje klasörleriyle yayımlıyorum. F Saturator kaynaklarında Türkçe açıklamalar ve düzenleme rehberi bulunur. Windows ve macOS indirmeleri sürümlerin **Releases** bölümündedir.
+Müzik yazılımlarımı bu depoda ayrı proje klasörleriyle yayımlıyorum. F Saturator kaynaklarında Türkçe açıklamalar ve düzenleme rehberi bulunur. Windows, macOS ve Linux indirmeleri sürümlerin **Releases** bölümündedir.
 
 ## Licensing
 
@@ -36,18 +36,18 @@ Each project has its own licence. F Saturator is AGPLv3-or-later; see [its licen
 
 Website: https://fazilirak.com · Contact: info@fazilirak.com
 
-## Shaper
+## Jellybone
 
-![Shaper](Shaper/doc/shaper.png)
+![Jellybone](Shaper/doc/shaper.png)
 
-JUCE-based effects rack: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and Pitch.
+Formerly Shaper. Effects rack by Fazıl Irak: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and Pitch. The new Jellybone name preserves existing plugin and preset identities.
 
 - [Source, licences and Windows build instructions](Shaper/README.md)
-- [macOS Universal build instructions](Shaper/docs/MACOS_TR.md)
+- [macOS Universal build instructions](Shaper/README.md#install-and-build)
 - [macOS build workflow](https://github.com/fazilirak/Music/actions/workflows/shaper-release.yml)
 - [Source and binary distribution requirements](Shaper/docs/YAYIN_LISANSLARI_TR.md)
 
-Shaper preserves the individual GPLv3, AGPLv3, MIT and other dependency licences;
+Jellybone preserves the individual GPLv3, AGPLv3, MIT and other dependency licences;
 see [COPYING](Shaper/COPYING.txt) and [third-party notices](Shaper/THIRD-PARTY-NOTICES.txt).
 
 ## Model F
@@ -78,7 +78,7 @@ F-Sidechain retains GATE-12/Tilr provenance and the GPLv3/AGPLv3 component terms
 
 ## F-Kick
 
-**Sample the attack. Shape the body.** Original kick synthesis, sample layering, editable envelopes and 128 original factory patches by Fazıl Irak.
+**Sample the attack. Shape the body.** Original kick synthesis, sample layering and 128 original factory patches by Fazıl Irak. Version 0.8.2 provides 112 clean General/Techno patches without forced saturation, plus 16 Experimental patches.
 
 ![F-Kick](F-Kick/preview.png)
 
