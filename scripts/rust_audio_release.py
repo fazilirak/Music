@@ -63,7 +63,7 @@ def main():
         root = REPO  # Tam kaynak ZIP'i tek proje köküne açılır.
     model = args.project == 'Model-F'
     crate, library, example, display = (('model-f', 'model_f', 'model-f-standalone', 'Model F') if model else
-                                       ('simple-eq', 'simple_eq', 'simple-eq', 'F EQ'))
+                                       ('simple-eq', 'simple_eq', 'simple-eq', 'F-EQ'))
     manifest_path = root / ('crates/model-f/Cargo.toml' if model else 'Cargo.toml')
     version = tomllib.loads(manifest_path.read_text(encoding='utf-8'))['package']['version']
     mac = sys.platform == 'darwin'
@@ -204,3 +204,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

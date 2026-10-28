@@ -1,5 +1,5 @@
 # Fazıl Irak | 25.10.2026 | GPL-3.0-or-later
-name: Model F and F EQ Windows and macOS Release
+name: Model F and F-EQ Windows and macOS Release
 on:
   push:
     branches: [main]
@@ -80,7 +80,7 @@ jobs:
           AU is not included. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised.
 
           Both build hosts passed the product's automated tests; separate real DAW and Intel/Apple Silicon hardware validation remains necessary.
-          Project code is GPL-3.0-or-later. Original third-party copyrights and licences are preserved, including the URW Gothic AGPLv3 font terms and F EQ Luftikus MIT notice.
+          Project code is GPL-3.0-or-later. Original third-party copyrights and licences are preserved, including the URW Gothic AGPLv3 font terms and F-EQ Luftikus MIT notice.
           Complete matching Source ZIPs include project sources, locked vendored dependencies, original font source collection, tests, build scripts and licences. Keep the corresponding source available when redistributing covered binaries.
           No JUCE rewrite is included. Plugin identities and DSP are preserved; Model F enables preset/envelope file dialogs on macOS.
           NOTES
@@ -120,3 +120,4 @@ jobs:
               "$win/${project}-Windows-MANIFEST.json" "$mac/${project}-macOS-MANIFEST.json" \
               --target "$BUILD_COMMIT" --title "${project} ${version}" --notes-file release-notes.md
           done
+

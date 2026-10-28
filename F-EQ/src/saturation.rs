@@ -1,6 +1,6 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
 // Son düzenleme: 22.10.2026
-// Dosyanın görevi: F EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.
+// Dosyanın görevi: F-EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.
 //! Independent saturation, not part of Luftikus's original Analog mode.
 //! First-order antiderivative antialiasing of only the nonlinear residual:
 //! the clean component stays undelayed and amount=0 is exactly transparent.
@@ -18,7 +18,7 @@ impl Saturator {
             return x;
         }
         let k = 1. + 5. * amount;
-        // integral alt adımı: F EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.
+        // integral alt adımı: F-EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.
         fn integral(x: f64, k: f64) -> f64 {
             let v = (k * x).abs();
             // Stable log(cosh), including input peaks above full scale.

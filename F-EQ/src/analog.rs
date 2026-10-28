@@ -1,6 +1,6 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
 // Son düzenleme: 22.10.2026
-// Dosyanın görevi: F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
+// Dosyanın görevi: F-EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
 //! Luftikus-inspired analogue behaviour. Gain error threshold, error range and
 //! noise amplitude are ported from lkjb's MIT-licensed Luftikus (2019).
 //! Our three serial shelves replace Luftikus's six parallel bands.
@@ -25,16 +25,16 @@ impl Default for Color {
 }
 impl Color {
     // JUCE Random's 48-bit LCG. Separate streams for the two audio channels.
-    // unit alt adımı: F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
+    // unit alt adımı: F-EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
     fn unit(&mut self, ch: usize) -> f64 {
         self.rng[ch] = self.rng[ch].wrapping_mul(0x5deece66d).wrapping_add(11) & 0xffff_ffff_ffff;
         (self.rng[ch] >> 16) as f64 / 4294967296.
     }
-    // noise alt adımı: F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
+    // noise alt adımı: F-EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
     pub fn noise(&mut self, ch: usize) -> f64 {
         1e-5 * (self.unit(ch) - 0.5)
     }
-    // change: F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
+    // change: F-EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
     // Gövdedeki başlıca çağrılar: abs → self.unit. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn change(&mut self, old: [f64; 3], new: [f64; 3], enabled: bool) {
         for ch in 0..2 {
@@ -52,7 +52,7 @@ impl Color {
             }
         }
     }
-    // smooth alt adımı: F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
+    // smooth alt adımı: F-EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
     pub fn smooth(&mut self, t: f64) {
         for ch in 0..2 {
             for b in 0..3 {

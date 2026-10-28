@@ -3,7 +3,7 @@
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 [package]
 name = "simple-eq"
-version = "0.1.10"
+version = "0.1.11"
 edition = "2024"
 rust-version = "1.97"
 license = "GPL-3.0-or-later"

@@ -1,6 +1,6 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
 // Son düzenleme: 22.10.2026
-// Dosyanın görevi: F EQ host girişini, parametre/durum kaydını ve DSP callback yaşam döngüsünü bağlar.
+// Dosyanın görevi: F-EQ host girişini, parametre/durum kaydını ve DSP callback yaşam döngüsünü bağlar.
 mod analog;
 pub mod cuts;
 pub mod dsp;
@@ -58,7 +58,7 @@ impl Plugin for SimpleEq {
             .entry("bass_q".into())
             .or_insert(ParamValue::F32(0.70710677));
     }
-    const NAME: &'static str = "F EQ";
+    const NAME: &'static str = "F-EQ";
     const VENDOR: &'static str = "FAZIL IRAK";
     const URL: &'static str = "";
     const EMAIL: &'static str = "";

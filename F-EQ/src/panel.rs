@@ -319,7 +319,7 @@ pub fn svg_with_spectrum(
     let mut s = format!(
         "<svg xmlns='http://www.w3.org/2000/svg' width='{W}' height='{H}' viewBox='0 0 {W} {H}'><rect width='{W}' height='{H}' rx='12' fill='#141819'/><g font-family='URW Gothic, sans-serif'>"
     );
-    text(&mut s, 28., 59., 40, "#e5e7df", "F EQ", "start");
+    text(&mut s, 28., 59., 40, "#e5e7df", "F-EQ", "start");
     text(
         &mut s,
         30.,
@@ -431,7 +431,7 @@ pub fn svg_with_spectrum(
         "DRAG / SCROLL · SHIFT: FINE · CTRL-CLICK: RESET",
         "start",
     );
-    text(&mut s, 770., 409., 8, "#8d9799", "F EQ / 0.1.10", "end");
+    text(&mut s, 770., 409., 8, "#8d9799", &format!("F-EQ / {}", env!("CARGO_PKG_VERSION")), "end");
     s.push_str("</g></svg>");
     s
 }
@@ -450,7 +450,7 @@ pub fn with_about(svg: &str) -> String {
     let mut s = svg.strip_suffix("</g></svg>").unwrap_or(svg).to_owned();
     s.push_str("<rect width='800' height='418' fill='#070b0c' opacity='.86'/><rect x='180' y='48' width='440' height='266' rx='10' fill='#22292b' stroke='#566265' stroke-width='1.2'/>");
     center(&mut s, 400., 78., 9, "#ed6c46", "ABOUT");
-    center(&mut s, 400., 121., 38, "#e5e7df", "F EQ");
+    center(&mut s, 400., 121., 38, "#e5e7df", "F-EQ");
     center(
         &mut s,
         400.,

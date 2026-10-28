@@ -1,6 +1,6 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
 // Son düzenleme: 22.10.2026
-// Dosyanın görevi: F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
+// Dosyanın görevi: F-EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
 //! Audio only publishes stereo samples to atomic storage. Windowing, FFT and
 //! logarithmic binning run on the GUI thread; no locks or audio allocations.
 use std::f64::consts::PI;
@@ -26,7 +26,7 @@ struct Complex {
     re: f64,
     im: f64,
 }
-// fft alt adımı: F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
+// fft alt adımı: F-EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
 // Gövdedeki başlıca çağrılar: a.swap → let → angle.cos → angle.sin. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 fn fft(a: &mut [Complex; FFT_SIZE]) {
     let mut j = 0;
@@ -71,14 +71,14 @@ fn fft(a: &mut [Complex; FFT_SIZE]) {
     }
 }
 impl Analyzer {
-    // push alt adımı: F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
+    // push alt adımı: F-EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
     pub fn push(&self, left: f32, right: f32) {
         let n = self.cursor.load(Ordering::Relaxed);
         let pair = left.to_bits() as u64 | ((right.to_bits() as u64) << 32);
         self.samples[n % RING].store(pair, Ordering::Relaxed);
         self.cursor.store(n.wrapping_add(1), Ordering::Release);
     }
-    // cursor alt adımı: F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
+    // cursor alt adımı: F-EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
     pub fn cursor(&self) -> usize {
         self.cursor.load(Ordering::Acquire)
     }
@@ -86,7 +86,7 @@ impl Analyzer {
     pub fn reset(&self) {
         self.cursor.store(0, Ordering::Release);
     }
-    // read: F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir. Mevcut veri/kalıcılık sözleşmesini bu erişim adımında koruyun.
+    // read: F-EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir. Mevcut veri/kalıcılık sözleşmesini bu erişim adımında koruyun.
     // Gövdedeki başlıca çağrılar: self.cursor → Complex::default → load → cos. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     pub fn read(&self, rate: f64) -> [f32; BINS] {
         let end = self.cursor();

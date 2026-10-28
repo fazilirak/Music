@@ -1,6 +1,6 @@
 // Türkçe bakım açıklamaları: Fazıl Irak
 // Son düzenleme: 22.10.2026
-// Dosyanın görevi: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+// Dosyanın görevi: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
 use std::f64::consts::PI;
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -54,14 +54,14 @@ impl Default for Coeff {
     }
 }
 impl Coeff {
-    // normalized alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+    // normalized alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
     fn normalized(b: [f64; 3], a: [f64; 3]) -> Self {
         Self {
             b: b.map(|v| v / a[0]),
             a: [a[1] / a[0], a[2] / a[0]],
         }
     }
-    // shelf alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+    // shelf alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
     // Gövdedeki başlıca çağrılar: powf → hz.min → w.cos → w.sin. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     fn shelf(rate: f64, hz: f64, db: f64, q: f64, high: bool) -> Self {
         let a = 10f64.powf(db / 40.);
@@ -96,7 +96,7 @@ impl Coeff {
             )
         }
     }
-    // cut alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+    // cut alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
     pub(crate) fn cut(rate: f64, hz: f64, highpass: bool, q: f64) -> Self {
         let w = 2. * PI * hz.min(rate * 0.45) / rate;
         let c = w.cos();
@@ -108,12 +108,12 @@ impl Coeff {
         };
         Self::normalized(b, [1. + alpha, -2. * c, 1. - alpha])
     }
-    // magnitude alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+    // magnitude alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
     pub fn magnitude(&self, hz: f64, rate: f64) -> f64 {
         let (r, i) = self.complex(hz, rate);
         (r * r + i * i).sqrt()
     }
-    // complex alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+    // complex alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
     pub(crate) fn complex(&self, hz: f64, rate: f64) -> (f64, f64) {
         let w = 2. * PI * hz / rate;
         let re = self.b[0] + self.b[1] * w.cos() + self.b[2] * (2. * w).cos();
@@ -124,11 +124,11 @@ impl Coeff {
         ((re * ar + im * ai) / den, (im * ar - re * ai) / den)
     }
 }
-// coefficients alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+// coefficients alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
 pub fn coefficients(s: Settings, rate: f64) -> [Coeff; 3] {
     shelf_coefficients(s, rate, [0.; 3])
 }
-// shelf_coefficients alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+// shelf_coefficients alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
 fn shelf_coefficients(s: Settings, rate: f64, offset: [f64; 3]) -> [Coeff; 3] {
     [
         Coeff::shelf(rate, s.pivot, -s.tilt + offset[0] * s.analog, s.q, false),
@@ -136,7 +136,7 @@ fn shelf_coefficients(s: Settings, rate: f64, offset: [f64; 3]) -> [Coeff; 3] {
         Coeff::shelf(rate, 300., s.bass + offset[2] * s.analog, s.bass_q, false),
     ]
 }
-// response alt adımı: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+// response alt adımı: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
 // Gövdedeki başlıca çağrılar: coefficients → iter → map → c.magnitude. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 pub fn response(s: Settings, hz: f64, rate: f64) -> f64 {
     let gain = coefficients(s, rate)
@@ -231,7 +231,7 @@ impl Engine {
         self.high_cut.reset(s.high_slope);
         self.rebuild();
     }
-    // set: F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
+    // set: F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
     pub fn set(&mut self, s: Settings) {
         if s != self.target {
             self.color.change(

@@ -2,7 +2,7 @@
 
 **Fazıl Irak · Son düzenleme: 22.10.2026**
 
-F EQ 0.1.10 Rust/nih-plug projesidir. Tilt, Bass Lift, ayrı Q, dik kesimler, analog/saturation ve çıkış spektrumu kaynakları korunarak taşındı.
+F-EQ 0.1.11 Rust/nih-plug projesidir. Tilt, Bass Lift, ayrı Q, dik kesimler, analog/saturation ve çıkış spektrumu kaynakları korunarak taşındı.
 
 ## Derleme ve bağımlılıklar
 
@@ -47,7 +47,7 @@ Bu açıklama çalışması kapsamlı bir güvenlik veya tüm DAW uyumluluk sert
 
 ### src/analog.rs
 
-F EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
+F-EQ’nun düşük seviyeli analog tolerans ve gürültü durumunu üretir/yumuşatır.
 
 Fonksiyonlar: `default`, `unit`, `noise`, `change`, `smooth`, `reset`, `noise_and_variation_match_original_ranges`.
 
@@ -59,7 +59,7 @@ Fonksiyonlar: `default`, `reset`, `configure`, `smooth`, `sample`, `section`, `m
 
 ### src/dsp.rs
 
-F EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
+F-EQ biquad shelf/kesim katsayıları, durum hafızası, tilt/bass ve bypass işleme zinciridir.
 
 Fonksiyonlar: `default`, `default`, `normalized`, `shelf`, `cut`, `magnitude`, `complex`, `coefficients`, `shelf_coefficients`, `response`, `tick`, `default`, `prepare`, `set`, `rebuild`, `sample`, `neutral_is_transparent`, `tilt_has_opposite_shelves_and_fixed_pivot`, `bass_and_cuts`, `extremes_stable_and_stereo_independent`, `bypass_becomes_exact_dry`, `tilt_and_bass_q_control_separate_shelves`, `analog_noise_is_subtle_and_bypass_removes_it_and_saturation`, `actual_audio_measures_96_db_per_octave_and_click_free_switching`.
 
@@ -71,7 +71,7 @@ Fonksiyonlar: `drop`, `new`, `spawn`, `size`, `set_scale_factor`, `param_value_c
 
 ### src/lib.rs
 
-F EQ host girişini, parametre/durum kaydını ve DSP callback yaşam döngüsünü bağlar.
+F-EQ host girişini, parametre/durum kaydını ve DSP callback yaşam döngüsünü bağlar.
 
 Fonksiyonlar: `default`, `filter_state`, `params`, `editor`, `initialize`, `reset`, `process`, `legacy_state_explicitly_resets_added_controls`.
 
@@ -89,13 +89,13 @@ Fonksiyonlar: `default`, `db`, `hz`, `knobs`, `settings`.
 
 ### src/saturation.rs
 
-F EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.
+F-EQ doygunluk eğrisi ve antitürev tabanlı sayısal işleme adımıdır.
 
 Fonksiyonlar: `sample`, `integral`, `zero_is_exact_and_drive_softens_peaks`, `generates_third_harmonic`.
 
 ### src/spectrum.rs
 
-F EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
+F-EQ çıkış spektrumunun tampon, FFT ve atomik okunabilir gösterimini üretir.
 
 Fonksiyonlar: `default`, `fft`, `push`, `cursor`, `reset`, `read`, `sine_frequency_and_level_survive_opposite_stereo_polarity`, `silence_and_reset_have_no_spurious_spectrum`.
 

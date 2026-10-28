@@ -86,7 +86,7 @@ impl Editor for EqEditor {
         let handle = Window::open_parented(
             &parent,
             WindowOpenOptions {
-                title: "F EQ".into(),
+                title: "F-EQ".into(),
                 size: Size::new(panel::W as f64, panel::H as f64),
                 scale: WindowScalePolicy::ScaleFactor(scale),
                 #[cfg(feature = "standalone")]
