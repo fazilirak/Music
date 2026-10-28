@@ -10,7 +10,7 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 | [F-Kick](F-Kick/README.md) | Fazıl Irak | [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) | [Universal 0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-macOS-Universal.tar.gz) | [0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
 | [F-TransForm](F-TransForm/README.md) | Fazıl Irak | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | [Universal 0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-macOS-Universal.tar.gz) | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
 | [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.2](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [1.1.2](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
-| [Jellybone](Shaper/README.md) | Fazıl Irak | [Releases](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.4) | [0.8.4](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.4/Jellybone-0.8.4-Linux-x64.tar.gz) | [Browse](Shaper) |
+| [Jellybone](Shaper/README.md) | Fazıl Irak | [Releases](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) | [0.8.5](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Linux-x64.tar.gz) | [Browse](Shaper) |
 | [Model F](Model-F/README.md) | Fazıl Irak | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [0.2.8](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-x64.tar.gz) | [Browse / licences](Model-F) |
 | [F-EQ](F-EQ/README.md) | Fazıl Irak | [0.1.11](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [0.1.11](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.11/F-EQ-0.1.11-Linux-x64.tar.gz) | [Browse / licences](F-EQ) |
 
@@ -44,7 +44,7 @@ Website: https://fazilirak.com · Contact: info@fazilirak.com
 
 ![Jellybone](Shaper/doc/shaper.png)
 
-Formerly Shaper. Effects rack by Fazıl Irak: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and Pitch. The new Jellybone name preserves existing plugin and preset identities.
+Formerly Shaper. Effects rack by Fazıl Irak: Gate, Time, Filter, Reverb, Pan, Volume, Saturation and Pitch. The new Jellybone name preserves existing plugin and preset identities. Version 0.8.5 fixes normal Filter/Reverb knobs randomly turning yellow; their cyan/lavender colours are preserved.
 
 - [Source, licences and Windows build instructions](Shaper/README.md)
 - [macOS Universal build instructions](Shaper/README.md#install-and-build)
