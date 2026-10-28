@@ -1,6 +1,6 @@
 # Fazıl Irak · 27.10.2026 · F-Kick derleme ve doğrulama hedefleri.
 cmake_minimum_required(VERSION 3.24)
-project(FKick VERSION 0.8.1 LANGUAGES C CXX)
+project(FKick VERSION 0.8.2 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
@@ -31,7 +31,7 @@ target_link_libraries(FKick PRIVATE FKickResources PUBLIC juce::juce_audio_utils
     juce::juce_recommended_config_flags)
 enable_testing()
 juce_add_console_app(FKickTests PRODUCT_NAME "F-Kick Tests")
-target_sources(FKickTests PRIVATE Tests/AudioTests.cpp Tests/TechnoTests.cpp Tests/BankTests.cpp Tests/ImpactTests.cpp Tests/FXRackTests.cpp)
+target_sources(FKickTests PRIVATE Tests/AudioTests.cpp Tests/TechnoTests.cpp Tests/BankTests.cpp Tests/ImpactTests.cpp Tests/FXRackTests.cpp Tests/CleanTests.cpp)
 target_compile_definitions(FKickTests PRIVATE JUCE_PLUGINHOST_VST3=1 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_compile_definitions(FKickTests PRIVATE FKICK_TEST_FIXTURES="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")
 target_link_libraries(FKickTests PRIVATE FKick FKickResources)

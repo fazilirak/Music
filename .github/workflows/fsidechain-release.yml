@@ -154,8 +154,8 @@ jobs:
           NOTES
           tag="F-Sidechain-v${FSIDECHAIN_VERSION}"
           if gh release view "$tag" >/dev/null 2>&1; then
-            echo "Release $tag already exists; use a new F-Sidechain version for a new published build." >&2
-            exit 1
+            echo "Preserving existing release: $tag"
+            exit 0
           fi
           gh release create "$tag" release/* --target "$FSIDECHAIN_COMMIT" \
             --title "F-Sidechain ${FSIDECHAIN_VERSION}" --notes-file release-notes.md

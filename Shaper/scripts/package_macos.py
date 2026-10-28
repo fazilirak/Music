@@ -28,9 +28,9 @@ def package():
     if 'Shaper_Hall_Quad_wav' not in header or 'Hall_Quad_flac' in header:
         raise RuntimeError('Expected independently generated Shaper IR resource.')
     artefacts = build / 'Shaper_artefacts/Release'
-    bundles = [(artefacts / 'Standalone/Shaper.app', 'Standalone/Shaper.app'),
-               (artefacts / 'VST3/Shaper.vst3', 'VST3/Shaper.vst3'),
-               (artefacts / 'AU/Shaper.component', 'AU/Shaper.component')]
+    bundles = [(artefacts / 'Standalone/Jellybone.app', 'Standalone/Jellybone.app'),
+               (artefacts / 'VST3/Jellybone.vst3', 'VST3/Jellybone.vst3'),
+               (artefacts / 'AU/Jellybone.component', 'AU/Jellybone.component')]
     ir = (ROOT / 'Resources/impulses/Shaper_Hall_Quad.wav').read_bytes()
     for bundle, _ in bundles:
         info = plistlib.loads((bundle / 'Contents/Info.plist').read_bytes())
@@ -48,12 +48,12 @@ def package():
     for folder, extension, count in [('FactoryPresets', '*.shaper', 160), ('EffectPresets', '*.shapereffect', 32)]:
         if len(list((ROOT / 'dist' / folder).rglob(extension))) != count:
             raise RuntimeError('Missing exported preset bank: ' + folder)
-    output = ROOT / 'dist' / f'Shaper-{version}-macOS-distribution'
+    output = ROOT / 'dist' / f'Jellybone-{version}-macOS-distribution'
     output.mkdir(parents=True, exist_ok=True)
-    source_name, ir_manifest, source_count = package_sources(output, version, f'Shaper-{version}-macOS-Source.zip')
-    binary_name = f'Shaper-{version}-macOS-Universal.tar.gz'
+    source_name, ir_manifest, source_count = package_sources(output, version, f'Jellybone-{version}-macOS-Source.zip')
+    binary_name = f'Jellybone-{version}-macOS-Universal.tar.gz'
     with tempfile.TemporaryDirectory(prefix='package-', dir=build) as temporary:
-        stage = Path(temporary) / f'Shaper-{version}'
+        stage = Path(temporary) / f'Jellybone-{version}'
         stage.mkdir()
         for bundle, destination in bundles:
             shutil.copytree(bundle, stage / destination, symlinks=True)
@@ -70,9 +70,9 @@ def package():
                                          'Distribute both archives with equivalent download access.\n', encoding='utf-8')
         (stage / 'MACOS.txt').write_text(
             'Universal arm64 + x86_64. Deployment target: macOS 11.0.\n'
-            'Standalone: Standalone/Shaper.app\n'
-            'VST3: copy VST3/Shaper.vst3 to ~/Library/Audio/Plug-Ins/VST3/\n'
-            'AU: copy AU/Shaper.component to ~/Library/Audio/Plug-Ins/Components/\n'
+            'Standalone: Standalone/Jellybone.app\n'
+            'VST3: copy VST3/Jellybone.vst3 to ~/Library/Audio/Plug-Ins/VST3/\n'
+            'AU: copy AU/Jellybone.component to ~/Library/Audio/Plug-Ins/Components/\n'
             'Ad-hoc signed; not Developer ID signed or Apple notarised.\n', encoding='utf-8')
         manifest = {p.relative_to(stage).as_posix(): digest(p) for p in stage.rglob('*') if p.is_file()}
         (stage / 'BINARY-MANIFEST.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
@@ -81,7 +81,7 @@ def package():
             archive.add(stage, arcname=stage.name)
     with tarfile.open(output / binary_name) as archive:
         for name, expected in manifest.items():
-            member = archive.extractfile(f'Shaper-{version}/{name}')
+            member = archive.extractfile(f'Jellybone-{version}/{name}')
             import hashlib
             if hashlib.sha256(member.read()).hexdigest() != expected:
                 raise RuntimeError('Archive verification failed: ' + name)

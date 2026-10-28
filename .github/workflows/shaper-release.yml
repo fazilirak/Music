@@ -1,7 +1,7 @@
 # Fazıl Irak tarafından oluşturuldu: 23.10.2026
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 Fazıl Irak
-name: Shaper Windows and macOS Release
+name: Jellybone Windows and macOS Release
 
 on:
   push:
@@ -52,7 +52,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: Shaper-Windows
-          path: Shaper/dist/Shaper-*-distribution/*
+          path: Shaper/dist/Jellybone-*-distribution/*
           if-no-files-found: error
           compression-level: 0
       - name: Upload Windows diagnostics
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/upload-artifact@v7
         with:
           name: Shaper-macOS
-          path: Shaper/dist/Shaper-*-macOS-distribution/*
+          path: Shaper/dist/Jellybone-*-macOS-distribution/*
           if-no-files-found: error
           compression-level: 0
       - name: Upload Mac diagnostics
@@ -102,6 +102,10 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/download-artifact@v7
         with:
           name: Shaper-Windows
@@ -137,10 +141,11 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          Shaper 0.8.3
-          - Removes the lower rack Mix and Out controls and their labels, simplifying the footer. The existing upper Stereo / dB / Mix panel remains in its established position.
-          - Preserves rack mix/gain parameter IDs, host automation, preset formats and DSP behavior. Existing saved rack mix/gain values still apply; they remain accessible through DAW automation. The upper panel controls the selected effect/band, not the hidden rack master parameters.
-          - Updates the main interface screenshot to match the streamlined footer.
+          Jellybone 0.8.4 — Shape the rhythm. Build your rack.
+          - Renames the visible Shaper product and binaries to Jellybone.
+          - Plain clickable logo with FAZIL IRAK / SHAPER RACK underneath.
+          - Preserves plugin manufacturer/code/bundle IDs, parameter IDs, DSP, saved-state schema and existing preset extensions/directory.
+          - Preserves all GATE-12/Tilr and third-party copyright/licence notices.
 
           Windows x64: VST3 and standalone.
           macOS Universal (arm64 + x86_64): VST3, AU and standalone; deployment target macOS 11.0.
@@ -151,10 +156,13 @@ jobs:
           Distribute the matching source alongside binaries. Individual component licences are preserved.
           The default Reverb IR is independently generated; the former Samplicity resource is excluded.
           NOTES
-          tag="Shaper-v${SHAPER_VERSION}"
+          tag="Jellybone-v${SHAPER_VERSION}"
           if gh release view "$tag" >/dev/null 2>&1; then
-            echo "Release $tag already exists; use a new Shaper version for a new published build." >&2
-            exit 1
+            echo "Preserving existing release: $tag"
+            exit 0
           fi
-          gh release create "$tag" release/* --target "$SHAPER_COMMIT" \
-            --title "Shaper ${SHAPER_VERSION}" --notes-file release-notes.md
+          # Fazıl Irak: Etiket default branch'e konur; test edilen ürün ağacı birebir aynı olmalıdır.
+          latest=$(gh api "repos/$GH_REPO/commits/main" --jq .sha)
+          test "$(git rev-parse "$SHAPER_COMMIT:Shaper")" = "$(git rev-parse "$latest:Shaper")"
+          gh release create "$tag" release/* --target main \
+            --title "Jellybone ${SHAPER_VERSION}" --notes-file release-notes.md

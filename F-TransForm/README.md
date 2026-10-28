@@ -10,6 +10,7 @@ An independently developed multi-effect transition processor by **Fazıl Irak**.
 | Downloads | Links |
 | --- | --- |
 | Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) |
 | Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Source.zip) |
 | Release notes and checksums | [F-TransForm 0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) |
 

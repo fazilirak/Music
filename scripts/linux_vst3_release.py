@@ -51,6 +51,7 @@ def source_paths(root):
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('project',choices=PROJECTS);args=parser.parse_args()
     if not sys.platform.startswith('linux'):raise RuntimeError('Native Linux runner required')
+    product='Jellybone' if args.project=='Shaper' else args.project
     root=REPO/args.project;out=REPO/'linux-artifacts'/args.project;out.mkdir(parents=True,exist_ok=True)
     commit=run(['git','rev-parse','HEAD'],capture=True).strip()
     if args.project in ['Model-F','F-EQ']:
@@ -75,12 +76,12 @@ def main():
         bundles=list(build.glob('*_artefacts/Release/VST3/*.vst3'));assert len(bundles)==1,bundles
         bundle=bundles[0];modules=list(bundle.glob('Contents/x86_64-linux/*.so'));assert len(modules)==1,modules
         dependencies=validate_module(modules[0])
-        source=out/(args.project+'-'+version+'-Linux-Source.tar.gz')
+        source=out/(product+'-'+version+'-Linux-Source.tar.gz')
         with tarfile.open(source,'w:gz') as archive:
-            for p,rel in source_paths(root):archive.add(p,arcname=str(Path(args.project+'-'+version+'-Source')/rel),recursive=False)
-            archive.add(log,arcname=args.project+'-'+version+'-Source/validation/LINUX-TEST-RESULTS.txt')
+            for p,rel in source_paths(root):archive.add(p,arcname=str(Path(product+'-'+version+'-Source')/rel),recursive=False)
+            archive.add(log,arcname=product+'-'+version+'-Source/validation/LINUX-TEST-RESULTS.txt')
         with tempfile.TemporaryDirectory() as temporary:
-            stage=Path(temporary)/(args.project+'-'+version+'-Linux-x64');stage.mkdir()
+            stage=Path(temporary)/(product+'-'+version+'-Linux-x64');stage.mkdir()
             (stage/'VST3').mkdir();shutil.copytree(bundle,stage/'VST3'/bundle.name,symlinks=True)
             for name in ['LICENSE','LICENSE.txt','COPYING','COPYING.txt','JUCE-LICENSE.md','THIRD-PARTY-NOTICES.txt','AUTHORS.md','README.md','licenses']:
                 p=root/name
@@ -90,12 +91,12 @@ def main():
             shutil.copy2(log,stage/'TEST-RESULTS.txt')
             (stage/'SOURCE.txt').write_text('Complete corresponding source: '+source.name+'\nCommit: '+commit+'\n',encoding='utf-8')
             (stage/'LINUX.txt').write_text('Linux x86_64, built and tested on Ubuntu 24.04. Copy the complete VST3 bundle to ~/.vst3/ and rescan in a native Linux VST3 host. Windows and macOS bundles are different binaries. Actual DAW/audio-device and other-distribution testing remains separate.\n',encoding='utf-8')
-            binary=out/(args.project+'-'+version+'-Linux-x64.tar.gz')
+            binary=out/(product+'-'+version+'-Linux-x64.tar.gz')
             with tarfile.open(binary,'w:gz') as archive:archive.add(stage,arcname=stage.name)
-    (out/(args.project+'-Linux-RUNTIME-LIBRARIES.txt')).write_text(dependencies,encoding='utf-8')
+    (out/(product+'-Linux-RUNTIME-LIBRARIES.txt')).write_text(dependencies,encoding='utf-8')
     assets={p.name:sha(p) for p in out.iterdir() if p.is_file()}
-    info={'project':args.project,'version':version,'commit':commit,'platform':'Linux x64 / Ubuntu 24.04','tests':'Native build and project tests passed; ELF64 x86_64, VST3 factory symbol and runtime dependencies verified','assets':assets}
-    (out/(args.project+'-Linux-RELEASE-MANIFEST.json')).write_text(json.dumps(info,indent=2)+'\n',encoding='utf-8')
+    info={'project':product,'version':version,'commit':commit,'platform':'Linux x64 / Ubuntu 24.04','tests':'Native build and project tests passed; ELF64 x86_64, VST3 factory symbol and runtime dependencies verified','assets':assets}
+    (out/(product+'-Linux-RELEASE-MANIFEST.json')).write_text(json.dumps(info,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(info,indent=2),flush=True)
 if __name__=='__main__':
     with linux_desktop():main()

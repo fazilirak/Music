@@ -4,7 +4,7 @@
 # Fazıl Irak · 27.10.2026 · Doğrulanmış yerel ikili/kaynak arşivi. Sistem kurulumu/yayın yapmaz.
 $ErrorActionPreference = 'Stop'
 $kickRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$kickVersion = '0.8.1'
+$kickVersion = '0.8.2'
 $kickDist = Join-Path $kickRoot 'dist'
 $kickBinary = Join-Path $kickDist "F-Kick-$kickVersion-Windows-x64"
 $kickSource = Join-Path $kickDist "F-Kick-$kickVersion-Source"

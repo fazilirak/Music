@@ -109,7 +109,10 @@ void AboutPanel::paint(juce::Graphics &g)
     g.fillAll(juce::Colour(0xee10141b));
     g.setColour(juce::Colours::white);
     g.setFont(juce::FontOptions(20, juce::Font::bold));
-    g.drawText("FAZIL IRAK  /  SHAPER", 40, 18, getWidth() - 190, 30, juce::Justification::centredLeft);
+    g.drawText("Jellybone", 40, 10, getWidth() - 190, 27, juce::Justification::centredLeft);
+    // Fazıl Irak: Ürün türü başlığın altında, diğer F serisi ürünleriyle aynı yazımda.
+    g.setFont(juce::FontOptions(10.f));g.setColour(juce::Colour(0xff8993a1));
+    g.drawText("FAZIL IRAK / SHAPER RACK",40,37,getWidth()-190,14,juce::Justification::centredLeft);
 }
 // Pencere/kontrol boyutuna bağlı yerleşimi yeniden hesaplar; hit-test aynı geometriyi izlemelidir.
 void AboutPanel::resized()

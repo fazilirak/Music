@@ -101,6 +101,28 @@ if impact_levels.exists():
     for p in bank:
         entry=json.loads(impact_levels.read_text(encoding='utf-8')).get(p['name'])
         if entry is not None:p['values']['output']=entry
+# Fazıl Irak - 28.10.2026: Temiz gövde fabrika politikası. Punch doygunluğu
+# kullanıcı tercihidir; temiz/tok his, yukarıdaki amplitude/pitch konturlarından gelir.
+# Eski oturumların kayıtlı Punch/Drive değerlerine ve DSP denklemlerine dokunulmaz.
+for p in bank:
+    values=p['values']
+    values['punch']=0
+    if p['category']!='Experimental':
+        values['drive']=0
+        values['driveType']=0
+        values['rumbleDrive']=0
+        values['harmonics']=min(values.get('harmonics',0),.10)
+        for route in ('lfo_drive','ad_drive','lfo_rumbleDrive','ad_rumbleDrive'):
+            if route in values:values[route]=0
+        values['output']=-6
+    # Saf başlangıç ve referans sesleri tamamen sinüs tabanlıdır.
+    if p['name']=='Init - Solid' or p['recipe'] in ('Sub','Studio'):
+        values['harmonics']=0
+clean_levels=root/'Resources/CleanLevels.json'
+if clean_levels.exists():
+    calibrated=json.loads(clean_levels.read_text(encoding='utf-8'))
+    for p in bank:
+        if p['name'] in calibrated:p['values'].update(calibrated[p['name']])
 out=root/'Resources/FactoryBank.json';out.write_text(json.dumps(bank,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
 # JSON insan tarafından düzenlenebilir ana kaynak; derleme header'ı I/O olmadan aynı veriyi sunar.
 # Fazıl Irak: MSVC 2022'nin tek literal sınırı için JSON'u küçük bloklara ayır.

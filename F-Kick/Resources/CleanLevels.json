@@ -1,0 +1,450 @@
+{
+  "Init - Solid": {
+    "output": -0.921923695728523,
+    "rumbleGain": 12.0
+  },
+  "Deep House": {
+    "output": -0.293503705139688,
+    "rumbleGain": 12.0
+  },
+  "Short Punch": {
+    "output": -0.459892847729719,
+    "rumbleGain": 12.0
+  },
+  "Long 808": {
+    "output": -0.926222750989041,
+    "rumbleGain": 12.0
+  },
+  "Soft Analog": {
+    "output": -0.25580929078394,
+    "rumbleGain": 12.0
+  },
+  "Hard Edge": {
+    "output": -0.501166501283681,
+    "rumbleGain": 12.0
+  },
+  "Rounded High Kick": {
+    "output": -0.392880673472128,
+    "rumbleGain": 12.0
+  },
+  "Sub Foundation": {
+    "output": -0.841366324806497,
+    "rumbleGain": 12.0
+  },
+  "Analog - Round Pocket": {
+    "output": 0.694087134283361,
+    "rumbleGain": 12.0
+  },
+  "Analog - Dry Eight": {
+    "output": 1.184363250043734,
+    "rumbleGain": 12.0
+  },
+  "Analog - Warm Tape": {
+    "output": 0.917112480276145,
+    "rumbleGain": 12.0
+  },
+  "Analog - Low Bloom": {
+    "output": 1.071698399112591,
+    "rumbleGain": 12.0
+  },
+  "Analog - Tight Nine": {
+    "output": 0.549752673725898,
+    "rumbleGain": 12.0
+  },
+  "Analog - Rounded Club": {
+    "output": 0.568561616130648,
+    "rumbleGain": 12.0
+  },
+  "Analog - Soft Felt": {
+    "output": 0.985965111020899,
+    "rumbleGain": 12.0
+  },
+  "Analog - Open Drum": {
+    "output": 0.874468891968576,
+    "rumbleGain": 12.0
+  },
+  "House - Garage Knock": {
+    "output": 0.564869357167449,
+    "rumbleGain": 12.0
+  },
+  "House - Disco Cushion": {
+    "output": 1.041580392276124,
+    "rumbleGain": 12.0
+  },
+  "House - Deep Pillow": {
+    "output": 0.914499123118233,
+    "rumbleGain": 12.0
+  },
+  "House - Jack Snap": {
+    "output": 0.748483808338051,
+    "rumbleGain": 12.0
+  },
+  "House - Soul Floor": {
+    "output": 1.087526654494248,
+    "rumbleGain": 12.0
+  },
+  "House - Club Anchor": {
+    "output": 0.508191200235231,
+    "rumbleGain": 12.0
+  },
+  "House - Minimal Dot": {
+    "output": 0.928360139970582,
+    "rumbleGain": 12.0
+  },
+  "House - Filtered Loft": {
+    "output": 0.999808970461494,
+    "rumbleGain": 12.0
+  },
+  "Punch - Front Row": {
+    "output": 0.671566661739664,
+    "rumbleGain": 12.0
+  },
+  "Punch - Chest Hit": {
+    "output": 0.393883963348216,
+    "rumbleGain": 12.0
+  },
+  "Punch - Dry Concrete": {
+    "output": 0.55166889533162,
+    "rumbleGain": 12.0
+  },
+  "Punch - Short Thud": {
+    "output": 0.881656520202576,
+    "rumbleGain": 12.0
+  },
+  "Punch - Click Focus": {
+    "output": 0.565693615743342,
+    "rumbleGain": 12.0
+  },
+  "Punch - Low Impact": {
+    "output": 0.840728404545533,
+    "rumbleGain": 12.0
+  },
+  "Punch - Mid Knock": {
+    "output": 0.566786179928307,
+    "rumbleGain": 12.0
+  },
+  "Punch - Peak Cut": {
+    "output": 0.605138607673467,
+    "rumbleGain": 12.0
+  },
+  "Sub - Sine Drop": {
+    "output": 1.1093910992318,
+    "rumbleGain": 12.0
+  },
+  "Sub - 808 Round": {
+    "output": -2.067121526222341,
+    "rumbleGain": 12.0
+  },
+  "Sub - Short Sub": {
+    "output": 0.313414659830556,
+    "rumbleGain": 12.0
+  },
+  "Sub - Long Pillow": {
+    "output": 0.461894324738864,
+    "rumbleGain": 12.0
+  },
+  "Sub - Clean Bass": {
+    "output": 0.649588540537543,
+    "rumbleGain": 12.0
+  },
+  "Sub - Velvet Low": {
+    "output": -0.820508033416964,
+    "rumbleGain": 12.0
+  },
+  "Sub - Club Sub": {
+    "output": 0.52414912689845,
+    "rumbleGain": 12.0
+  },
+  "Sub - Soft Landing": {
+    "output": 0.997195351503827,
+    "rumbleGain": 12.0
+  },
+  "Warm - Dusty Room": {
+    "output": 0.979261827685811,
+    "rumbleGain": 12.0
+  },
+  "Warm - Felt Beater": {
+    "output": 1.001206138003997,
+    "rumbleGain": 12.0
+  },
+  "Warm - Muted Skin": {
+    "output": 0.830129047597204,
+    "rumbleGain": 12.0
+  },
+  "Warm - Wooden Body": {
+    "output": 0.915941330069113,
+    "rumbleGain": 12.0
+  },
+  "Warm - Amber Drum": {
+    "output": 0.858733400709557,
+    "rumbleGain": 12.0
+  },
+  "Warm - Small Room": {
+    "output": 0.944346455469248,
+    "rumbleGain": 12.0
+  },
+  "Warm - Soft Paper": {
+    "output": 0.675286274220451,
+    "rumbleGain": 12.0
+  },
+  "Warm - Vintage Weight": {
+    "output": 1.011760053989175,
+    "rumbleGain": 12.0
+  },
+  "Dance - Trance Point": {
+    "output": 0.605558690782374,
+    "rumbleGain": 12.0
+  },
+  "Dance - Pop Solid": {
+    "output": 0.766914012510078,
+    "rumbleGain": 12.0
+  },
+  "Dance - Electro Bite": {
+    "output": 0.541652062197659,
+    "rumbleGain": 12.0
+  },
+  "Dance - Mainstage": {
+    "output": 0.485771686529961,
+    "rumbleGain": 12.0
+  },
+  "Dance - Breakbeat": {
+    "output": 0.688367437457195,
+    "rumbleGain": 12.0
+  },
+  "Dance - Fast Floor": {
+    "output": 0.637198573719544,
+    "rumbleGain": 12.0
+  },
+  "Dance - Bounce Body": {
+    "output": 0.674230411818886,
+    "rumbleGain": 12.0
+  },
+  "Dance - Bright Anchor": {
+    "output": 0.538876416721607,
+    "rumbleGain": 12.0
+  },
+  "Studio - Dry Reference": {
+    "output": 0.288373869152803,
+    "rumbleGain": 12.0
+  },
+  "Studio - Low Reference": {
+    "output": 1.167303527633464,
+    "rumbleGain": 12.0
+  },
+  "Studio - Medium Room": {
+    "output": 0.35632018660019,
+    "rumbleGain": 12.0
+  },
+  "Studio - Snappy Skin": {
+    "output": 0.39205910299361,
+    "rumbleGain": 12.0
+  },
+  "Studio - Mellow Round": {
+    "output": 0.392675574238542,
+    "rumbleGain": 12.0
+  },
+  "Studio - Firm Center": {
+    "output": 0.131187539899091,
+    "rumbleGain": 12.0
+  },
+  "Studio - Long Body": {
+    "output": 0.266400746765719,
+    "rumbleGain": 12.0
+  },
+  "Studio - Clean Finish": {
+    "output": 0.395796158676816,
+    "rumbleGain": 12.0
+  },
+  "Techno - Deep Rumble": {
+    "output": -2.790035186050421,
+    "rumbleGain": 14.78681333400057
+  },
+  "Techno - Hard Echo": {
+    "output": -0.720401945212128,
+    "rumbleGain": 8.722792353565989
+  },
+  "Techno - Wobble": {
+    "output": -0.046319167944159,
+    "rumbleGain": 8.436108272796048
+  },
+  "Techno - Industrial Tail": {
+    "output": -0.046319167944159,
+    "rumbleGain": 9.200761639917673
+  },
+  "Rumble - Basement": {
+    "output": 2.100620322099267,
+    "rumbleGain": 14.39091707107734
+  },
+  "Rumble - Tunnel": {
+    "output": 0.609085660851182,
+    "rumbleGain": 14.081997798913104
+  },
+  "Rumble - Deep Chamber": {
+    "output": 2.27027329843601,
+    "rumbleGain": 17.133950546315436
+  },
+  "Rumble - Short Cellar": {
+    "output": -4.702750270366575,
+    "rumbleGain": 23.957643653265375
+  },
+  "Rumble - Warehouse": {
+    "output": 0.979679734398093,
+    "rumbleGain": 11.477792364471682
+  },
+  "Rumble - Dark Floor": {
+    "output": 1.856777412502847,
+    "rumbleGain": 16.54284042496791
+  },
+  "Hard - Concrete": {
+    "output": 1.183706758174583,
+    "rumbleGain": 19.863423512669364
+  },
+  "Hard - Steel Toe": {
+    "output": -0.723218464506537,
+    "rumbleGain": 13.347483410866996
+  },
+  "Hard - Crusher": {
+    "output": 1.20501957850562,
+    "rumbleGain": 11.244773015523187
+  },
+  "Hard - Impact Wall": {
+    "output": -4.109260688681829,
+    "rumbleGain": 22.11563925091611
+  },
+  "Hard - Heavy Press": {
+    "output": 0.305486239806037,
+    "rumbleGain": 10.551909992951927
+  },
+  "Hard - Dry Hammer": {
+    "output": -0.52490231172915,
+    "rumbleGain": 24.0
+  },
+  "Acid - Corrosion": {
+    "output": 1.590395006322652,
+    "rumbleGain": 14.530948275391783
+  },
+  "Acid - Resonant Bite": {
+    "output": -1.347254783899857,
+    "rumbleGain": 16.16049063552688
+  },
+  "Acid - Squelch Bed": {
+    "output": 1.15025207187049,
+    "rumbleGain": 10.831538093306325
+  },
+  "Acid - Rust Pulse": {
+    "output": -0.333272194391412,
+    "rumbleGain": 13.242843093781623
+  },
+  "Acid - Sharp Vessel": {
+    "output": -0.897815319745732,
+    "rumbleGain": 20.90038162795163
+  },
+  "Acid - Low Acid": {
+    "output": 2.489175179823164,
+    "rumbleGain": 11.218902960320872
+  },
+  "Echo - Offbeat Vault": {
+    "output": 2.775220270097257,
+    "rumbleGain": 15.077937963158643
+  },
+  "Echo - Dotted Chamber": {
+    "output": 1.131204986585807,
+    "rumbleGain": 13.958496308124793
+  },
+  "Echo - Dub Floor": {
+    "output": 2.023518917207362,
+    "rumbleGain": 14.231868551012642
+  },
+  "Echo - Metal Steps": {
+    "output": -1.715673246607384,
+    "rumbleGain": 17.575904583293084
+  },
+  "Echo - Half Shadow": {
+    "output": 0.451529355545244,
+    "rumbleGain": 11.83426035650795
+  },
+  "Echo - Low Taps": {
+    "output": 2.420583998900295,
+    "rumbleGain": 15.344825798400137
+  },
+  "Industrial - Iron Hall": {
+    "output": 1.421120335997671,
+    "rumbleGain": 11.890839144162143
+  },
+  "Industrial - Scrap Press": {
+    "output": -1.668748097536163,
+    "rumbleGain": 17.12505026718455
+  },
+  "Industrial - Furnace": {
+    "output": 2.010974891302649,
+    "rumbleGain": 8.125787289783553
+  },
+  "Industrial - Grinding Floor": {
+    "output": -0.53927273836598,
+    "rumbleGain": 12.618545451508542
+  },
+  "Industrial - Iron Dust": {
+    "output": -2.633860497329422,
+    "rumbleGain": 22.33218724085807
+  },
+  "Industrial - Concrete Cavern": {
+    "output": 2.55269410117598,
+    "rumbleGain": 10.818229315885034
+  },
+  "Hypnotic - Rolling Bed": {
+    "output": 1.033435523765519,
+    "rumbleGain": 16.23313910899558
+  },
+  "Hypnotic - Slow Breather": {
+    "output": 1.551673784488393,
+    "rumbleGain": 17.64634938306326
+  },
+  "Hypnotic - Filter Wheel": {
+    "output": 0.415923069080648,
+    "rumbleGain": 17.453331141212985
+  },
+  "Hypnotic - Sub Cycle": {
+    "output": 1.093978418797292,
+    "rumbleGain": 19.292529011150656
+  },
+  "Hypnotic - Moving Tunnel": {
+    "output": -0.240300308239604,
+    "rumbleGain": 14.572228856388875
+  },
+  "Hypnotic - Triplet Shadow": {
+    "output": -1.360250010000136,
+    "rumbleGain": 19.440624508824854
+  },
+  "Minimal - Dry Needle": {
+    "output": 1.702508565581766,
+    "rumbleGain": 24.0
+  },
+  "Minimal - Small Reactor": {
+    "output": -0.720356631807206,
+    "rumbleGain": 21.980997199328375
+  },
+  "Minimal - Sub Pin": {
+    "output": 1.815376476025911,
+    "rumbleGain": 14.799628855002425
+  },
+  "Minimal - Micro Room": {
+    "output": -0.902794695213984,
+    "rumbleGain": 23.513775252585432
+  },
+  "Minimal - Tight Pump": {
+    "output": 2.151035172151825,
+    "rumbleGain": 14.156012582549925
+  },
+  "Minimal - Low Tick": {
+    "output": 2.24819679795992,
+    "rumbleGain": 16.38525161589037
+  },
+  "Schranz - Driving Wall": {
+    "output": 1.581691479605023,
+    "rumbleGain": 16.688319993076895
+  },
+  "Schranz - Redline": {
+    "output": -1.068887272115902,
+    "rumbleGain": 13.676417604953187
+  }
+}

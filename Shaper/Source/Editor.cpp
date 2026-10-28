@@ -25,8 +25,7 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
     theme.setColour(juce::TextButton::buttonColourId, juce::Colour(0xff252c39));
     theme.setColour(juce::Slider::thumbColourId, juce::Colour(0xff6ce1cf));
     setLookAndFeel(&theme);
-    title.setText("SHAPER  /  FAZIL IRAK", juce::dontSendNotification);
-    title.setFont(juce::FontOptions(22.0f));
+    title.onClick = [this] { showAbout(); };
     addAndMakeVisible(title);
     addAndMakeVisible(aboutButton);
     aboutButton.setComponentID("rack-about-button");
@@ -280,7 +279,7 @@ void ShaperEditor::chooseRack(bool save)
     auto name =
         juce::File::createLegalFileName(rackPreset.getText().isNotEmpty() ? rackPreset.getText() : "My Rack");
     chooser = std::make_unique<juce::FileChooser>(
-        save ? "Save Shaper rack" : "Load Shaper rack",
+        save ? "Save Jellybone rack" : "Load Jellybone rack",
         save ? rackDirectory.getChildFile(name).withFileExtension("shaper") : rackDirectory, "*.shaper");
     juce::Component::SafePointer<ShaperEditor> safe(this);
     chooser->launchAsync(
@@ -496,7 +495,7 @@ void ShaperEditor::paint(juce::Graphics &g)
 // Gövdedeki başlıca çağrılar: title.setBounds → aboutButton.setBounds → getWidth → rackLabel.setBounds. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 void ShaperEditor::resized()
 {
-    title.setBounds(20, 12, 500, 32);
+    title.setBounds(20, 5, 235, 43);
     aboutButton.setBounds(getWidth() - 48, 14, 28, 28);
     rackLabel.setBounds(20, 54, 115, 30);
     previousRack.setBounds(140, 54, 28, 28);

@@ -10,6 +10,7 @@ Free, open-source multiband volume shaping by **Fazıl Irak**. A compact 760 × 
 | Downloads | Links |
 | --- | --- |
 | Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Linux-x64.tar.gz) |
 | macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-macOS-Universal.tar.gz) |
 | Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.1/F-Sidechain-1.1.1-Source.zip) |
 | Release notes and checksums | [F-Sidechain 1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.1) |

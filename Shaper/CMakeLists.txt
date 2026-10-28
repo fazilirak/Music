@@ -5,7 +5,7 @@
 # Son düzenleme: 24.10.2026
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 cmake_minimum_required(VERSION 3.24)
-project(Shaper VERSION 0.8.3 LANGUAGES C CXX)
+project(Shaper VERSION 0.8.4 LANGUAGES C CXX)
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -18,7 +18,7 @@ if(APPLE)
     list(APPEND shaper_formats AU)
 endif()
 juce_add_plugin(Shaper COMPANY_NAME "FAZIL IRAK" BUNDLE_ID "org.shaper.suite"
-    PLUGIN_MANUFACTURER_CODE Shpr PLUGIN_CODE Sh12 PRODUCT_NAME "Shaper"
+    PLUGIN_MANUFACTURER_CODE Shpr PLUGIN_CODE Sh12 PRODUCT_NAME "Jellybone"
     FORMATS ${shaper_formats} IS_SYNTH FALSE NEEDS_MIDI_INPUT TRUE NEEDS_MIDI_OUTPUT FALSE
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "Shaper uses audio input to process sound."

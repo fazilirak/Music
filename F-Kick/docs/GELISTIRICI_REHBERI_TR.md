@@ -204,3 +204,14 @@ eski WAV uyumluluğu ve yeni sayısal UI alanları doğrulanır.
 ## Kaynak yayını 0.8.1
 Özgün uygulama kodu ve DSP: Fazıl Irak. Standart dosya görev başlıkları ve ana ses yollarına bakım yorumları eklendi. Üçüncü taraf sahiplik/lisansları AUTHORS.md ve mevcut bildirimlerde korunur. Bu bakım sürümü parametre kimliklerini veya ses algoritmasını değiştirmez.
 
+
+
+## 0.8.2 temiz/tok fabrika bankası — 28.10.2026
+
+112 General/Techno sesinde Punch, Drive, Rumble Drive ve bu iki Drive hedefinin gizli LFO/AD yönlendirmeleri sıfırdır. Başlangıç/Sub/Studio sinüs tabanlıdır; diğer temiz seslerde kontrollü harmonik miktarı en fazla 0.10'dur. 16 Experimental ses yaratıcı işleme içerir. DSP denklemleri, eski kayıtlardaki parametreler, plugin kimlikleri ve FKICK_PRESET v1 değiştirilmez.
+
+`Tests/CleanTests.cpp`, gerçek motorun 100 Hz sabit sinüs yolunu -70 dB harmonik bozulma sınırıyla denetler. Ölçüm penceresi geçici rejimden sonra 0.5–0.9 saniye, tam 40 periyottur. Karşı testte %65 Punch açıkken bozulma algılanmalıdır. Windows ölçümü: temiz -137.35 dB, Punch %65 -13.52 dB; bu sayılar bütün presetlerin tını değerlendirmesi değildir.
+
+`FKickTests <validation klasörü> --calibrate-clean` yalnız önerilen kazançları üretir; test geçişi sayılmaz. Ölçülen `CLEAN_CALIBRATION.json`, `Resources/CleanLevels.json` içine uygulanır; `scripts/make_factory_bank.py` JSON/header'ı yeniden üretir. Normal CTest daha sonra tekrar geçmelidir. 112 preset için 48 kHz / 135 BPM / velocity 127 üç vuruş ölçümünde peak 0.5 (-6.02 dBFS) hedeflenir. Rumble, kuru render çıkarılarak bağımsız ölçülür.
+
+Eski Room sesinin eşitlik testi yeni fabrika ayarıyla değil, 0.8.1 dağıtımından korunmuş `Legacy-0.8.1-Basement.fkick` state'iyle yapılır. Windows'ta byte-byte WAV eşitliği korunur; Linux'ta bütün PCM örnekleri ve metadata en fazla iki 24-bit PCM adımı farkla karşılaştırılır, farklar log'a yazılır.

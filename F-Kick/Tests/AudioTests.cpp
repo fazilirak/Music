@@ -11,6 +11,8 @@ void runTechnoTests(const juce::File&);
 void runBankTests(const juce::File&);
 void runImpactTests(const juce::File&);
 void runFXRackTests(const juce::File&);
+void runCleanTests(const juce::File&);
+void calibrateCleanBank(const juce::File&);
 
 namespace {
 void require(bool b,const char* why){if(!b)throw std::runtime_error(why);}
@@ -37,6 +39,7 @@ int main(int argc,char** argv) {
     juce::ScopedJuceInitialiser_GUI gui;
     try {
         auto folder=argc>1?juce::File(argv[1]):juce::File::getCurrentWorkingDirectory();folder.createDirectory();
+        if(argc>2&&juce::String(argv[2])=="--calibrate-clean"){calibrateCleanBank(folder);return 0;}
         // Örnek konumu: MIDI offset öncesinde tam sessizlik.
         FKickProcessor timing;prepare(timing);juce::AudioBuffer<float> block(2,256);juce::MidiBuffer midi;
         midi.addEvent(juce::MidiMessage::noteOn(1,60,(juce::uint8)127),100);timing.processBlock(block,midi);
@@ -168,6 +171,7 @@ int main(int argc,char** argv) {
             std::unique_ptr<juce::AudioProcessorEditor> hostEditor(instance->createEditorIfNeeded());require(hostEditor!=nullptr&&hostEditor->getWidth()==760&&hostEditor->getHeight()==360,"VST3 host editor failed");hostEditor.reset();instance->releaseResources();instance.reset();
             std::cout<<"PASS built VST3: scan / instantiate / MIDI / audio / state / editor\n";
         }
+        runCleanTests(folder);
         runTechnoTests(folder);
         runImpactTests(folder);
         runBankTests(folder);

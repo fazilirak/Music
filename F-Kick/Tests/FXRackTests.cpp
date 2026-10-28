@@ -79,7 +79,14 @@ void runFXRackTests(const juce::File& folder){
     ui->setVisible(true); // JUCE hit-test yalnız görünür component ağaçlarında çalışır; native pencere açılmaz.
     for(const char* id:{"sampleGain-value","sampleTune-value","samplePan-value","start-value","end-value"}){auto* c=find(*ui,id);auto* hit=ui->getComponentAt(ui->getLocalPoint(c,c->getLocalBounds().getCentre()));check(hit==c||c->isParentOf(hit),"Graph blocks inline sample controls");}
     check(find(*ui,"lfoShape")==nullptr&&find(*ui,"mod-target")==nullptr,"Other modulation controls remain");
-    for(int shape=0;shape<4;++shape){FKickProcessor demo;demo.setCurrentProgram(68);demo.setParameter("room",1);demo.setParameter("scMix",1);demo.setParameter("scShape",float(shape));demo.setParameter("fxHP",40);demo.setParameter("fxLP",3500);auto sound=render(demo,257,true);const auto demoFile=folder.getChildFile("F-Kick-SC-"+juce::String(shape+1)+".wav");wave(demoFile,sound);if(shape==0){check(fkickTest::sameLegacyWav(fixtures.getChildFile("Legacy-0.6-Room-On.wav"),demoFile),"Room Mix 100% no longer matches legacy On");}}
+    for(int shape=0;shape<4;++shape){FKickProcessor demo;demo.setCurrentProgram(68);demo.setParameter("room",1);demo.setParameter("scMix",1);demo.setParameter("scShape",float(shape));demo.setParameter("fxHP",40);demo.setParameter("fxLP",3500);auto sound=render(demo,257,true);const auto demoFile=folder.getChildFile("F-Kick-SC-"+juce::String(shape+1)+".wav");wave(demoFile,sound);if(shape==0){
+        // Fazıl Irak: Yeni temiz fabrika sesi bilinçli olarak değişti; eski DSP sesinin
+        // byte-byte regresyonu özgün 0.8.1 state'i ile hâlâ birebir doğrulanır.
+        FKickProcessor legacyRoom;check(legacyRoom.loadPreset(fixtures.getChildFile("Legacy-0.8.1-Basement.fkick")),"Legacy room state fixture");
+        legacyRoom.setParameter("room",1);legacyRoom.setParameter("scMix",1);legacyRoom.setParameter("scShape",0);legacyRoom.setParameter("fxHP",40);legacyRoom.setParameter("fxLP",3500);
+        auto oldAudio=render(legacyRoom,257,true);const auto oldFile=folder.getChildFile("F-Kick-Legacy-Room-On.wav");wave(oldFile,oldAudio);
+        check(fkickTest::sameLegacyWav(fixtures.getChildFile("Legacy-0.6-Room-On.wav"),oldFile),"Room Mix 100% no longer matches legacy On");
+    }}
     check(folder.getChildFile("FX_RACK_METRICS.txt").replaceWithText("Room low sine wet RMS: "+juce::String(low,7)+"; HP 800 Hz: "+juce::String(cutLow,7)+"\nRoom high sine wet RMS: "+juce::String(high,7)+"; LP 200 Hz: "+juce::String(cutHigh,7)+"\nDry change with sidechain and return filters: 0\nPPQ, negative seek, MIDI fallback and 127/512 blocks: passed\n"),"FX report");
     std::cout<<"PASS Bass EQ frequency response / Q / stereo / bypass / multi-rate / state / layout\n";
     std::cout<<"PASS four SC curves / graph drag / Mix / FX-only dry protection / room / return HP-LP / host PPQ / MIDI fallback / state / 0.5 compatibility\n";

@@ -1,5 +1,5 @@
 <!-- Developer: Fazıl Irak | Updated: 27.10.2026 -->
-# F-Kick 0.8.1
+# F-Kick 0.8.2
 
 **Sample the attack. Shape the body.**
 
@@ -9,9 +9,16 @@ An independently developed kick synthesizer and sampler by **Fazıl Irak**. Comp
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.1/F-Kick-0.8.1-Windows-x64.zip) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.1/F-Kick-0.8.1-Source.zip) |
-| Release notes and checksums | [F-Kick 0.8.1](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.1) |
+| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Linux-x64.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.2/F-Kick-0.8.2-Source.zip) |
+| Release notes and checksums | [F-Kick 0.8.2](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.2) |
+
+## Clean and full-bodied factory bank (0.8.2)
+
+The 112 General/Techno presets start with Punch saturation, Drive, Rumble Drive and hidden drive modulation at zero. Weight comes from the amplitude/pitch envelopes. Preset levels and clean rumble returns are calibrated again, targeting -6 dBFS peak. The 16 Experimental presets retain their creative processing.
+
+Select a factory preset again, or open a new instance, to hear the new bank. Existing saved sessions and user presets keep their stored sound and saturation settings. Parameter IDs, plugin identity and preset/state formats are unchanged.
 
 ## Features
 
@@ -33,7 +40,7 @@ Original F-Kick application code, DSP, interface and factory synthesis settings:
 
 ## Türkçe kullanım ve bakım
 
-# F-Kick 0.8.1
+# F-Kick 0.8.2
 
 **Sample the attack. Shape the body.**
 
@@ -44,10 +51,10 @@ Ubuntu fontlu 760 × 360 koyu/sarı panel; ekran klavyesi ve knob bankası yoktu
 
 ## Başlangıç
 
-`dist/F-Kick-0.8.1-Windows-x64/Standalone/F-Kick.exe` bağımsız uygulamadır.
+`dist/F-Kick-0.8.2-Windows-x64/Standalone/F-Kick.exe` bağımsız uygulamadır.
 Audio/MIDI Settings ile çıkış/MIDI cihazını seçin; üst üçgeni basılı tutarak ön dinleyin.
 DAW için paketteki `VST3/F-Kick.vst3` klasörünün tamamını taranan VST3 konumuna kopyalayıp taramayı yenileyin.
-Yerel sistem kurulumu otomatik yapılmaz. GitHub Actions testleri geçen paketleri Releases bölümünde yayınlar.
+Otomatik sistem kurulumu veya yayın yapılmaz.
 
 ## Arayüz
 

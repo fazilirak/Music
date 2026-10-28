@@ -68,6 +68,10 @@ jobs:
       matrix:
         project: [F-Kick, F-TransForm]
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/download-artifact@v7
         with:
           name: ${{ matrix.project }}-Windows
@@ -96,5 +100,10 @@ jobs:
           Original application source is AGPL-3.0-or-later; third-party licences remain applicable.
           Windows binaries are unsigned. macOS is not included in this release. Reference-product audio matching and real DAW/device testing remain separate checks.
           NOTES
-          gh release create "$tag" release/* --target "$RELEASE_COMMIT" --title "$RELEASE_PROJECT $version" --notes-file release-notes.md
+          latest=$(gh api "repos/$GH_REPO/commits/main" --jq .sha)
+          test "$(git rev-parse "$RELEASE_COMMIT:$RELEASE_PROJECT")" = "$(git rev-parse "$latest:$RELEASE_PROJECT")"
+          if [ "$RELEASE_PROJECT" = F-Kick ]; then
+            printf '\n0.8.2: 112 General/Techno presets remove forced Punch/Drive/Rumble saturation and hidden drive modulation; levels are recalibrated to -6 dBFS peak. Saved user sessions keep their stored sound.\n' >> release-notes.md
+          fi
+          gh release create "$tag" release/* --target main --title "$RELEASE_PROJECT $version" --notes-file release-notes.md
 

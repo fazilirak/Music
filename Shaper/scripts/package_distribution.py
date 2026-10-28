@@ -13,7 +13,7 @@ EXCLUDED_IR = 'upstream/reevr/resources/impulses/Hall Quad.flac'
 DIRECTORIES = ('.github', 'Source', 'Tests', 'scripts', 'upstream', 'Resources', 'licenses', 'docs', 'doc')
 ROOT_FILES = ('CMakeLists.txt', 'README.md', 'AGENTS.md', '.gitignore', '.gitattributes', 'LICENSE',
               'LICENSE-AGPL-3.0.txt', 'COPYING.txt', 'THIRD-PARTY-NOTICES.txt',
-              'upstream-lock.json', 'Pitch-dependencies.json')
+              'upstream-lock.json', 'Pitch-dependencies.json', 'AUTHORS.md')
 
 
 def digest(path):
@@ -36,7 +36,7 @@ def package_sources(output, version, source_name=None):
     ir_manifest = json.loads((ROOT / 'Resources/impulses/manifest.json').read_text(encoding='utf-8'))
     assert digest(ROOT / ir_manifest['file']) == ir_manifest['sha256'], 'IR manifest mismatch'
     assert (ROOT / 'licenses/Ubuntu-Font-Licence-1.0.txt').stat().st_size > 1000
-    source_name = source_name or f'Shaper-{version}-Source.zip'
+    source_name = source_name or f'Jellybone-{version}-Source.zip'
     with zipfile.ZipFile(output / source_name, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
         for path in sources:
             archive.write(path, path.relative_to(ROOT).as_posix())
@@ -56,7 +56,7 @@ def package_sources(output, version, source_name=None):
 def package():
     version = re.search(r'project\(Shaper VERSION ([\d.]+)',
                         (ROOT / 'CMakeLists.txt').read_text(encoding='utf-8'))[1]
-    output = ROOT / 'dist' / ('Shaper-' + version + '-distribution')
+    output = ROOT / 'dist' / ('Jellybone-' + version + '-distribution')
     output.mkdir(parents=True, exist_ok=True)
     log = ROOT / 'build/Testing/Temporary/LastTest.log'
     log_text = log.read_text(encoding='utf-8', errors='replace')
@@ -68,20 +68,20 @@ def package():
     source_name, ir_manifest, source_count = package_sources(output, version)
 
     artefacts = ROOT / 'build/Shaper_artefacts/Release'
-    executable = artefacts / 'Standalone/Shaper.exe'
-    vst = artefacts / 'VST3/Shaper.vst3'
+    executable = artefacts / 'Standalone/Jellybone.exe'
+    vst = artefacts / 'VST3/Jellybone.vst3'
     assert executable.is_file() and vst.is_dir(), 'Build Windows binaries first'
     module_info = (vst / 'Contents/Resources/moduleinfo.json').read_text(encoding='utf-8')
     assert f'"Version": "{version}"' in module_info, 'Binary/source version mismatch'
     ir_bytes = (ROOT / ir_manifest['file']).read_bytes()
-    for binary in (executable, vst / 'Contents/x86_64-win/Shaper.vst3'):
+    for binary in (executable, vst / 'Contents/x86_64-win/Jellybone.vst3'):
         content = binary.read_bytes()
         assert ir_bytes in content, 'Synthetic IR missing from linked binary'
         assert b'Deltaworks' not in content and b'Samplicity' not in content, 'Original IR still embedded'
     log = ROOT / 'build/Testing/Temporary/LastTest.log'
     assert log.is_file(), 'Run CTest before packaging'
-    binaries = [(executable, 'Standalone/Shaper.exe')]
-    binaries += [(p, 'VST3/Shaper.vst3/' + p.relative_to(vst).as_posix())
+    binaries = [(executable, 'Standalone/Jellybone.exe')]
+    binaries += [(p, 'VST3/Jellybone.vst3/' + p.relative_to(vst).as_posix())
                  for p in vst.rglob('*') if p.is_file()]
     for folder in ('FactoryPresets', 'EffectPresets'):
         binaries += [(p, folder + '/' + p.relative_to(ROOT / 'dist' / folder).as_posix())
@@ -92,7 +92,7 @@ def package():
     binaries += [(p, p.relative_to(ROOT).as_posix()) for p in (ROOT / 'licenses').rglob('*') if p.is_file()]
     binaries += [(log, 'test-results.txt')]
     binaries += [(p, p.relative_to(ROOT).as_posix()) for p in (ROOT / 'docs').rglob('*') if p.is_file()]
-    binary_name = f'Shaper-{version}-Windows-x64.zip'
+    binary_name = f'Jellybone-{version}-Windows-x64.zip'
     with zipfile.ZipFile(output / binary_name, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
         for path, name in binaries:
             archive.write(path, name)

@@ -28,7 +28,7 @@ class ShaperProcessor final : public juce::AudioProcessor, private juce::AsyncUp
     // getName: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir. Mevcut veri/kalıcılık sözleşmesini bu erişim adımında koruyun.
     const juce::String getName() const override
     {
-        return "Shaper";
+        return "Jellybone";
     }
     // acceptsMidi alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
     bool acceptsMidi() const override

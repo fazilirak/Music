@@ -19,6 +19,20 @@ struct RackLookAndFeel final : juce::LookAndFeel_V4
         return juce::FontOptions(14.0f);
     }
 };
+// Fazıl Irak - 28.10.2026: Sade, erişilebilir logo. Host/state kimliği değişmez.
+class JellyboneLogo final : public juce::Component, public juce::SettableTooltipClient {
+public:
+    JellyboneLogo(){setComponentID("jellybone-logo");setWantsKeyboardFocus(true);setTitle("About Jellybone");setTooltip("About Jellybone and licences");setMouseCursor(juce::MouseCursor::PointingHandCursor);}
+    std::function<void()> onClick;
+    void paint(juce::Graphics& g) override {
+        g.setColour(juce::Colours::white);g.setFont(juce::FontOptions(24.f,juce::Font::bold));
+        g.drawText("Jellybone",0,0,getWidth(),28,juce::Justification::centredLeft);
+        g.setColour(juce::Colour(0xff8993a1));g.setFont(juce::FontOptions(9.f));
+        g.drawText("FAZIL IRAK / SHAPER RACK",0,28,getWidth(),12,juce::Justification::centredLeft);
+    }
+    void mouseUp(const juce::MouseEvent& e) override {if(e.mouseWasClicked()&&getLocalBounds().contains(e.getPosition())&&onClick)onClick();}
+    bool keyPressed(const juce::KeyPress& key) override {if(key==juce::KeyPress::returnKey||key==juce::KeyPress::spaceKey){if(onClick)onClick();return true;}return false;}
+};
 class ShaperEditor final : public juce::AudioProcessorEditor, private juce::Timer
 {
   public:
@@ -37,7 +51,8 @@ class ShaperEditor final : public juce::AudioProcessorEditor, private juce::Time
   private:
     ShaperProcessor &processor;
     RackLookAndFeel theme;
-    juce::Label title, presetLabel, rackLabel;
+    JellyboneLogo title;
+    juce::Label presetLabel, rackLabel;
     EffectPalette palette;
     juce::Label emptyLabel;
     juce::ComboBox preset, rackPreset;

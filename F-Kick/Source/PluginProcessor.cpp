@@ -76,7 +76,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout FKickProcessor::layout() {
     f("adDelay","AD delay ms",0,500,0,.5f);f("adAttack","AD attack ms",0,500,10,.5f);f("adDecay","AD decay ms",5,3000,300,.5f);f("adCurve","AD curve",-1,1,0);
     for(const auto* prefix:{"lfo_","ad_"})for(int i=0;i<fkick::modTargetCount;++i){auto id=juce::String(prefix)+fkick::modIDs[i];auto name=juce::String(juce::String(prefix).startsWith("lfo")?"LFO > ":"AD > ")+fkick::modNames[i];f(id.toRawUTF8(),name.toRawUTF8(),-1,1,0);}
     // İlk 121 host parametresi aynıdır; yeni iki parametre routing alanlarından sonra eklenir.
-    f("punch","Body punch",0,1,.65f);f("rumbleGain","Rumble return gain dB",-24,24,0);
+    f("punch","Body punch",0,1,0);f("rumbleGain","Rumble return gain dB",-24,24,0);
     choice("scShape","Sidechain curve",{"Pump","Smooth","Late","Gate"},0);f("scShift","Sidechain beat shift",-.5f,.5f,0);f("scMix","Sidechain mix",0,1,0);f("room","Room mix",0,1,0);f("fxHP","FX return HP Hz",0,4000,0,.35f);f("fxLP","FX return LP Hz",80,20000,20000,.3f);
     f("bassLift","Bass Lift dB",-12,12,0);f("bassQ","Bass Q",.1f,2,.707f);
     return l;

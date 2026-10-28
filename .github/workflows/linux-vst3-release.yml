@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
-    name: Linux - ${{ matrix.project }}
+    name: Linux - ${{ matrix.project == 'Shaper' && 'Jellybone' || matrix.project }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     strategy:
@@ -72,7 +72,7 @@ jobs:
             ${{ matrix.project }}/build-linux/CMakeFiles/CMakeConfigureLog.yaml
           if-no-files-found: ignore
   publish:
-    name: Publish Linux - ${{ matrix.project }}
+    name: Publish Linux - ${{ matrix.project == 'Shaper' && 'Jellybone' || matrix.project }}
     needs: build
     if: always()
     runs-on: ubuntu-24.04
@@ -98,7 +98,8 @@ jobs:
           set -euo pipefail
           manifest=$(find release -name '*-Linux-RELEASE-MANIFEST.json' -type f)
           version=$(python -c 'import json,sys;print(json.load(open(sys.argv[1]))["version"])' "$manifest")
-          tag="${RELEASE_PROJECT}-v${version}"
+          product=$(python -c 'import json,sys;print(json.load(open(sys.argv[1]))["project"])' "$manifest")
+          tag="${product}-v${version}"
           ready=false
           for attempt in $(seq 1 30); do
             if gh release view "$tag" >/dev/null 2>&1; then ready=true; break; fi
