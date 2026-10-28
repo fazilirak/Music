@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Copyright (c) 2026 Fazıl Irak
 // Geliştirici: Fazıl Irak
-// Son düzenleme: 26.10.2026
+// Son düzenleme: 28.10.2026
 // Dosyanın görevi: Arayüz kurulumu, yerleşim, meter/transfer çizimi, model/preset eylemleri ve dosya penceresi.
 #include "PluginEditor.h"
 #include "FSaturatorFonts.h"
@@ -63,7 +63,7 @@ void Editor::Theme::drawButtonText(juce::Graphics& g,juce::TextButton& b,bool ov
     g.setFont(juce::FontOptions(9));
     g.drawText(b.getButtonText(),13,0,b.getWidth()-13,b.getHeight(),juce::Justification::centredLeft);
 }
-// Alt şerit için F Saturator paletine uygun tek düğme. Orta işaret nötr, turuncu ibre geçerli değerdir.
+// Alt şerit için F-Saturator paletine uygun tek düğme. Orta işaret nötr, turuncu ibre geçerli değerdir.
 void Editor::Theme::drawRotarySlider(juce::Graphics& g,int x,int y,int w,int h,float pos,float start,float end,juce::Slider&)
 {
     const float radius=juce::jmin((float)w,(float)h)*.43f;
@@ -175,9 +175,9 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
     { presets.setSelectedItemIndex((presets.getSelectedItemIndex() + 1) % 16, juce::sendNotificationSync); };
     save.onClick = [this] { choosePreset(true); };
     load.onClick = [this] { choosePreset(false); };
-    // Pencere 960×640 ile 1440×900 arasında; varsayılan 1040×640. Yeni küçük şerit eski yüksekliğe sığar. Timer yalnız GUI yenilemesi içindir.
-    setResizable(true, false);
-    setResizeLimits(960, 640, 1440, 900);
+    // Fazıl Irak: İstenen sabit panel 1040×640; host sürükleme ve köşe yeniden boyutlandırması kapalıdır.
+    setResizable(false, false);
+    setResizeLimits(1040, 640, 1040, 640);
     setSize(1040, 640);
     timerCallback();
     startTimerHz(30);
@@ -275,7 +275,7 @@ void Editor::paint(juce::Graphics &g)
     {
         g.setColour(ivory);
         g.setFont(juce::FontOptions(37));
-        g.drawText("F Saturator", 28, 38, 290, 58, juce::Justification::centredLeft);
+        g.drawText("F-Saturator", 28, 38, 290, 58, juce::Justification::centredLeft);
         g.setColour(muted);
         g.setFont(juce::FontOptions(10));
         g.drawText("FAZIL IRAK / ANALOG COLOUR", 30, 101, 285, 20, juce::Justification::centredLeft);
@@ -373,7 +373,7 @@ void Editor::rackCommand(int command)
         p->endChangeGesture();
     }
 }
-// Belgeler/F Saturator Presets klasöründe asenkron dosya seçimi.
+// Belgeler/F-Saturator Presets klasöründe asenkron dosya seçimi.
 // .irakpreset dosyası Processor’ün DAW kaydıyla aynı binary XML durumunu içerir.
 void Editor::choosePreset(bool saving)
 {
@@ -382,8 +382,8 @@ void Editor::choosePreset(bool saving)
                                .getChildFile("F Saturator Presets");
     directory.createDirectory();
     chooser =
-        std::make_unique<juce::FileChooser>(saving ? "Save F Saturator preset" : "Load F Saturator preset",
-                                            directory.getChildFile("F Saturator.irakpreset"), "*.irakpreset");
+        std::make_unique<juce::FileChooser>(saving ? "Save F-Saturator preset" : "Load F-Saturator preset",
+                                            directory.getChildFile("F-Saturator.irakpreset"), "*.irakpreset");
     juce::Component::SafePointer<Editor> safe(this);
     // SafePointer, dosya penceresi açıkken editör kapanırsa artık geçersiz editöre erişimi önler.
     // Kaydet mevcut dosya için uyarı ister; yükleme yalnız IRAK_STATE kökünü kabul eder.

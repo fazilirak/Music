@@ -1,21 +1,21 @@
-<!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 26.10.2026 -->
-# F Saturator 0.5.1 — FAZIL IRAK
+<!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 24.10.2026 -->
+# F-Saturator 0.5.2 — FAZIL IRAK
 
 [![Build](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml/badge.svg)](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml)
 
-[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.1/F-Saturator-0.5.1-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.1/F-Saturator-0.5.1-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
+[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.2/F-Saturator-0.5.2-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.2) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
 
-![F Saturator](doc/f-saturator.png)
+![F-Saturator](doc/f-saturator.png)
 
 Saturation and distortion with five character models, 16 factory presets and a compact concentric-control interface. Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone, macOS 11.0 or later.
 
+## New in 0.5.2
+
+The product and bundle name is **F-Saturator**. The plugin editor is fixed at **1040 × 640**; manual window resizing is disabled. Plugin/parameter IDs, audio processing, preset formats and the existing user-preset directory are preserved.
+
 ## New in 0.5.1
 
-Four compact channel-strip knobs flank the five model buttons: **Transient (Soft–Sharp)** and **Comp** on the left, **Bass** and **Treble** on the right. Small **ATT**, **REL** and independent **Tight** LED switches keep the original 1040×640 layout compact. These controls work with all five saturation models.
-
-The original sixteen parameter IDs and indices are retained; eight new parameters are appended. Old sessions load missing fields at neutral, and factory presets reset the new strip to neutral. State version 3 retains the same IRAK_STATE container.
-
-[Türkçe kullanım ve teknik rehber](docs/DESK_STRIP_TR.md) · [English control guide](docs/DESK_STRIP_EN.md)
+A fourth concentric group between Saturation and Output adds **Character (Warm–Sizzle)** on the inner cap, **Harmonic Balance (Even–Odd)** on the middle ring and **Analog Drift** on the outer ring. All three default to neutral for old sessions and factory presets. [Turkish controls and maintenance guide](docs/CHARACTER_TR.md).
 
 ## Features
 
@@ -32,10 +32,10 @@ Models are not measured hardware replicas. Tape does not simulate tape speed, hi
 
 ## Downloads and installation
 
-Use the [0.5.1 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.1). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
+Use the [0.5.2 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.2). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
 
-- Windows: extract the ZIP; copy the entire `VST3/F Saturator.vst3` bundle into your shared VST3 directory. Open `Standalone/F Saturator.exe` without a DAW.
-- macOS: extract the TAR.GZ; copy the VST3 to `~/Library/Audio/Plug-Ins/VST3/` and the AU to `~/Library/Audio/Plug-Ins/Components/`. Open `Standalone/F Saturator.app` without a DAW.
+- Windows: extract the ZIP; copy the entire `VST3/F-Saturator.vst3` bundle into your shared VST3 directory. Open `Standalone/F-Saturator.exe` without a DAW.
+- macOS: extract the TAR.GZ; copy the VST3 to `~/Library/Audio/Plug-Ins/VST3/` and the AU to `~/Library/Audio/Plug-Ins/Components/`. Open `Standalone/F-Saturator.app` without a DAW.
 - Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Windows binaries are unsigned. Separate DAW and Intel Mac compatibility testing remains necessary.
 
 ## Build from source
@@ -70,17 +70,12 @@ Tests cover sample-rate extremes, finite output, harmonic character, Auto Gain r
 
 ## 0.5.1 changes
 
-- Transient shapes attacks before saturation; Comp adds stereo-linked soft-knee feedback compression after Auto Gain.
-- ATT switches compressor attack from 22 ms to 1.5 ms; REL switches release from 220 ms to 55 ms. No automatic compressor makeup gain.
-- Bass and Treble shelves provide ±12 dB, with independent Tight voicing switches. Tight is neutral when its shelf is at 0 dB.
-- Compact 1040×640 default window, smaller strip knobs and LED switches. Existing four concentric groups remain in place.
-- Eight independently automated parameters are appended to the existing sixteen. Missing fields in old states migrate to neutral; the 16 factory sounds remain unchanged at neutral strip settings.
-- Regression checks cover neutral sample identity, shelves/Tight, transient shaping, compression and timing, stereo linking, extreme controls, state migration and compact UI boundaries.
-- The strip runs at the host sample rate with no added lookahead or reported latency. Existing Auto Gain calibrates the saturation stage, not compressor/EQ loudness.
-
-## 0.4.0 changes
-
-- Character (Warm–Sizzle), Harmonic Balance (Even–Odd) and subtle Analog Drift in a fourth concentric group.
+- Four concentric groups: Colour, Saturation, Character, Output; independent automation for all twelve rings.
+- Warm–Sizzle adjusts nonlinear stage hardness; Even–Odd adjusts static-stage asymmetry and even-symmetric content.
+- Subtle, stereo-linked Analog Drift varies drive and bias; no added hiss or pitch modulation.
+- The original thirteen DAW parameter indices/IDs are preserved. Missing new fields in old sessions load at neutral; factory presets reset all three new controls.
+- Added harmonic, drift/block-size, mono/stereo, silent-tail, state-migration and four-column UI regression checks.
+- Neutral audio renders for all five models match the previous Windows reference WAVs byte for byte.
 - [Türkçe kontrol rehberi](docs/CHARACTER_TR.md) · [English control guide](docs/CHARACTER_EN.md).
 
 ## 0.3.0 changes
@@ -100,11 +95,11 @@ Tests cover sample-rate extremes, finite output, harmonic character, Auto Gain r
 - [Kaynak incelemesi](REVIEW-TR.md)
 - [DSP araştırma notları](Research/DSP-RESEARCH.md)
 
-F Saturator bağımsız projedir; Shaper kaynaklarına veya arayüzüne derleme bağımlılığı yoktur. Ses motorunu ve kimlikleri koruyan bu sürüm, mevcut Türkçe bakım notlarını ve Mac dağıtım desteğini bir araya getirir. JUCE yolu gerektiğinde `-DIRAK_JUCE_PATH=...` ile değiştirilebilir; resmî dağıtım sabitlenmiş kaynakları kullanır.
+F-Saturator bağımsız projedir; Shaper kaynaklarına veya arayüzüne derleme bağımlılığı yoktur. Ses motorunu ve kimlikleri koruyan bu sürüm, mevcut Türkçe bakım notlarını ve Mac dağıtım desteğini bir araya getirir. JUCE yolu gerektiğinde `-DIRAK_JUCE_PATH=...` ile değiştirilebilir; resmî dağıtım sabitlenmiş kaynakları kullanır.
 
 ## Licence
 
-Copyright (c) 2026 Fazıl Irak. F Saturator: **AGPLv3-or-later**, see [LICENSE](LICENSE). JUCE uses its AGPLv3 option; URW font licences and the font exception are preserved. See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt), [JUCE-LICENSE.md](JUCE-LICENSE.md) and `Resources/fonts`. Research references are documented rather than compiled third-party effect code. Publish the matching complete source with equivalent access alongside binaries.
+Copyright (c) 2026 Fazıl Irak. F-Saturator: **AGPLv3-or-later**, see [LICENSE](LICENSE). JUCE uses its AGPLv3 option; URW font licences and the font exception are preserved. See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt), [JUCE-LICENSE.md](JUCE-LICENSE.md) and `Resources/fonts`. Research references are documented rather than compiled third-party effect code. Publish the matching complete source with equivalent access alongside binaries.
 
 [Website — Türkçe](https://fazilirak.com/f-saturator/) · [Website — English](https://fazilirak.com/f-saturator-english/)
 

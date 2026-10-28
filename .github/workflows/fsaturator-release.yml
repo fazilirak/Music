@@ -1,6 +1,6 @@
 # Fazıl Irak tarafından oluşturuldu: 23.10.2026
 # SPDX-License-Identifier: AGPL-3.0-or-later
-name: F Saturator Windows and macOS Release
+name: F-Saturator Windows and macOS Release
 
 on:
   push:
@@ -119,7 +119,7 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > notes.md <<'NOTES'
-          Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone; minimum macOS 11.0.
+          F-Saturator 0.5.2: product and bundle names now use the hyphen. The editor is fixed at 1040 x 640; manual resizing is disabled. Audio, plugin IDs, parameter IDs and saved presets are unchanged.\n\n          Windows x64: VST3 and standalone. macOS Universal (Apple Silicon + Intel): VST3, AU and standalone; minimum macOS 11.0.
 
           Compact dynamics and tone strip: Transient (Soft–Sharp) and stereo-linked Comp to the left of the model buttons; Bass/Treble ±12 dB shelves on the right. Small ATT/REL and independent Tight LED switches retain the original 1040×640 window. All five saturation models support the strip.
           Fast ATT: 22 ms / 1.5 ms. Fast REL: 220 ms / 55 ms. No compressor auto makeup; existing Auto Gain calibrates saturation only. Tight voicing is neutral at 0 dB.
@@ -127,12 +127,13 @@ jobs:
           New tests cover neutral identity, EQ/Tight, transients, compression/timing, stereo linking, stability, state migration and compact UI boundaries. Turkish/English control guides and screenshots are included.
           Both hosts passed the DSP, preset and UI regression target. Separate DAW and Intel Mac testing is still required.
           Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Windows binaries are unsigned.
-          Download the matching Source ZIP alongside each binary. It contains F Saturator, the complete pinned JUCE and URW font source collections, build scripts and licence notices.
-          AGPLv3-or-later for F Saturator; original third-party terms are preserved. SHA-256 values are in the platform release manifests.
+          Download the matching Source ZIP alongside each binary. It contains F-Saturator, the complete pinned JUCE and URW font source collections, build scripts and licence notices.
+          AGPLv3-or-later for F-Saturator; original third-party terms are preserved. SHA-256 values are in the platform release manifests.
           NOTES
           tag="F-Saturator-v${VERSION}"
           if gh release view "$tag" >/dev/null 2>&1; then
             echo 'Release exists; use a new version for a new build.' >&2
             exit 1
           fi
-          gh release create "$tag" release/* --target "$RELEASE_COMMIT" --title "F Saturator ${VERSION}" --notes-file notes.md
+          gh release create "$tag" release/* --target "$RELEASE_COMMIT" --title "F-Saturator ${VERSION}" --notes-file notes.md
+

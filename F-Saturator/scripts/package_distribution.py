@@ -43,9 +43,9 @@ def package(target):
         raise RuntimeError('Expected sixteen presets and six audition files')
     artefacts = build / 'IRAK_artefacts/Release'
     if target == 'macOS':
-        bundles = [('Standalone/F Saturator.app', 'Standalone/F Saturator.app'),
-                   ('VST3/F Saturator.vst3', 'VST3/F Saturator.vst3'),
-                   ('AU/F Saturator.component', 'AU/F Saturator.component')]
+        bundles = [('Standalone/F-Saturator.app', 'Standalone/F-Saturator.app'),
+                   ('VST3/F-Saturator.vst3', 'VST3/F-Saturator.vst3'),
+                   ('AU/F-Saturator.component', 'AU/F-Saturator.component')]
         for source, _ in bundles:
             bundle = artefacts / source
             info = plistlib.loads((bundle / 'Contents/Info.plist').read_bytes())
@@ -56,8 +56,8 @@ def package(target):
             subprocess.run(['codesign', '--force', '--sign', '-', '--timestamp=none', str(bundle)], check=True)
             subprocess.run(['codesign', '--verify', '--strict', '--verbose=2', str(bundle)], check=True)
     else:
-        bundles = [('Standalone/F Saturator.exe', 'Standalone/F Saturator.exe'),
-                   ('VST3/F Saturator.vst3', 'VST3/F Saturator.vst3')]
+        bundles = [('Standalone/F-Saturator.exe', 'Standalone/F-Saturator.exe'),
+                   ('VST3/F-Saturator.vst3', 'VST3/F-Saturator.vst3')]
         exe = artefacts / bundles[0][0]
         command = "$v=(Get-Item -LiteralPath $env:FSATURATOR_BINARY).VersionInfo.ProductVersion; Write-Output $v"
         import os
@@ -118,7 +118,7 @@ def package(target):
         (stage / 'INSTALL.txt').write_text(
             'macOS: VST3 -> ~/Library/Audio/Plug-Ins/VST3/; AU -> ~/Library/Audio/Plug-Ins/Components/\n'
             'Ad-hoc signed; not Developer ID signed or Apple notarised.\n' if target == 'macOS' else
-            'Windows: copy the full VST3 bundle to your shared VST3 folder; open Standalone/F Saturator.exe for standalone use.\n', encoding='utf-8')
+            'Windows: copy the full VST3 bundle to your shared VST3 folder; open Standalone/F-Saturator.exe for standalone use.\n', encoding='utf-8')
         binary_manifest = {p.relative_to(stage).as_posix(): sha(p) for p in stage.rglob('*') if p.is_file()}
         (stage / 'BINARY-MANIFEST.json').write_text(json.dumps(binary_manifest, indent=2), encoding='utf-8')
         if target == 'macOS':

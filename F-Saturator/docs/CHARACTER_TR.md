@@ -1,4 +1,4 @@
-# F Saturator 0.4.0 — Character halkaları
+# F-Saturator 0.4.0 — Character halkaları
 
 **Geliştirici: Fazıl Irak · Düzenleme: 24.10.2026**
 
@@ -24,6 +24,6 @@ Halkayı dikey sürükleyin veya üzerinde tekerlek kullanın. Shift hassas ayar
 
 ## Doğrulama
 
-Mevcut DSP testlerine ek olarak: beş modelde Even/Odd H2 farkı, Warm/Sizzle H3 farkı, yeni uçların alias/stabilite testi, drift blok bağımsızlığı, mono/stereo eşitliği ve sessizlik kuyruğu, yeni state round-trip / eski state nötrleşmesi, değişmeyen DAW indeksleri, 12 halka hedefleme ve üç pencere boyutunda çakışmayan yerleşim. Test kodları 17–25 bu alanlara aittir.
+Mevcut DSP testlerine ek olarak: beş modelde Even/Odd H2 farkı, Warm/Sizzle H3 farkı, yeni uçların alias/stabilite testi, drift blok bağımsızlığı, mono/stereo eşitliği ve sessizlik kuyruğu, yeni state round-trip / eski state nötrleşmesi, değişmeyen DAW indeksleri, 12 halka hedefleme ve sabit 1040×640 pencerede çakışmayan yerleşim ve kapalı yeniden boyutlandırma. Test kodları 17–25 bu alanlara aittir.
 
 Windows yerel derlemesi ve testleri `scripts/build-windows.cmd` ile çalışır. Windows ve macOS Universal paketleri aynı kaynak revizyonundan GitHub Actions ile derlenir. Platformlara ait test günlükleri ve eşleşen kaynak ZIP’leri sürüm paketindedir. Gerçek DAW ve Intel Mac donanım denemeleri ayrı yapılmalıdır.

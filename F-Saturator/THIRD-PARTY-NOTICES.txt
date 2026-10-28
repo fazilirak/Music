@@ -1,6 +1,6 @@
-F Saturator 0.3.0
+F-Saturator 0.3.0
 Copyright (c) 2026 Fazıl Irak
-F Saturator source code: GNU AGPL version 3 or later; see LICENSE.
+F-Saturator source code: GNU AGPL version 3 or later; see LICENSE.
 This software is provided without warranty; the complete licence governs distribution.
 
 JUCE 8.0.7

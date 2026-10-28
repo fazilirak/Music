@@ -39,7 +39,7 @@ class Processor final : public juce::AudioProcessor
     bool isBusesLayoutSupported(const BusesLayout &) const override;
     const juce::String getName() const override
     {
-        return "F Saturator";
+        return "F-Saturator";
     }
     // Bu efekt MIDI almıyor/üretmiyor. Yalnız UI’de klavye veya kontrol eklemek host MIDI yeteneğini değiştirmez.
     bool acceptsMidi() const override

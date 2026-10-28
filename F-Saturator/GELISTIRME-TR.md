@@ -1,5 +1,5 @@
 <!-- Fazıl Irak | Son düzenleme: 26.10.2026 -->
-# F Saturator — Türkçe geliştirme rehberi
+# F-Saturator — Türkçe geliştirme rehberi
 
 Bu rehber 0.5.1 kaynakları içindir. Türkçe yorumlar kodun akışını açıklar. Yeni Character / Harmonic Balance / Analog Drift grubu için docs/CHARACTER_TR.md belgesine bakın; üç yeni kontrol sıfırken eski ses korunur. İlk denemelerinizde özgün preset ve DAW projelerinizin kopyasını kullanın.
 
@@ -99,7 +99,7 @@ Testler geçtikten sonra `powershell -ExecutionPolicy Bypass -File scripts/packa
 
 Depoya `Source`, `Tests`, `Resources`, `Research` içindeki belgeler, `scripts`, CMake ve lisans belgeleri alınır. `build` ve `dist` sürüm kontrolüne girmez; Windows ZIP'i GitHub Releases varlığı olur. Yalnız kendi kodunuza açıklama eklenmiştir; üçüncü taraf fontların özgün lisans ve kaynak bildirimleri korunur.
 
-F Saturator kodu AGPLv3-or-later olarak lisanslıdır; JUCE ayrıca kendi lisansına tabidir. Kaynakları ve tam JUCE sürümü/derleme talimatlarını Windows sürümüyle eşleştirin. GitHub herkese açık depo ve etiketli Release bu eşlemeyi görünür kılar. Sitedeki indirme düğmesi Release dosyasına, kaynak bağlantısı depoya yönlenebilir.
+F-Saturator kodu AGPLv3-or-later olarak lisanslıdır; JUCE ayrıca kendi lisansına tabidir. Kaynakları ve tam JUCE sürümü/derleme talimatlarını Windows sürümüyle eşleştirin. GitHub herkese açık depo ve etiketli Release bu eşlemeyi görünür kılar. Sitedeki indirme düğmesi Release dosyasına, kaynak bağlantısı depoya yönlenebilir.
 
 Database Doctor ayrı bir depoda ve kendi lisans kararıyla yayımlanmalıdır. Bu projenin AGPL tercihi ona kendiliğinden uygulanmaz. Database Doctor kaynaklarını herkese açmak ile yalnız kurulum dosyasını Releases üzerinden dağıtmak ayrı kararlardır.
 

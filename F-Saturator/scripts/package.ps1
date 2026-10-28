@@ -4,4 +4,4 @@
 $ErrorActionPreference = 'Stop'
 $python = if ($env:FSATURATOR_PYTHON) { $env:FSATURATOR_PYTHON } else { 'python' }
 & $python (Join-Path $PSScriptRoot 'package_distribution.py') --platform Windows
-if ($LASTEXITCODE -ne 0) { throw 'F Saturator packaging failed.' }
+if ($LASTEXITCODE -ne 0) { throw 'F-Saturator packaging failed.' }

@@ -1,6 +1,6 @@
 # Kaynak inceleme notu — 21 Ekim 2026
 
-Kapsam: F Saturator 0.2.0 uygulama kaynakları, DSP testleri, CMake ve iki yerel derleme/paketleme betiği. Bu belge bir güvenlik sertifikası veya kapsamlı lisans denetimi değildir.
+Kapsam: F-Saturator 0.2.0 uygulama kaynakları, DSP testleri, CMake ve iki yerel derleme/paketleme betiği. Bu belge bir güvenlik sertifikası veya kapsamlı lisans denetimi değildir.
 
 ## Yapılan düzenlemeler
 
@@ -17,7 +17,7 @@ Kapsam: F Saturator 0.2.0 uygulama kaynakları, DSP testleri, CMake ve iki yerel
 3. Ekrandaki eğri statik bir yaklaşımdır; DSP'nin manyetik ve dinamik hafızasının tam karşılığı değildir.
 4. Auto Gain referans sinüsle kalibre edilir; her kayıt için eşit algılanan ses yüksekliği vaat etmez.
 5. Preset dosyası kaydetme/yükleme akışında bütün I/O hataları kullanıcıya ayrı bir hata mesajıyla sunulmuyor. Bu davranış açıklama çalışmasında değiştirilmedi; sonraki işlevsel iyileştirme olarak ele alınabilir.
-6. `Resources/fonts/VENDORED.md` başka panel projelerine ait bakım/test notları içeriyor. Üçüncü taraf kaynak bildirimi korunmuştur; F Saturator için uygulanacak test komutu `ctest --test-dir build --output-on-failure` komutudur.
+6. `Resources/fonts/VENDORED.md` başka panel projelerine ait bakım/test notları içeriyor. Üçüncü taraf kaynak bildirimi korunmuştur; F-Saturator için uygulanacak test komutu `ctest --test-dir build --output-on-failure` komutudur.
 
 ## Doğrulama kaydı
 

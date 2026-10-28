@@ -1,5 +1,5 @@
 <!-- Geliştirici: Fazıl Irak | Son düzenleme: 26.10.2026 -->
-# F Saturator 0.5.1 — Dinamik ve ton şeridi
+# F-Saturator 0.5.1 — Dinamik ve ton şeridi
 
 Model düğmelerinin SOLUNDA Transient ve Comp, SAĞINDA Bass ve Treble bulunur.
 Bu kontroller Console, Transformer, Tape, Triode ve Pentode modellerinin hepsinde çalışır.
@@ -16,7 +16,7 @@ Klanghelm kodu/kaplaması kullanılmaz ve birebir aynı ses veya devre eşdeğer
 - **Treble (-12..+12 dB)**: Normalde 6 kHz geniş high shelf.
 - **Treble Tight**: Geçişi 3.5 kHz'e kaydırır; negatif Treble ayarında 2.3 kHz civarında hafif presence desteği ekler.
 
-Tight tek başına, ilgili EQ 0 dB iken sesi değiştirmez. Transient=0, Comp=0 ve iki EQ=0 dB eski sinyal yolunu korur. Düğmeleri dikey sürükleyin; sayısal alanı düzenleyebilir veya çift tıklayarak sıfıra dönebilirsiniz. Alt şerit için pencere minimum 960×640, varsayılan 1040×640 olur.
+Tight tek başına, ilgili EQ 0 dB iken sesi değiştirmez. Transient=0, Comp=0 ve iki EQ=0 dB eski sinyal yolunu korur. Düğmeleri dikey sürükleyin; sayısal alanı düzenleyebilir veya çift tıklayarak sıfıra dönebilirsiniz. Alt şerit için pencere 1040×640 sabittir (0.5.2); elle boyut değiştirme kapalıdır.
 
 ## Sinyal yolu / geliştirme
 Giriş → Transient → mevcut 8× saturation/filtre yolu → host hızına dönüş → Auto Gain → Comp → Bass/Treble → Stereo Width → Mix/Output → hizalanmış Bypass.

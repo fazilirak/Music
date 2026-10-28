@@ -234,7 +234,7 @@ juce::Component *createAboutPage()
     text->setColour(juce::TextEditor::textColourId, juce::Colour(0xffffb879));
     text->setFont(juce::FontOptions(18));
     text->setText(juce::String::fromUTF8(
-        "F Saturator — Analog Colour\n\nFazıl Irak / FAZIL IRAK\n\nConsole · Transformer · Tape · Triode · Pentode\n\nOriginal hybrid DSP: 8x FIR oversampling, antiderivative antialiasing, magnetic memory and dynamic stage loading.\n\nResearch: Alain Paul / AP Saturation; Resonant DSP / SwankyAmp; Parker, Zavalishin & Le Bivic (DAFx 2016); Chowdhury (DAFx 2019); Holters & Zölzer (DAFx 2016).\n\nIndependent design. No measured hardware match or Decapitator equivalence is claimed.\n\nJUCE: AGPLv3 / commercial licence."));
+        "F-Saturator — Analog Colour\n\nFazıl Irak / FAZIL IRAK\n\nConsole · Transformer · Tape · Triode · Pentode\n\nOriginal hybrid DSP: 8x FIR oversampling, antiderivative antialiasing, magnetic memory and dynamic stage loading.\n\nResearch: Alain Paul / AP Saturation; Resonant DSP / SwankyAmp; Parker, Zavalishin & Le Bivic (DAFx 2016); Chowdhury (DAFx 2019); Holters & Zölzer (DAFx 2016).\n\nIndependent design. No measured hardware match or Decapitator equivalence is claimed.\n\nJUCE: AGPLv3 / commercial licence."));
     return text;
 }
 } // namespace irak

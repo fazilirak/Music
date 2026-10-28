@@ -1,4 +1,4 @@
-# F Saturator 0.4.0 — Character controls
+# F-Saturator 0.4.0 — Character controls
 
 Developer: Fazıl Irak · Updated: 24 October 2026
 

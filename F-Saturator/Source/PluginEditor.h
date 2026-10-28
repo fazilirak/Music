@@ -70,7 +70,7 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
     void resized() override;
     juce::PopupMenu rackOptions() override;
     void rackCommand(int) override;
-    // F Saturator gömme sözleşmesinde sekans/düzenleme özellikleri sunmaz.
+    // F-Saturator gömme sözleşmesinde sekans/düzenleme özellikleri sunmaz.
     bool rackCanEdit() const override
     {
         return false;

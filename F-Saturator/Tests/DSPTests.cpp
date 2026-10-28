@@ -457,6 +457,12 @@ int main(int argc, char **argv)
         if(p.settings().bass!=0||p.settings().treble!=0||p.settings().transient!=0||p.settings().comp!=0||p.settings().fastAttack||p.settings().fastRelease||p.settings().bassTight||p.settings().trebleTight) return verificationFailure(30,__LINE__);
         p.setCurrentProgram(2);
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
+        // Fazıl Irak: Ürün adı ve sabit pencere, host sözleşmesinde doğrulanır.
+        if (p.getName() != "F-Saturator" || editor->isResizable() || editor->getWidth()!=1040 || editor->getHeight()!=640)
+            return verificationFailure(32, __LINE__);
+        auto* limits=editor->getConstrainer();
+        if (!limits || limits->getMinimumWidth()!=1040 || limits->getMaximumWidth()!=1040 || limits->getMinimumHeight()!=640 || limits->getMaximumHeight()!=640)
+            return verificationFailure(32, __LINE__);
         // On iki halkada hedef seçimini ve tekerleğin yalnız doğru parametreyi değiştirdiğini sınar (kod 13–15).
         const char *groupedIds[4][3] = {
             {"tone", "lowcut", "highcut"}, {"drive", "bias", "dynamics"},
@@ -499,8 +505,8 @@ int main(int argc, char **argv)
                 }
             }
         }
-        // Fazıl Irak: dar, varsayılan ve geniş yerleşimde dört grup da ayrık ve pencere içinde kalmalı.
-        for (const auto dimensions : {juce::Point<int>{960, 640}, {1040, 640}, {1440, 900}})
+        // Fazıl Irak: Sabit panelde dört grup ayrık ve pencere içinde kalmalı.
+        for (const auto dimensions : {juce::Point<int>{1040, 640}})
         {
             editor->setSize(dimensions.x, dimensions.y);
             for (int group = 0; group < 4; ++group)
@@ -517,8 +523,8 @@ int main(int argc, char **argv)
             }
         }
         editor->setSize(1040, 640);
-        // Şerit elemanları minimum boyda da model bankasıyla çakışmamalı.
-        for(const auto size : {juce::Point<int>{960,640},juce::Point<int>{1040,640},juce::Point<int>{1440,900}})
+        // Sabit panelde şerit elemanları model bankasıyla çakışmamalı.
+        for(const auto size : {juce::Point<int>{1040,640}})
         {
             editor->setSize(size.x,size.y);
             for(const char* id : {"transient","comp","bass","treble","fast_attack","fast_release","bass_tight","treble_tight"})
@@ -531,12 +537,10 @@ int main(int argc, char **argv)
             }
         }
         editor->setSize(1040,640);
-        // Tape Glue presetini iki pencere boyunda çizerek gerçek dağıtım görsellerini üretir.
+        // Tape Glue presetini sabit pencere boyunda çizerek gerçek dağıtım görselini üretir.
         p.setCurrentProgram(2);
         juce::Timer::callPendingTimersSynchronously();
         snapshot(*editor, output.getChildFile("F-Saturator-preview.png"));
-        editor->setSize(960, 640);
-        snapshot(*editor, output.getChildFile("F-Saturator-small-preview.png"));
         set("transient",.4f);set("comp",.35f);set("bass",3);set("treble",2);
         set("fast_attack",1);set("fast_release",1);set("bass_tight",1);set("treble_tight",1);
         editor->setSize(1040,640);juce::Timer::callPendingTimersSynchronously();
