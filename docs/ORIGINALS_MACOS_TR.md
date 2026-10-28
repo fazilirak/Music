@@ -19,6 +19,8 @@ ctest --test-dir build-macos --output-on-failure --timeout 600
 python3 ../scripts/package_originals_macos.py .
 ```
 
+F-Kick için CMake komutuna `-DCMAKE_CXX_FLAGS=-ffp-contract=off` eklenir. Bu ayar Apple Clang'ın çarpma/toplama işlemlerini FMA olarak birleştirmesini kapatır; eski Windows referans seslerinin ayrı işlem yuvarlamasını korumayı amaçlar. Windows byte-byte karşılaştırması ve diğer platformlardaki iki 24-bit PCM basamağı sınırı korunur. İlgili derleyici seçeneği: [Clang kayan nokta davranışı](https://clang.llvm.org/docs/UsersManual.html#controlling-floating-point-behavior).
+
 VST3, Audio Unit ve bağımsız uygulama oluşturulur. Her Mach-O dosyasının `arm64` ve `x86_64` mimarilerini taşıdığı, paket sürümü ve ad-hoc imzası paketlemeden önce doğrulanır. Başarısız CTest sonucu paketlemeyi durdurur. Gerçek Intel Mac ve üçüncü taraf DAW testleri, yerel macOS CI testlerinden ayrı değerlendirilmelidir.
 
 ## Kurulum

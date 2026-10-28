@@ -40,7 +40,11 @@ jobs:
           if [ -f scripts/bootstrap_fonts.py ]; then python scripts/bootstrap_fonts.py; fi
       - name: Build Universal VST3, AU and standalone
         run: |
-          cmake -S . -B build-macos -G Ninja -DCMAKE_BUILD_TYPE=Release '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64' -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0
+          extra=()
+          # Windows/x86 referansıyla aynı ayrı çarpma/toplama yuvarlamasını koru.
+          # Apple Clang'ın FMA birleştirmesi, eski kick WAV'ında 17 PCM basamağı fark üretti.
+          if [ '${{ matrix.project }}' = F-Kick ]; then extra+=('-DCMAKE_CXX_FLAGS=-ffp-contract=off'); fi
+          cmake -S . -B build-macos -G Ninja -DCMAKE_BUILD_TYPE=Release '-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64' -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON "${extra[@]}"
           cmake --build build-macos --parallel 3
       - name: Run DSP, state, GUI and available host checks
         run: ctest --test-dir build-macos --output-on-failure --timeout 600
@@ -60,7 +64,9 @@ jobs:
           path: |
             ${{ matrix.project }}/build-macos/Testing/Temporary/*.log
             ${{ matrix.project }}/build-macos/CMakeFiles/CMakeConfigureLog.yaml
+            ${{ matrix.project }}/build-macos/compile_commands.json
             ${{ matrix.project }}/validation/*.png
+            ${{ matrix.project }}/validation/*Legacy*.wav
             ${{ matrix.project }}/dist/*.png
           if-no-files-found: ignore
   release:
