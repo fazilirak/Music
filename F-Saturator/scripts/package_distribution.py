@@ -94,7 +94,7 @@ def package(target):
                 shutil.copy2(source, stage / destination)
         for folder in ['FactoryPresets', 'Auditions']:
             shutil.copytree(ROOT / 'dist' / folder, stage / folder)
-        for name in ['DSP-REPORT.md', 'F-Saturator-preview.png', 'F-Saturator-small-preview.png']:
+        for name in ['DSP-REPORT.md', 'F-Saturator-preview.png', 'F-Saturator-strip-active-preview.png']:
             shutil.copy2(ROOT / 'dist' / name, stage / name)
         for name in ['README.md', 'LICENSE', 'JUCE-LICENSE.md', 'THIRD-PARTY-NOTICES.txt']:
             shutil.copy2(ROOT / name, stage / name)
