@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Host parametreleri, ses callback, durum kaydı ve kaynak sahipliği köprüsü.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -12,6 +12,7 @@ const char* ids[]={"mode","gate","loop","reverse","poly","tracking","sampleGain"
     "bodyGain","root","sweep","phase","harmonics","length","attack","release","sustain","cutoff","resonance","drive","output","start","end"};
 
 const char* fxIDs[]={"hp","rumbleMix","rumbleDecay","rumbleHP","rumbleLP","rumbleDrive","duck","recover","echoMix","echoTime","echoFeedback","echoLP","echoSync","echoDivision","echoSource","driveType","tempo","lfoHz","lfoSync","lfoShape","lfoDivision","lfoPhase","lfoRetrigger","adDelay","adAttack","adDecay","adCurve","punch","rumbleGain","scShape","scShift","scMix","room","fxHP","fxLP","bassLift","bassQ"};
+const char* rumbleIDs[]={"rumbleMode","returnRouting","rumbleDuck","echoDuck","roomDuck","bassDuck","rumbleSC","echoSC","roomSC","bassSC","echoGain","roomGain","rumbleLimit","rumbleCeiling","groovePattern","grooveDepth","bassLevel","bassNote","bassTune","bassDecay","bassTone","bassCutoff","bassFollow","bassPattern"};
 juce::String curveID(int c,int point,const char* part) {return juce::String(c==0?"amp":"pitch")+juce::String(point)+part;}
 fkick::Curve factoryCurve(bool pitch) {
     fkick::Curve c;c.count=5;
@@ -79,12 +80,38 @@ juce::AudioProcessorValueTreeState::ParameterLayout FKickProcessor::layout() {
     f("punch","Body punch",0,1,0);f("rumbleGain","Rumble return gain dB",-24,24,0);
     choice("scShape","Sidechain curve",{"Pump","Smooth","Late","Gate"},0);f("scShift","Sidechain beat shift",-.5f,.5f,0);f("scMix","Sidechain mix",0,1,0);f("room","Room mix",0,1,0);f("fxHP","FX return HP Hz",0,4000,0,.35f);f("fxLP","FX return LP Hz",80,20000,20000,.3f);
     f("bassLift","Bass Lift dB",-12,12,0);f("bassQ","Bass Q",.1f,2,.707f);
+    // Fazıl Irak, 03.11.2026: 131 eski parametre yerinde; yeni alanlar en sonda.
+    choice("rumbleMode","Rumble approach",{"Classic","Groove","Hybrid"},0);
+    choice("returnRouting","Return routing",{"Legacy","Split"},0);
+    f("rumbleDuck","Rumble duck share",0.0f,1.0f,1.0f);
+    f("echoDuck","Echo duck share",0.0f,1.0f,1.0f);
+    f("roomDuck","Room duck share",0.0f,1.0f,1.0f);
+    f("bassDuck","Bass duck share",0.0f,1.0f,1.0f);
+    f("rumbleSC","Rumble SC share",0.0f,1.0f,1.0f);
+    f("echoSC","Echo SC share",0.0f,1.0f,1.0f);
+    f("roomSC","Room SC share",0.0f,1.0f,1.0f);
+    f("bassSC","Bass SC share",0.0f,1.0f,1.0f);
+    f("echoGain","Echo return gain dB",-24.0f,12.0f,0.0f);
+    f("roomGain","Room return gain dB",-24.0f,12.0f,0.0f);
+    b("rumbleLimit","Rumble peak limiter",false);
+    f("rumbleCeiling","Rumble limiter ceiling dB",-24.0f,0.0f,-6.0f);
+    choice("groovePattern","Groove pattern",{"Offbeat","Rolling","Broken","Syncopated"},0);
+    f("grooveDepth","Groove depth",0.0f,1.0f,0.8f);
+    f("bassLevel","Hybrid bass level dB",-60.0f,0.0f,-18.0f);
+    f("bassNote","Hybrid bass MIDI root",24.0f,60.0f,29.0f);
+    f("bassTune","Hybrid bass tune st",-12.0f,12.0f,0.0f);
+    f("bassDecay","Hybrid bass decay ms",30.0f,400.0f,120.0f);
+    f("bassTone","Hybrid bass harmonics",0.0f,1.0f,0.35f);
+    f("bassCutoff","Hybrid bass cutoff Hz",40.0f,1500.0f,550.0f);
+    b("bassFollow","Hybrid bass MIDI tracking",false);
+    choice("bassPattern","Hybrid bass pattern",{"Rolling","Offbeat","Driver","Octaves"},0);
     return l;
 }
 FKickProcessor::FKickProcessor():AudioProcessor(BusesProperties().withOutput("Output",juce::AudioChannelSet::stereo(),true)),state(*this,&undo,"FKICK_PARAMETERS",layout()) {
     keyboard.addListener(this);
     for(size_t i=0;i<params.size();++i)params[i]=state.getRawParameterValue(ids[i]);
     for(size_t i=0;i<fxParams.size();++i)fxParams[i]=state.getRawParameterValue(fxIDs[i]);
+    for(size_t i=0;i<rumbleParams.size();++i)rumbleParams[i]=state.getRawParameterValue(rumbleIDs[i]);
     for(int c=0;c<2;++c)for(int i=0;i<fkick::modTargetCount;++i)routeParams[(size_t)c][(size_t)i]=state.getRawParameterValue(juce::String(c==0?"lfo_":"ad_")+fkick::modIDs[i]);
     for(int c=0;c<2;++c) {
         curves[(size_t)c][0]=state.getRawParameterValue(curveID(c,0,"Count"));
@@ -117,6 +144,32 @@ fkick::Settings FKickProcessor::settings() const noexcept {
     s.length=v(Length)*.001f;s.attack=v(Attack)*.001f;s.release=v(Release)*.001f;s.sustain=v(Sustain);
     s.cutoff=v(Cutoff);s.resonance=v(Resonance);s.drive=v(Drive);s.output=juce::Decibels::decibelsToGain(v(Output));
     s.start=v(Start);s.end=juce::jmax(s.start+.001f,v(End));s.amp=curve(0);s.pitch=curve(1);
+    // Yeni dönüş/bass kontrolleri: atomik okumalar, callback içinde tahsis yok.
+    auto rp=[this](int i){return rumbleParams[(size_t)i]->load(std::memory_order_relaxed);};
+    s.fx.rumbleMode=int(rp(0));
+    s.fx.separateReturns=rp(1)>.5f;
+    s.fx.rumbleDuck=rp(2);
+    s.fx.echoDuck=rp(3);
+    s.fx.roomDuck=rp(4);
+    s.fx.bassDuck=rp(5);
+    s.fx.rumbleSC=rp(6);
+    s.fx.echoSC=rp(7);
+    s.fx.roomSC=rp(8);
+    s.fx.bassSC=rp(9);
+    s.fx.echoGain=rp(10);
+    s.fx.roomGain=rp(11);
+    s.fx.rumbleLimit=rp(12)>.5f;
+    s.fx.rumbleCeiling=rp(13);
+    s.fx.groovePattern=int(rp(14));
+    s.fx.grooveDepth=rp(15);
+    s.fx.bassLevel=rp(16);
+    s.fx.bassNote=rp(17);
+    s.fx.bassTune=rp(18);
+    s.fx.bassDecay=rp(19)*.001f;
+    s.fx.bassTone=rp(20);
+    s.fx.bassCutoff=rp(21);
+    s.fx.bassFollow=rp(22)>.5f;
+    s.fx.bassPattern=int(rp(23));
     auto fx=[this](F p){return fxParams[(size_t)p]->load(std::memory_order_relaxed);};
     s.fx.scShape=int(fx(SCShape));s.fx.scShift=fx(SCShift);s.fx.scMix=fx(SCMix);s.fx.room=fx(Room);s.fx.fxHP=fx(FXHP);s.fx.fxLP=fx(FXLP);s.fx.bassLift=fx(BassLift);s.fx.bassQ=fx(BassQ);
     s.punch=fx(Punch);s.fx.rumbleGain=fx(RumbleGain);s.fx.hp=fx(HP);s.fx.rumbleMix=fx(RMix);s.fx.rumbleDecay=fx(RDecay);s.fx.rumbleHP=fx(RHP);s.fx.rumbleLP=fx(RLP);s.fx.rumbleDrive=fx(RDrive);s.fx.duck=fx(Duck);s.fx.recover=fx(Recover)*.001f;

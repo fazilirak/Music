@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Rumble, echo, oda ve eski modülasyon verilerinin ses işleme katmanı.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -26,7 +26,7 @@ MotionFrame Motion::tick(const MotionSettings& s) noexcept {
 }
 // Fazıl Irak: Delay/reverb tamponlarını ses başlamadan ayırır; render sırasında kapasite büyütülmez.
 void TechnoFX::prepare(double sr){
-    bassEQ.prepare(sr);rate=sr;constexpr double times[]={.0297,.0371,.0411,.0437};
+    bassEQ.prepare(sr);hybridBass.prepare(sr);rate=sr;limiterRelease=float(std::exp(-1/(sr*.08)));routePole=float(std::exp(-1/(sr*.002)));constexpr double times[]={.0297,.0371,.0411,.0437};
     for(int c=0;c<2;++c){echo[(size_t)c].assign((size_t)std::ceil(sr*2.4)+4,0);
         for(int k=0;k<4;++k)combs[(size_t)c][(size_t)k].data.assign((size_t)juce::jmax(2,int(sr*(times[k]+c*.0011))),0);}
     for(auto* s:{&delaySamples,&rumbleGain,&echoGain,&hpCutoff,&returnGain,&roomLevel,&scMix,&scShift,&wetHP,&wetLP})s->reset(sr,.02);
@@ -40,19 +40,23 @@ void TechnoFX::reset() noexcept {
     for(auto& channel:combs)for(auto& comb:channel){std::fill(comb.data.begin(),comb.data.end(),0.f);comb.index=0;comb.damping=0;}
     for(auto& data:echo)std::fill(data.begin(),data.end(),0.f);
     echoIndex=0;echoLow={};rumbleLow={};rumbleLow2={};rumbleHighLow={};rumbleHighLow2={};hp1={};hp2={};
+    hybridBass.reset();beatPosition=0;fallbackArmed=false;limiterGain=1;routeGain={1,1,1,1};hybridFade=0;
     lastDecay=-1;duckEnvelope=0;killGain=1;panicking=false;
     bassEQ.reset();roomVerb.reset();roomWasOn=false;hostClock=false;scPhase=0;scGain=1;wetHP1={};wetHP2={};wetLP1={};wetLP2={};
     roomLevel.setCurrentAndTargetValue(0);scMix.setCurrentAndTargetValue(0);scShift.setCurrentAndTargetValue(0);wetHP.setCurrentAndTargetValue(0);wetLP.setCurrentAndTargetValue(20000);
     delaySamples.setCurrentAndTargetValue(float(rate*.222));rumbleGain.setCurrentAndTargetValue(0);echoGain.setCurrentAndTargetValue(0);hpCutoff.setCurrentAndTargetValue(0);returnGain.setCurrentAndTargetValue(1);
 }
-void TechnoFX::trigger() noexcept {if(panicking){const auto clock=hostClock;const auto phase=scPhase;reset();hostClock=clock;scPhase=phase;}if(!hostClock)scPhase=0;duckEnvelope=1;}
+void TechnoFX::trigger(int note,float velocity) noexcept {if(panicking){const auto clock=hostClock;const auto phase=scPhase;const auto beat=beatPosition;const auto armed=fallbackArmed;reset();hostClock=clock;scPhase=phase;beatPosition=beat;fallbackArmed=armed;}if(!hostClock)scPhase=0;
+    if(!fallbackArmed && !hostClock){beatPosition=0;fallbackArmed=true;}
+    hybridBass.trigger(beatPosition,note,velocity);duckEnvelope=1;}
 double TechnoFX::echoSeconds(const FXSettings& s,double bpm) noexcept {constexpr double beats[]={.25,.5,.75,1,1.5};return s.echoSync?60/juce::jlimit(40.,300.,bpm)*beats[juce::jlimit(0,4,s.echoDivision)]:juce::jlimit(.01f,1.5f,s.echoTime);}
 double TechnoFX::tailSeconds(const FXSettings& s,const MotionSettings& m) noexcept {
     const bool r=s.rumbleMix>0||m.lfo[RumbleMixMod]!=0||m.ad[RumbleMixMod]!=0;
     const bool e=s.echoMix>0||m.lfo[EchoMixMod]!=0||m.ad[EchoMixMod]!=0;
     const double decay=r||(e&&s.echoSource==1)?s.rumbleDecay*1.5:0;
     const double feedback=juce::jlimit(.01,.85,double(s.feedback+(std::abs(m.lfo[FeedbackMod])+std::abs(m.ad[FeedbackMod]))*.4));
-    return juce::jlimit(0.,120.,juce::jmax(s.room?2.5:0.,decay+(e?echoSeconds(s,m.bpm)*std::log(.001)/std::log(feedback):0)));
+    const double bass=s.rumbleMode==2?240/juce::jlimit(40.,300.,m.bpm)+s.bassDecay*14:0;
+    return juce::jlimit(0.,120.,juce::jmax(bass,juce::jmax(s.room?2.5:0.,decay+(e?echoSeconds(s,m.bpm)*std::log(.001)/std::log(feedback):0))));
 }
 double TechnoFX::distort(double x,float db,int type) noexcept {
     if(db<=.001f)return x;const double gain=std::pow(10.,db/20.);
@@ -66,6 +70,8 @@ void TechnoFX::begin(const FXSettings& s,const MotionSettings& m) noexcept {
     delaySamples.setTargetValue(float(echoSeconds(s,m.bpm)*rate));rumbleGain.setTargetValue(s.rumbleMix);echoGain.setTargetValue(s.echoMix);hpCutoff.setTargetValue(s.hp);returnGain.setTargetValue(juce::Decibels::decibelsToGain(s.rumbleGain));
     if(s.room>0&&!roomWasOn)roomVerb.reset();roomWasOn=s.room>0;roomLevel.setTargetValue(juce::jlimit(0.f,1.f,s.room)*.28f);
     bassEQ.begin(s.bassLift,s.bassQ);
+    echoTrim=juce::Decibels::decibelsToGain(s.echoGain);roomTrim=juce::Decibels::decibelsToGain(s.roomGain);
+    bassTrim=juce::Decibels::decibelsToGain(s.bassLevel);limitCeiling=juce::Decibels::decibelsToGain(s.rumbleCeiling);
     scMix.setTargetValue(s.scMix);scShift.setTargetValue(s.scShift);wetHP.setTargetValue(s.fxHP);wetLP.setTargetValue(s.fxLP);scStep=juce::jlimit(40.,300.,m.bpm)/60/rate;
 }
 std::array<double,2> TechnoFX::process(double left,double right,const FXSettings& s,const MotionFrame& m) noexcept {
@@ -92,6 +98,8 @@ std::array<double,2> TechnoFX::process(double left,double right,const FXSettings
     float masterHP=hpCutoff.getNextValue();if(m.amount[HPMod]!=0)masterHP=juce::jmax(20.f,masterHP)*std::exp2(m.amount[HPMod]*4);
     const bool hpOn=masterHP>1;const double hpG=std::tan(juce::MathConstants<double>::pi*juce::jlimit(5.,rate*.4,double(masterHP))/rate),h=hpG/(1+hpG);
     bassEQ.tick();
+    // Fazıl Irak: dönüşleri önce ayrı üret; Classic toplamındaki float işlem sırası korunur.
+    std::array<float,2> rumbleReturn{},echoReturn{},roomReturn{};
     std::array<double,2> out{};
     for(int c=0;c<2;++c){
         const double dry=c==0?left:right;float diffuse=0;
@@ -100,13 +108,43 @@ std::array<double,2> TechnoFX::process(double left,double right,const FXSettings
         wet=float(distort(wet,rumbleDrive,s.driveType));auto& l=rumbleLow[(size_t)c];auto& l2=rumbleLow2[(size_t)c];l+=float(lp)*(wet-l);l2+=float(lp)*(l-l2);wet=l2;
         const float delayed=juce::jmap(frac,echo[(size_t)c][p0],echo[(size_t)c][p1]);echoLow[(size_t)c]+=float(tone)*(delayed-echoLow[(size_t)c]);
         const float source=s.echoSource==0?float(dry):wet;echo[(size_t)c][echoIndex]=std::tanh(source*.7f+echoLow[(size_t)c]*fb);
-        float returns=wet*rg*2.5f*wetGain+echoLow[(size_t)c]*eg;
-        if(roomGain>0)returns+=(c==0?roomL:roomR)*roomGain;
+        rumbleReturn[(size_t)c]=wet*rg*2.5f*wetGain;
+        echoReturn[(size_t)c]=echoLow[(size_t)c]*eg;
+        roomReturn[(size_t)c]=roomGain>0?(c==0?roomL:roomR)*roomGain:0;
+    }
+    // İki kanalı birlikte algılayan, yalnız rumble'a ait sıfır gecikmeli peak limiter.
+    // Bypass eski yolu aynen bırakır. Bu bir true-peak / lookahead limiter değildir.
+    if(s.rumbleLimit){const float peak=juce::jmax(std::abs(rumbleReturn[0]),std::abs(rumbleReturn[1]));
+        const float ceiling=limitCeiling;
+        const float target=peak>ceiling?ceiling/peak:1.f;
+        limiterGain=target<limiterGain?target:target+limiterRelease*(limiterGain-target);
+        for(auto& x:rumbleReturn)x*=limiterGain;
+    }else limiterGain=1;
+    const bool split=s.separateReturns||s.rumbleMode>0;
+    const float gro=s.rumbleMode>0?RumblePatterns::groove(beatPosition,s.groovePattern):1.f;
+    const float grooveGain=1-s.grooveDepth+s.grooveDepth*gro;
+    const float participationDuck[]={s.rumbleDuck,s.echoDuck,s.roomDuck,s.bassDuck};
+    const float participationSC[]={s.rumbleSC,s.echoSC,s.roomSC,s.bassSC};
+    for(int c=0;c<4;++c){const float target=(1-participationDuck[c]*(1-duck))*(1-participationSC[c]*(1-float(scGain)));
+        routeGain[(size_t)c]=target+routePole*(routeGain[(size_t)c]-target);}
+    const float bassTarget=s.rumbleMode==2?1.f:0.f;
+    hybridFade += juce::jlimit(-float(1/(rate*.01)),float(1/(rate*.01)),bassTarget-hybridFade);
+    const double bass=hybridFade>0?hybridBass.tick(beatPosition,s.bassPattern,s.bassNote,s.bassTune,s.bassFollow,s.bassDecay,s.bassTone,s.bassCutoff)
+        *bassTrim*hybridFade*routeGain[3]*killGain:0;
+    beatPosition+=scStep;
+    for(int c=0;c<2;++c){
+        const double dry=c==0?left:right;
+        float r=rumbleReturn[(size_t)c],e=echoReturn[(size_t)c],room=roomReturn[(size_t)c];
+        if(split){r*=routeGain[0];e*=routeGain[1]*echoTrim;room*=routeGain[2]*roomTrim;
+            if(s.rumbleMode>0){r*=grooveGain;e*=1-s.grooveDepth*.65f+s.grooveDepth*.65f*gro;}}
+        float returns=r+e;if(roomGain>0)returns+=room;
         double toneReturn=returns;
         if(highOn){double v=(toneReturn-wetHP1[(size_t)c])*hH,lo=v+wetHP1[(size_t)c];wetHP1[(size_t)c]=lo+v;toneReturn-=lo;v=(toneReturn-wetHP2[(size_t)c])*hH;lo=v+wetHP2[(size_t)c];wetHP2[(size_t)c]=lo+v;toneReturn-=lo;}else {wetHP1[(size_t)c]=wetHP2[(size_t)c]=0;}
         if(lowOn){double v=(toneReturn-wetLP1[(size_t)c])*lH,lo=v+wetLP1[(size_t)c];wetLP1[(size_t)c]=lo+v;v=(lo-wetLP2[(size_t)c])*lH;lo=v+wetLP2[(size_t)c];wetLP2[(size_t)c]=lo+v;toneReturn=lo;}else {wetLP1[(size_t)c]=wetLP2[(size_t)c]=0;}
-        if(highOn||lowOn)returns=float(toneReturn);if(mix>0)returns*=float(scGain);
-        double combined=dry+returns*duck*killGain;
+        if(highOn||lowOn)returns=float(toneReturn);
+        if(!split && mix>0)returns*=float(scGain);
+        double combined=dry+returns*(split?1:duck)*killGain;
+        if(hybridFade>0)combined+=bass;
         // HP ayrı seri filtredir; Off durumunda eski ses yolunu bit düzeyinde korur.
         if(hpOn){double v=(combined-hp1[(size_t)c])*h,lo=v+hp1[(size_t)c];hp1[(size_t)c]=lo+v;combined-=lo;
             v=(combined-hp2[(size_t)c])*h;lo=v+hp2[(size_t)c];hp2[(size_t)c]=lo+v;combined-=lo;}

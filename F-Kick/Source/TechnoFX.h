@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Rumble, echo, oda ve eski modülasyon verilerinin ses işleme katmanı.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -9,6 +9,7 @@
 #include <vector>
 #include "FXShaper.h"
 #include "BassEQ.h"
+#include "RumblePatterns.h"
 
 namespace fkick {
 enum ModTarget { FilterMod,HPMod,DriveMod,RumbleMixMod,RumbleLPMod,RumbleDriveMod,EchoMixMod,FeedbackMod,PitchMod,LevelMod,modTargetCount };
@@ -31,6 +32,13 @@ struct FXSettings {
     int scShape=0;
     float scShift=0,scMix=0,fxHP=0,fxLP=20000;
     float bassLift=0,bassQ=.707f;
+    // Fazıl Irak, 03.11.2026: nötr varsayılanlar eski state/preset sesini korur.
+    int rumbleMode=0,groovePattern=0,bassPattern=0;
+    bool separateReturns=false,rumbleLimit=false,bassFollow=false;
+    float rumbleDuck=1,echoDuck=1,roomDuck=1,bassDuck=1;
+    float rumbleSC=1,echoSC=1,roomSC=1,bassSC=1;
+    float echoGain=0,roomGain=0,rumbleCeiling=-6,grooveDepth=.8f;
+    float bassLevel=-18,bassNote=29,bassTune=0,bassDecay=.12f,bassTone=.35f,bassCutoff=550;
     float room=0; // 0..1; önceki bool Room on=1 aynı wet seviyesini korur.
 };
 struct MotionFrame {
@@ -55,9 +63,9 @@ class TechnoFX {
 public:
     void prepare(double sr);
     void reset() noexcept;
-    void trigger() noexcept;
+    void trigger(int note=60,float velocity=1) noexcept;
     void panic() noexcept {panicking=true;}
-    void syncBeat(double beat,bool running) noexcept {hostClock=running;if(running)scPhase=FXShaper::wrap(beat);}
+    void syncBeat(double beat,bool running) noexcept {hostClock=running;if(running){scPhase=FXShaper::wrap(beat);beatPosition=beat;}}
     float sidechainPhase() const noexcept {return float(scPhase);}
     void begin(const FXSettings&,const MotionSettings&) noexcept;
     std::array<double,2> process(double left,double right,const FXSettings&,const MotionFrame&) noexcept;
@@ -76,6 +84,11 @@ private:
     bool roomWasOn=false,hostClock=false;
     double scPhase=0,scStep=0,scGain=1,scPole=0;
     double rate=48000;
+    double beatPosition=0;bool fallbackArmed=false;
+    HybridBass hybridBass;
+    float echoTrim=1,roomTrim=1,bassTrim=.125f,limitCeiling=.5f;
+    float limiterGain=1,limiterRelease=.999f,routePole=.99f,hybridFade=0;
+    std::array<float,4> routeGain{1,1,1,1};
     size_t echoIndex=0;
     float lastDecay=-1,duckEnvelope=0,duckCoefficient=.999f,killGain=1;
     bool panicking=false;

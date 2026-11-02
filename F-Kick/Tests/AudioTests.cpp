@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Ses ve durum davranışını doğrulayan testler.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -7,6 +7,7 @@
 #include "PluginEditor.h"
 #include <iostream>
 #include <stdexcept>
+void runRumbleTests(const juce::File&);
 void runTechnoTests(const juce::File&);
 void runBankTests(const juce::File&);
 void runImpactTests(const juce::File&);
@@ -176,6 +177,7 @@ int main(int argc,char** argv) {
         runImpactTests(folder);
         runBankTests(folder);
         runFXRackTests(folder);
+        runRumbleTests(folder);
         std::cout<<"ALL TESTS PASSED\n";
         return 0;
     }catch(const std::exception& e){std::cerr<<"FAIL: "<<e.what()<<'\n';return 1;}

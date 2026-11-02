@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Sample oynatma, kick gövdesi, ses yönetimi ve MIDI olaylarının gerçek zamanlı işlenmesi.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -46,7 +46,7 @@ void Engine::beginRelease(Voice& v) noexcept { if (!v.releasing) { v.releasing=t
 void Engine::panic() noexcept { for(auto& v:voices) { v.held=false; v.sustained=false;v.panic=true; beginRelease(v); } pedal={};effects.panic(); }
 // Fazıl Irak: Yeni MIDI vuruşunda ses ayırır; note/velocity ve retrigger bilgisi aynı olayda yakalanır.
 void Engine::noteOn(int note, int channel, float velocity, const Settings& s) noexcept {
-    motion.trigger(s.motion);effects.trigger();
+    motion.trigger(s.motion);effects.trigger(note,velocity);
     Voice* chosen=nullptr;
     if (!s.poly) {
         chosen=&voices[0];

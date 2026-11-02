@@ -1,9 +1,10 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 28.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Kompakt İngilizce ürün arayüzü, kontrol bağlantıları ve kullanıcı etkileşimi.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Fazıl Irak · 27.10.2026 · İngilizce ürün metni, gömülü font/lisanslar, Türkçe bakım yorumları.
 #include "PluginEditor.h"
+#include "RumbleRecipes.h"
 #include <BinaryData.h>
 
 namespace {
@@ -82,6 +83,11 @@ FKickValue::FKickValue(FKickProcessor& p,const char* parameterID,const char* nam
 }
 FKickValue::~FKickValue(){number.removeMouseListener(this);if(dragging)attachment.endGesture();}
 juce::String FKickValue::formatted(float v) const {
+    if(id.endsWith("Duck")||id.endsWith("SC")||id=="grooveDepth"||id=="bassTone")return juce::String(v*100,0)+"%";
+    if(id=="echoGain"||id=="roomGain"||id=="rumbleCeiling"||id=="bassLevel")return v<=-59.9f?"Off":juce::String(v,1)+" dB";
+    if(id=="bassNote")return juce::String(v,0);
+    if(id=="bassTune")return juce::String(v,1)+" st";
+    if(id=="bassCutoff")return juce::String(v,0)+" Hz";
     if(id.startsWith("lfo_")||id.startsWith("ad_")||id=="rumbleMix"||id=="echoMix"||id=="duck"||id=="echoFeedback")return juce::String(v*100,0)+"%";
     if(id=="rumbleDecay")return juce::String(v,1)+" s";
     if(id=="adCurve")return juce::String(v,2);
@@ -109,7 +115,8 @@ float FKickValue::parsed(const juce::String& input) const {
     auto t=input.trim().replaceCharacter(',', '.');
     if(t.equalsIgnoreCase("Off"))return id=="fxLP"?20000:id=="hp"||id=="fxHP"?0:-60;
     if(id=="samplePan"){if(t.equalsIgnoreCase("C"))return 0;const float v=t.retainCharacters("0123456789.-").getFloatValue();return t.startsWithIgnoreCase("L")?-v/100:t.startsWithIgnoreCase("R")?v/100:v;}
-    const float value=t.getFloatValue();if(id=="scShift")return value/100;
+    const float value=t.getFloatValue();
+    if(id.endsWith("Duck")||id.endsWith("SC")||id=="grooveDepth"||id=="bassTone")return value/100;if(id=="scShift")return value/100;
     if(id=="room"||id=="scMix"||id=="punch"||id=="harmonics"||id=="sustain"||id=="start"||id=="end"||id.startsWith("lfo_")||id.startsWith("ad_")||id=="rumbleMix"||id=="echoMix"||id=="duck"||id=="echoFeedback")return value/100;
     return (id=="cutoff"||id=="hp"||id=="fxHP"||id=="fxLP"||id=="rumbleHP"||id=="rumbleLP"||id=="echoLP")&&t.containsIgnoreCase("k")?value*1000:value;
 }
@@ -269,10 +276,37 @@ FKickEditor::FKickEditor(FKickProcessor& p):AudioProcessorEditor(p),processor(p)
     const int inlineWidths[]={27,27,24,30,25};for(int i=0;i<5;++i)values[(size_t)i]->setInlineCaption(inlineWidths[i]);
     field("cutoff","Cutoff","Low-pass cutoff in Hz. Enter 2.5k for 2500 Hz.");field("resonance","Q","Low-pass resonance.");field("drive","Drive","Saturation after the filter.");field("output","Output","Final output gain.");
     auto extra=[&](auto& list,const char* id,const char* name,const char* help){list.push_back(std::make_unique<FKickValue>(p,id,name,help));addAndMakeVisible(*list.back());};
-    extra(fxValues,"rumbleMix","Amount","Rumble return level.");extra(fxValues,"rumbleDecay","Decay","Rumble comb decay in seconds.");extra(fxValues,"rumbleHP","HP Hz","Rumble high-pass.");extra(fxValues,"rumbleLP","LP Hz","Rumble low-pass.");extra(fxValues,"rumbleDrive","Drive","Rumble saturation.");extra(fxValues,"duck","Duck","Duck both effect returns at each kick.");extra(fxValues,"recover","Recover","Duck recovery time.");
+    extra(fxValues,"rumbleMix","Amount","Rumble return level.");extra(fxValues,"rumbleDecay","Decay","Rumble comb decay in seconds.");extra(fxValues,"rumbleHP","HP Hz","Rumble high-pass.");extra(fxValues,"rumbleLP","LP Hz","Rumble low-pass.");extra(fxValues,"rumbleDrive","Drive","Rumble saturation.");extra(fxValues,"duck","Duck","Classic Legacy ducks the summed FX. Split routing uses the per-return shares on Routes.");extra(fxValues,"recover","Recover","Duck recovery time.");
     extra(fxValues,"echoMix","Amount","Echo return level.");extra(fxValues,"echoTime","Time","Echo free time in milliseconds.");extra(fxValues,"echoFeedback","Feedback","Echo feedback.");extra(fxValues,"echoLP","LP Hz","Echo feedback damping.");extra(fxValues,"rumbleGain","Gain","Rumble return gain, after tone and saturation; independent of dry kick.");
     auto choice=[&](juce::ComboBox& box,const char* id,const juce::StringArray& items){addAndMakeVisible(box);box.setComponentID(id);box.addItemList(items,1);choices.push_back(std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(p.state,id,box));};
     choice(echoDivision,"echoDivision",{"1/16","1/8","1/8 D","1/4","1/4 D"});choice(echoSource,"echoSource",{"Kick","Rumble"});choice(driveType,"driveType",{"Soft","Clip","Fold"});
+    choice(rumbleMode,"rumbleMode",{"Classic","Groove","Hybrid"});
+    choice(returnRouting,"returnRouting",{"Legacy sum","Split returns"});
+    choice(groovePattern,"groovePattern",{"Offbeat","Rolling","Broken","Syncopated"});
+    choice(bassPattern,"bassPattern",{"Rolling","Offbeat","Driver","Octaves"});
+    bind(rumbleLimit,"rumbleLimit","Linked-stereo rumble peak limiter only; no lookahead. Ceiling is on Routes.");
+    bind(bassFollow,"bassFollow","Transpose the separate bass pattern by MIDI note relative to MIDI 60. Root is a MIDI note number.");
+    for(auto* b:{&routesPage,&bassPage,&rumbleLimit,&bassFollow})addAndMakeVisible(*b);
+    routesPage.setComponentID("page-returns");bassPage.setComponentID("page-bass");
+    routesPage.onClick=[this]{page=3;updateControls();};bassPage.onClick=[this]{page=4;updateControls();};
+    extra(returnValues,"rumbleDuck","R Duck","Rumble participation in kick ducking. Split routing only.");
+    extra(returnValues,"rumbleSC","R SC","Rumble participation in the four-curve SC shaper.");
+    extra(returnValues,"echoDuck","E Duck","Echo ducking participation.");
+    extra(returnValues,"echoSC","E SC","Echo SC participation.");
+    extra(returnValues,"echoGain","E Gain","Independent echo return trim in Split routing.");
+    extra(returnValues,"roomDuck","Rm Duck","Room ducking participation.");
+    extra(returnValues,"roomSC","Rm SC","Room SC participation.");
+    extra(returnValues,"roomGain","Rm Gain","Independent room return trim in Split routing.");
+    extra(returnValues,"bassDuck","B Duck","Separate bass ducking participation.");
+    extra(returnValues,"bassSC","B SC","Separate bass SC participation.");
+    extra(returnValues,"grooveDepth","Groove","Rhythmic shaping depth. Groove/Hybrid only.");
+    extra(returnValues,"rumbleCeiling","Ceiling","Rumble return peak ceiling in dBFS; Limit must be enabled.");
+    extra(bassValues,"bassNote","Root MIDI","Independent bass root MIDI note number, e.g. 29 = F1.");
+    extra(bassValues,"bassTune","Tune","Bass tuning in semitones.");
+    extra(bassValues,"bassLevel","Level","Separate mono bass level. Off mutes it.");
+    extra(bassValues,"bassDecay","Decay","Per-step bass envelope decay in ms.");
+    extra(bassValues,"bassTone","Harmonics","Bass harmonics; fundamental remains mono.");
+    extra(bassValues,"bassCutoff","Cutoff","Bass layer low-pass cutoff in Hz.");
     const char* scNames[]={"Pump","Smooth","Late","Gate"};
     for(int i=0;i<4;++i){auto& b=scPresets[(size_t)i];addAndMakeVisible(b);b.setButtonText(scNames[i]);b.setComponentID("sc-preset-"+juce::String(i+1));b.onClick=[this,i]{processor.undo.beginNewTransaction("Sidechain curve");processor.setParameter("scShape",float(i));updateControls();};}
     addAndMakeVisible(scMixValue);addAndMakeVisible(scShiftValue);
@@ -315,6 +349,11 @@ void FKickEditor::resized() {
     for(int i=0;i<4;++i)scPresets[(size_t)i].setBounds(18+i*88,290,83,26);
     scMixValue.setBounds(400,283,70,39);scShiftValue.setBounds(490,283,75,39);
     roomMixValue.setBounds(660,77,81,38);fxHPValue.setBounds(660,121,38,38);fxLPValue.setBounds(705,121,38,38);bassLiftValue.setBounds(660,165,51,38);bassQValue.setBounds(716,165,27,38);
+    rumbleMode.setBounds(78,263,112,18);routesPage.setBounds(198,263,46,18);bassPage.setBounds(250,263,40,18);rumbleLimit.setBounds(297,263,52,18);
+    returnRouting.setBounds(373,263,116,18);groovePattern.setBounds(512,263,126,18);
+    bassFollow.setBounds(373,263,90,18);bassPattern.setBounds(610,299,132,21);
+    for(size_t i=0;i<returnValues.size();++i)returnValues[i]->setBounds(18+int(i)*61,285,57,38);
+    for(size_t i=0;i<bassValues.size();++i)bassValues[i]->setBounds(18+int(i)*98,285,90,38);
     // Yerleşim tarifleri editör koordinatındadır; sample paneli çocuklarını yerel koordinata çevir.
     for(auto* child:samplePanel.getChildren())child->setTopLeftPosition(child->getPosition()-samplePanel.getPosition());
     for(auto* child:getChildren())if(child!=&about)child->setTransform(juce::AffineTransform::scale(designScale));
@@ -330,9 +369,11 @@ void FKickEditor::paint(juce::Graphics& g) {
     label(g,"MODE",{20,52,50,15},9);label(g,"VOICE",{20,155,50,14},9);label(g,"PLAY",{20,190,50,14},9);
     g.setColour(juce::Colour(0xff1b2123));g.fillRoundedRectangle(8,260,744,71,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,260,744,71,5,.7f);g.setColour(line.withAlpha(.6f));
     if(page==0){g.drawVerticalLine(309,269,324);g.drawVerticalLine(535,269,324);label(g,"BODY",{18,263,150,15},9,accent);label(g,"ENVELOPE",{326,263,194,15},9,accent);label(g,"FILTER / OUTPUT",{548,260,196,13},9,accent);}
-    else if(page==1){g.drawVerticalLine(355,269,324);label(g,"RUMBLE",{18,263,150,15},9,accent);label(g,"ECHO",{370,263,58,15},9,accent);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
+    else if(page==1){g.drawVerticalLine(355,269,324);label(g,"RUMBLE",{18,263,58,15},9,accent);label(g,"ECHO",{370,263,58,15},9,accent);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
     else if(page==2){label(g,"SIDECHAIN CURVE",{18,263,340,15},9,accent);g.drawVerticalLine(385,269,324);label(g,"FX AMOUNT / TIMING",{400,263,185,15},9,accent);label(g,"1/4 note",{620,284,110,17},12,text);label(g,"FX returns only",{620,304,110,15},10);}
 
+    if(page==3)label(g,"RETURNS",{18,263,58,15},9,accent);
+    if(page==4){label(g,"BASS",{18,263,58,15},9,accent);label(g,"Pattern",{610,283,130,14},10);}
     const auto view=processor.sampleView();label(g,view.status.isNotEmpty()?view.status:page==2?"Drag curve left/right  |  Double-click: reset shift  |  Mix 0%: bypass":"Drag: adjust  |  Double-click: type  |  Room / FX HP / FX LP: effect returns only",{12,339,594,15},10);
     const float db=juce::Decibels::gainToDecibels(peak,-60.f);g.setColour(line);g.fillRect(615,345,64,2);g.setColour(accent);g.fillRect(615,345,int(64*juce::jlimit(0.f,1.f,(db+60)/60)),2);
     label(g,juce::String(db,1)+" dB",{686,338,64,17},10,peak>.98f?accent:muted,juce::Justification::centredRight);
@@ -340,17 +381,30 @@ void FKickEditor::paint(juce::Graphics& g) {
 void FKickEditor::stepPreset(int direction){processor.setCurrentProgram((processor.getCurrentProgram()+direction+processor.getNumPrograms())%processor.getNumPrograms());updateControls();}
 void FKickEditor::updateControls() {
     const bool sampler=processor.value("mode")>.5f;
+    const bool advanced=page==1||page>=3,hybrid=processor.value("rumbleMode")>1.5f;
+    for(auto* c:{&rumbleMode})c->setVisible(advanced);
+    for(auto* b:{&routesPage,&bassPage,&rumbleLimit})b->setVisible(advanced);
+    routesPage.setToggleState(page==3,juce::dontSendNotification);bassPage.setToggleState(page==4,juce::dontSendNotification);
+    returnRouting.setVisible(page==3);groovePattern.setVisible(page==3);
+    returnRouting.setEnabled(processor.value("rumbleMode")<.5f);
+    if(processor.value("rumbleMode")>.5f)returnRouting.setText("Split (auto)",juce::dontSendNotification);
+    else returnRouting.setSelectedId(1+juce::roundToInt(processor.value("returnRouting")),juce::dontSendNotification);
+    groovePattern.setEnabled(processor.value("rumbleMode")>.5f);
+    bassFollow.setVisible(page==4);bassFollow.setEnabled(hybrid);bassPattern.setVisible(page==4);bassPattern.setEnabled(hybrid);
+    for(auto& v:returnValues){v->setVisible(page==3);v->setEnabled(processor.value("returnRouting")>.5f||processor.value("rumbleMode")>.5f);}
+    returnValues.back()->setEnabled(processor.value("rumbleLimit")>.5f);
+    for(auto& v:bassValues){v->setVisible(page==4);v->setEnabled(hybrid);}
     if(sampler&&graph.tab==2)graph.tab=1;
-    soundPage.setToggleState(page==0,juce::dontSendNotification);fxPage.setToggleState(page==1,juce::dontSendNotification);modPage.setToggleState(page==2,juce::dontSendNotification);
+    soundPage.setToggleState(page==0,juce::dontSendNotification);fxPage.setToggleState(page==1||page>=3,juce::dontSendNotification);modPage.setToggleState(page==2,juce::dontSendNotification);
     for(size_t i=5;i<values.size();++i)values[i]->setVisible(page==0);tracking.setVisible(page==0);hpValue.setVisible(page==0);bodyPunch.setVisible(page==0);
     for(auto& v:fxValues)v->setVisible(page==1);for(auto* c:{&echoSource,&driveType})c->setVisible(page==1);echoSync.setVisible(page==1);echoDivision.setVisible(page==1&&processor.value("echoSync")>.5f);fxValues[8]->setVisible(page==1&&processor.value("echoSync")<.5f);
-    graph.setVisible(page<2);sidechainGraph.setVisible(page==2);
+    graph.setVisible(page!=2);sidechainGraph.setVisible(page==2);
     for(auto& b:scPresets)b.setVisible(page==2);for(int i=0;i<4;++i)scPresets[(size_t)i].setToggleState(juce::roundToInt(processor.value("scShape"))==i,juce::dontSendNotification);
     scMixValue.setVisible(page==2);scShiftValue.setVisible(page==2);roomMixValue.setVisible(true);fxHPValue.setVisible(true);fxLPValue.setVisible(true);
-    for(int i=0;i<5;++i)values[(size_t)i]->setVisible(page<2);loop.setVisible(page<2);reverse.setVisible(page<2);
+    for(int i=0;i<5;++i)values[(size_t)i]->setVisible(page!=2);loop.setVisible(page!=2);reverse.setVisible(page!=2);
     tempoValue.setEnabled(processor.hostTempo.load()==0);tempoValue.refreshDisplay();
     kickMode.setToggleState(!sampler,juce::dontSendNotification);samplerMode.setToggleState(sampler,juce::dontSendNotification);
-    sampleTab.setToggleState(page<2&&graph.tab==0,juce::dontSendNotification);pitchTab.setToggleState(page<2&&graph.tab==1,juce::dontSendNotification);ampTab.setToggleState(page<2&&graph.tab==2,juce::dontSendNotification);
+    sampleTab.setToggleState(page!=2&&graph.tab==0,juce::dontSendNotification);pitchTab.setToggleState(page!=2&&graph.tab==1,juce::dontSendNotification);ampTab.setToggleState(page!=2&&graph.tab==2,juce::dontSendNotification);
     if(shownProgram!=processor.getCurrentProgram()){shownProgram=processor.getCurrentProgram();presets.setSelectedId(shownProgram+1,juce::dontSendNotification);}
     loop.setEnabled(sampler);values[13]->setEnabled(sampler);gate.setEnabled(!sampler);ampTab.setEnabled(!sampler);
     gate.setButtonText(sampler||gate.getToggleState()?"Gate":"Trigger");poly.setButtonText(poly.getToggleState()?"Poly":"Mono");
@@ -377,7 +431,10 @@ void FKickEditor::chooseFile(int operation) {
 }
 void FKickEditor::showOptions() {
     juce::PopupMenu menu;menu.addItem(1,"Clear sample");menu.addItem(2,"Reset current factory patch");menu.addSeparator();menu.addItem(3,"Undo",processor.undo.canUndo());menu.addItem(4,"Redo",processor.undo.canRedo());menu.addSeparator();menu.addItem(5,"About / licences");menu.addItem(6,"Sampler init");
-    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(options),[safe=juce::Component::SafePointer<FKickEditor>(this)](int result){if(!safe)return;switch(result){case 1:safe->processor.clearSample();break;case 2:safe->processor.setCurrentProgram(safe->processor.getCurrentProgram());break;case 3:safe->processor.undo.undo();break;case 4:safe->processor.undo.redo();break;case 6:safe->processor.setCurrentProgram(0);safe->processor.setParameter("mode",1);safe->processor.setParameter("bodyGain",-60);safe->processor.setParameter("sampleGain",-6);safe->processor.setParameter("poly",1);safe->processor.setParameter("gate",1);safe->updateControls();break;case 5:safe->about.setVisible(true);safe->about.toFront(true);break;default:break;}});
+    juce::PopupMenu recipes;for(int i=0;i<12;++i)recipes.addItem(100+i,fkick::rumbleRecipeNames[i]);menu.addSubMenu("Rumble recipes",recipes);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(options),[safe=juce::Component::SafePointer<FKickEditor>(this)](int result){if(!safe)return;
+        if(result>=100&&result<112){fkick::applyRumbleRecipe(safe->processor,result-100);safe->page=1;safe->updateControls();safe->presets.setText(fkick::rumbleRecipeNames[result-100],juce::dontSendNotification);return;}
+        switch(result){case 1:safe->processor.clearSample();break;case 2:safe->processor.setCurrentProgram(safe->processor.getCurrentProgram());break;case 3:safe->processor.undo.undo();break;case 4:safe->processor.undo.redo();break;case 6:safe->processor.setCurrentProgram(0);safe->processor.setParameter("mode",1);safe->processor.setParameter("bodyGain",-60);safe->processor.setParameter("sampleGain",-6);safe->processor.setParameter("poly",1);safe->processor.setParameter("gate",1);safe->updateControls();break;case 5:safe->about.setVisible(true);safe->about.toFront(true);break;default:break;}});
 }
 
 

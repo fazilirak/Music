@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Kompakt İngilizce ürün arayüzü, kontrol bağlantıları ve kullanıcı etkileşimi.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -144,6 +144,10 @@ private:
     std::array<juce::TextButton,4> scPresets;
     juce::ComboBox presets;
     juce::ComboBox echoDivision,echoSource,driveType;
+    // Fazıl Irak, 03.11.2026: yeni ayarlar aynı alt şeritte; tuval boyutu değişmez.
+    juce::ComboBox rumbleMode,returnRouting,groovePattern,bassPattern;
+    juce::TextButton routesPage{"Routes"},bassPage{"Bass"},rumbleLimit{"Limit"},bassFollow{"MIDI root"};
+    std::vector<std::unique_ptr<FKickValue>> returnValues,bassValues;
     std::vector<std::unique_ptr<FKickValue>> values;
     std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>> buttons;
     std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment>> choices;

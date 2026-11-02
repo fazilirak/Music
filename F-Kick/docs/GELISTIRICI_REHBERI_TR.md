@@ -215,3 +215,13 @@ eski WAV uyumluluğu ve yeni sayısal UI alanları doğrulanır.
 `FKickTests <validation klasörü> --calibrate-clean` yalnız önerilen kazançları üretir; test geçişi sayılmaz. Ölçülen `CLEAN_CALIBRATION.json`, `Resources/CleanLevels.json` içine uygulanır; `scripts/make_factory_bank.py` JSON/header'ı yeniden üretir. Normal CTest daha sonra tekrar geçmelidir. 112 preset için 48 kHz / 135 BPM / velocity 127 üç vuruş ölçümünde peak 0.5 (-6.02 dBFS) hedeflenir. Rumble, kuru render çıkarılarak bağımsız ölçülür.
 
 Eski Room sesinin eşitlik testi yeni fabrika ayarıyla değil, 0.8.1 dağıtımından korunmuş `Legacy-0.8.1-Basement.fkick` state'iyle yapılır. Windows'ta byte-byte WAV eşitliği korunur; Linux'ta bütün PCM örnekleri ve metadata en fazla iki 24-bit PCM adımı farkla karşılaştırılır, farklar log'a yazılır.
+
+
+## 0.8.4 Rumble genişletmesi — Fazıl Irak · 03.11.2026
+
+- TechnoFX eski comb/echo/reverb hesap sırasını korur; dört dönüş için Duck/SC kazançları ve rumble limiter ekler. Gain katsayıları begin() içinde, bass perde/kesim katsayıları yalnız değer değişince hesaplanır.
+- RumblePatterns.h özgün 16-step Groove tabloları ve bağımsız HybridBass sınıfıdır. Sabit tablolar/üyeler kullanılır; render yolunda I/O, GUI, bekleyen kilit veya dinamik tahsis eklenmez. Bass son tetikten dört beat sonra yeni nota üretmeyi bırakır; panic motoru temizler.
+- RumbleRecipes.h 12 ek özgün tarifi uygular; ana factory bank sayısını değiştirmez.
+- Yeni 24 APVTS alanı eski 131 alanın sonundadır. Eski state eksik alanları varsayılandan tamamlar; FKICK_PRESET v1 korunur. Yeni mod varsayılanı Classic, routing Legacy ve limiter kapalıdır.
+- Tests/Legacy/TechnoFX.* yalnız test hedefinde 0.8.3 gerçek DSP referansıdır. Ürün eski test namespace'ini linklemez. RumbleTests.cpp eski/yeni fark, dry izolasyonu, SC, limiter, bass frekansı, panic, preset/state, blok ve GUI testlerini içerir.
+- Kullanım ve routing: docs/RUMBLE-084-TR.md. Ölçümler validation/RUMBLE-084-*.csv; 12 tarif ve ses validation/Rumble-Recipes. CPU ölçümü host CPU yüzdesi değildir.

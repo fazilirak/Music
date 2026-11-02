@@ -1,4 +1,4 @@
-// Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+// Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 // Dosyanın görevi: Ses ve durum davranışını doğrulayan testler.
 // Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -23,7 +23,7 @@ void shot(juce::Component& c,const juce::File& f){auto png=c.createComponentSnap
 void wave(const juce::File& f,juce::AudioBuffer<float>& a){a.applyGainRamp(a.getNumSamples()-240,240,1,0);auto out=f.createOutputStream();check(out!=nullptr,"SC WAV stream");out->setPosition(0);out->truncate();juce::WavAudioFormat fmt;std::unique_ptr<juce::AudioFormatWriter> w(fmt.createWriterFor(out.get(),48000,2,24,{},0));check(w!=nullptr,"SC WAV writer");out.release();check(w->writeFromAudioSampleBuffer(a,0,a.getNumSamples()),"SC WAV write");}
 }
 void runFXRackTests(const juce::File& folder){
-    FKickProcessor order;const char* newIDs[]={"scShape","scShift","scMix","room","fxHP","fxLP"};check(order.getParameters().size()==131,"FX parameter count");for(int i=0;i<6;++i)check(dynamic_cast<juce::RangedAudioParameter*>(order.getParameters()[123+i])->paramID==newIDs[i],"Existing parameter order changed");
+    FKickProcessor order;const char* newIDs[]={"scShape","scShift","scMix","room","fxHP","fxLP"};check(order.getParameters().size()==155,"FX parameter count");for(int i=0;i<6;++i)check(dynamic_cast<juce::RangedAudioParameter*>(order.getParameters()[123+i])->paramID==newIDs[i],"Existing parameter order changed");
     check(dynamic_cast<juce::RangedAudioParameter*>(order.getParameters()[129])->paramID=="bassLift"&&dynamic_cast<juce::RangedAudioParameter*>(order.getParameters()[130])->paramID=="bassQ","Bass EQ must append host IDs");
     // Gerçek ses ölçümü: 300 Hz shelf merkezi yarı dB, sub tam gain, tiz unity; Q geçişi değiştirir.
     auto eqGain=[](double sr,double hz,float db,float q){fkick::BassEQ eq;eq.prepare(sr);eq.begin(db,q);double in=0,out=0;for(int i=0;i<int(sr);++i){eq.tick();const double x=.02*std::sin(juce::MathConstants<double>::twoPi*hz*i/sr),y=eq.process(0,x),r=eq.process(1,0);check(std::isfinite(y)&&r==0,"Bass EQ stability / stereo independence");if(i>int(sr/2)){in+=x*x;out+=y*y;}}return 10*std::log10(out/in);};

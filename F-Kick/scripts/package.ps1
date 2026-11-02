@@ -1,10 +1,10 @@
-# Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
+# Geliştirici: Fazıl Irak - Son düzenleme: 03.11.2026
 # Dosyanın görevi: Ürün derleme, kaynak hazırlama ve dağıtım yardımcıları.
 # Copyright (c) 2026 Fazıl Irak - Özgün F-Kick uygulama kodu.
 # Fazıl Irak · 27.10.2026 · Doğrulanmış yerel ikili/kaynak arşivi. Sistem kurulumu/yayın yapmaz.
 $ErrorActionPreference = 'Stop'
 $kickRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$kickVersion = '0.8.3'
+$kickVersion = '0.8.4'
 $kickDist = Join-Path $kickRoot 'dist'
 $kickBinary = Join-Path $kickDist "F-Kick-$kickVersion-Windows-x64"
 $kickSource = Join-Path $kickDist "F-Kick-$kickVersion-Source"

@@ -1,0 +1,55 @@
+Start testing: Nov 03 01:04 Türkiye Standart Saati
+----------------------------------------------------------
+1/1 Testing: fkick_audio_state_gui
+1/1 Test: fkick_audio_state_gui
+Command: "C:/Users/FAZIL/Desktop/Codex/Music/F-Kick/build/FKickTests_artefacts/Release/FKickTests.exe" "C:/Users/FAZIL/Desktop/Codex/Music/F-Kick/validation" "C:/Users/FAZIL/Desktop/Codex/Music/F-Kick/build/FKick_artefacts/Release/VST3/F-Kick.vst3"
+Directory: C:/Users/FAZIL/Desktop/Codex/Music/F-Kick/build
+"fkick_audio_state_gui" start time: Nov 03 01:04 Türkiye Standart Saati
+Output:
+----------------------------------------------------------
+Starting F-Kick verification
+PASS MIDI sample-accurate onset
+PASS block invariance and tail
+PASS 8 patches at 44.1 / 48 / 96 / 192 kHz
+PASS velocity
+PASS UI event queue and one-shot panic
+PASS sampler sustain and note-off
+PASS sample loop/reverse, portable state, preset validation
+PASS voice stealing / panic / empty blocks
+PASS curve state and sample ownership stress
+PASS Undo / Redo and mono output
+PASS stereo 48 kHz / 24-bit export
+PASS Windows OLE registration / IDataObject Unicode CF_HDROP / actual native Drop callback
+PASS dimmed trim exclusions / native file-drop target routing / async sample load / Unicode paths / invalid drop
+PASS compact GUI / plain logo / working preset arrows / typed values / offline About / screenshots
+PASS built VST3: scan / instantiate / MIDI / audio / state / editor
+Clean sine harmonic distortion: -137.35 dB
+Previous 65% Punch comparison: -13.52 dB
+112 General/Techno presets: Punch, Drive, Rumble Drive and hidden drive modulation are zero.
+PASS independent HP attenuation
+PASS rumble decay / wet duck / echo repeat and tempo sync
+PASS LFO / AD / audible modulation / FX block invariance / drive extremes
+PASS FX/route state and legacy neutral migration
+PASS Sound/FX snapshots / SC remains the only modulation UI
+PASS four 135 BPM techno audio demos
+Equal-peak dry 20-150 ms RMS: old=0.289419 new=0.282956 change=-0.20 dB
+Isolated rumble +12 dB stage: 12.00 dB
+Old Deep Rumble wet-between / dry-hit RMS: 0.8022
+New Deep Rumble wet-between / dry-hit RMS: 0.7500 (-2.50 dB)
+069 Basement equal-peak dry 20-150 ms RMS: old=0.056249 new=0.221372 change=11.90 dB
+PASS legacy impact defaults / independent rumble gain / equal-peak before-after renders
+PASS 128 unique kicks / 64-48-16 categories / multi-rate / headroom / DC / tails / 128 portable presets / bank navigation / saw directions / HP text
+PASS Bass EQ frequency response / Q / stereo / bypass / multi-rate / state / layout
+PASS four SC curves / graph drag / Mix / FX-only dry protection / room / return HP-LP / host PPQ / MIDI fallback / state / 0.5 compatibility
+PASS 18 Classic legacy comparisons, max difference=0
+PASS split dry isolation / per-return SC / linked rumble limiter / bass root 43.6562 Hz / octave / independent bass / patterns / state / panic / 12 recipes
+ALL TESTS PASSED
+<end of output>
+Test time =  24.35 sec
+----------------------------------------------------------
+Test Passed.
+"fkick_audio_state_gui" end time: Nov 03 01:04 Türkiye Standart Saati
+"fkick_audio_state_gui" time elapsed: 00:00:24
+----------------------------------------------------------
+
+End testing: Nov 03 01:04 Türkiye Standart Saati

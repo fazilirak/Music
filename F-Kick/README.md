@@ -1,5 +1,5 @@
-<!-- Developer: Fazıl Irak | Updated: 27.10.2026 -->
-# F-Kick 0.8.3
+<!-- Developer: Fazıl Irak | Updated: 03.11.2026 -->
+# F-Kick 0.8.4
 
 **Sample the attack. Shape the body.**
 
@@ -7,12 +7,18 @@ An independently developed kick synthesizer and sampler by **Fazıl Irak**. Comp
 
 ![F-Kick](preview.png)
 
-| Downloads | Links |
-| --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Windows-x64.zip) |
-| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Source.zip) |
-| Release notes and checksums | [F-Kick 0.8.2](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) |
+## Downloads — 0.8.4
+
+- [Windows x64 — VST3 + standalone](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Windows-x64.zip)
+- [Complete corresponding source](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Source.zip)
+- [Release notes / platform availability](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.4)
+- Previous tested macOS Universal and Linux packages remain available in [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3). They do not include the new 0.8.4 rumble features. Updated platform packages are added only after their CI tests pass.
+
+### Rumble: Classic / Groove / Hybrid
+
+Classic preserves the old comb-based sound with Legacy routing and Limit off. Groove adds four tempo-locked 16-step return envelopes. Hybrid adds an independent, tuned mono bass voice with four original note patterns. Per-return Duck/SC shares, separate Echo/Room trims and an optional linked rumble peak limiter keep the compact 912 × 432 workflow. Twelve additional recipes are available in the options menu; the existing 128 factory presets remain unchanged.
+
+See [the detailed Turkish usage guide](docs/RUMBLE-084-TR.md) and [validation report](validation/TEST_SONUCLARI_TR.md). DAW listening remains a separate user check.
 
 ## F-series interface (0.8.3)
 
