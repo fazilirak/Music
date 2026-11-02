@@ -9,10 +9,13 @@ An independently developed kick synthesizer and sampler by **Fazıl Irak**. Comp
 
 ## Downloads — 0.8.4
 
-- [Windows x64 — VST3 + standalone](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Windows-x64.zip)
-- [Complete corresponding source](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Source.zip)
-- [Release notes / platform availability](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.4)
-- Previous tested macOS Universal and Linux packages remain available in [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3). They do not include the new 0.8.4 rumble features. Updated platform packages are added only after their CI tests pass.
+| Platform | Binaries | Complete corresponding source |
+|---|---|---|
+| Windows x64 | [VST3 + standalone ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Windows-x64.zip) | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Source.zip) |
+| macOS Universal (Apple Silicon + Intel) | [VST3 + AU + standalone TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-macOS-Universal.tar.gz) | [macOS Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-macOS-Source.zip) |
+| Linux x64 | [VST3 TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Linux-x64.tar.gz) | [Linux Source TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Linux-Source.tar.gz) |
+
+[Release notes, checksums and platform manifests](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.4). Native Windows, macOS and Linux CI builds and tests passed. Physical-device and third-party DAW listening checks remain separate. Mac bundles are ad-hoc signed, without Apple notarisation or Developer ID signing.
 
 ### Rumble: Classic / Groove / Hybrid
 
