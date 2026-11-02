@@ -82,11 +82,11 @@ F-Sidechain retains GATE-12/Tilr provenance and the GPLv3/AGPLv3 component terms
 
 ## F-Kick
 
-**Sample the attack. Shape the body.** Original kick synthesis, sample layering and 128 original factory patches by Fazıl Irak. Version 0.8.3 adds the orange/ivory F-series design in a 912 × 432 panel, preserving the 112 clean General/Techno patches and 16 Experimental patches.
+**Sample the attack. Shape the body.** Original kick synthesis, sample layering and 128 original factory patches by Fazıl Irak. **0.8.4 adds Classic / Groove / Hybrid:** tempo-shaped rumble, an independent tuned mono bass motor, per-return Duck/SC participation and an optional rumble peak limiter. Includes 12 additional original recipes and WAV examples in the same compact 912 × 432 interface.
 
-![F-Kick](F-Kick/preview.png)
+![F-Kick 0.8.4](F-Kick/validation/rumble-mode-2.png)
 
-[Downloads, source and build instructions](F-Kick/README.md) · [Authors and ownership](F-Kick/AUTHORS.md)
+[Downloads and source](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.4) · [Build instructions](F-Kick/README.md) · [Türkçe Rumble rehberi](F-Kick/docs/RUMBLE-084-TR.md) · [Authors and ownership](F-Kick/AUTHORS.md)
 
 Original F-Kick application code is © 2026 Fazıl Irak and AGPL-3.0-or-later. Third-party framework, SDK and font licences remain applicable.
 
