@@ -5,7 +5,7 @@
 
 An independently developed kick synthesizer and sampler by **Fazıl Irak**. Compact 912 × 432 interface, original DSP, editable Pitch/Amp curves and 128 original synthesis patches.
 
-![F-Kick](preview.png)
+![F-Kick 0.8.4](validation/rumble-mode-2.png)
 
 ## Downloads — 0.8.4
 
