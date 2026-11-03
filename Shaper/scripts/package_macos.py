@@ -22,8 +22,8 @@ def package():
     build = ROOT / 'build-macos'
     log = build / 'Testing/Temporary/LastTest.log'
     results = log.read_text(encoding='utf-8', errors='replace')
-    if results.count('Test Passed.') != 4 or 'Test Failed.' in results:
-        raise RuntimeError('All four CTest targets must pass before packaging.')
+    if results.count('Test Passed.') != 5 or 'Test Failed.' in results:
+        raise RuntimeError('All five CTest targets must pass before packaging.')
     header = (build / 'juce_binarydata_reevr_resources/JuceLibraryCode/reevr_data.h').read_text()
     if 'Shaper_Hall_Quad_wav' not in header or 'Hall_Quad_flac' in header:
         raise RuntimeError('Expected independently generated Shaper IR resource.')
