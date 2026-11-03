@@ -1,5 +1,15 @@
 ## Latest release — 0.8.8
 
+### Verified current downloads
+
+| Platform | Package |
+|---|---|
+| Windows x64 | [Download](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Windows-x64.zip) |
+| macOS Universal | [Download](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-macOS-Universal.tar.gz) |
+| Linux x64 | [Download](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Linux-x64.tar.gz) |
+
+[Corresponding source and licence files](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.8) · Native platform builds and checks passed.
+
 ![Jellybone hosting ValhallaSpaceModulator](docs/Jellybone-088-FX-ValhallaSpaceModulator.png)
 
 FX hosting example. ValhallaSpaceModulator by Valhalla DSP is a separate plugin, not bundled with Jellybone.
@@ -21,11 +31,11 @@ A modular effects rack by **Fazıl Irak**, formerly named Shaper. Add, order and
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Windows-x64.zip) |
-| macOS Universal — VST3 + AU + standalone | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-macOS-Universal.tar.gz) |
-| Linux x64 — VST3 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Linux-x64.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Source.zip) |
-| Notes, platform sources and checksums | [Jellybone 0.8.5](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) |
+| Windows x64 — VST3 + standalone | [ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Windows-x64.zip) |
+| macOS Universal — VST3 + AU + standalone | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-macOS-Universal.tar.gz) |
+| Linux x64 — VST3 | [TAR.GZ](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Linux-x64.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Source.zip) |
+| Notes, platform sources and checksums | [Jellybone 0.8.8](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.8) |
 
 ## Features
 

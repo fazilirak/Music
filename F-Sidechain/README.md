@@ -1,5 +1,15 @@
 ## Latest release — 1.1.3
 
+### Verified current downloads
+
+| Platform | Package |
+|---|---|
+| Windows x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Windows-x64.zip) |
+| macOS Universal | [Download](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-macOS-Universal.tar.gz) |
+| Linux x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Linux-x64.tar.gz) |
+
+[Corresponding source and licence files](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.3) · Native platform builds and checks passed.
+
 ![F-Sidechain 1.1.3](docs/interface-1.1.3.png)
 
 The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. Existing sound controls and parameter identities are retained.
@@ -17,11 +27,11 @@ Free, open-source multiband volume shaping by **Fazıl Irak**. A compact 912 × 
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Windows-x64.zip) |
-| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) |
-| macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-macOS-Universal.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Source.zip) |
-| Release notes and checksums | [F-Sidechain 1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) |
+| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Linux-x64.tar.gz) |
+| macOS Universal — VST3 + AU + standalone | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-macOS-Universal.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Source.zip) |
+| Release notes and checksums | [F-Sidechain 1.1.1](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.3) |
 | Website | [Türkçe](https://fazilirak.com/f-sidechain/) · [English](https://fazilirak.com/f-sidechain-english/) |
 
 ## F-series interface (1.1.2)

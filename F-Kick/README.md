@@ -1,5 +1,15 @@
 ## Latest release — 0.8.5
 
+### Verified current downloads
+
+| Platform | Package |
+|---|---|
+| Windows x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Windows-x64.zip) |
+| macOS Universal | [Download](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-macOS-Universal.tar.gz) |
+| Linux x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Linux-x64.tar.gz) |
+
+[Corresponding source and licence files](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.5) · Native platform builds and checks passed.
+
 ![F-Kick 0.8.5](docs/interface-0.8.5.png)
 
 The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. Existing sound controls and parameter identities are retained.
@@ -28,11 +38,11 @@ An independently developed kick synthesizer and sampler by **Fazıl Irak**. Comp
 
 | Platform | Binaries | Complete corresponding source |
 |---|---|---|
-| Windows x64 | [VST3 + standalone ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Windows-x64.zip) | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Source.zip) |
-| macOS Universal (Apple Silicon + Intel) | [VST3 + AU + standalone TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-macOS-Universal.tar.gz) | [macOS Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-macOS-Source.zip) |
-| Linux x64 | [VST3 TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Linux-x64.tar.gz) | [Linux Source TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.4/F-Kick-0.8.4-Linux-Source.tar.gz) |
+| Windows x64 | [VST3 + standalone ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Windows-x64.zip) | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Source.zip) |
+| macOS Universal (Apple Silicon + Intel) | [VST3 + AU + standalone TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-macOS-Universal.tar.gz) | [macOS Source ZIP](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-macOS-Source.zip) |
+| Linux x64 | [VST3 TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Linux-x64.tar.gz) | [Linux Source TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Linux-Source.tar.gz) |
 
-[Release notes, checksums and platform manifests](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.4). Native Windows, macOS and Linux CI builds and tests passed. Physical-device and third-party DAW listening checks remain separate. Mac bundles are ad-hoc signed, without Apple notarisation or Developer ID signing.
+[Release notes, checksums and platform manifests](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.5). Native Windows, macOS and Linux CI builds and tests passed. Physical-device and third-party DAW listening checks remain separate. Mac bundles are ad-hoc signed, without Apple notarisation or Developer ID signing.
 
 ### Rumble: Classic / Groove / Hybrid
 
@@ -282,7 +292,7 @@ Sağ sütunda Room Mix, altında yan yana HP/LP, onun altında Bass Lift/Q bulun
 
 
 
-[Download F-Kick 0.8.3 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
+[Download F-Kick 0.8.5 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
 
 
 

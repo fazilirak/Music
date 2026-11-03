@@ -1,5 +1,15 @@
 ## Latest release — 0.2.4
 
+### Verified current downloads
+
+| Platform | Package |
+|---|---|
+| Windows x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Windows-x64.zip) |
+| macOS Universal | [Download](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-macOS-Universal.tar.gz) |
+| Linux x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Linux-x64.tar.gz) |
+
+[Corresponding source and licence files](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.4) · Native platform builds and checks passed.
+
 ![F-TransForm 0.2.4](docs/interface-0.2.4.png)
 
 The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. The control layout fills the window horizontally without stretching round knobs.
@@ -17,10 +27,10 @@ An independently developed multi-effect transition processor by **Fazıl Irak**.
 
 | Downloads | Links |
 | --- | --- |
-| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Windows-x64.zip) |
-| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) |
-| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Source.zip) |
-| Release notes and checksums | [F-TransForm 0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) |
+| Windows x64 — VST3 + standalone | [Download ZIP](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Windows-x64.zip) |
+| Linux x64 — VST3 | [Download TAR.GZ](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Linux-x64.tar.gz) |
+| Complete corresponding source | [Source ZIP](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Source.zip) |
+| Release notes and checksums | [F-TransForm 0.2.4](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.4) |
 
 ## Features
 
@@ -120,7 +130,7 @@ AGPL-3.0-or-later. JUCE ve URW Gothic özgün lisansları korunur; bkz. THIRD-PA
 
 ## macOS Universal
 
-[Download F-TransForm 0.2.2 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
+[Download F-TransForm 0.2.4 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
 
 Copy the complete VST3 bundle to `~/Library/Audio/Plug-Ins/VST3/` or the AU component to `~/Library/Audio/Plug-Ins/Components/`, then rescan your host. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. The matching `F-TransForm-0.2.2-macOS-Source.zip` includes complete pinned dependency sources and `BUILD-MACOS.txt`; hashes and build provenance are in `macOS-RELEASE-MANIFEST.json`. [Repository build guide](../docs/ORIGINALS_MACOS_TR.md).
 

@@ -1,5 +1,15 @@
 ## Latest release — 0.1.14
 
+### Verified current downloads
+
+| Platform | Package |
+|---|---|
+| Windows x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-Windows-x64.zip) |
+| macOS Universal | [Download](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-macOS-Universal.tar.gz) |
+| Linux x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-Linux-x64.tar.gz) |
+
+[Corresponding source and licence files](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.14) · Native platform builds and checks passed.
+
 ![F-EQ 0.1.14](docs/interface-0.1.14.png)
 
 The 912 × 511 family window size is retained. The previous large F-EQ logo and subtitle have been restored.

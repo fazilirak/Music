@@ -1,5 +1,15 @@
 ## Latest release — 0.5.5
 
+### Verified current downloads
+
+| Platform | Package |
+|---|---|
+| Windows x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-Windows-x64.zip) |
+| macOS Universal | [Download](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-macOS-Universal.tar.gz) |
+| Linux x64 | [Download](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-Linux-x64.tar.gz) |
+
+[Corresponding source and licence files](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.5) · Native platform builds and checks passed.
+
 ![F-Saturator 0.5.5](docs/interface-0.5.5.png)
 
 The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. The control layout fills the window horizontally without stretching round knobs.
@@ -11,7 +21,7 @@ The F-series header uses embedded URW Gothic Book with matching visible title an
 
 [![Build](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml/badge.svg)](https://github.com/fazilirak/Music/actions/workflows/fsaturator-release.yml)
 
-[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
+[Windows x64](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-Windows-x64.zip) · [macOS Universal](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-macOS-Universal.tar.gz) · [Releases](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.5) · [Source](https://github.com/fazilirak/Music/tree/main/F-Saturator)
 
 ![F-Saturator](doc/f-saturator.png)
 
@@ -44,7 +54,7 @@ Models are not measured hardware replicas. Tape does not simulate tape speed, hi
 
 ## Downloads and installation
 
-Use the [0.5.3 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
+Use the [0.5.5 release](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.5). Each platform has its own matching source ZIP, including complete pinned JUCE and font source collections, build scripts and notices. Platform manifests list SHA-256 values.
 
 - Windows: extract the ZIP; copy the entire `VST3/F-Saturator.vst3` bundle into your shared VST3 directory. Open `Standalone/F-Saturator.exe` without a DAW.
 - macOS: extract the TAR.GZ; copy the VST3 to `~/Library/Audio/Plug-Ins/VST3/` and the AU to `~/Library/Audio/Plug-Ins/Components/`. Open `Standalone/F-Saturator.app` without a DAW.
