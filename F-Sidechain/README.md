@@ -1,3 +1,11 @@
+## Latest release — 1.1.3
+
+![F-Sidechain 1.1.3](docs/interface-1.1.3.png)
+
+The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. Existing sound controls and parameter identities are retained.
+
+[Download and corresponding source](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.3) · [Detailed release notes](docs/RELEASE-1.1.3.md)
+
 <!-- Geliştirici ve bakım: Fazıl Irak | 27.10.2026 | GATE-12/Tilr atıfları korunur -->
 # F-Sidechain 1.1.2
 

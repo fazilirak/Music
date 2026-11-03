@@ -2,7 +2,7 @@
 # Dosyanın görevi: Efekti, gömülü fontları ve doğrulama uygulamasını derlemek.
 # SPDX-License-Identifier: AGPL-3.0-or-later
 cmake_minimum_required(VERSION 3.24)
-project(FTransForm VERSION 0.2.2 LANGUAGES C CXX)
+project(FTransForm VERSION 0.2.4 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
@@ -48,3 +48,8 @@ target_link_libraries(FTTests PRIVATE FTransForm)
 target_include_directories(FTTests PRIVATE "${FT_JUCE_PATH}/modules")
 target_compile_definitions(FTTests PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1)
 add_test(NAME transform_checks COMMAND FTTests "${CMAKE_CURRENT_SOURCE_DIR}/dist")
+
+# Fazıl Irak · 03.11.2026: ürün başlığı tipografisi; font ve lisansı ikiliye gömülür.
+juce_add_binary_data(FamilyTitleFonts NAMESPACE family_title HEADER_NAME FamilyTitleFonts.h
+    SOURCES Resources/Brand/Book.otf Resources/Brand/LICENSE Resources/Brand/COPYING)
+target_link_libraries(FTransForm PRIVATE FamilyTitleFonts)

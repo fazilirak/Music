@@ -3,6 +3,7 @@
 // Geliştirici: Fazıl Irak | Oluşturma / son düzenleme: 27.10.2026
 // Dosyanın görevi: F-Saturator paletiyle donanım hissi veren üç kontrollü paneli çizmek ve bağlamak.
 #include "PluginEditor.h"
+#include "FamilyTitle.h"
 #include "FTFonts.h"
 namespace ft {
 namespace {
@@ -75,34 +76,47 @@ Editor::Editor(Processor& p):AudioProcessorEditor(p),processor(p) {
  character.setTooltip("5 fixed positions: Silk, Soft, Balanced, Hard, Extreme.");
  addAndMakeVisible(bypass);bypass.setClickingTogglesState(true);
  bypassLink=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(p.state,"bypass",bypass);
- setSize(1120,650);startTimerHz(25);
+ // Fazıl Irak · 03.11.2026: aynı aile ölçüsü 912 x 511; dairesel kontroller bozulmaz.
+    const auto panelChildren=getChildren();
+    for(auto* c:panelChildren)brandCanvas.addChildComponent(c);
+    addAndMakeVisible(brandCanvas);
+    setSize(912,511);startTimerHz(25);
 }
 // LookAndFeel üyesi silinmeden bileşenin referansı ayrılır; kapanışta sarkan işaretçi kalmaz.
 Editor::~Editor(){stopTimer();setLookAndFeel(nullptr);}
 void Editor::resized() {
- logo.setBounds(28,30,300,43);about.setBounds(getLocalBounds());
- technique.setBounds(133,260,166,166);intensity.setBounds(418,210,280,280);character.setBounds(849,260,166,166);
- bypass.setBounds(980,42,105,29);
+    const float familyScale=juce::jmin(getWidth()/float(1160),getHeight()/float(650));
+    brandCanvas.setBounds(0,0,1160,650);
+    brandCanvas.setTransform(juce::AffineTransform::scale(familyScale).translated((getWidth()-1160*familyScale)*.5f,(getHeight()-650*familyScale)*.5f));
+
+ logo.setBounds(28,30,300,36);about.setBounds(juce::Rectangle<int>(0,0,1160,650));
+ technique.setBounds(133,260,166,166);intensity.setBounds(438,210,280,280);character.setBounds(889,260,166,166);
+ bypass.setBounds(1020,42,105,29);
 }
 // Etikete tıklama da knob sürükleme gibi bir host gesture üretir; otomasyon bunu kaydedebilir.
 void Editor::select(int index){auto* p=processor.state.getParameter("technique");p->beginChangeGesture();p->setValueNotifyingHost(p->convertTo0to1((float)index));p->endChangeGesture();}
 void Editor::mouseDown(const juce::MouseEvent& e){
  for(int i=0;i<techniqueCount;++i){bool left=i<leftTechniqueCount;
-   if(juce::Rectangle<int>(left?35:288,(int)techniqueLabelY(i),left?100:109,24).contains(e.getPosition()))select(i);
+   if(juce::Rectangle<int>(left?35:288,(int)techniqueLabelY(i),left?100:109,24).contains(e.getPosition().toFloat().transformedBy(brandCanvas.getTransform().inverted()).roundToInt()))select(i);
  }
 }
 void Editor::paint(juce::Graphics& g) {
+    g.fillAll(juce::Colour(0xff141819));
+    juce::Graphics::ScopedSaveState familyState(g);
+    g.addTransform(brandCanvas.getTransform());
+
  const auto s=processor.settings();int index=juce::jlimit(0,techniqueCount-1,s.technique);
  auto& t=techniques[(size_t)index];g.fillAll(bg);
- text(g,"FAZIL IRAK  /  TRANSITION ENGINE",30,78,320,20,10,muted,juce::Justification::centredLeft);
+ g.setColour(muted);g.setFont(familySubtitleFont(511.f/650.f));
+ g.drawText("FAZIL IRAK / TRANSITION ENGINE",28,68,320,16,juce::Justification::centredLeft);
  text(g,"01",28,130,32,20,11,accent);text(g,"TECHNIQUE",66,130,250,20,11,ivory,juce::Justification::centredLeft);
- text(g,"02   INTENSITY",425,130,265,20,11);text(g,"03   CHARACTER",800,130,270,20,11);
- g.setColour(accent);g.fillRect(28,116,1064,2);g.setColour(ivory.withAlpha(.4f));g.fillRect(28,121,1064,1);
- g.setColour(panel);g.fillRoundedRectangle(22,167,1076,352,8);
- g.setColour(juce::Colour(0xff343c3e));g.drawVerticalLine(407,188,495);g.drawVerticalLine(740,188,495);
+ text(g,"02   INTENSITY",445,130,265,20,11);text(g,"03   CHARACTER",840,130,270,20,11);
+ g.setColour(accent);g.fillRect(28,116,1104,2);g.setColour(ivory.withAlpha(.4f));g.fillRect(28,121,1104,1);
+ g.setColour(panel);g.fillRoundedRectangle(22,167,1116,352,8);
+ g.setColour(juce::Colour(0xff343c3e));g.drawVerticalLine(407,188,495);g.drawVerticalLine(780,188,495);
  // Üstteki çizgi Intensity'ye bağlı dekoratif bir dönüşüm izidir; osiloskop ölçümü değildir.
  juce::Path trace;
- for(int i=0;i<430;++i){float x=450.f+i;float envelope=(.12f+.88f*i/430.f)*(.15f+.85f*s.intensity);
+ for(int i=0;i<430;++i){float x=470.f+i;float envelope=(.12f+.88f*i/430.f)*(.15f+.85f*s.intensity);
    float y=64+std::sin(i*.092f)*std::sin(i*.031f)*25*envelope;
    if(i==0)trace.startNewSubPath(x,y);else trace.lineTo(x,y);}
  g.setColour(accent.withAlpha(.75f));g.strokePath(trace,juce::PathStrokeType(1.4f));
@@ -128,24 +142,24 @@ void Editor::paint(juce::Graphics& g) {
  }
  text(g,juce::String(index+1).paddedLeft('0',2),160,427,112,24,14,accent);
  text(g,t.group,147,457,140,18,9,muted);
- text(g,juce::String(juce::roundToInt(s.intensity*100))+"%",448,461,220,42,32,ivory);
- text(g,"DRY",428,435,55,20,9,muted);text(g,"FULL",643,435,55,20,9,muted);
- const float labelX[]{784,781,879,991,1000};const float labelY[]{419,239,204,239,419};
+ text(g,juce::String(juce::roundToInt(s.intensity*100))+"%",468,461,220,42,32,ivory);
+ text(g,"DRY",448,435,55,20,9,muted);text(g,"FULL",663,435,55,20,9,muted);
+ const float labelX[]{824,821,919,1031,1040};const float labelY[]{419,239,204,239,419};
  for(int i=0;i<5;++i)text(g,juce::String(characters[i]).toUpperCase(),labelX[i],labelY[i],90,20,10,i==s.character?accent:ivory);
- text(g,"SOFT  /  HARD",816,470,235,20,9,muted);
+ text(g,"SOFT  /  HARD",856,470,235,20,9,muted);
  // Alt açıklama aktif tekniği anlatır; yeni bir kontrol eklemeden tetik eşiklerini görünür kılar.
- g.setColour(juce::Colour(0xff101516));g.fillRoundedRectangle(22,536,802,80,5);
- text(g,juce::String(index+1).paddedLeft('0',2)+"  /  "+juce::String(t.name).toUpperCase(),40,547,760,24,14,accent,juce::Justification::centredLeft);
+ g.setColour(juce::Colour(0xff101516));g.fillRoundedRectangle(22,536,842,80,5);
+ text(g,juce::String(index+1).paddedLeft('0',2)+"  /  "+juce::String(t.name).toUpperCase(),40,547,800,24,14,accent,juce::Justification::centredLeft);
  juce::String desc=t.description;
- text(g,desc,40,577,760,24,11,ivory,juce::Justification::centredLeft);
- text(g,juce::String(processor.tempo.load(),1)+" BPM",851,552,94,20,12,ivory);
- text(g,"HOST SYNC",851,577,94,20,9,muted);
+ text(g,desc,40,577,800,24,11,ivory,juce::Justification::centredLeft);
+ text(g,juce::String(processor.tempo.load(),1)+" BPM",891,552,94,20,12,ivory);
+ text(g,"HOST SYNC",891,577,94,20,9,muted);
  for(int c=0;c<2;++c){float peak=c?processor.outPeak.load():processor.inPeak.load();
    float norm=juce::jlimit(0.f,1.f,(juce::Decibels::gainToDecibels(peak,-60.f)+60)/60);
-   float xx=970.f+c*65; text(g,c?"OUT":"IN",xx,540,48,17,9,muted);
+   float xx=1010.f+c*65; text(g,c?"OUT":"IN",xx,540,48,17,9,muted);
    for(int j=0;j<12;++j){g.setColour(j<norm*12?(j>10?accent:ivory.withAlpha(.7f)):juce::Colour(0xff30383b));g.fillRect(xx+4,598-j*3.f,39.f,2.f);}
  }
  text(g,"7 MULTI-FX TRANSFORMS  /  ONE GESTURE",28,625,400,16,9,muted,juce::Justification::centredLeft);
- text(g,"F-TransForm " FT_VERSION,880,625,210,16,9,muted,juce::Justification::centredRight);
+ text(g,"F-TransForm " FT_VERSION,920,625,210,16,9,muted,juce::Justification::centredRight);
 }
 }

@@ -1,3 +1,11 @@
+## Latest release — 0.1.14
+
+![F-EQ 0.1.14](docs/interface-0.1.14.png)
+
+The 912 × 511 family window size is retained. The previous large F-EQ logo and subtitle have been restored.
+
+[Download and corresponding source](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.14) · [Detailed release notes](docs/RELEASE-0.1.14.md)
+
 <!-- Türkçe bakım: Fazıl Irak | 22.10.2026 -->
 # F-EQ 0.1.11
 
@@ -82,3 +90,7 @@ GPL-3.0-or-later; LICENSE ve THIRD-PARTY-NOTICES.txt dosyalarına bakın. Luftik
 ## Yeni geliştirme konumu
 
 `Codex/Music/F-EQ` içinden çalışın. [Türkçe geliştirici ve hata müdahale rehberi](docs/GELISTIRICI_REHBERI_TR.md). Eski mutlak build yollarını yeniden kullanmayın.
+
+## 0.1.12 — Common F-series window
+
+Default editor size: **912 × 511**, matching F-Sidechain. Audio algorithms and parameter IDs are unchanged. See docs/ORTAK-ARAYUZ-20261103.md.

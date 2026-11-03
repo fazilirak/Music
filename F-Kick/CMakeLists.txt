@@ -1,6 +1,6 @@
 # Fazıl Irak · 27.10.2026 · F-Kick derleme ve doğrulama hedefleri.
 cmake_minimum_required(VERSION 3.24)
-project(FKick VERSION 0.8.4 LANGUAGES C CXX)
+project(FKick VERSION 0.8.5 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
@@ -45,3 +45,8 @@ if(WIN32)
         add_custom_command(OUTPUT "${resource_generated}/${resource_target}_resources.rc" APPEND DEPENDS "${resource_info}")
     endforeach()
 endif()
+
+# Fazıl Irak · 03.11.2026: ürün başlığı tipografisi; font ve lisansı ikiliye gömülür.
+juce_add_binary_data(FamilyTitleFonts NAMESPACE family_title HEADER_NAME FamilyTitleFonts.h
+    SOURCES Resources/Brand/Book.otf Resources/Brand/LICENSE Resources/Brand/COPYING)
+target_link_libraries(FKick PRIVATE FamilyTitleFonts)

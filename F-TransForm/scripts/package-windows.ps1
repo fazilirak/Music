@@ -20,6 +20,6 @@ $ftFiles = Get-ChildItem -LiteralPath (Join-Path $ftDist 'Standalone'),(Join-Pat
 $ftManifest = foreach ($ftFile in $ftFiles) {
     [ordered]@{ file = [IO.Path]::GetRelativePath($ftDist, $ftFile.FullName); sha256 = (Get-FileHash -LiteralPath $ftFile.FullName -Algorithm SHA256).Hash }
 }
-[ordered]@{ developer = 'Fazıl Irak'; version = '0.2.2'; platform = 'Windows x64'; files = @($ftManifest) } |
+[ordered]@{ developer = 'Fazıl Irak'; version = '0.2.3'; platform = 'Windows x64'; files = @($ftManifest) } |
     ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $ftDist 'LOCAL-BUILD.json') -Encoding utf8
 Write-Output 'F-TransForm: dist/Standalone ve dist/VST3 hazir.'

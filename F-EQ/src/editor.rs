@@ -310,8 +310,8 @@ impl WindowHandler for PanelWindow {
                 modifiers,
             }) => {
                 self.pointer = (
-                    position.x * panel::W as f64 / self.logical.0,
-                    position.y * panel::H as f64 / self.logical.1,
+                    position.x * panel::VIEW_W / self.logical.0,
+                    position.y * panel::VIEW_H / self.logical.1,
                 );
                 if let Some((i, y, base)) = self.drag {
                     self.set(

@@ -5,6 +5,7 @@
 // Dosyanın görevi: Arayüz kurulumu, yerleşim, meter/transfer çizimi, model/preset eylemleri ve dosya penceresi.
 #include "PluginEditor.h"
 #include "FSaturatorFonts.h"
+#include "FamilyTitle.h"
 namespace irak
 {
 // Görsel palet: turuncu vurgu, kırık beyaz yazı, koyu panel. Ses motorunu etkilemez.
@@ -175,10 +176,14 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
     { presets.setSelectedItemIndex((presets.getSelectedItemIndex() + 1) % 16, juce::sendNotificationSync); };
     save.onClick = [this] { choosePreset(true); };
     load.onClick = [this] { choosePreset(false); };
-    // Fazıl Irak: İstenen sabit panel 1040×640; host sürükleme ve köşe yeniden boyutlandırması kapalıdır.
+    // Fazıl Irak: İstenen sabit panel 1142×640; host sürükleme ve köşe yeniden boyutlandırması kapalıdır.
     setResizable(false, false);
-    setResizeLimits(1040, 640, 1040, 640);
-    setSize(1040, 640);
+    setResizeLimits(912, 511, 912, 511);
+    // Fazıl Irak · 03.11.2026: aynı aile ölçüsü 912 x 511; dairesel kontroller bozulmaz.
+    const auto panelChildren=getChildren();
+    for(auto* c:panelChildren)brandCanvas.addChildComponent(c);
+    addAndMakeVisible(brandCanvas);
+    setSize(912,511);
     timerCallback();
     startTimerHz(30);
 }
@@ -269,48 +274,57 @@ void Editor::meter(juce::Graphics &g, juce::Rectangle<float> r, float level, con
 // Arka plan, başlık, ayırıcılar ve motor göstergelerini çizer; kontroller kendi paint yöntemlerini kullanır.
 void Editor::paint(juce::Graphics &g)
 {
+    g.fillAll(juce::Colour(0xff141819));
+    juce::Graphics::ScopedSaveState familyState(g);
+    g.addTransform(brandCanvas.getTransform());
+
     g.fillAll(background);
     const int divider = dockLeft ? 210 : 166;
     if (!dockLeft)
     {
         g.setColour(ivory);
-        g.setFont(juce::FontOptions(37));
-        g.drawText("F-Saturator", 28, 38, 290, 58, juce::Justification::centredLeft);
+        g.setFont(familyTitleFont(511.f/640.f));
+        g.drawText("F-Saturator", 28, 30, 290, 36, juce::Justification::centredLeft);
         g.setColour(muted);
-        g.setFont(juce::FontOptions(10));
-        g.drawText("FAZIL IRAK / ANALOG COLOUR", 30, 101, 285, 20, juce::Justification::centredLeft);
+        g.setFont(familySubtitleFont(511.f/640.f));
+        g.drawText("FAZIL IRAK / ANALOG COLOUR", 28, 68, 285, 16, juce::Justification::centredLeft);
     }
     curve(g, graphBounds);
     meter(g, inputMeter, inputLevel, "IN");
     meter(g, outputMeter, outputLevel, "OUT");
     g.setColour(accent);
-    g.fillRect(28, divider, getWidth() - 56, 2);
+    g.fillRect(28, divider, 1142 - 56, 2);
     g.setColour(ivory);
-    g.fillRect(28, divider + 5, getWidth() - 56, 2);
+    g.fillRect(28, divider + 5, 1142 - 56, 2);
     g.setColour(panel);
-    g.fillRoundedRectangle(22, (float)divider + 20, (float)getWidth() - 44,
-                           (float)getHeight() - divider - (dockLeft ? 8 : 66), 8);
-    const float column = (getWidth() - 56) / 4.0f;
+    g.fillRoundedRectangle(22, (float)divider + 20, (float)1142 - 44,
+                           (float)640 - divider - (dockLeft ? 8 : 66), 8);
+    const float column = (1142 - 56) / 4.0f;
     g.setColour(juce::Colour(0xff30383a));
     for (int i = 1; i < 4; ++i)
         g.drawVerticalLine((int)(28 + column * i), (float)divider + 36,
                            (float)divider + 326);
     // Fazıl Irak: ek çerçeveler ve bölüm başlığı kaldırıldı; tek kompakt satır eski model bankasını korur.
-    const int stripY=getHeight()-(dockLeft?88:140), sideW=juce::jmin(184,(getWidth()-56)/5);
+    const int stripY=640-(dockLeft?88:140), sideW=juce::jmin(184,(1142-56)/5);
     g.setColour(muted);g.setFont(juce::FontOptions(8));
     g.drawText("SOFT          SHARP",29,stripY+70,sideW/2-2,13,juce::Justification::centred);
     if (!dockLeft)
     {
         g.setFont(juce::FontOptions(10));
         g.setColour(muted);
-        g.drawText("8x FIR / ADAA", getWidth() - 195, getHeight() - 31, 165, 20,
+        g.drawText("8x FIR / ADAA", 1142 - 195, 640 - 31, 165, 20,
                    juce::Justification::centredRight);
     }
 }
 // Tüm bileşenlerin piksel yerleşimi burada. dockLeft gömme alanı için ikinci yerleşimi seçer.
 void Editor::resized()
 {
-    const float top = dockLeft ? 88.0f : 26.0f, right = (float)getWidth() - 30,
+    // Fazıl Irak · 03.11.2026: yan boşluk yerine genişletilmiş kontrol sütunları.
+    const float familyScale=juce::jmin(getWidth()/float(1142),getHeight()/float(640));
+    brandCanvas.setBounds(0,0,1142,640);
+    brandCanvas.setTransform(juce::AffineTransform::scale(familyScale).translated((getWidth()-1142*familyScale)*.5f,(getHeight()-640*familyScale)*.5f));
+
+    const float top = dockLeft ? 88.0f : 26.0f, right = (float)1142 - 30,
                 graphLeft = dockLeft ? (float)dockLeft + 14 : 338;
     graphBounds = {graphLeft, top, juce::jmax(210.0f, right - graphLeft - 286), 112};
     const int checkX = (int)graphBounds.getRight() + 17;
@@ -319,12 +333,12 @@ void Editor::resized()
     bypass.setBounds(checkX, (int)top + 73, 140, 27);
     inputMeter = {right - 98, top + 17, 29, 76};
     outputMeter = {right - 41, top + 17, 29, 76};
-    const int divider = dockLeft ? 210 : 166, groupWidth = (getWidth() - 56) / 4;
+    const int divider = dockLeft ? 210 : 166, groupWidth = (1142 - 56) / 4;
     for (int i = 0; i < 4; ++i)
         groups[(size_t)i]->setBounds(28 + i * groupWidth, divider + 26, groupWidth, 304);
     // Fazıl Irak: 140 px yüksekliğindeki kutular yerine 84 px şerit, yaklaşık 40 px çaplı yeni düğmeler.
-    const int stripY=getHeight()-(dockLeft?88:140), sideW=juce::jmin(184,(getWidth()-56)/5), knobW=sideW/2;
-    const int rightX=getWidth()-28-sideW;
+    const int stripY=640-(dockLeft?88:140), sideW=juce::jmin(184,(1142-56)/5), knobW=sideW/2;
+    const int rightX=1142-28-sideW;
     deskKnobs[0]->setBounds(29,stripY,knobW-2,70);
     deskKnobs[1]->setBounds(29+knobW,stripY,knobW-2,70);
     deskKnobs[2]->setBounds(rightX+1,stripY,knobW-2,70);
@@ -334,15 +348,15 @@ void Editor::resized()
     deskSwitches[1].setBounds(29+knobW+5+fastW,stripY+70,fastW,13);
     deskSwitches[2].setBounds(rightX+knobW/2-24,stripY+70,50,13);
     deskSwitches[3].setBounds(rightX+knobW+knobW/2-24,stripY+70,50,13);
-    const int bankWidth = getWidth()-56-2*sideW-20, buttonWidth = (bankWidth-24)/5, bankY=stripY+28;
+    const int bankWidth = 1142-56-2*sideW-20, buttonWidth = (bankWidth-24)/5, bankY=stripY+28;
     for (int i = 0; i < 5; ++i)
-        characters[(size_t)i].setBounds((getWidth() - bankWidth) / 2 + i * (buttonWidth + 6), bankY,
+        characters[(size_t)i].setBounds((1142 - bankWidth) / 2 + i * (buttonWidth + 6), bankY,
                                         buttonWidth, 32);
     for (auto *c : {(juce::Component *)&presets, (juce::Component *)&previous, (juce::Component *)&next,
                     (juce::Component *)&save, (juce::Component *)&load})
         c->setVisible(dockLeft == 0);
     // Fazıl Irak: Alt araç satırı panelin dışında; panel altı ile 10 px boşluk kalır.
-    const int bottom = getHeight() - 36;
+    const int bottom = 640 - 36;
     previous.setBounds(28, bottom, 30, 28);
     presets.setBounds(66, bottom, 280, 28);
     next.setBounds(354, bottom, 30, 28);

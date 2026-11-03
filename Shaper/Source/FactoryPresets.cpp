@@ -170,7 +170,7 @@ bool ShaperProcessor::loadFactoryPreset(int index)
     if (index < 0 || index >= factoryPresetCount)
         return false;
     const juce::ScopedLock lock(getCallbackLock());
-    setStateInformation(initialState.getData(), (int)initialState.getSize());
+    setRackStateInformation(initialState.getData(), (int)initialState.getSize());
     int group = index / 16, v = index % 16;
     auto engine = [&](int e) -> juce::AudioProcessor &
     {

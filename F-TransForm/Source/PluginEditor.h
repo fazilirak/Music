@@ -20,6 +20,8 @@ private:
    void drawRotarySlider(juce::Graphics&,int,int,int,int,float,float,float,juce::Slider&) override;
  } theme;
  // Attachment'lar slider'lardan önce yok edilmelidir; aşağıdaki üye sırası bunu sağlar.
+ // Fazıl Irak · 03.11.2026: F-Sidechain ile aynı dış ölçü; kontroller tek oranda ölçeklenir.
+ juce::Component brandCanvas;
  Processor& processor;
  juce::Slider technique,intensity,character;
  juce::TextButton bypass{"BYPASS"};

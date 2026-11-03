@@ -30,6 +30,21 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
     addAndMakeVisible(aboutButton);
     aboutButton.setComponentID("rack-about-button");
     aboutButton.onClick = [this] { showAbout(); };
+    // Fazıl Irak · 03.11.2026: A/B ses durumları processordan yönetilir; UI ölçeği bu durumların parçası değildir.
+    for (auto* b : {&aButton, &bButton}) addAndMakeVisible(*b);
+    aButton.setComponentID("rack-ab-a"); bButton.setComponentID("rack-ab-b");
+    aButton.onClick=[this]{selectAB(0);}; bButton.onClick=[this]{selectAB(1);};
+    aButton.setTooltip("Compare settings A"); bButton.setTooltip("Compare settings B");
+    addAndMakeVisible(settingsButton); settingsButton.setComponentID("rack-settings-button");
+    settingsButton.setTooltip("Settings and zoom"); settingsButton.onClick=[this]{showSettings();};
+    addChildComponent(settingsPanel); settingsPanel.setComponentID("rack-settings-panel");
+    settingsPanel.setOpaque(true);
+    settingsTitle.setText("SETTINGS  /  UI ZOOM",juce::dontSendNotification);
+    settingsPanel.addAndMakeVisible(settingsTitle); settingsPanel.addAndMakeVisible(zoomChoice);
+    settingsPanel.addAndMakeVisible(closeSettings);
+    for (int percent : {50,75,100,125,150,175,200}) zoomChoice.addItem(juce::String(percent)+" %",percent);
+    zoomChoice.onChange=[this]{if(zoomChoice.getSelectedId()>0)setZoom(zoomChoice.getSelectedId()/100.f);};
+    closeSettings.onClick=[this]{settingsPanel.setVisible(false);};
     rackDirectory =
         juce::File::getSpecialLocation(juce::File::userDocumentsDirectory).getChildFile("Shaper Presets");
     rackLabel.setText("RACK PRESET", juce::dontSendNotification);
@@ -47,10 +62,11 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
             loadRackFile(rackFiles[(size_t)(id - 1001)]);
     };
     refreshRackPresets();
+    palette.setComponentID("rack-effect-palette");
     addAndMakeVisible(palette);
     palette.onChange = [this] { select(); };
     emptyLabel.setText(
-        "Your rack is empty\n\nClick + to add Gate, Time, Filter, Reverb, Volume, Pan, Saturation or Pitch.",
+        "Your rack is empty\n\nClick + to add Gate, Time, Filter, Reverb, Volume, Pan, Saturation, Pitch, Width or FX.",
         juce::dontSendNotification);
     emptyLabel.setFont(juce::FontOptions(20));
     emptyLabel.setJustificationType(juce::Justification::centred);
@@ -148,9 +164,24 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
     loadEffect.setTooltip("Load effect preset");
     addAndMakeVisible(viewport);
     viewport.setScrollBarsShown(true, true);
-    setResizable(true, false);
-    setResizeLimits(1100, 850, 1800, 1500);
-    setSize(1100, 960);
+    // Fazıl Irak, 02.11.2026: köşe tutamacı host kenarından bağımsız çalışır.
+    // Küçük pencerede yalnız dış çerçeveyi değil bütün iç paneli küçült.
+    const auto panelChildren = getChildren();
+    for (auto* component : panelChildren)
+        content.addChildComponent(component, -1);
+    content.setComponentID("scaled-rack-content");
+    addAndMakeVisible(content);
+    const int savedWidth = processor.editorWidth.load();
+    const int savedHeight = processor.editorHeight.load();
+    // Kenar tutamacı oluşturulmaz. Host'un resize isteği de aynı orana kısıtlanır.
+    aspect.setSizeLimits(550,480,2200,1920);
+    aspect.setFixedAspectRatio(double(designWidth)/designHeight);
+    setConstrainer(&aspect);
+    setResizable(false, false);
+    corner=std::make_unique<juce::ResizableCornerComponent>(this,&aspect);
+    addAndMakeVisible(*corner); corner->setComponentID("rack-resize-corner");
+    juce::ignoreUnused(savedHeight);
+    setZoom(juce::jlimit(.5f,2.f,savedWidth/float(designWidth)));
     select();
     startTimerHz(5);
 }
@@ -158,6 +189,15 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
 ShaperEditor::~ShaperEditor()
 {
     stopTimer();
+    corner.reset();
+    setConstrainer(nullptr);
+    // Fazıl Irak · 03.11.2026: kapatırken son orantılı ölçü kalıcı kullanıcı tercihine yazılır.
+    juce::PropertiesFile::Options uiOptions;
+    uiOptions.applicationName="Jellybone";uiOptions.filenameSuffix="settings";
+    uiOptions.folderName="Fazil Irak";uiOptions.osxLibrarySubFolder="Application Support";
+    juce::PropertiesFile uiPreferences(uiOptions);
+    uiPreferences.setValue("editorWidth",getWidth());
+    uiPreferences.setValue("editorHeight",getHeight());uiPreferences.saveIfNeeded();
     viewport.setViewedComponent(nullptr, false);
     child.reset();
     setLookAndFeel(nullptr);
@@ -172,6 +212,13 @@ void ShaperEditor::select()
         processor.selectedEffect = displayPalette.empty() ? -1 : displayPalette.front();
     displayEffect = processor.selectedEffect;
     palette.refresh();
+    // Fazıl Irak · 03.11.2026: kapatırken son orantılı ölçü kalıcı kullanıcı tercihine yazılır.
+    juce::PropertiesFile::Options uiOptions;
+    uiOptions.applicationName="Jellybone";uiOptions.filenameSuffix="settings";
+    uiOptions.folderName="Fazil Irak";uiOptions.osxLibrarySubFolder="Application Support";
+    juce::PropertiesFile uiPreferences(uiOptions);
+    uiPreferences.setValue("editorWidth",getWidth());
+    uiPreferences.setValue("editorHeight",getHeight());uiPreferences.saveIfNeeded();
     viewport.setViewedComponent(nullptr, false);
     child.reset();
     if (displayEffect >= 0)
@@ -320,6 +367,21 @@ bool ShaperEditor::saveRackFile(const juce::File &file)
         processor.factoryPresetIndex = previousIndex;
         return false;
     }
+    // Fazıl Irak · 03.11.2026: A/B ses durumları processordan yönetilir; UI ölçeği bu durumların parçası değildir.
+    for (auto* b : {&aButton, &bButton}) addAndMakeVisible(*b);
+    aButton.setComponentID("rack-ab-a"); bButton.setComponentID("rack-ab-b");
+    aButton.onClick=[this]{selectAB(0);}; bButton.onClick=[this]{selectAB(1);};
+    aButton.setTooltip("Compare settings A"); bButton.setTooltip("Compare settings B");
+    addAndMakeVisible(settingsButton); settingsButton.setComponentID("rack-settings-button");
+    settingsButton.setTooltip("Settings and zoom"); settingsButton.onClick=[this]{showSettings();};
+    addChildComponent(settingsPanel); settingsPanel.setComponentID("rack-settings-panel");
+    settingsPanel.setOpaque(true);
+    settingsTitle.setText("SETTINGS  /  UI ZOOM",juce::dontSendNotification);
+    settingsPanel.addAndMakeVisible(settingsTitle); settingsPanel.addAndMakeVisible(zoomChoice);
+    settingsPanel.addAndMakeVisible(closeSettings);
+    for (int percent : {50,75,100,125,150,175,200}) zoomChoice.addItem(juce::String(percent)+" %",percent);
+    zoomChoice.onChange=[this]{if(zoomChoice.getSelectedId()>0)setZoom(zoomChoice.getSelectedId()/100.f);};
+    closeSettings.onClick=[this]{settingsPanel.setVisible(false);};
     rackDirectory = file.getParentDirectory();
     refreshRackPresets(file);
     return true;
@@ -334,6 +396,13 @@ bool ShaperEditor::loadRackFile(const juce::File &file)
     auto xml = juce::AudioProcessor::getXmlFromBinary(block.getData(), (int)block.getSize());
     if (!xml || !xml->hasTagName("SHAPER"))
         return false;
+    // Fazıl Irak · 03.11.2026: kapatırken son orantılı ölçü kalıcı kullanıcı tercihine yazılır.
+    juce::PropertiesFile::Options uiOptions;
+    uiOptions.applicationName="Jellybone";uiOptions.filenameSuffix="settings";
+    uiOptions.folderName="Fazil Irak";uiOptions.osxLibrarySubFolder="Application Support";
+    juce::PropertiesFile uiPreferences(uiOptions);
+    uiPreferences.setValue("editorWidth",getWidth());
+    uiPreferences.setValue("editorHeight",getHeight());uiPreferences.saveIfNeeded();
     viewport.setViewedComponent(nullptr, false);
     child.reset();
     processor.suspendProcessing(true);
@@ -341,6 +410,21 @@ bool ShaperEditor::loadRackFile(const juce::File &file)
     processor.suspendProcessing(false);
     processor.rackPresetName = file.getFileNameWithoutExtension();
     processor.factoryPresetIndex = -1;
+    // Fazıl Irak · 03.11.2026: A/B ses durumları processordan yönetilir; UI ölçeği bu durumların parçası değildir.
+    for (auto* b : {&aButton, &bButton}) addAndMakeVisible(*b);
+    aButton.setComponentID("rack-ab-a"); bButton.setComponentID("rack-ab-b");
+    aButton.onClick=[this]{selectAB(0);}; bButton.onClick=[this]{selectAB(1);};
+    aButton.setTooltip("Compare settings A"); bButton.setTooltip("Compare settings B");
+    addAndMakeVisible(settingsButton); settingsButton.setComponentID("rack-settings-button");
+    settingsButton.setTooltip("Settings and zoom"); settingsButton.onClick=[this]{showSettings();};
+    addChildComponent(settingsPanel); settingsPanel.setComponentID("rack-settings-panel");
+    settingsPanel.setOpaque(true);
+    settingsTitle.setText("SETTINGS  /  UI ZOOM",juce::dontSendNotification);
+    settingsPanel.addAndMakeVisible(settingsTitle); settingsPanel.addAndMakeVisible(zoomChoice);
+    settingsPanel.addAndMakeVisible(closeSettings);
+    for (int percent : {50,75,100,125,150,175,200}) zoomChoice.addItem(juce::String(percent)+" %",percent);
+    zoomChoice.onChange=[this]{if(zoomChoice.getSelectedId()>0)setZoom(zoomChoice.getSelectedId()/100.f);};
+    closeSettings.onClick=[this]{settingsPanel.setVisible(false);};
     rackDirectory = file.getParentDirectory();
     refreshRackPresets(file);
     select();
@@ -379,6 +463,13 @@ void ShaperEditor::refreshRackPresets(const juce::File &selected)
 void ShaperEditor::loadFactory(int index)
 {
     const juce::ScopedLock lock(processor.getCallbackLock());
+    // Fazıl Irak · 03.11.2026: kapatırken son orantılı ölçü kalıcı kullanıcı tercihine yazılır.
+    juce::PropertiesFile::Options uiOptions;
+    uiOptions.applicationName="Jellybone";uiOptions.filenameSuffix="settings";
+    uiOptions.folderName="Fazil Irak";uiOptions.osxLibrarySubFolder="Application Support";
+    juce::PropertiesFile uiPreferences(uiOptions);
+    uiPreferences.setValue("editorWidth",getWidth());
+    uiPreferences.setValue("editorHeight",getHeight());uiPreferences.saveIfNeeded();
     viewport.setViewedComponent(nullptr, false);
     child.reset();
     processor.suspendProcessing(true);
@@ -457,6 +548,13 @@ bool ShaperEditor::loadEffectFile(const juce::File &file)
         !(payload->hasTagName("MULTIBAND") || (displayEffect == 1 && payload->hasTagName("PluginState"))))
         return false;
     const juce::ScopedLock lock(processor.getCallbackLock());
+    // Fazıl Irak · 03.11.2026: kapatırken son orantılı ölçü kalıcı kullanıcı tercihine yazılır.
+    juce::PropertiesFile::Options uiOptions;
+    uiOptions.applicationName="Jellybone";uiOptions.filenameSuffix="settings";
+    uiOptions.folderName="Fazil Irak";uiOptions.osxLibrarySubFolder="Application Support";
+    juce::PropertiesFile uiPreferences(uiOptions);
+    uiPreferences.setValue("editorWidth",getWidth());
+    uiPreferences.setValue("editorHeight",getHeight());uiPreferences.saveIfNeeded();
     viewport.setViewedComponent(nullptr, false);
     child.reset();
     processor.suspendProcessing(true);
@@ -474,9 +572,9 @@ void ShaperEditor::showAbout()
     if (!aboutPanel)
     {
         aboutPanel = std::make_unique<AboutPanel>();
-        addChildComponent(*aboutPanel);
+        content.addChildComponent(*aboutPanel);
     }
-    aboutPanel->setBounds(getLocalBounds());
+    aboutPanel->setBounds(content.getLocalBounds());
     aboutPanel->setVisible(true);
     aboutPanel->toFront(true);
     if (displayEffect >= 0)
@@ -486,25 +584,44 @@ void ShaperEditor::showAbout()
 void ShaperEditor::paint(juce::Graphics &g)
 {
     g.fillAll(juce::Colour(0xff141820));
+    const float scale = juce::jmin(getWidth() / float(designWidth), getHeight() / float(designHeight));
+    g.addTransform(juce::AffineTransform::scale(scale).translated(
+        (getWidth()-designWidth*scale)*0.5f, (getHeight()-designHeight*scale)*0.5f));
     g.setColour(effectColour(processor.selectedEffect));
-    g.fillRect(20, 177, getWidth() - 40, 2);
+    g.fillRect(20, 177, designWidth - 40, 2);
     g.setColour(juce::Colour(0xff1b222c));
-    g.fillRoundedRectangle(20, (float)getHeight() - 66, (float)getWidth() - 40, 46, 4);
+    g.fillRoundedRectangle(20, (float)designHeight - 66, (float)designWidth - 40, 46, 4);
 }
 // Pencere/kontrol boyutuna bağlı yerleşimi yeniden hesaplar; hit-test aynı geometriyi izlemelidir.
 // Gövdedeki başlıca çağrılar: title.setBounds → aboutButton.setBounds → getWidth → rackLabel.setBounds. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 void ShaperEditor::resized()
 {
+    // Fazıl Irak, 02.11.2026: sabit panel, serbest host en-boyunda ortalanır.
+    // JUCE dönüşümü fare hit-test'ini de ters dönüştürür; görünüm ve tıklama eşleşir.
+    const float scale = juce::jmin(getWidth()/float(designWidth), getHeight()/float(designHeight));
+    content.setBounds(0, 0, designWidth, designHeight);
+    content.setTransform(juce::AffineTransform::scale(scale).translated(
+        (getWidth()-designWidth*scale)*0.5f, (getHeight()-designHeight*scale)*0.5f));
+    processor.editorWidth.store(getWidth());
+    processor.editorHeight.store(getHeight());
     title.setBounds(20, 5, 235, 43);
-    aboutButton.setBounds(getWidth() - 48, 14, 28, 28);
+    aButton.setBounds(designWidth-160,14,28,28); bButton.setBounds(designWidth-124,14,28,28);
+    settingsButton.setBounds(designWidth-84,14,28,28);
+    aButton.setToggleState(processor.activeAB==0,juce::dontSendNotification);
+    bButton.setToggleState(processor.activeAB==1,juce::dontSendNotification);
+    settingsPanel.setBounds(300,290,500,220);
+    settingsTitle.setBounds(28,22,440,32); zoomChoice.setBounds(28,80,270,36);
+    closeSettings.setBounds(350,155,120,32);
+    if(corner){corner->setBounds(getWidth()-20,getHeight()-20,20,20);corner->toFront(false);}
+    aboutButton.setBounds(designWidth - 48, 14, 28, 28);
     rackLabel.setBounds(20, 54, 115, 30);
     previousRack.setBounds(140, 54, 28, 28);
-    rackPreset.setBounds(176, 54, getWidth() - 304, 28);
-    nextRack.setBounds(getWidth() - 120, 54, 28, 28);
-    saveRack.setBounds(getWidth() - 84, 54, 28, 28);
-    loadRack.setBounds(getWidth() - 48, 54, 28, 28);
-    palette.setBounds(20, 96, getWidth() - 40, 70);
-    const int row = getHeight() - 57;
+    rackPreset.setBounds(176, 54, designWidth - 304, 28);
+    nextRack.setBounds(designWidth - 120, 54, 28, 28);
+    saveRack.setBounds(designWidth - 84, 54, 28, 28);
+    loadRack.setBounds(designWidth - 48, 54, 28, 28);
+    palette.setBounds(20, 96, designWidth - 40, 70);
+    const int row = designHeight - 57;
     previous.setBounds(26, row, 28, 28);
     preset.setBounds(62, row, 225, 28);
     next.setBounds(295, row, 28, 28);
@@ -513,7 +630,7 @@ void ShaperEditor::resized()
     options.setBounds(411, row, 28, 28);
     for (int i = 0; i < 6; ++i)
         editButtons[i].setBounds(447 + i * 36, row, 28, 28);
-    viewport.setBounds(20, 190, getWidth() - 40, getHeight() - 266);
+    viewport.setBounds(20, 190, designWidth - 40, designHeight - 266);
     emptyLabel.setBounds(viewport.getBounds());
     if (child)
     {
@@ -525,5 +642,21 @@ void ShaperEditor::resized()
                        juce::jmax(minimumHeight, viewport.getHeight()));
     }
     if (aboutPanel)
-        aboutPanel->setBounds(getLocalBounds());
+        aboutPanel->setBounds(content.getLocalBounds());
+}
+
+// Fazıl Irak · 03.11.2026: Zoom, bütün paneli tek oranla ölçekler; ses parametrelerini etkilemez.
+void ShaperEditor::setZoom(float zoom) {
+    zoom=juce::jlimit(.5f,2.f,zoom);
+    setSize(juce::roundToInt(designWidth*zoom),juce::roundToInt(designHeight*zoom));
+}
+void ShaperEditor::showSettings() {
+    zoomChoice.setSelectedId(juce::roundToInt(100.f*getWidth()/designWidth),juce::dontSendNotification);
+    settingsPanel.setVisible(true); settingsPanel.toFront(true);
+}
+void ShaperEditor::selectAB(int bank) {
+    if(bank==processor.activeAB)return;
+    // Eski editörü state değişiminden önce bırak; yüklenen harici plugin UI'si sarkmasın.
+    viewport.setViewedComponent(nullptr,false); child.reset();
+    processor.switchAB(bank); refreshRackPresets(); rackPreset.setText(processor.rackPresetName,juce::dontSendNotification); select(); resized();
 }

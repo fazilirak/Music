@@ -1,3 +1,11 @@
+## Latest release — 0.2.4
+
+![F-TransForm 0.2.4](docs/interface-0.2.4.png)
+
+The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. The control layout fills the window horizontally without stretching round knobs.
+
+[Download and corresponding source](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.4) · [Detailed release notes](docs/RELEASE-0.2.4.md)
+
 <!-- Developer: Fazıl Irak | Updated: 27.10.2026 -->
 # F-TransForm 0.2.2
 
@@ -115,3 +123,7 @@ AGPL-3.0-or-later. JUCE ve URW Gothic özgün lisansları korunur; bkz. THIRD-PA
 [Download F-TransForm 0.2.2 — Apple Silicon + Intel](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-macOS-Universal.tar.gz). macOS 11.0+; VST3, Audio Unit and standalone. Native macOS CTest passed; both Mach-O architectures and ad-hoc signatures were verified. Physical Intel Mac and third-party DAW testing remain separate.
 
 Copy the complete VST3 bundle to `~/Library/Audio/Plug-Ins/VST3/` or the AU component to `~/Library/Audio/Plug-Ins/Components/`, then rescan your host. Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. The matching `F-TransForm-0.2.2-macOS-Source.zip` includes complete pinned dependency sources and `BUILD-MACOS.txt`; hashes and build provenance are in `macOS-RELEASE-MANIFEST.json`. [Repository build guide](../docs/ORIGINALS_MACOS_TR.md).
+
+## 0.2.3 — Common F-series window
+
+Default editor size: **912 × 511**, matching F-Sidechain. Audio algorithms and parameter IDs are unchanged. See docs/ORTAK-ARAYUZ-20261103.md.

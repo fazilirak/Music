@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 # Copyright (c) 2026 Fazıl Irak — Volume motoru, arayüz, lisans kaynakları ve test hedefleri.
 cmake_minimum_required(VERSION 3.24)
-project(FSidechain VERSION 1.1.2 LANGUAGES C CXX)
+project(FSidechain VERSION 1.1.3 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
@@ -39,3 +39,8 @@ juce_add_console_app(FSidechainTests PRODUCT_NAME "F-Sidechain Tests")
 target_sources(FSidechainTests PRIVATE Tests/AudioTests.cpp)
 target_link_libraries(FSidechainTests PRIVATE FSidechain volume_resources)
 add_test(NAME volume_audio_and_state COMMAND FSidechainTests)
+
+# Fazıl Irak · 03.11.2026: ürün başlığı tipografisi; font ve lisansı ikiliye gömülür.
+juce_add_binary_data(FamilyTitleFonts NAMESPACE family_title HEADER_NAME FamilyTitleFonts.h
+    SOURCES Resources/Brand/Book.otf Resources/Brand/LICENSE Resources/Brand/COPYING)
+target_link_libraries(FSidechain PRIVATE FamilyTitleFonts)

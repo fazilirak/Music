@@ -6,15 +6,23 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 
 | Project | Developer / maintainer | Windows | macOS | Linux x64 | Source |
 | --- | --- | --- | --- | --- | --- |
-| [F-Saturator](F-Saturator/README.md) | Fazıl Irak | [0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [Universal 0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [0.5.3](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Linux-x64.tar.gz) | [Browse](F-Saturator) |
-| [F-Kick](F-Kick/README.md) | Fazıl Irak | [0.8.3](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.3) | [Universal 0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-macOS-Universal.tar.gz) | [0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
-| [F-TransForm](F-TransForm/README.md) | Fazıl Irak | [0.2.2](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.2) | [Universal 0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-macOS-Universal.tar.gz) | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
-| [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.2](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [1.1.2](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
-| [Jellybone](Shaper/README.md) | Fazıl Irak | [Releases](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) | [0.8.5](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Linux-x64.tar.gz) | [Browse](Shaper) |
+| [F-Saturator](F-Saturator/README.md) | Fazıl Irak | [0.5.5](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.5) | [Universal 0.5.3](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.3) | [0.5.3](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.3/F-Saturator-0.5.3-Linux-x64.tar.gz) | [Browse](F-Saturator) |
+| [F-Kick](F-Kick/README.md) | Fazıl Irak | [0.8.5](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.5) | [Universal 0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-macOS-Universal.tar.gz) | [0.8.3](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.3/F-Kick-0.8.3-Linux-x64.tar.gz) | [Browse / licences](F-Kick) |
+| [F-TransForm](F-TransForm/README.md) | Fazıl Irak | [0.2.4](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.4) | [Universal 0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-macOS-Universal.tar.gz) | [0.2.2](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.2/F-TransForm-0.2.2-Linux-x64.tar.gz) | [Browse / licences](F-TransForm) |
+| [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.3](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.3) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.2) | [1.1.2](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.2/F-Sidechain-1.1.2-Linux-x64.tar.gz) | [Browse / licences](F-Sidechain) |
+| [Jellybone](Shaper/README.md) | Fazıl Irak | [0.8.8](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.5) | [0.8.5](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.5/Jellybone-0.8.5-Linux-x64.tar.gz) | [Browse](Shaper) |
 | [Model F](Model-F/README.md) | Fazıl Irak | [0.2.8](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [Universal](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.8) | [0.2.8](https://github.com/fazilirak/Music/releases/download/Model-F-v0.2.8/Model-F-0.2.8-Linux-x64.tar.gz) | [Browse / licences](Model-F) |
-| [F-EQ](F-EQ/README.md) | Fazıl Irak | [0.1.11](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [0.1.11](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.11/F-EQ-0.1.11-Linux-x64.tar.gz) | [Browse / licences](F-EQ) |
+| [F-EQ](F-EQ/README.md) | Fazıl Irak | [0.1.14](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.14) | [Universal](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.11) | [0.1.11](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.11/F-EQ-0.1.11-Linux-x64.tar.gz) | [Browse / licences](F-EQ) |
 
 F-Kick and F-TransForm also provide macOS Universal VST3, AU and standalone packages. [Build, installation and test scope](docs/ORIGINALS_MACOS_TR.md).
+
+## November 2026 updates
+
+Jellybone 0.8.8 adds curve-controlled **Width** and **FX VST3 hosting**, A/B comparison, proportional corner resizing, seven zoom settings and persistent window size (75% by default). Width/FX controls follow their rack colours. F-series Windows panels are **912 × 511**; headers are consistent, F-Saturator/F-TransForm use the available width, and F-EQ retains its preferred original large logo.
+
+![Jellybone FX hosting example](Shaper/docs/Jellybone-088-FX-ValhallaSpaceModulator.png)
+
+ValhallaSpaceModulator by Valhalla DSP is shown as a separately installed hosted effect, not a bundled Jellybone component. Complete matching source accompanies the new Windows downloads. Updated macOS/Linux assets appear only after native checks pass; the platform table keeps previous tested versions until then.
 
 ## F-Saturator
 
@@ -82,7 +90,7 @@ F-Sidechain retains GATE-12/Tilr provenance and the GPLv3/AGPLv3 component terms
 
 ## F-Kick
 
-**Sample the attack. Shape the body.** Original kick synthesis, sample layering and 128 original factory patches by Fazıl Irak. **0.8.4 adds Classic / Groove / Hybrid:** tempo-shaped rumble, an independent tuned mono bass motor, per-return Duck/SC participation and an optional rumble peak limiter. Includes 12 additional original recipes and WAV examples in the same compact 912 × 432 interface.
+**Sample the attack. Shape the body.** Original kick synthesis, sample layering and 128 original factory patches by Fazıl Irak. **0.8.4 adds Classic / Groove / Hybrid:** tempo-shaped rumble, an independent tuned mono bass motor, per-return Duck/SC participation and an optional rumble peak limiter. Includes 12 additional original recipes and WAV examples in the same compact 912 × 511 interface.
 
 ![F-Kick 0.8.4](F-Kick/validation/rumble-mode-2.png)
 

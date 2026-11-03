@@ -4,6 +4,7 @@
 // Dosyanın görevi: Fazıl Irak ürün atfı, özgün kod/bağımlılık ayrımı ve gömülü lisans metinlerini göstermek.
 #include "AboutPanel.h"
 #include "FTLicences.h"
+#include "FamilyTitle.h"
 namespace ft {
 ProductLogo::ProductLogo() {
  setComponentID("product-logo");setName("F-TransForm About and licences");
@@ -11,7 +12,7 @@ ProductLogo::ProductLogo() {
  setMouseCursor(juce::MouseCursor::PointingHandCursor);setTooltip("About F-TransForm and licences");
 }
 void ProductLogo::paint(juce::Graphics& g){
- g.setColour(juce::Colour(0xffe5e7df));g.setFont(juce::FontOptions(32));
+ g.setColour(juce::Colour(0xffe5e7df));g.setFont(familyTitleFont(511.f/650.f));
  g.drawText("F-TransForm",getLocalBounds(),juce::Justification::centredLeft);
 }
 void ProductLogo::mouseUp(const juce::MouseEvent& e){if(getLocalBounds().contains(e.getPosition())&&onActivate)onActivate();}

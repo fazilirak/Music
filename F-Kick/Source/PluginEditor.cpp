@@ -5,6 +5,7 @@
 // Fazıl Irak · 27.10.2026 · İngilizce ürün metni, gömülü font/lisanslar, Türkçe bakım yorumları.
 #include "PluginEditor.h"
 #include "RumbleRecipes.h"
+#include "FamilyTitle.h"
 #include <BinaryData.h>
 
 namespace {
@@ -59,8 +60,9 @@ void FKickSidechainGraph::mouseDoubleClick(const juce::MouseEvent&){if(dragging)
 FKickLogo::FKickLogo(){setComponentID("brand-logo");setName("F-Kick - About");setWantsKeyboardFocus(true);setMouseCursor(juce::MouseCursor::PointingHandCursor);setTooltip("F-Kick / About and offline licences");}
 void FKickLogo::paint(juce::Graphics& g){
     // Fazıl Irak: Kompakt başlıkta ürün adı ve geliştirici / ürün türü aynı sade logo alanındadır.
-    label(g,"F-Kick",{0,0,getWidth(),22},21,text);
-    g.setColour(muted);g.setFont(juce::FontOptions(7.5f));
+    g.setColour(text);g.setFont(familyTitleFont(designScale));
+    g.drawText("F-Kick",0,0,getWidth(),22,juce::Justification::centredLeft);
+    g.setColour(muted);g.setFont(familySubtitleFont(designScale));
     g.drawFittedText(juce::String::fromUTF8("FAZIL IRAK / KICK & SAMPLER"),0,22,getWidth(),10,juce::Justification::centredLeft,1,.8f);
     if(hasKeyboardFocus(false)){g.setColour(accent.withAlpha(.4f));g.drawHorizontalLine(getHeight()-1,0,float(getWidth()-1));}
 }
@@ -322,20 +324,20 @@ FKickEditor::FKickEditor(FKickProcessor& p):AudioProcessorEditor(p),processor(p)
     nativeDrop.accepts=[this](const juce::StringArray& files){return isInterestedInFileDrag(files);};
     nativeDrop.hover=[this](const juce::StringArray& files,juce::Point<int> p,bool yes){if(yes&&samplePanel.isInterestedInFileDrag(files)){const auto q=samplePanel.getLocalPoint(this,p);samplePanel.fileDragEnter(files,q.x,q.y);}else samplePanel.fileDragExit(files);};
     nativeDrop.drop=[this](const juce::StringArray& files,juce::Point<int> p){filesDropped(files,p.x,p.y);};
-    addChildComponent(about);setSize(912,432);updateControls();startTimerHz(30);
+    addChildComponent(about);setSize(912,511);updateControls();startTimerHz(30);
 }
 FKickEditor::~FKickEditor() {stopTimer();processor.keyboard.allNotesOff(0);processor.requestPanic();setLookAndFeel(nullptr);}
 void FKickEditor::resized() {
     // Yalnız kök çocuklar ölçeklenir; sample panelinin alt ağacı ikinci kez ölçeklenmez.
     for(auto* child:getChildren())child->setTransform(juce::AffineTransform());
-    samplePanel.setBounds(8,44,744,208);
+    samplePanel.setBounds(8,44,744,274);
     logo.setBounds(12,3,94,33);previousPreset.setBounds(209,8,23,23);presets.setBounds(236,8,242,23);nextPreset.setBounds(482,8,23,23);
     soundPage.setBounds(109,8,38,23);fxPage.setBounds(149,8,24,23);modPage.setBounds(175,8,31,23);
     save.setBounds(516,8,37,23);load.setBounds(559,8,37,23);exportButton.setBounds(603,8,40,23);play.setBounds(653,8,22,23);panic.setBounds(685,8,22,23);options.setBounds(722,8,30,23);
     kickMode.setBounds(12,77,57,24);samplerMode.setBounds(12,105,57,24);poly.setBounds(12,172,57,21);gate.setBounds(12,204,57,21);
     sampleTab.setBounds(82,47,50,21);pitchTab.setBounds(139,47,43,21);ampTab.setBounds(189,47,41,21);openSample.setBounds(286,47,356,21);
-    graph.setBounds(76,72,570,178);
-    sidechainGraph.setBounds(76,72,570,178);tempoValue.setBounds(660,209,81,38);
+    graph.setBounds(76,72,570,244);
+    sidechainGraph.setBounds(76,72,570,244);tempoValue.setBounds(660,209,81,38);
     values[0]->setBounds(86,78,87,20);values[1]->setBounds(176,78,73,20);values[2]->setBounds(251,78,55,20);values[3]->setBounds(311,78,91,20);values[4]->setBounds(407,78,91,20);
     loop.setBounds(514,78,45,20);reverse.setBounds(567,78,67,20);tracking.setBounds(232,263,70,17);
     for(int i=0;i<5;++i)values[(size_t)i+5]->setBounds(18+i*48,283,47,38);
@@ -354,6 +356,8 @@ void FKickEditor::resized() {
     bassFollow.setBounds(373,263,90,18);bassPattern.setBounds(610,299,132,21);
     for(size_t i=0;i<returnValues.size();++i)returnValues[i]->setBounds(18+int(i)*61,285,57,38);
     for(size_t i=0;i<bassValues.size();++i)bassValues[i]->setBounds(18+int(i)*98,285,90,38);
+    // Fazıl Irak · 03.11.2026: 912 x 511 aile ölçüsünde alt şerit 66 mantıksal px aşağı taşınır.
+    for(auto* c:getChildren())if(c!=&about&&c!=&samplePanel&&c->getY()>=260)c->setTopLeftPosition(c->getX(),c->getY()+66);
     // Yerleşim tarifleri editör koordinatındadır; sample paneli çocuklarını yerel koordinata çevir.
     for(auto* child:samplePanel.getChildren())child->setTopLeftPosition(child->getPosition()-samplePanel.getPosition());
     for(auto* child:getChildren())if(child!=&about)child->setTransform(juce::AffineTransform::scale(designScale));
@@ -365,18 +369,18 @@ void FKickEditor::paint(juce::Graphics& g) {
     // Ortak F serisi imzası: turuncu üst çizgi, kırık beyaz alt çizgi.
     g.setColour(accent);g.drawLine(8,38,752,38,1.5f);
     g.setColour(text.withAlpha(.85f));g.drawLine(8,41,752,41,.7f);
-    g.setColour(juce::Colour(0xff111617));g.fillRoundedRectangle(8,44,744,208,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,44,744,208,5,.7f);g.setColour(line.withAlpha(.5f));g.drawVerticalLine(74,44,252);g.drawVerticalLine(650,72,248);
+    g.setColour(juce::Colour(0xff111617));g.fillRoundedRectangle(8,44,744,274,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,44,744,274,5,.7f);g.setColour(line.withAlpha(.5f));g.drawVerticalLine(74,44,318);g.drawVerticalLine(650,72,314);
     label(g,"MODE",{20,52,50,15},9);label(g,"VOICE",{20,155,50,14},9);label(g,"PLAY",{20,190,50,14},9);
-    g.setColour(juce::Colour(0xff1b2123));g.fillRoundedRectangle(8,260,744,71,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,260,744,71,5,.7f);g.setColour(line.withAlpha(.6f));
-    if(page==0){g.drawVerticalLine(309,269,324);g.drawVerticalLine(535,269,324);label(g,"BODY",{18,263,150,15},9,accent);label(g,"ENVELOPE",{326,263,194,15},9,accent);label(g,"FILTER / OUTPUT",{548,260,196,13},9,accent);}
-    else if(page==1){g.drawVerticalLine(355,269,324);label(g,"RUMBLE",{18,263,58,15},9,accent);label(g,"ECHO",{370,263,58,15},9,accent);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
-    else if(page==2){label(g,"SIDECHAIN CURVE",{18,263,340,15},9,accent);g.drawVerticalLine(385,269,324);label(g,"FX AMOUNT / TIMING",{400,263,185,15},9,accent);label(g,"1/4 note",{620,284,110,17},12,text);label(g,"FX returns only",{620,304,110,15},10);}
+    g.setColour(juce::Colour(0xff1b2123));g.fillRoundedRectangle(8,326,744,71,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,326,744,71,5,.7f);g.setColour(line.withAlpha(.6f));
+    if(page==0){g.drawVerticalLine(309,335,390);g.drawVerticalLine(535,335,390);label(g,"BODY",{18,329,150,15},9,accent);label(g,"ENVELOPE",{326,329,194,15},9,accent);label(g,"FILTER / OUTPUT",{548,326,196,13},9,accent);}
+    else if(page==1){g.drawVerticalLine(355,335,390);label(g,"RUMBLE",{18,329,58,15},9,accent);label(g,"ECHO",{370,329,58,15},9,accent);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
+    else if(page==2){label(g,"SIDECHAIN CURVE",{18,329,340,15},9,accent);g.drawVerticalLine(385,335,390);label(g,"FX AMOUNT / TIMING",{400,329,185,15},9,accent);label(g,"1/4 note",{620,350,110,17},12,text);label(g,"FX returns only",{620,370,110,15},10);}
 
-    if(page==3)label(g,"RETURNS",{18,263,58,15},9,accent);
-    if(page==4){label(g,"BASS",{18,263,58,15},9,accent);label(g,"Pattern",{610,283,130,14},10);}
-    const auto view=processor.sampleView();label(g,view.status.isNotEmpty()?view.status:page==2?"Drag curve left/right  |  Double-click: reset shift  |  Mix 0%: bypass":"Drag: adjust  |  Double-click: type  |  Room / FX HP / FX LP: effect returns only",{12,339,594,15},10);
-    const float db=juce::Decibels::gainToDecibels(peak,-60.f);g.setColour(line);g.fillRect(615,345,64,2);g.setColour(accent);g.fillRect(615,345,int(64*juce::jlimit(0.f,1.f,(db+60)/60)),2);
-    label(g,juce::String(db,1)+" dB",{686,338,64,17},10,peak>.98f?accent:muted,juce::Justification::centredRight);
+    if(page==3)label(g,"RETURNS",{18,329,58,15},9,accent);
+    if(page==4){label(g,"BASS",{18,329,58,15},9,accent);label(g,"Pattern",{610,283,130,14},10);}
+    const auto view=processor.sampleView();label(g,view.status.isNotEmpty()?view.status:page==2?"Drag curve left/right  |  Double-click: reset shift  |  Mix 0%: bypass":"Drag: adjust  |  Double-click: type  |  Room / FX HP / FX LP: effect returns only",{12,405,594,15},10);
+    const float db=juce::Decibels::gainToDecibels(peak,-60.f);g.setColour(line);g.fillRect(615,411,64,2);g.setColour(accent);g.fillRect(615,411,int(64*juce::jlimit(0.f,1.f,(db+60)/60)),2);
+    label(g,juce::String(db,1)+" dB",{686,404,64,17},10,peak>.98f?accent:muted,juce::Justification::centredRight);
 }
 void FKickEditor::stepPreset(int direction){processor.setCurrentProgram((processor.getCurrentProgram()+direction+processor.getNumPrograms())%processor.getNumPrograms());updateControls();}
 void FKickEditor::updateControls() {

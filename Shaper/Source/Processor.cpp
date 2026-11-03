@@ -44,10 +44,11 @@ juce::AudioProcessor *createEmbeddedProcessor();
 #include "ForwardParameter.h"
 #include "MultibandProcessor.h"
 #include "EnvelopeEffect.h"
+#include "UtilityEffect.h"
 // effectName alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
 const char *ShaperProcessor::effectName(int e)
 {
-    static const char *names[]{"Gate", "Time", "Filter", "Reverb", "Pan", "Volume", "Saturation", "Pitch"};
+    static const char *names[]{"Gate", "Time", "Filter", "Reverb", "Pan", "Volume", "Saturation", "Pitch", "Width", "FX"};
     return names[e];
 }
 const std::array<std::array<int, ShaperProcessor::effectCount>, ShaperProcessor::orderCount> &
@@ -63,7 +64,7 @@ ShaperProcessor::orders()
         {
             std::copy(p.begin(), p.end(), a[(size_t)i].begin());
             a[(size_t)i][6] = 6;
-            a[(size_t)i++][7] = 7;
+            a[(size_t)i][7] = 7; a[(size_t)i][8]=8; a[(size_t)i++][9]=9;
         } while (std::next_permutation(p.begin(), p.end()));
         return a;
     }();
@@ -97,6 +98,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout ShaperProcessor::layout()
                                                     "Saturation chain position", 0, 6, 6));
     p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"pitch_position", 1},
                                                     "Pitch chain position", 0, 7, 7));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"width_position",1},"Width chain position",0,8,8));
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"fx_position",1},"FX chain position",0,9,9));
     for (int e = 0; e < effectCount; ++e)
     {
         p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{enableId(e), 1},
@@ -115,6 +118,13 @@ ShaperProcessor::ShaperProcessor()
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
       state(*this, nullptr, "SHAPER", layout())
 {
+    // Fazıl Irak · 03.11.2026: ilk kurulum %75; yeni instance son pencere ölçüsünü okur.
+    juce::PropertiesFile::Options uiOptions;
+    uiOptions.applicationName="Jellybone"; uiOptions.filenameSuffix="settings";
+    uiOptions.folderName="Fazil Irak"; uiOptions.osxLibrarySubFolder="Application Support";
+    juce::PropertiesFile uiPreferences(uiOptions);
+    const int rememberedWidth=juce::jlimit(550,2200,uiPreferences.getIntValue("editorWidth",825));
+    editorWidth.store(rememberedWidth);editorHeight.store(juce::roundToInt(rememberedWidth*960.0/1100.0));
     mixValue = state.getRawParameterValue("mix");
     gainValue = state.getRawParameterValue("gain");
     orderValue = state.getRawParameterValue("order");
@@ -127,6 +137,9 @@ ShaperProcessor::ShaperProcessor()
     modules[5] = std::make_unique<MultibandProcessor>(volumef::createEmbeddedProcessor, 5);
     modules[6] = std::make_unique<MultibandProcessor>([] { return new EnvelopeEffect(false); }, 6);
     modules[7] = std::make_unique<MultibandProcessor>([] { return new EnvelopeEffect(true); }, 7);
+    modules[8]=std::make_unique<MultibandProcessor>([]{return new UtilityEffect(false);},8);
+    // Bir FX modülünde tek plugin: bant başına dört instance oluşturulmaz.
+    modules[9]=std::make_unique<UtilityEffect>(true);
     pitchPosition = state.getRawParameterValue("pitch_position");
     for (int e = 0; e < effectCount; ++e)
     {
@@ -187,51 +200,28 @@ void ShaperProcessor::moveEffect(int effect, int destination)
 std::array<int, ShaperProcessor::effectCount> ShaperProcessor::signalOrder() const
 {
     auto original = orders()[(size_t)juce::jlimit(0, orderCount - 1, (int)orderValue->load())];
-    const int position = juce::jlimit(0, 6, (int)saturationPosition->load());
-    for (int i = 6; i > position; --i)
-        original[(size_t)i] = original[(size_t)i - 1];
-    original[(size_t)position] = 6;
-    const int pitchSlot = juce::jlimit(0, 7, (int)pitchPosition->load());
-    for (int i = 7; i > pitchSlot; --i)
-        original[(size_t)i] = original[(size_t)i - 1];
-    original[(size_t)pitchSlot] = 7;
+    const char* positions[]{"saturation_position","pitch_position","width_position","fx_position"};
+    for(int e=6;e<effectCount;++e){
+        const int position=juce::jlimit(0,e,(int)state.getRawParameterValue(positions[e-6])->load());
+        for(int i=e;i>position;--i)original[(size_t)i]=original[(size_t)i-1];
+        original[(size_t)position]=e;
+    }
     return original;
 }
 // applyPaletteOrder: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
 // Gövdedeki başlıca çağrılar: std::find → installed.begin → installed.end → orders. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 void ShaperProcessor::applyPaletteOrder(const std::vector<int> &installed)
 {
-    std::array<int, effectCount> sequence{};
-    int index = 0, position = 6, pitchSlot = 7, installedIndex = 0;
-    for (int e : installed)
-    {
-        if (e == 7)
-            pitchSlot = installedIndex;
-        else
-        {
-            ++installedIndex;
-            if (e == 6)
-                position = index;
-            else
-                sequence[(size_t)index++] = e;
-        }
-    }
-    for (int e = 0; e < 6; ++e)
-        if (std::find(installed.begin(), installed.end(), e) == installed.end())
-            sequence[(size_t)index++] = e;
-    sequence[6] = 6;
-    sequence[7] = 7;
-    for (int i = 0; i < orderCount; ++i)
-        if (orders()[i] == sequence)
-        {
-            auto *p = state.getParameter("order");
-            p->setValueNotifyingHost(p->convertTo0to1((float)i));
-            break;
-        }
-    auto *p = state.getParameter("saturation_position");
-    p->setValueNotifyingHost(p->convertTo0to1((float)position));
-    p = state.getParameter("pitch_position");
-    p->setValueNotifyingHost(p->convertTo0to1((float)pitchSlot));
+    // Fazıl Irak · 03.11.2026: eski 720 sıra kimliği korunur; yeni efektler ayrı ekleme konumları kullanır.
+    auto all=installed;
+    for(int e=0;e<effectCount;++e)if(std::find(all.begin(),all.end(),e)==all.end())all.push_back(e);
+    std::array<int,effectCount> sequence{};int index=0;
+    for(int e:all)if(e<6)sequence[(size_t)index++]=e;
+    for(int e=6;e<effectCount;++e)sequence[(size_t)e]=e;
+    for(int i=0;i<orderCount;++i)if(orders()[(size_t)i]==sequence){auto* p=state.getParameter("order");p->setValueNotifyingHost(p->convertTo0to1((float)i));break;}
+    const char* positions[]{"saturation_position","pitch_position","width_position","fx_position"};
+    for(int e=6;e<effectCount;++e){int slot=0;for(int item:all){if(item==e)break;if(item<e)++slot;}
+        auto* p=state.getParameter(positions[e-6]);p->setValueNotifyingHost(p->convertTo0to1((float)slot));}
 }
 // ~ShaperProcessor alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
 ShaperProcessor::~ShaperProcessor()
@@ -372,11 +362,13 @@ void ShaperProcessor::render(juce::AudioBuffer<float> &output, juce::MidiBuffer 
 // Host oturumu için mevcut parametre ve kullanıcı durumunu seri hale getirir.
 // Gövdedeki başlıca çağrılar: lock → getCallbackLock → state.copyState → createXml. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 // Eşzamanlılık sınırı: bu kilidin hangi thread’de alındığını kontrol edin; audio callback’e yeni bekleyen kilit taşımayın.
-void ShaperProcessor::getStateInformation(juce::MemoryBlock &data)
+void ShaperProcessor::getRackStateInformation(juce::MemoryBlock &data)
 {
     const juce::ScopedLock lock(getCallbackLock());
     auto xml = state.copyState().createXml();
-    xml->setAttribute("version", 6);
+    xml->setAttribute("version", 7);
+    xml->setAttribute("editorWidth", editorWidth.load());
+    xml->setAttribute("editorHeight", editorHeight.load());
     xml->setAttribute("effect", selectedEffect);
     xml->setAttribute("rackName", rackPresetName);
     xml->setAttribute("factoryIndex", factoryPresetIndex);
@@ -393,13 +385,16 @@ void ShaperProcessor::getStateInformation(juce::MemoryBlock &data)
 // Host/preset durumunu okuyup uygular; kök/sürüm denetimleri eski oturum uyumluluğu içindir.
 // Gövdedeki başlıca çağrılar: lock → getCallbackLock → getXmlFromBinary → xml->hasTagName. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 // Eşzamanlılık sınırı: bu kilidin hangi thread’de alındığını kontrol edin; audio callback’e yeni bekleyen kilit taşımayın.
-void ShaperProcessor::setStateInformation(const void *data, int size)
+void ShaperProcessor::setRackStateInformation(const void *data, int size)
 {
     const juce::ScopedLock lock(getCallbackLock());
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName("SHAPER"))
         {
             const int version = xml->getIntAttribute("version", 1);
+            // Fazıl Irak, 02.11.2026: eski state boyut içermez; mevcut tercih korunur.
+            editorWidth.store(juce::jlimit(550, 2200, xml->getIntAttribute("editorWidth", editorWidth.load())));
+            editorHeight.store(juce::jlimit(480, 1920, xml->getIntAttribute("editorHeight", editorHeight.load())));
             rackPresetName = xml->getStringAttribute("rackName");
             factoryPresetIndex = xml->getIntAttribute("factoryIndex", -1);
             const bool legacy = version < 2;
@@ -416,8 +411,14 @@ void ShaperProcessor::setStateInformation(const void *data, int size)
             selectedEffect = juce::jlimit(-1, effectCount - 1, xml->getIntAttribute("effect", -1));
             auto tree = juce::ValueTree::fromXml(*xml);
             for (int i = tree.getNumChildren(); --i >= 0;)
-                if (tree.getChild(i).hasType("Module"))
+                if (tree.getChild(i).hasType("Module") || tree.getChild(i).hasType("CompareBank"))
                     tree.removeChild(i, nullptr);
+            if(version<7){
+                for(const auto& entry:std::array<std::pair<juce::String,float>,4>{{{presentId(8),0.f},{presentId(9),0.f},{"width_position",8.f},{"fx_position",9.f}}}){
+                    for(int i=tree.getNumChildren();--i>=0;)if(tree.getChild(i).getProperty("id").toString()==entry.first)tree.removeChild(i,nullptr);
+                    juce::ValueTree param("PARAM");param.setProperty("id",entry.first,nullptr);param.setProperty("value",entry.second,nullptr);tree.appendChild(param,nullptr);
+                }
+            }
             if (version < 6)
             {
                 for (const auto &entry : std::array<std::pair<juce::String, float>, 2>{
@@ -521,4 +522,35 @@ juce::AudioProcessorEditor *ShaperProcessor::createEditor()
 juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 {
     return new ShaperProcessor();
+}
+
+// Fazıl Irak · 03.11.2026: İç snapshot A/B içermez; böylece sonsuz iç içe serileştirme oluşmaz.
+void ShaperProcessor::getStateInformation(juce::MemoryBlock& data) {
+    getRackStateInformation(data);
+    if(auto xml=getXmlFromBinary(data.getData(),(int)data.getSize())) {
+        xml->setAttribute("activeAB",activeAB);
+        for(int i=0;i<2;++i) {
+            auto* node=xml->createNewChildElement("CompareBank");node->setAttribute("index",i);
+            node->addTextElement((i==activeAB?data:abStates[(size_t)i]).toBase64Encoding());
+        }
+        copyXmlToBinary(*xml,data);
+    }
+}
+void ShaperProcessor::setStateInformation(const void* data,int size) {
+    setRackStateInformation(data,size);
+    if(auto xml=getXmlFromBinary(data,size)) if(xml->hasTagName("SHAPER")) {
+        activeAB=juce::jlimit(0,1,xml->getIntAttribute("activeAB",0));
+        for(auto& b:abStates)b.reset();
+        for(auto* node:xml->getChildIterator()) if(node->hasTagName("CompareBank")) {
+            int i=node->getIntAttribute("index",-1);if(i>=0&&i<2)abStates[(size_t)i].fromBase64Encoding(node->getAllSubText());
+        }
+    }
+}
+void ShaperProcessor::switchAB(int bank) {
+    bank=juce::jlimit(0,1,bank);if(bank==activeAB)return;
+    getRackStateInformation(abStates[(size_t)activeAB]);
+    if(abStates[(size_t)bank].isEmpty())abStates[(size_t)bank]=abStates[(size_t)activeAB];
+    const int w=editorWidth.load(),h=editorHeight.load();
+    setRackStateInformation(abStates[(size_t)bank].getData(),(int)abStates[(size_t)bank].getSize());
+    editorWidth.store(w);editorHeight.store(h);activeAB=bank;
 }

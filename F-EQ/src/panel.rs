@@ -5,8 +5,11 @@
 use crate::{dsp, params::EqParams};
 use nih_plug::prelude::*;
 use std::fmt::Write;
-pub const W: u32 = 800;
-pub const H: u32 = 418;
+pub const W: u32 = 912;
+// Fazıl Irak · 03.11.2026: çizim/hit-test mantıksal uzayı ayrı; yuvarlak knoblar esnetilmez.
+pub const VIEW_W: f64 = 800.;
+pub const VIEW_H: f64 = 448.2456140350877;
+pub const H: u32 = 511;
 // logo_hit alt adımı: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
 pub fn logo_hit(x: f64, y: f64) -> bool {
     (28. ..=222.).contains(&x) && (20. ..=87.).contains(&y)
@@ -317,8 +320,9 @@ pub fn svg_with_spectrum(
     spectrum: &[f32; crate::spectrum::BINS],
 ) -> String {
     let mut s = format!(
-        "<svg xmlns='http://www.w3.org/2000/svg' width='{W}' height='{H}' viewBox='0 0 {W} {H}'><rect width='{W}' height='{H}' rx='12' fill='#141819'/><g font-family='URW Gothic, sans-serif'>"
+        "<svg xmlns='http://www.w3.org/2000/svg' width='{W}' height='{H}' viewBox='0 0 800 448.2456140350877'><rect width='800' height='448.2456140350877' rx='12' fill='#141819'/><g font-family='URW Gothic, sans-serif'>"
     );
+    // Fazıl Irak · 03.11.2026: kullanıcının tercih ettiği önceki logo ve alt yazı görünümü geri yüklendi.
     text(&mut s, 28., 59., 40, "#e5e7df", "F-EQ", "start");
     text(
         &mut s,
@@ -448,7 +452,7 @@ pub fn options() -> resvg::usvg::Options<'static> {
 // Gövdedeki başlıca çağrılar: svg.strip_suffix → unwrap_or → to_owned → s.push_str. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 pub fn with_about(svg: &str) -> String {
     let mut s = svg.strip_suffix("</g></svg>").unwrap_or(svg).to_owned();
-    s.push_str("<rect width='800' height='418' fill='#070b0c' opacity='.86'/><rect x='180' y='48' width='440' height='266' rx='10' fill='#22292b' stroke='#566265' stroke-width='1.2'/>");
+    s.push_str("<rect width='800' height='448.2456140350877' fill='#070b0c' opacity='.86'/><rect x='180' y='48' width='440' height='266' rx='10' fill='#22292b' stroke='#566265' stroke-width='1.2'/>");
     center(&mut s, 400., 78., 9, "#ed6c46", "ABOUT");
     center(&mut s, 400., 121., 38, "#e5e7df", "F-EQ");
     center(

@@ -1,3 +1,11 @@
+## Latest release — 0.5.5
+
+![F-Saturator 0.5.5](docs/interface-0.5.5.png)
+
+The F-series header uses embedded URW Gothic Book with matching visible title and subtitle sizes. The panel is 912 × 511. The control layout fills the window horizontally without stretching round knobs.
+
+[Download and corresponding source](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.5) · [Detailed release notes](docs/RELEASE-0.5.5.md)
+
 <!-- Fazıl Irak tarafından oluşturuldu / değiştirildi: 24.10.2026 -->
 # F-Saturator 0.5.3 — FAZIL IRAK
 
@@ -110,3 +118,7 @@ Copyright (c) 2026 Fazıl Irak. F-Saturator: **AGPLv3-or-later**, see [LICENSE](
 
 ## 0.5.1: Dynamics and tone strip
 Transient / Comp + Fast ATT / Fast REL are left of the model bank; Bass / Treble + independent Tight switches are on the right. Neutral values preserve existing presets. All five saturation models support the strip. See docs/DESK_STRIP_TR.md.
+
+## 0.5.4 — Common F-series window
+
+Default editor size: **912 × 511**, matching F-Sidechain. Audio algorithms and parameter IDs are unchanged. See docs/ORTAK-ARAYUZ-20261103.md.

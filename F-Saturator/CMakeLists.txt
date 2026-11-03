@@ -1,7 +1,7 @@
 # Geliştirici: Fazıl Irak | Son düzenleme: 26.10.2026
 # F-Saturator 0.5.3: Windows VST3/Standalone, macOS Universal VST3/AU/Standalone.
 cmake_minimum_required(VERSION 3.24)
-project(FSaturator VERSION 0.5.3 LANGUAGES C CXX)
+project(FSaturator VERSION 0.5.5 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 # MSVC çalışma zamanı statik bağlanır; /utf-8 Türkçe kaynak açıklamalarının doğru okunmasını sağlar.
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -51,3 +51,8 @@ target_include_directories(IRAKTests PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/IRAK_a
 target_compile_definitions(IRAKTests PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1)
 target_link_libraries(IRAKTests PRIVATE IRAK)
 add_test(NAME irak_dsp COMMAND IRAKTests)
+
+# Fazıl Irak · 03.11.2026: ürün başlığı tipografisi; font ve lisansı ikiliye gömülür.
+juce_add_binary_data(FamilyTitleFonts NAMESPACE family_title HEADER_NAME FamilyTitleFonts.h
+    SOURCES Resources/Brand/Book.otf Resources/Brand/LICENSE Resources/Brand/COPYING)
+target_link_libraries(IRAK PRIVATE FamilyTitleFonts)

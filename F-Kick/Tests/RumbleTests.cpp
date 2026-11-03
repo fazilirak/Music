@@ -92,7 +92,7 @@ void runRumbleTests(const juce::File& folder){
         const auto name=juce::String(fkick::rumbleRecipeNames[i]);require(p.savePreset(recipeDir.getChildFile(name+".fkick")),"Rumble recipe save");wave(recipeDir.getChildFile(name+".wav"),x);
         if(i==0||i==4||i==8){FKickEditor ui(p);auto* fx=dynamic_cast<juce::TextButton*>(find(ui,"page-fx"));require(fx!=nullptr,"FX page missing");fx->onClick();shot(ui,folder.getChildFile("rumble-mode-"+juce::String(i/4)+".png"));
             for(auto id:{"page-returns","page-bass"}){auto* button=dynamic_cast<juce::TextButton*>(find(ui,id));require(button!=nullptr,"Rumble subpage missing");button->onClick();shot(ui,folder.getChildFile(juce::String(id)+"-"+juce::String(i/4)+".png"));}
-            require(ui.getWidth()==912&&ui.getHeight()==432,"Rumble UI expanded");
+            require(ui.getWidth()==912&&ui.getHeight()==511,"Rumble UI expanded");
             for(auto id:{"rumbleLimit","bassFollow"}){auto* toggle=find(ui,id);require(toggle!=nullptr&&toggle->getParentComponent()!=nullptr&&toggle->isVisible(),"New rumble toggle missing from UI");}
         }
     }

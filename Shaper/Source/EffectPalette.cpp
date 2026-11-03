@@ -59,7 +59,7 @@ void EffectPalette::refresh()
 // Pencere/kontrol boyutuna bağlı yerleşimi yeniden hesaplar; hit-test aynı geometriyi izlemelidir.
 void EffectPalette::resized()
 {
-    const int cardWidth = juce::jmin(190, (getWidth() - 70) / ShaperProcessor::effectCount);
+    const int cardWidth = juce::jmin(190, (getWidth() - 70) / juce::jmax(1,(int)installed.size()) - 10);
     int x = 0;
     for (int e : installed)
     {
@@ -81,7 +81,7 @@ void EffectPalette::paint(juce::Graphics &g)
     }
     if (dropIndex >= 0)
     {
-        int cardWidth = juce::jmin(190, (getWidth() - 70) / ShaperProcessor::effectCount);
+        int cardWidth = juce::jmin(190, (getWidth() - 70) / juce::jmax(1,(int)installed.size()) - 10);
         g.setColour(juce::Colours::white);
         g.fillRoundedRectangle((float)juce::jmax(0, dropIndex * (cardWidth + 10) - 6), 2, 3,
                                (float)getHeight() - 4, 1);

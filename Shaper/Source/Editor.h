@@ -47,9 +47,27 @@ class ShaperEditor final : public juce::AudioProcessorEditor, private juce::Time
     bool loadEffectFile(const juce::File &);
     void loadFactory(int index);
     void showAbout();
+    void setZoom(float);
+    void showSettings();
+    void selectAB(int);
 
   private:
     ShaperProcessor &processor;
+    // Fazıl Irak, 02.11.2026: tüm panel tek koordinat uzayında ölçeklenir.
+    // content kontrollerden önce tanımlanır; sahip olmadığı çocuklar önce yok edilir.
+    juce::Component content;
+    static constexpr int designWidth = 1100, designHeight = 960;
+    // Fazıl Irak · 03.11.2026: sadece köşe tutamacı, sabit en-boy oranı ve ayrı ayarlar.
+    juce::ComponentBoundsConstrainer aspect;
+    std::unique_ptr<juce::ResizableCornerComponent> corner;
+    CompactIconButton settingsButton{"Options"};
+    juce::TextButton aButton{"A"}, bButton{"B"};
+    struct SettingsBackground : juce::Component {
+        void paint(juce::Graphics& g) override {g.fillAll(juce::Colour(0xff202936));g.setColour(juce::Colour(0xff596574));g.drawRect(getLocalBounds(),1);}
+    } settingsPanel;
+    juce::Label settingsTitle;
+    juce::ComboBox zoomChoice;
+    juce::TextButton closeSettings{"Close"};
     RackLookAndFeel theme;
     JellyboneLogo title;
     juce::Label presetLabel, rackLabel;

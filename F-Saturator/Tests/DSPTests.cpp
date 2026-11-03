@@ -458,10 +458,10 @@ int main(int argc, char **argv)
         p.setCurrentProgram(2);
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
         // Fazıl Irak: Ürün adı ve sabit pencere, host sözleşmesinde doğrulanır.
-        if (p.getName() != "F-Saturator" || editor->isResizable() || editor->getWidth()!=1040 || editor->getHeight()!=640)
+        if (p.getName() != "F-Saturator" || editor->isResizable() || editor->getWidth()!=912 || editor->getHeight()!=511)
             return verificationFailure(32, __LINE__);
         auto* limits=editor->getConstrainer();
-        if (!limits || limits->getMinimumWidth()!=1040 || limits->getMaximumWidth()!=1040 || limits->getMinimumHeight()!=640 || limits->getMaximumHeight()!=640)
+        if (!limits || limits->getMinimumWidth()!=912 || limits->getMaximumWidth()!=912 || limits->getMinimumHeight()!=511 || limits->getMaximumHeight()!=511)
             return verificationFailure(32, __LINE__);
         // On iki halkada hedef seçimini ve tekerleğin yalnız doğru parametreyi değiştirdiğini sınar (kod 13–15).
         const char *groupedIds[4][3] = {
@@ -506,13 +506,13 @@ int main(int argc, char **argv)
             }
         }
         // Fazıl Irak: Sabit panelde dört grup ayrık ve pencere içinde kalmalı.
-        for (const auto dimensions : {juce::Point<int>{1040, 640}})
+        for (const auto dimensions : {juce::Point<int>{912, 511}})
         {
             editor->setSize(dimensions.x, dimensions.y);
             for (int group = 0; group < 4; ++group)
             {
                 auto *control = dynamic_cast<irak::ConcentricKnob *>(byId(*editor, "saturator-group-" + juce::String(group)));
-                if (!control || !editor->getLocalBounds().contains(control->getBounds()))
+                if (!control || !editor->getLocalBounds().contains(editor->getLocalArea(control,control->getLocalBounds())))
                     return verificationFailure(17, __LINE__);
                 if (group > 0 && control->getBounds().intersects(byId(*editor, "saturator-group-" + juce::String(group - 1))->getBounds()))
                     return verificationFailure(17, __LINE__);
@@ -522,28 +522,28 @@ int main(int argc, char **argv)
                         return verificationFailure(17, __LINE__);
             }
         }
-        editor->setSize(1040, 640);
+        editor->setSize(912, 511);
         // Sabit panelde şerit elemanları model bankasıyla çakışmamalı.
-        for(const auto size : {juce::Point<int>{1040,640}})
+        for(const auto size : {juce::Point<int>{912,511}})
         {
             editor->setSize(size.x,size.y);
             for(const char* id : {"transient","comp","bass","treble","fast_attack","fast_release","bass_tight","treble_tight"})
             {
                 auto* component=byId(*editor,"desk-"+juce::String(id));
-                if(!component||!editor->getLocalBounds().contains(component->getBounds()))return verificationFailure(31,__LINE__);
+                if(!component||!editor->getLocalBounds().contains(editor->getLocalArea(component,component->getLocalBounds())))return verificationFailure(31,__LINE__);
                 // Kompakt alt şerit ana halka grubunun alanını işgal etmez.
                 for(int g=0;g<4;++g)if(component->getBounds().intersects(byId(*editor,"saturator-group-"+juce::String(g))->getBounds()))return verificationFailure(31,__LINE__);
                 for(int m=0;m<5;++m)if(component->getBounds().intersects(byId(*editor,"irak-character-"+juce::String(m))->getBounds()))return verificationFailure(31,__LINE__);
             }
         }
-        editor->setSize(1040,640);
+        editor->setSize(912,511);
         // Tape Glue presetini sabit pencere boyunda çizerek gerçek dağıtım görselini üretir.
         p.setCurrentProgram(2);
         juce::Timer::callPendingTimersSynchronously();
         snapshot(*editor, output.getChildFile("F-Saturator-preview.png"));
         set("transient",.4f);set("comp",.35f);set("bass",3);set("treble",2);
         set("fast_attack",1);set("fast_release",1);set("bass_tight",1);set("treble_tight",1);
-        editor->setSize(1040,640);juce::Timer::callPendingTimersSynchronously();
+        editor->setSize(912,511);juce::Timer::callPendingTimersSynchronously();
         snapshot(*editor,output.getChildFile("F-Saturator-strip-active-preview.png"));
         // Düğme attachment'ı host değerini geri okumalı; editördeki anahtar bir görsel süs değildir.
         for(const char* id : {"fast_attack","fast_release","bass_tight","treble_tight"})

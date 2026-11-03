@@ -71,7 +71,13 @@ class ShaperProcessor final : public juce::AudioProcessor, private juce::AsyncUp
     void changeProgramName(int, const juce::String &) override {}
     void getStateInformation(juce::MemoryBlock &) override;
     void setStateInformation(const void *, int) override;
-    static constexpr int effectCount = 8;
+    // Fazıl Irak · 03.11.2026: A/B, iki tam rack durumunu UI iş parçacığında değiştirir.
+    int activeAB=0;
+    std::array<juce::MemoryBlock,2> abStates;
+    void switchAB(int bank);
+    void getRackStateInformation(juce::MemoryBlock &);
+    void setRackStateInformation(const void *,int);
+    static constexpr int effectCount = 10;
     static constexpr int orderCount = 720;
     // &module(int effect) alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
     juce::AudioProcessor &module(int effect)
@@ -95,6 +101,8 @@ class ShaperProcessor final : public juce::AudioProcessor, private juce::AsyncUp
     void moveEffect(int effect, int destination);
     static const char *effectName(int e);
     static const std::array<std::array<int, effectCount>, orderCount> &orders();
+    // Fazıl Irak, 02.11.2026: UI boyutu ses parametresi değildir; host state ile saklanır.
+    std::atomic<int> editorWidth{825}, editorHeight{720};
     int selectedEffect = -1;
     static constexpr int factoryPresetCount = 160;
     static juce::String factoryPresetName(int index);

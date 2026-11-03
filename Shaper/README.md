@@ -1,3 +1,15 @@
+## Latest release — 0.8.8
+
+![Jellybone hosting ValhallaSpaceModulator](docs/Jellybone-088-FX-ValhallaSpaceModulator.png)
+
+FX hosting example. ValhallaSpaceModulator by Valhalla DSP is a separate plugin, not bundled with Jellybone.
+
+![Jellybone 0.8.8](docs/interface-0.8.8.png)
+
+Width and FX curve controls now match their rack colours. Width and FX About pages use the Pitch layout. New instances default to 75% and remember the last closed window size. Includes A/B comparison, corner-only proportional resizing, seven zoom levels and one hosted VST3 per FX module.
+
+[Download and corresponding source](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.8) · [Detailed release notes](docs/RELEASE-0.8.8.md)
+
 <!-- Geliştirici ve bakım: Fazıl Irak | 28.10.2026 -->
 # Jellybone 0.8.5
 
@@ -40,3 +52,7 @@ Jellybone preserves the GATE-12/Tilr foundation and individual GPLv3, AGPLv3, MI
 ## 0.8.5 — Filter / Reverb knob colours
 
 Fazıl Irak: Filter and Reverb now use each rotary control’s explicitly assigned colour. Removes an uninitialised legacy audio-knob flag that could randomly turn normal controls yellow. Normal Filter controls stay cyan; Reverb controls stay lavender. Explicit audio-trigger controls retain their yellow colour. DSP, parameter/plugin IDs and preset/session formats are unchanged.
+
+## 0.8.7 — 3 November 2026
+
+Proportional corner resize, seven zoom levels in a separate Settings panel, persistent A/B comparison, corrected Volume preset floors, curve-driven Width and a single-VST3 FX host. See docs/YAPILACAKLAR-087-TAMAMLANAN.md for operation, validation and limitations.

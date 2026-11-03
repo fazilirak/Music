@@ -301,3 +301,20 @@ void shape(juce::AudioProcessor& processor,int kind,float neutral) {
         target=out/name/'RackEnvelope.cpp'
         if not target.exists() or target.read_text(encoding='utf-8')!=bridge: target.write_text(bridge,encoding='utf-8')
 (root / 'upstream-lock.json').write_text(json.dumps(manifest, indent=2) + '\n')
+
+# Fazıl Irak · 03.11.2026: Width/FX aynı eğri davranışını, kendi rack renkleriyle kullanır.
+# Ayrı namespace sayesinde diğer efektler ve eşzamanlı pencereler etkilenmez.
+for variant, palette in {
+    'widthcurve': ('0xff87c9ff','0xffb9e0ff','0xff335a78'),
+    'fxcurve': ('0xffe377a6','0xfff2b4d1','0xff70394f'),
+}.items():
+    for source in (out/'satcurve').rglob('*'):
+        if not source.is_file(): continue
+        relative=str(source.relative_to(out/'satcurve')).replace('satcurve',variant)
+        target=out/variant/relative
+        target.parent.mkdir(parents=True,exist_ok=True)
+        text=source.read_text(encoding='utf-8').replace('satcurve',variant)
+        for before,after in zip(('0xffed6c46','0xffffa88a','0xff873d28'),palette):
+            text=text.replace(before,after)
+        if not target.exists() or target.read_text(encoding='utf-8')!=text:
+            target.write_text(text,encoding='utf-8')

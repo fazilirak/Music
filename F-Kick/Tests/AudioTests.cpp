@@ -107,7 +107,7 @@ int main(int argc,char** argv) {
         FKickProcessor demo;demo.setCurrentProgram(1);prepare(demo);require(demo.exportWav(folder.getChildFile("F-Kick-Deep-House.wav")),"WAV export failed");
         juce::WavAudioFormat format;std::unique_ptr<juce::AudioFormatReader> reader(format.createReaderFor(folder.getChildFile("F-Kick-Deep-House.wav").createInputStream().release(),true));require(reader&&reader->sampleRate==48000&&reader->numChannels==2&&reader->bitsPerSample==24,"Export format wrong");
         std::cout<<"PASS stereo 48 kHz / 24-bit export\n";
-        std::unique_ptr<juce::AudioProcessorEditor> editor(demo.createEditor());require(editor->getWidth()==912&&editor->getHeight()==432,"F-series UI dimensions");
+        std::unique_ptr<juce::AudioProcessorEditor> editor(demo.createEditor());require(editor->getWidth()==912&&editor->getHeight()==511,"F-series UI dimensions");
         for(auto* child:editor->getChildren())require(editor->getLocalBounds().contains(child->getBounds()),"UI component outside editor");
         require(find(*editor,"brand-logo")&&find(*editor,"envelope-editor")&&find(*editor,"preset-selector"),"Required UI components missing");
         require(!containsType<juce::MidiKeyboardComponent>(*editor)&&!containsType<juce::Slider>(*editor)&&find(*editor,"hp")!=nullptr,"HP must be an editable text control");
@@ -169,7 +169,7 @@ int main(int argc,char** argv) {
             juce::MemoryBlock componentState;require(componentState.fromBase64Encoding(returnedWrapper->getChildByName("IComponent")->getAllSubText()),"VST3 component state decode");
             auto droppedXml=juce::AudioProcessor::getXmlFromBinary(componentState.getData(),(int)componentState.getSize());require(droppedXml&&droppedXml->getChildByName("Sample")&&droppedXml->getChildByName("Sample")->getStringAttribute("name").contains(juce::String::fromUTF8("örnek")),"VST3 lost sample loaded by native drop");
             hostMidi.clear();hostMidi.addEvent(juce::MidiMessage::noteOn(1,60,(juce::uint8)110),0);instance->processBlock(hostAudio,hostMidi);require(hostAudio.getMagnitude(0,0,256)>.01f,"VST3 embedded dropped sample was silent");finite(hostAudio);
-            std::unique_ptr<juce::AudioProcessorEditor> hostEditor(instance->createEditorIfNeeded());require(hostEditor!=nullptr&&hostEditor->getWidth()==912&&hostEditor->getHeight()==432,"VST3 host editor failed");hostEditor.reset();instance->releaseResources();instance.reset();
+            std::unique_ptr<juce::AudioProcessorEditor> hostEditor(instance->createEditorIfNeeded());require(hostEditor!=nullptr&&hostEditor->getWidth()==912&&hostEditor->getHeight()==511,"VST3 host editor failed");hostEditor.reset();instance->releaseResources();instance.reset();
             std::cout<<"PASS built VST3: scan / instantiate / MIDI / audio / state / editor\n";
         }
         runCleanTests(folder);

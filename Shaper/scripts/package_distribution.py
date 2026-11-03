@@ -60,7 +60,7 @@ def package():
     output.mkdir(parents=True, exist_ok=True)
     log = ROOT / 'build/Testing/Temporary/LastTest.log'
     log_text = log.read_text(encoding='utf-8', errors='replace')
-    assert log_text.count('Test Passed.') == 4 and 'Test Failed.' not in log_text, 'Run all four CTest targets successfully first'
+    assert log_text.count('Test Passed.') == 5 and 'Test Failed.' not in log_text, 'Run all five CTest targets successfully first'
     resource_header = (ROOT / 'build/juce_binarydata_reevr_resources/JuceLibraryCode/reevr_data.h').read_text()
     assert 'Shaper_Hall_Quad_wav' in resource_header and 'Hall_Quad_flac' not in resource_header
     assert len(list((ROOT / 'dist/FactoryPresets').rglob('*.shaper'))) == 160

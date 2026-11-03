@@ -36,6 +36,8 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
                                   bool) override;
     } theme;
     // Processor editörden daha uzun yaşar; kontroller onun APVTS parametrelerine bağlanır.
+ // Fazıl Irak · 03.11.2026: F-Sidechain ile aynı dış ölçü; kontroller tek oranda ölçeklenir.
+ juce::Component brandCanvas;
     Processor &processor;
     // Beş karakter seçicisi ve dört ayrı, üç halkalı kontrol grubu.
     std::array<juce::TextButton, 5> characters;

@@ -93,6 +93,44 @@ int main()
 #endif
     juce::ScopedJuceInitialiser_GUI gui;
     ShaperProcessor p;
+    // Fazıl Irak, 02.11.2026: küçük panel, mouse dönüşümü ve state boyut regresyonu.
+    {
+        ShaperEditor editor(p);
+        for (auto size : {juce::Point<int>(550,480), juce::Point<int>(770,672),
+                          juce::Point<int>(1400,900), juce::Point<int>(2200,1920)}) {
+            editor.setSize(size.x,size.y);
+            auto* surface=byId(editor,"scaled-rack-content");
+            if (!surface || surface->getWidth()!=1100 || surface->getHeight()!=960) return 201;
+            auto area=editor.getLocalArea(surface,surface->getLocalBounds());
+            if (!editor.getLocalBounds().expanded(1).contains(area)) return 202;
+            auto* preset=byId(editor,"rack-preset");
+            if (!preset || !surface->getLocalBounds().contains(preset->getBounds())) return 203;
+            if (size.x==550) snapshot(editor,"preview-resizable-minimum");
+        }
+        editor.setSize(770,672);
+        // Fazıl Irak, 03.11.2026: setSize yanında köşe sürükleme olay yolu da test edilir.
+        juce::ResizableCornerComponent* corner=nullptr;
+        for (auto* c : editor.getChildren())
+            if (auto* found=dynamic_cast<juce::ResizableCornerComponent*>(c)) corner=found;
+        if (!corner || !corner->isVisible()) return 205;
+        auto now=juce::Time::getCurrentTime();
+        auto source=juce::Desktop::getInstance().getMainMouseSource();
+        juce::Point<float> origin(15,15),dragged(-85,-85);
+        juce::MouseEvent down(source,origin,juce::ModifierKeys::leftButtonModifier,
+                             1,0,0,0,0,corner,corner,now,origin,now,1,false);
+        static_cast<juce::Component*>(corner)->mouseDown(down);
+        juce::MouseEvent drag(source,dragged,juce::ModifierKeys::leftButtonModifier,
+                             1,0,0,0,0,corner,corner,now,origin,now,1,true);
+        static_cast<juce::Component*>(corner)->mouseDrag(drag);static_cast<juce::Component*>(corner)->mouseUp(drag);
+        if (editor.getWidth()<=550 || editor.getHeight()<=480 || std::abs(editor.getWidth()*960-editor.getHeight()*1100)>1100) return 206;
+        editor.setSize(770,672);
+        juce::MemoryBlock saved;
+        p.getStateInformation(saved);
+        ShaperProcessor restored;
+        restored.setStateInformation(saved.getData(),(int)saved.getSize());
+        ShaperEditor reopened(restored);
+        if (reopened.getWidth()!=770 || reopened.getHeight()!=672) return 204;
+    }
     TestPlayHead head;
     p.setPlayHead(&head);
     p.setRateAndBufferSizeDetails(48000, 256);
@@ -198,10 +236,8 @@ int main()
         return 6;
     {
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
-        EffectPalette *palette = nullptr;
-        for (auto *component : editor->getChildren())
-            if (auto *found = dynamic_cast<EffectPalette *>(component))
-                palette = found;
+        // Ölçeklenmiş panelde palette artık ortak content'in altındadır.
+        auto *palette = dynamic_cast<EffectPalette*>(byId(*editor,"rack-effect-palette"));
         if (!palette)
             return 21;
         auto *card = palette->findChildWithID("effect-card-0");
@@ -304,7 +340,7 @@ int main()
                                "effect-output-mix", "effect-output-gain", "effect-output-stereo",
                                "effect-attack",     "effect-release",     "effect-tension"};
     std::array<juce::Rectangle<int>, 15> sharedBounds;
-    for (int e = 0; e < ShaperProcessor::effectCount; ++e)
+    for (int e = 0; e < 9; ++e)
     {
         std::unique_ptr<juce::AudioProcessorEditor> editor(p.module(e).createEditor());
         auto *commands = dynamic_cast<RackEditorCommands *>(editor.get());
@@ -399,7 +435,7 @@ int main()
         if (p.module(1).getNumPrograms() != 87)
             return 88;
         auto *footer = byId(editor, "effect-preset");
-        if (!footer || footer->getY() < editor.getHeight() - 100)
+        if (!footer || editor.getLocalArea(footer,footer->getLocalBounds()).getY() < editor.getHeight() - 100)
             return 89;
         snapshot(editor, "preview-time-full-range");
     }
@@ -439,7 +475,7 @@ int main()
         for (int pattern = 0; pattern < 12; ++pattern)
             if (expected->getStringAttribute("pattern" + juce::String(pattern)) !=
                 actual->getStringAttribute("pattern" + juce::String(pattern)))
-                return 74;
+            {std::cerr<<"Preset "<<i<<" pattern "<<pattern<<" expected "<<expected->getStringAttribute("pattern"+juce::String(pattern))<<" actual "<<actual->getStringAttribute("pattern"+juce::String(pattern))<<"\n";return 74;}
         auto sourceParams = juce::ValueTree::fromXml(*expected->getChildElement(0));
         auto loadedParams = juce::ValueTree::fromXml(*actual->getChildElement(0));
         for (int n = 0; n < sourceParams.getNumChildren(); ++n)
@@ -991,7 +1027,7 @@ int main()
         outputRack.setPlayHead(&head);
         juce::AudioBuffer<float> testAudio(2, 128);
         juce::MidiBuffer testMidi;
-        for (int effect = 0; effect < ShaperProcessor::effectCount; ++effect)
+        for (int effect = 0; effect < 9; ++effect)
         {
             for (int e : outputRack.palette())
                 outputRack.removeEffect(e);
@@ -1140,3 +1176,4 @@ int main()
     std::cout << "Exported and recalled 160 rack presets in 10 categories and 32 new effect preset files.\n";
     return 0;
 }
+

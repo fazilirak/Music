@@ -6,6 +6,8 @@
 // Son düzenleme: 22.10.2026
 // Dosyanın görevi: Geliştirici, üçüncü taraf kaynakları ve lisans/bilgilendirme görünümünü kurar.
 #include "AboutPanel.h"
+#define SHAPER_VERSION_STRING JucePlugin_VersionString
+#include "Embedded/RackAboutPage.h"
 namespace gate12
 {
 juce::Component *createAboutPage();
@@ -75,8 +77,11 @@ class Page final : public juce::Component
             g.drawText("Signalsmith Linear: Copyright (c) 2025 Signalsmith Audio - MIT",
                        bounds.removeFromTop(20), juce::Justification::centred);
         }
-        else
-            bounds.removeFromTop(40);
+        else {
+            if(effect==9) g.drawText("Hosted plugins retain their own copyrights and licences.",
+                bounds.removeFromTop(20),juce::Justification::centred);
+            bounds.removeFromTop(effect==9?20:40);
+        }
         g.drawText("No warranty. Licences: LICENSE, LICENSE-AGPL-3.0.txt, THIRD-PARTY-NOTICES.txt",
                    bounds.removeFromTop(20), juce::Justification::centred);
     }
@@ -97,7 +102,9 @@ AboutPanel::AboutPanel()
     };
     juce::Component *pages[]{gate12::createAboutPage(), time12::createAboutPage(), filtr::createAboutPage(),
                              reevr::createAboutPage(),  pan12::createAboutPage(),  volumef::createAboutPage(),
-                             irak::createAboutPage(),   pitchfx::createAboutPage()};
+                             irak::createAboutPage(),   pitchfx::createAboutPage(),
+                             new shaperui::RackAboutPage("Width", "Mid-Side stereo width / curve control", rackEffectColour(8)),
+                             new shaperui::RackAboutPage("FX", "VST3 hosting / curve-controlled dry-wet mix", rackEffectColour(9))};
     for (int e = 0; e < ShaperProcessor::effectCount; ++e)
         tabs.addTab(ShaperProcessor::effectName(e), rackEffectColour(e).withMultipliedBrightness(0.25f),
                     new Page(pages[e], e), true);

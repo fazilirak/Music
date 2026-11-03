@@ -32,7 +32,7 @@ try {
     Cargo-Step -Arguments @('run','--example','preview','--release','--locked')
     Cargo-Step -Arguments @('build','--lib','--release','--locked')
     Cargo-Step -Arguments @('build','--example','simple-eq','--features','standalone','--release','--locked')
-    $package = Join-Path $PSScriptRoot 'dist/F-EQ-Windows-0.1.11'
+    $package = Join-Path $PSScriptRoot 'dist/F-EQ-Windows-0.1.14'
     $vst = Join-Path $package 'F-EQ.vst3/Contents/x86_64-win'
     New-Item -ItemType Directory -Force -Path $vst | Out-Null
     $dll = Join-Path $env:CARGO_TARGET_DIR 'release/simple_eq.dll'
@@ -44,10 +44,10 @@ try {
     Copy-Item -LiteralPath 'docs/panel.png' -Destination (Join-Path $package 'docs/panel.png') -Force
     Copy-Item -LiteralPath 'docs/analyzer-preview.png' -Destination (Join-Path $package 'docs/analyzer-preview.png') -Force
     Copy-Item -LiteralPath 'docs/about.png' -Destination (Join-Path $package 'docs/about.png') -Force
-    Compress-Archive -LiteralPath $package -DestinationPath 'dist/F-EQ-Windows-0.1.11.zip' -Force
+    Compress-Archive -LiteralPath $package -DestinationPath 'dist/F-EQ-Windows-0.1.14.zip' -Force
     if ($PackageSource) {
         Add-Type -AssemblyName System.IO.Compression.FileSystem
-        $sourceZip = Join-Path $PSScriptRoot 'dist/F-EQ-Source-0.1.11.zip'
+        $sourceZip = Join-Path $PSScriptRoot 'dist/F-EQ-Source-0.1.14.zip'
         # Create/overwrite one known output, without touching the source tree.
         $stream = [IO.File]::Open($sourceZip,[IO.FileMode]::Create)
         $zip = [IO.Compression.ZipArchive]::new($stream,[IO.Compression.ZipArchiveMode]::Create)

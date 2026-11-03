@@ -1,3 +1,4 @@
+#include "FamilyTitle.h"
 // Geliştirici: Fazıl Irak - Son düzenleme: 27.10.2026
 // Dosyanın görevi: Full Range / Low / Mid / High motorları, bant filtreleri ve oturum durumu.
 // Katkı kapsamı: F-Sidechain bakımı ve uyarlamaları. GATE-12/Shaper özgün telifleri korunur.
@@ -43,10 +44,10 @@ class BandEditor final : public juce::AudioProcessorEditor, private juce::Timer
         }
         void paintButton(juce::Graphics& g,bool,bool) override {
             g.setColour(juce::Colour(0xffe5e7df));
-            g.setFont(juce::FontOptions(21.0f,juce::Font::bold));
-            g.drawText("F-Sidechain",0,0,getWidth(),23,juce::Justification::centredLeft);
+            g.setFont(familyTitleFont(1.2f));
+            g.drawText("F-Sidechain",0,0,getWidth(),25,juce::Justification::centredLeft);
             // Fazıl Irak: Diğer F serisi ürünleri gibi geliştirici ve ürün türü logonun altındadır.
-            g.setColour(juce::Colour(0xff8d9799));g.setFont(juce::FontOptions(9.f));
+            g.setColour(juce::Colour(0xff8d9799));g.setFont(familySubtitleFont(1.2f));
             g.drawText(juce::String::fromUTF8("FAZIL IRAK / VOLUME SHAPER"),0,23,getWidth(),12,juce::Justification::centredLeft);
         }
     } logo;
