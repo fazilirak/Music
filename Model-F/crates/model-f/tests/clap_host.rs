@@ -454,11 +454,15 @@ fn clap_automation_and_full_session_roundtrip() {
         In::Param(0,"character_shape",0.6),
         In::Param(0,"global_tuning",0.4),
         In::Param(0,"output_voicing",0.0),
+        In::Param(0,"mod_system",1.0),
+        In::Param(0,"mod_pitch_mseg_enable",1.0),
+        In::Param(0,"mod_cutoff_lfo_depth",0.65),
+        In::Param(0,"mod_pan_step_0",0.9),
 
     ]);
     let saved = a.save();
     let json = json_of(&saved);
-    assert_eq!(json["params"].as_object().unwrap().len(), 178);
+    assert_eq!(json["params"].as_object().unwrap().len(), 1840);
     let b = Instance::new();
     assert!(b.load(&saved));
     for id in [
@@ -486,6 +490,7 @@ fn clap_automation_and_full_session_roundtrip() {
         "mseg_fix_tempo",
         "character", "character_shape", "global_tuning",
         "output_voicing",
+        "mod_system", "mod_pitch_mseg_enable", "mod_cutoff_lfo_depth", "mod_pan_step_0",
     ] {
         assert!((a.value(id) - b.value(id)).abs() < 0.001, "{id}");
     }
@@ -523,6 +528,7 @@ fn legacy_sessions_reset_new_modulation_even_in_an_existing_instance() {
     let saved = p.save();
     let mut json = json_of(&saved);
     json["params"].as_object_mut().unwrap().remove("output_voicing");
+    json["params"].as_object_mut().unwrap().retain(|id,_|(!id.starts_with("mod_")||id=="mod_depth")&&!id.starts_with("preamp_"));
     json["params"]
         .as_object_mut()
         .unwrap()
@@ -538,10 +544,14 @@ fn legacy_sessions_reset_new_modulation_even_in_an_existing_instance() {
         In::Param(0,"fm_on",1.0),
         In::Param(0,"osc_sync",1.0),
         In::Param(0,"audio_attack",0.9),
+        In::Param(0,"mod_system",1.0),
+        In::Param(0,"mod_pan_lfo_status",0.5),
     ]);
     assert!(p.value("mseg_enable") > 0.5);
     assert!(p.load(&old));
     assert_eq!(p.value("output_voicing"), 0.0);
+    assert_eq!(p.value("mod_system"),0.0);
+    assert_eq!(p.value("mod_pan_lfo_status"),0.0);
     assert_eq!(p.value("overload"), 0.);
     assert_eq!(p.value("fm_on"),0.0);assert_eq!(p.value("osc_sync"),0.0);assert_eq!(p.value("audio_attack"),0.0);
     assert_eq!(p.value("mseg_enable"), 0.);

@@ -40,7 +40,8 @@ fn independent_controls_legacy_resolution_and_envelope_modes() {
     assert_ne!(c.panel.filter_contour.sustain,c.panel.loudness_contour.sustain);
     set("mseg_amount",0.5);
     assert!(mseg_ui::enabled(&p,"mseg_attack"));assert!(!mseg_ui::enabled(&p,"mseg_duration"));
-    assert!(panel::svg(&p,&Default::default()).contains(r##"fill="#e5e7df" stroke="#e5e7df""##));
+    assert!(!crate::mod_ui::any_active(&p));
+    assert!(!panel::svg(&p,&Default::default()).contains(r##"fill="#e5e7df" stroke="#e5e7df""##));
     let mut state=mseg_ui::State::default();let (edits,_)=state.down(&p,400.0,300.0,false,keyboard_types::Modifiers::empty());assert!(edits.is_empty());
     set("mseg_enable",1.0);assert!(!mseg_ui::enabled(&p,"mseg_attack"));assert!(mseg_ui::enabled(&p,"mseg_duration"));
     let saved=presets::Preset::capture(&p,"Check".into(),"Bass".into());saved.validate().unwrap();
@@ -75,5 +76,5 @@ fn tempo_controls_and_reset_are_isolated_to_multi_shape() {
     assert_eq!(p.mseg_speed.value(),5.0);assert_eq!(p.mseg_fix_tempo.value(),1.0);
     assert_eq!(p.mseg_target.value(),2.0);assert!((p.mseg_amount.value()-0.6).abs()<0.001);assert_eq!(p.mseg_mode.value(),1.0);
     let svg=panel::svg(&p,&panel::View {envelope:true,..Default::default()});
-    assert!(svg.contains("SPEED x16") && svg.contains("FIX TEMPO ON") && svg.contains("RESET"));
+    assert!(svg.contains("Speed") && svg.contains("Fix Tempo") && svg.contains("RESET EG"));
 }

@@ -53,6 +53,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
       - uses: actions/download-artifact@v7
         with:
           pattern: '*-Windows'
@@ -84,37 +87,8 @@ jobs:
           Complete matching Source ZIPs include project sources, locked vendored dependencies, original font source collection, tests, build scripts and licences. Keep the corresponding source available when redistributing covered binaries.
           No JUCE rewrite is included. Plugin identities and DSP are preserved; Model F enables preset/envelope file dialogs on macOS.
           NOTES
-            if [ "$project" = "Model-F" ]; then
-              cat >> release-notes.md <<'MODEL'
-
-          Model F 0.2.9
-          - Fixes Ctrl+drag waveform painting for all eight Node waveforms.
-          - Adds Full / Legacy output calibration, with a 20 ms transition. Full adds 10 dB and a 180 Hz low shelf (+1.5 dB at DC); leave headroom, as no limiter or compressor is included.
-          - New instances and factory presets use Full; older DAW states and user presets without output_voicing load Legacy. Existing parameter IDs/order are preserved and the new parameter is appended.
-          - Local validation recorded 72 product unit tests and 24 engine measurements. CI repeats automated tests. Real DAW gesture checks and level-matched listening comparisons remain pending.
-          - Details: Model-F/docs/YAPILACAKLAR-029-TAMAMLANAN.md.
-
-          Retains Model F 0.2.8:
-          - Adds an orange quick-select strip at the right edge of Global Tuning. Left-click goes forward and right-click goes backward through 432, 440, 442, 444 and 528 Hz; the sequence wraps at both ends. From a manual value, it selects the next value in the clicked direction.
-          - Tuning value colours: 432 Hz green, 440 Hz red, 442/444 Hz orange, 528 Hz blue; other values remain grey. The main field retains vertical dragging and Ctrl/Alt reset. Modal windows also block the quick selector.
-          - Extends the A4 range to 400-540 Hz while retaining the parameter ID, preset independence and DAW session storage. Drag speed remains 0.1 Hz/pixel, Shift 0.01 Hz/pixel, wheel 0.1 Hz per step. Existing saved plain-Hz states are retained; review older normalized host automation because the range has expanded.
-          - Local Windows validation: 70 unit tests, 8 character/audio tests and 4 CLAP host tests passed (82 total). All five choices were verified against rendered pitch, and preset recall retains 528 Hz. CI repeats the full suite on both build hosts.
-
-          Retains the Model F 0.2.7 resonance interface:
-          - The orange high-resonance indicator now overlays the existing outer grey knob ring at exactly the same 27 px radius and 2 px stroke width. The separate outer arc is removed; matching high-resonance scale ticks are orange and the other ticks stay grey. No knob resizing or extra outline.
-          - DSP, fine Acid gestures and resonance thresholds are unchanged from 0.2.6; the two UI regression tests were rerun for this placement change.
-
-          Includes the Model F 0.2.6 resonance improvements:
-          - Adds a thin orange high-resonance arc and scale marks around Emphasis, with a different starting point for each of the six characters. It is an advisory region, not a limiter or universal safety threshold. Panel and knob sizes are unchanged.
-          - Corrects Acid's nonlinear ladder feedback calculation: the per-stage extra small-signal gain that caused premature oscillation near Emphasis 7.7-7.8 has been removed. The upper-quarter control curve approaches maximum resonance more gently, with 20 ms smoothing for live changes.
-          - Acid Emphasis dragging is 2.5x finer. Wheel steps are 0.05, or 0.01 with Shift. Parameter IDs, automation values and preset data remain unchanged; the corrected Acid filter can sound different. Other character DSP paths are unchanged.
-          - At 48 kHz with a specified small sine input and 0.1 Emphasis steps, the largest adjacent RMS rises at cutoff 100/500/2000 Hz changed from 7.95/25.74/45.57 dB to 1.80/2.05/2.04 dB. See docs/REZONANS-026-TR.md for scope and reproducible regression checks; these are not absolute output-level guarantees.
-          - Retains all 0.2.5 features: Ladder, Edge, Bite, State Variable, Acid, VA Stack; preset-independent Global Tuning; the mouse hit-area fix; 160 presets; dual oscillators; Sync/FM; Filter/Audio envelopes; Multi tempo controls; native Windows Save/Search and macOS file dialogs.
-
-          Local Windows validation: 67 product unit tests, 8 character/audio tests, 4 CLAP host tests, 1 audio-allocation test and 5 core character tests passed (85 total). CI runs the full product suite and core checks on both hosts. Real DAW and macOS hardware validation remains separate.
-          Complete matching sources retain licences, updated UI previews, character audition WAVs and measurement notes.
-          MODEL
-            fi
+            release_doc="$project/docs/RELEASE-${version}.md"
+            if [ -f "$release_doc" ]; then cp "$release_doc" release-notes.md; fi
             if gh release view "$tag" >/dev/null 2>&1; then
               echo "Existing $tag preserved; use a new version to replace a published build."
               continue

@@ -2,12 +2,19 @@
 // Son düzenleme: 26.10.2026
 // Dosyanın görevi: Model F host yaşam döngüsü, MIDI/parametre ve Engine render köprüsünü yönetir.
 //! Model F. GPL-3.0-or-later. Includes circuit DSP copyright 2026 Idle Foundry Ltd.
+#![recursion_limit = "8192"]
+pub mod modulators;
+pub mod output_preamp;
+pub mod mod_view;
+mod mod_ui;
 pub mod arp;
 pub mod character;
 mod editor;
 pub mod engine;
 pub mod helper;
 pub mod mseg;
+mod eg_editor;
+#[cfg(test)]
 mod mseg_ui;
 pub mod panel;
 pub mod params;
@@ -136,9 +143,10 @@ impl Plugin for ModelF {
         // Fazıl Irak, 02.11.2026: alanı olmayan eski oturum aynı tonda/seviyede açılır.
         state.params.entry("output_voicing".into())
             .or_insert(nih_plug::wrapper::state::ParamValue::F32(0.0));
+        state.params.entry("preamp_path".into()).or_insert(nih_plug::wrapper::state::ParamValue::F32(0.0));
         let defaults = ModelFParams::default();
         for (id, p) in defaults.list() {
-            if matches!(id,"character" | "character_shape" | "global_tuning") || id.starts_with("mseg_") || id == "overload" || matches!(id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount") {
+            if matches!(id,"character" | "character_shape" | "global_tuning") || id.starts_with("mseg_") || id.starts_with("mod_") || id.starts_with("preamp_") || id == "overload" || matches!(id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount") {
                 state
                     .params
                     .entry(id.into())
@@ -221,6 +229,7 @@ impl Plugin for ModelF {
         let transport = context.transport();
         let mut controls=self.params.controls();
         controls.mseg.duration=crate::mseg::duration_seconds(&self.params,transport.tempo);
+        controls.modulators.tempo(transport.tempo,transport.pos_beats());
         self.engine.set(&controls);
         let sync = self.params.arp_sync.value() > 0.5;
         let beat = transport.pos_beats();

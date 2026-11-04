@@ -10,9 +10,9 @@ use nih_plug::prelude::*;
 // Host’un parametre nesnesine/sözleşmesine erişimini sağlar; arayüz metniyle kalıcı kimliği ayırır.
 fn params(mode: f32, drive: f32) -> ModelFParams {
     ModelFParams {
-        mode: FloatParam::new("Mode", mode, FloatRange::Linear { min: 0., max: 6. }),
-        overload: FloatParam::new("Overload", drive, FloatRange::Linear { min: 0., max: 10. }),
-        sustain: FloatParam::new("Sustain", 10., FloatRange::Linear { min: 0., max: 10. }),
+        mode: Box::new(FloatParam::new("Mode", mode, FloatRange::Linear { min: 0., max: 6. })),
+        overload: Box::new(FloatParam::new("Overload", drive, FloatRange::Linear { min: 0., max: 10. })),
+        sustain: Box::new(FloatParam::new("Sustain", 10., FloatRange::Linear { min: 0., max: 10. })),
         ..ModelFParams::default()
     }
 }
@@ -96,11 +96,11 @@ fn feedback_changes_sound_and_lights_the_real_detector() {
 // Gövdedeki başlıca çağrılar: params → FloatParam::new → p.controls → Engine::new. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 fn attack_sound(drive: f32, emphasis: f32) -> Vec<f32> {
     let mut p = params(6., drive);
-    p.emphasis = FloatParam::new(
+    p.emphasis = Box::new(FloatParam::new(
         "Emphasis",
         emphasis,
         FloatRange::Linear { min: 0., max: 10. },
-    );
+    ));
     let c = p.controls();
     let mut e = Engine::new();
     e.set(&c);

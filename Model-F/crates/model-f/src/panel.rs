@@ -60,7 +60,7 @@ pub struct Control {
 }
 impl Control {
     // Dikdörtgen değer alanları da knob ile aynı sürükleme sözleşmesini kullanır.
-    pub fn draggable(&self)->bool {self.knob || matches!(self.id,"global_tuning"|"character_shape")}
+    pub fn draggable(&self)->bool {self.knob || matches!(self.id,"global_tuning"|"character_shape"|"preamp_gain"|"preamp_trim")}
     pub fn drag_normalized(&self,base:f32,up:f64,shift:bool)->f32 {
         let scale=if shift {0.0005} else {0.005};
         let scale=if self.id=="global_tuning" {(if shift {0.01}else{0.1}) / f64::from(crate::params::GLOBAL_TUNING_SPAN)} else {scale};
@@ -115,8 +115,10 @@ macro_rules! b {
 pub const CONTROLS: &[Control] = &[
     b!("global_tuning", "GLOBAL TUNING", 30, 697, 185, 28),
     b!("character_shape", "FILTER SHAPE", 470, 146, 72, 28),
-    k!("volume", "OUTPUT", 1045, 59, 22),
-    b!("output_voicing", "OUTPUT VOICING", 871, 87, 108, 22),
+    b!("preamp_gain", "GAIN", 884, 40, 96, 38),
+    b!("preamp_trim", "TRIM", 996, 40, 96, 38),
+    b!("preamp_mic", "MIC / LINE", 884, 85, 96, 22),
+    b!("preamp_in", "IN", 996, 85, 96, 22),
     b!("mode", "VOICE", 48, 170, 286, 28),
     b!("waveform", "WAVE", 48, 241, 106, 28),
     b!("octave", "RANGE", 48, 294, 106, 28),
@@ -214,6 +216,9 @@ fn section(s: &mut String, x: f64, y: f64, w: f64, h: f64, n: &str, title: &str)
 pub fn value(p: &ModelFParams, id: &str) -> String {
     let v = p.effective(id);
     match id {
+        "preamp_gain"|"preamp_trim"=>format!("{v:+.1} dB"),
+        "preamp_mic"=>if v>0.5 {"MIC"}else{"LINE"}.into(),
+        "preamp_in"=>if v>0.5 {"IN"}else{"BYPASS"}.into(),
         "global_tuning"=>format!("{v:.1} Hz"),
         "character_shape"=>if p.character.value().round()==5.0 {if v<0.01 {"12 dB".into()} else if v>0.99 {"24 dB".into()} else {"12/24 MIX".into()}} else if p.character.value().round()==2.0 {format!("HP {:.0} Hz",20.0*libm::pow(125.0,f64::from(v)))} else {
             let at=v*3.0;let names=["LP","NOTCH","HP","BP"];let i=(at as usize).min(3);
@@ -247,10 +252,11 @@ pub fn value(p: &ModelFParams, id: &str) -> String {
         _ => format!("{v:.2}"),
     }
 }
+
 #[derive(Default, Debug)]
 pub struct View {
     pub envelope: bool,
-    pub env: crate::mseg_ui::State,
+    pub env: crate::eg_editor::State,
     pub about: bool,
     pub name: String,
     pub category: String,
@@ -276,7 +282,7 @@ impl View {
     pub fn multi_button_enabled(&self) -> bool { !self.browser && !self.save && !self.about }
     pub fn blocks_click(&self,x:f64,y:f64) -> bool {
         (!self.header_enabled() && in_rect((330.,0.,762.,117.),x,y)) ||
-        (!self.multi_button_enabled() && in_rect(crate::mseg_ui::OPEN,x,y))
+        (!self.multi_button_enabled() && in_rect(crate::eg_editor::OPEN,x,y))
     }
 
     // open_about alt adımı: Kontrol geometrisi, fiziksel değer gösterimi, SVG/piksel çizimi ve kullanıcı hit-test haritasıdır.
@@ -325,10 +331,11 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     for (x, label) in [(782.0, "‹"), (820.0, "›")] {
         button(&mut s, x, 40.0, 30.0, 38.0, label, false);
     }
-    for (x, label) in [(868.0, "SAVE"), (934.0, "LOAD")] {
-        button(&mut s, x, 40.0, 56.0, 38.0, label, false);
+    for (x, label) in [(782.0, "SAVE"), (826.0, "LOAD")] {
+        button(&mut s, x, 85.0, 40.0, 22.0, label, false);
     }
 
+    text(&mut s,824.,29.,9,"#8d9799","EXPORT", "middle");
     if !v.header_enabled() {s.push_str("</g>");}
     s.push_str(r##"<path d="M28 118H1092" stroke="#ed6c46" stroke-width="2"/><path d="M28 123H1092" stroke="#dce0d8" stroke-width="2"/>"##);
     section(&mut s, 28.0, 132.0, 326.0, 310.0, "01", "OSCILLATORS");
@@ -353,8 +360,13 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
         let active = v.hover == Some(i);
         let accent = if active { "#ff956f" } else { "#ed6c46" };
-        if c.id=="output_voicing" {
-            button(&mut s,c.x,c.y,c.w,c.h,if p.output_voicing.value()>0.5 {"OUTPUT: FULL"} else {"OUTPUT: LEGACY"},p.output_voicing.value()>0.5);
+        if matches!(c.id,"preamp_gain"|"preamp_trim") {
+            text(&mut s,c.x+c.w/2.,29.,9,"#8d9799",c.label,"middle");
+            text(&mut s,c.x+c.w/2.,64.,16,if c.id=="preamp_gain" {"#ed6c46"}else{"#e5e7df"},&value(p,c.id),"middle");
+        } else if c.id=="preamp_mic" {
+            button(&mut s,c.x,c.y,c.w,c.h,if p.preamp_mic.value()>0.5 {"MIC"}else{"LINE"},p.preamp_mic.value()>0.5);
+        } else if c.id=="preamp_in" {
+            button(&mut s,c.x,c.y,c.w,c.h,if p.preamp_in.value()>0.5 {"IN"}else{"BYPASS"},p.preamp_in.value()>0.5);
         } else if c.id=="global_tuning" {
             button(&mut s,c.x,c.y,c.w,c.h,"",false);
             // Sağ köşeler mevcut 4 px yuvarlamayı izler; sadece sağ şerit turuncudur.
@@ -384,13 +396,14 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
             let (sn, cs) = a.sin_cos();
             let _ = write!(
                 s,
-                r##"<circle cx="{}" cy="{}" r="{}" fill="#101415" stroke="#3e474a" stroke-width="2"/><circle cx="{}" cy="{}" r="{}" fill="#292f31"/><path d="M {} {} L {} {}" stroke="{}" stroke-width="3" stroke-linecap="round"/>"##,
+                r##"<circle cx="{}" cy="{}" r="{}" fill="#101415" stroke="#3e474a" stroke-width="2"/><circle cx="{}" cy="{}" r="{}" fill="{}"/><path d="M {} {} L {} {}" stroke="{}" stroke-width="3" stroke-linecap="round"/>"##,
                 c.x,
                 c.y,
                 r,
                 c.x,
                 c.y,
                 r - 5.0,
+                "#292f31",
                 c.x + cs * (r * 0.48),
                 c.y + sn * (r * 0.48),
                 c.x + cs * (r - 5.0),
@@ -502,7 +515,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     }
     let (x, y, w, h) = PANIC_RECT;
     button(&mut s, x, y, w, h, "PANIC", false);
-    let (x, y, w, h) = crate::mseg_ui::OPEN;
+    let (x, y, w, h) = crate::eg_editor::OPEN;
     if !v.multi_button_enabled() {s.push_str(r##"<g id="multi-button-disabled" opacity="0.3">"##);}
     button(
         &mut s,
@@ -510,17 +523,12 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         y,
         w,
         h,
-        "MULTI-STAGE ENV.",
-        p.mseg_enable.value() > 0.5,
+        "MODULATORS",
+        crate::mod_ui::any_active(p),
     );
-    if p.mseg_enable.value() <= 0.5 && p.mseg_amount.value().abs() > 0.0005 {
-        // AD açık ve amount etkin: logoyla aynı kırık beyaz. Multi hâlâ turuncudur.
-        let _ = write!(s, r##"<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="4" fill="#e5e7df" stroke="#e5e7df"/>"##);
-        text(&mut s, x+w/2., y+h/2.+4., 11, "#17191a", "MULTI-STAGE ENV.", "middle");
-    }
     if !v.multi_button_enabled() {s.push_str("</g>");}
     if v.envelope {
-        crate::mseg_ui::draw(&mut s, p, &v.env);
+        crate::mod_ui::draw(&mut s, p, &v.env);
     }
     if v.browser {
         let _ = write!(
@@ -706,7 +714,7 @@ mod tests {
         let p=ModelFParams::default();
         for scene in ["multi-ad","multi-on","user-library","delete-confirm"] {
             let multi=scene.starts_with("multi");
-            let p=if scene=="multi-on" {ModelFParams {mseg_enable:FloatParam::new("Multi",1.,FloatRange::Linear{min:0.,max:1.}),..ModelFParams::default()}} else {ModelFParams::default()};
+            let p=if scene=="multi-on" {ModelFParams {mseg_enable:Box::new(FloatParam::new("Multi",1.,FloatRange::Linear{min:0.,max:1.})),..ModelFParams::default()}} else {ModelFParams::default()};
             let mut v=View {name:"Example User Bass".into(),category:"Bass".into(),filter:"User".into(),envelope:multi,browser:!multi,..View::default()};
             let mut user=Preset::capture(&p,"Example User Bass".into(),"Bass".into());user.source_path=Some("preview-only.modelf".into());v.rows=vec![user];
             if scene=="delete-confirm" {v.delete_name=Some("Example User Bass".into());}
@@ -794,11 +802,11 @@ mod tests {
         }
         for mode in [6.0, 1.0] {
             let p = ModelFParams {
-                mode: FloatParam::new(
+                mode: Box::new(FloatParam::new(
                     "Voice Mode",
                     mode,
                     FloatRange::Linear { min: 0.0, max: 6.0 },
-                ),
+                )),
                 ..Default::default()
             };
             let mut db = resvg::usvg::fontdb::Database::new();
@@ -841,8 +849,8 @@ mod tests {
                 .collect();
             let output = labels
                 .iter()
-                .position(|(name, _)| name == "7.00")
-                .expect("output value");
+                .position(|(name, _)| name == "+10.0 dB")
+                .expect("preamp gain value");
             assert!(
                 bounds[output].1 + bounds[output].3 + 4.0 < 117.0,
                 "Output must clear the orange/white separator"
@@ -894,7 +902,7 @@ mod tests {
             CONTROLS.len(),
             p.list()
                 .iter()
-                .filter(|(id, _)| !id.starts_with("mseg_") && *id!="character")
+                .filter(|(id, _)| !id.starts_with("mseg_") && (!id.starts_with("mod_") || *id=="mod_depth") && !matches!(*id,"character"|"volume"|"output_voicing"|"preamp_path"))
                 .count()
         );
         for c in CONTROLS {
@@ -935,7 +943,7 @@ pub fn control_enabled(p: &ModelFParams, id: &str) -> bool {
 
 // Fazıl Irak — 25.10.2026: Output düğmesi de üst panelin kilidini izler.
 pub fn control_enabled_for_view(p:&ModelFParams,v:&View,id:&str)->bool {
-    control_enabled(p,id) && (!matches!(id,"volume" | "global_tuning" | "character_shape" | "output_voicing") || v.header_enabled())
+    control_enabled(p,id) && (!(id.starts_with("preamp_") || matches!(id,"volume" | "global_tuning" | "character_shape" | "output_voicing")) || v.header_enabled())
 }
 // Satır ve silme hit-test'i render ile aynı boyutları kullanır.
 pub fn user_delete_hit(v:&View,x:f64,y:f64)->Option<usize> {
@@ -974,7 +982,7 @@ mod resonance_ui_tests {
         let c=CONTROLS.iter().find(|c|c.id=="emphasis").unwrap();
         assert_eq!((c.x,c.y,c.w),(607.0,245.0,27.0));
         for (character,start) in [0.75,0.83,0.82,0.90,0.80,0.94].into_iter().enumerate() {
-            let p=ModelFParams{character:FloatParam::new("Character",character as f32,FloatRange::Linear{min:0.0,max:5.0}),..Default::default()};
+            let p=ModelFParams{character:Box::new(FloatParam::new("Character",character as f32,FloatRange::Linear{min:0.0,max:5.0})),..Default::default()};
             let svg=svg(&p,&View::default());
             assert_eq!(svg.matches("data-role=\"emphasis-high-resonance\"").count(),1);
             assert!(svg.contains(&format!("data-start=\"{start:.2}\"")));
@@ -1020,7 +1028,7 @@ mod tuning_quick_select_tests {
     fn tuning_value_colours_and_extended_range_match_the_requested_values() {
         for (hz,colour) in [(432.0,"#71c88b"),(440.0,"#ef5350"),(442.0,"#ed6c46"),(444.0,"#ed6c46"),(528.0,"#69aefb"),(439.1,"#c8cbc6"),(432.1,"#c8cbc6")] {
             assert_eq!(global_tuning_colour(hz),colour);
-            let p=ModelFParams{global_tuning:FloatParam::new("Global Tuning",hz,FloatRange::Linear{min:crate::params::GLOBAL_TUNING_MIN,max:crate::params::GLOBAL_TUNING_MAX}).with_step_size(0.1),..Default::default()};
+            let p=ModelFParams{global_tuning:Box::new(FloatParam::new("Global Tuning",hz,FloatRange::Linear{min:crate::params::GLOBAL_TUNING_MIN,max:crate::params::GLOBAL_TUNING_MAX}).with_step_size(0.1)),..Default::default()};
             let svg=svg(&p,&View::default());assert!(svg.contains("data-role=\"global-tuning-cycle\""));
             assert!(svg.contains(&format!("fill=\"{colour}\" font-size=\"11\" text-anchor=\"end\">{hz:.1} Hz")));
             assert!((p.global_tuning.preview_plain(p.global_tuning.preview_normalized(hz))-hz).abs()<0.051);

@@ -1,0 +1,201 @@
+{
+  "runs_per_build": 3,
+  "scope": "Offline single-thread Engine render, 128-sample blocks, seed 42. Not whole-PC CPU or a live DAW measurement.",
+  "matching_sample_hashes": 24,
+  "sample_hash_algorithm": "FNV-1a over f32 sample bit patterns",
+  "interpretation": "Small and variable changes in total CPU; no general large CPU reduction is claimed. Unchanged dry-render controls also drift between runs.",
+  "rows": [
+    {
+      "mode": "Mono",
+      "rate": 48000.0,
+      "stage": "Dry",
+      "sample_hash": "5b832d48c253aea5",
+      "before_one_core_percent": 5.92574427480916,
+      "after_one_core_percent": 6.307270992366412
+    },
+    {
+      "mode": "Mono",
+      "rate": 48000.0,
+      "stage": "18 modulators",
+      "sample_hash": "e31c1ce18e1e763c",
+      "before_one_core_percent": 7.140543893129771,
+      "after_one_core_percent": 7.127833969465648
+    },
+    {
+      "mode": "Mono",
+      "rate": 48000.0,
+      "stage": "18 modulators + LINE",
+      "sample_hash": "a351406cae7eef4c",
+      "before_one_core_percent": 7.805238549618321,
+      "after_one_core_percent": 7.464732824427481
+    },
+    {
+      "mode": "Mono",
+      "rate": 48000.0,
+      "stage": "18 modulators + MIC",
+      "sample_hash": "7e979a6f9ed26297",
+      "before_one_core_percent": 7.7403148854961845,
+      "after_one_core_percent": 7.511851145038169
+    },
+    {
+      "mode": "Mono",
+      "rate": 96000.0,
+      "stage": "Dry",
+      "sample_hash": "1865345734cb50a5",
+      "before_one_core_percent": 11.636020992366412,
+      "after_one_core_percent": 12.407261450381679
+    },
+    {
+      "mode": "Mono",
+      "rate": 96000.0,
+      "stage": "18 modulators",
+      "sample_hash": "c91d3f6eb2d6992d",
+      "before_one_core_percent": 14.091498091603052,
+      "after_one_core_percent": 14.59648854961832
+    },
+    {
+      "mode": "Mono",
+      "rate": 96000.0,
+      "stage": "18 modulators + LINE",
+      "sample_hash": "f4c26c1259ceeb3a",
+      "before_one_core_percent": 15.112585877862598,
+      "after_one_core_percent": 15.371851145038168
+    },
+    {
+      "mode": "Mono",
+      "rate": 96000.0,
+      "stage": "18 modulators + MIC",
+      "sample_hash": "bc9d2d1c6d9b506e",
+      "before_one_core_percent": 15.128473282442748,
+      "after_one_core_percent": 14.966736641221374
+    },
+    {
+      "mode": "Poly4",
+      "rate": 48000.0,
+      "stage": "Dry",
+      "sample_hash": "7448efd03deb5769",
+      "before_one_core_percent": 24.18057251908397,
+      "after_one_core_percent": 25.54591603053435
+    },
+    {
+      "mode": "Poly4",
+      "rate": 48000.0,
+      "stage": "18 modulators",
+      "sample_hash": "26c5ab818f4c8849",
+      "before_one_core_percent": 28.659646946564887,
+      "after_one_core_percent": 29.680448473282446
+    },
+    {
+      "mode": "Poly4",
+      "rate": 48000.0,
+      "stage": "18 modulators + LINE",
+      "sample_hash": "6cea9c2154373a32",
+      "before_one_core_percent": 28.605601145038168,
+      "after_one_core_percent": 29.81115458015267
+    },
+    {
+      "mode": "Poly4",
+      "rate": 48000.0,
+      "stage": "18 modulators + MIC",
+      "sample_hash": "2e346c35edc11a6c",
+      "before_one_core_percent": 29.112223282442752,
+      "after_one_core_percent": 29.856956106870232
+    },
+    {
+      "mode": "Poly4",
+      "rate": 96000.0,
+      "stage": "Dry",
+      "sample_hash": "26dc0152398e89d1",
+      "before_one_core_percent": 46.66419847328245,
+      "after_one_core_percent": 48.53023854961832
+    },
+    {
+      "mode": "Poly4",
+      "rate": 96000.0,
+      "stage": "18 modulators",
+      "sample_hash": "67eab837f2de7d41",
+      "before_one_core_percent": 56.692156488549614,
+      "after_one_core_percent": 58.53689885496184
+    },
+    {
+      "mode": "Poly4",
+      "rate": 96000.0,
+      "stage": "18 modulators + LINE",
+      "sample_hash": "3fea8cab7eadacbb",
+      "before_one_core_percent": 57.16462786259542,
+      "after_one_core_percent": 59.07160305343512
+    },
+    {
+      "mode": "Poly4",
+      "rate": 96000.0,
+      "stage": "18 modulators + MIC",
+      "sample_hash": "07eaa49f140b9863",
+      "before_one_core_percent": 57.44101145038167,
+      "after_one_core_percent": 59.09521946564885
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 48000.0,
+      "stage": "Dry",
+      "sample_hash": "d42669e2018c9ad9",
+      "before_one_core_percent": 67.96766221374045,
+      "after_one_core_percent": 70.45442748091602
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 48000.0,
+      "stage": "18 modulators",
+      "sample_hash": "bb53e25f04154c65",
+      "before_one_core_percent": 78.64843511450383,
+      "after_one_core_percent": 79.15531488549618
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 48000.0,
+      "stage": "18 modulators + LINE",
+      "sample_hash": "235754153bce2778",
+      "before_one_core_percent": 77.79289122137405,
+      "after_one_core_percent": 82.05088740458017
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 48000.0,
+      "stage": "18 modulators + MIC",
+      "sample_hash": "3a45c92db5789c62",
+      "before_one_core_percent": 78.88225190839694,
+      "after_one_core_percent": 80.9645038167939
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 96000.0,
+      "stage": "Dry",
+      "sample_hash": "b10ce3d216c69ccd",
+      "before_one_core_percent": 133.06912213740458,
+      "after_one_core_percent": 137.93118320610688
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 96000.0,
+      "stage": "18 modulators",
+      "sample_hash": "70bc3823886925c7",
+      "before_one_core_percent": 151.48729007633588,
+      "after_one_core_percent": 154.91931297709925
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 96000.0,
+      "stage": "18 modulators + LINE",
+      "sample_hash": "8ca99d0a54608a03",
+      "before_one_core_percent": 153.44364503816794,
+      "after_one_core_percent": 157.37716603053434
+    },
+    {
+      "mode": "SuperSaw8",
+      "rate": 96000.0,
+      "stage": "18 modulators + MIC",
+      "sample_hash": "0c2f5ccd5b34d6d1",
+      "before_one_core_percent": 150.93123091603053,
+      "after_one_core_percent": 160.2101908396947
+    }
+  ]
+}

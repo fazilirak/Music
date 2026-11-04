@@ -931,7 +931,7 @@ mod tests {
             ..Default::default()
         };
         let svg = panel::svg(&p, &v);
-        assert!(svg.contains("MULTI-STAGE ENVELOPE"));
+        assert!(svg.contains("MODULATORS"));
         assert!(panel::render(&svg, 1120, 760).is_ok());
         assert!(panel::render(&svg, 1680, 1140).is_ok());
         for (a, c) in CONTROLS.iter().enumerate() {
@@ -945,7 +945,7 @@ mod tests {
         let mut overlay = String::from(
             r#"<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760"><g font-family="URW Gothic">"#,
         );
-        draw(&mut overlay, &p, &v.env);
+        draw(&mut overlay, &p, &State::default());
         overlay.push_str("</g></svg>");
         let mut db = resvg::usvg::fontdb::Database::new();
         db.load_font_data(

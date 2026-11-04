@@ -121,6 +121,24 @@ impl Config {
             bends,
         }
     }
+    pub fn from_view(p: &crate::mod_view::View<'_>) -> Self {
+        // Indexed references are generated once in the parameter implementation.
+        let get = |id: &str| match id {"mseg_enable"=>f64::from(p.mseg_enable.value()),"mseg_duration"=>f64::from(p.mseg_duration.value()),"mseg_curve"=>f64::from(p.mseg_curve.value()),"mseg_mode"=>f64::from(p.mseg_mode.value()),"mseg_attack"=>f64::from(p.mseg_attack.value()),"mseg_decay"=>f64::from(p.mseg_decay.value()),"mseg_amount"=>f64::from(p.mseg_amount.value()),"mseg_target"=>f64::from(p.mseg_target.value()),"mseg_gridx"=>f64::from(p.mseg_gridx.value()),"mseg_gridy"=>f64::from(p.mseg_gridy.value()),"mseg_snap"=>f64::from(p.mseg_snap.value()),"mseg_brush"=>f64::from(p.mseg_brush.value()),"mseg_start"=>f64::from(p.mseg_start.value()),"mseg_p0_x"=>f64::from(p.mseg_p0_x.value()),"mseg_p0_y"=>f64::from(p.mseg_p0_y.value()),"mseg_p0_on"=>f64::from(p.mseg_p0_on.value()),"mseg_p1_x"=>f64::from(p.mseg_p1_x.value()),"mseg_p1_y"=>f64::from(p.mseg_p1_y.value()),"mseg_p1_on"=>f64::from(p.mseg_p1_on.value()),"mseg_p2_x"=>f64::from(p.mseg_p2_x.value()),"mseg_p2_y"=>f64::from(p.mseg_p2_y.value()),"mseg_p2_on"=>f64::from(p.mseg_p2_on.value()),"mseg_p3_x"=>f64::from(p.mseg_p3_x.value()),"mseg_p3_y"=>f64::from(p.mseg_p3_y.value()),"mseg_p3_on"=>f64::from(p.mseg_p3_on.value()),"mseg_p4_x"=>f64::from(p.mseg_p4_x.value()),"mseg_p4_y"=>f64::from(p.mseg_p4_y.value()),"mseg_p4_on"=>f64::from(p.mseg_p4_on.value()),"mseg_p5_x"=>f64::from(p.mseg_p5_x.value()),"mseg_p5_y"=>f64::from(p.mseg_p5_y.value()),"mseg_p5_on"=>f64::from(p.mseg_p5_on.value()),"mseg_p6_x"=>f64::from(p.mseg_p6_x.value()),"mseg_p6_y"=>f64::from(p.mseg_p6_y.value()),"mseg_p6_on"=>f64::from(p.mseg_p6_on.value()),"mseg_p7_x"=>f64::from(p.mseg_p7_x.value()),"mseg_p7_y"=>f64::from(p.mseg_p7_y.value()),"mseg_p7_on"=>f64::from(p.mseg_p7_on.value()),"mseg_p8_x"=>f64::from(p.mseg_p8_x.value()),"mseg_p8_y"=>f64::from(p.mseg_p8_y.value()),"mseg_p8_on"=>f64::from(p.mseg_p8_on.value()),"mseg_p9_x"=>f64::from(p.mseg_p9_x.value()),"mseg_p9_y"=>f64::from(p.mseg_p9_y.value()),"mseg_p9_on"=>f64::from(p.mseg_p9_on.value()),"mseg_p10_x"=>f64::from(p.mseg_p10_x.value()),"mseg_p10_y"=>f64::from(p.mseg_p10_y.value()),"mseg_p10_on"=>f64::from(p.mseg_p10_on.value()),"mseg_p11_x"=>f64::from(p.mseg_p11_x.value()),"mseg_p11_y"=>f64::from(p.mseg_p11_y.value()),"mseg_p11_on"=>f64::from(p.mseg_p11_on.value()),"mseg_p12_x"=>f64::from(p.mseg_p12_x.value()),"mseg_p12_y"=>f64::from(p.mseg_p12_y.value()),"mseg_p12_on"=>f64::from(p.mseg_p12_on.value()),"mseg_p13_x"=>f64::from(p.mseg_p13_x.value()),"mseg_p13_y"=>f64::from(p.mseg_p13_y.value()),"mseg_p13_on"=>f64::from(p.mseg_p13_on.value()),"mseg_p14_x"=>f64::from(p.mseg_p14_x.value()),"mseg_p14_y"=>f64::from(p.mseg_p14_y.value()),"mseg_p14_on"=>f64::from(p.mseg_p14_on.value()),"mseg_p15_x"=>f64::from(p.mseg_p15_x.value()),"mseg_p15_y"=>f64::from(p.mseg_p15_y.value()),"mseg_p15_on"=>f64::from(p.mseg_p15_on.value()),"mseg_n0_in"=>f64::from(p.mseg_n0_in.value()),"mseg_n0_out"=>f64::from(p.mseg_n0_out.value()),"mseg_n0_wave"=>f64::from(p.mseg_n0_wave.value()),"mseg_n0_depth"=>f64::from(p.mseg_n0_depth.value()),"mseg_n1_in"=>f64::from(p.mseg_n1_in.value()),"mseg_n1_out"=>f64::from(p.mseg_n1_out.value()),"mseg_n1_wave"=>f64::from(p.mseg_n1_wave.value()),"mseg_n1_depth"=>f64::from(p.mseg_n1_depth.value()),"mseg_n2_in"=>f64::from(p.mseg_n2_in.value()),"mseg_n2_out"=>f64::from(p.mseg_n2_out.value()),"mseg_n2_wave"=>f64::from(p.mseg_n2_wave.value()),"mseg_n2_depth"=>f64::from(p.mseg_n2_depth.value()),"mseg_n3_in"=>f64::from(p.mseg_n3_in.value()),"mseg_n3_out"=>f64::from(p.mseg_n3_out.value()),"mseg_n3_wave"=>f64::from(p.mseg_n3_wave.value()),"mseg_n3_depth"=>f64::from(p.mseg_n3_depth.value()),"mseg_n4_in"=>f64::from(p.mseg_n4_in.value()),"mseg_n4_out"=>f64::from(p.mseg_n4_out.value()),"mseg_n4_wave"=>f64::from(p.mseg_n4_wave.value()),"mseg_n4_depth"=>f64::from(p.mseg_n4_depth.value()),"mseg_n5_in"=>f64::from(p.mseg_n5_in.value()),"mseg_n5_out"=>f64::from(p.mseg_n5_out.value()),"mseg_n5_wave"=>f64::from(p.mseg_n5_wave.value()),"mseg_n5_depth"=>f64::from(p.mseg_n5_depth.value()),"mseg_n6_in"=>f64::from(p.mseg_n6_in.value()),"mseg_n6_out"=>f64::from(p.mseg_n6_out.value()),"mseg_n6_wave"=>f64::from(p.mseg_n6_wave.value()),"mseg_n6_depth"=>f64::from(p.mseg_n6_depth.value()),"mseg_n7_in"=>f64::from(p.mseg_n7_in.value()),"mseg_n7_out"=>f64::from(p.mseg_n7_out.value()),"mseg_n7_wave"=>f64::from(p.mseg_n7_wave.value()),"mseg_n7_depth"=>f64::from(p.mseg_n7_depth.value()),"mseg_n8_in"=>f64::from(p.mseg_n8_in.value()),"mseg_n8_out"=>f64::from(p.mseg_n8_out.value()),"mseg_n8_wave"=>f64::from(p.mseg_n8_wave.value()),"mseg_n8_depth"=>f64::from(p.mseg_n8_depth.value()),"mseg_n9_in"=>f64::from(p.mseg_n9_in.value()),"mseg_n9_out"=>f64::from(p.mseg_n9_out.value()),"mseg_n9_wave"=>f64::from(p.mseg_n9_wave.value()),"mseg_n9_depth"=>f64::from(p.mseg_n9_depth.value()),"mseg_n10_in"=>f64::from(p.mseg_n10_in.value()),"mseg_n10_out"=>f64::from(p.mseg_n10_out.value()),"mseg_n10_wave"=>f64::from(p.mseg_n10_wave.value()),"mseg_n10_depth"=>f64::from(p.mseg_n10_depth.value()),"mseg_n11_in"=>f64::from(p.mseg_n11_in.value()),"mseg_n11_out"=>f64::from(p.mseg_n11_out.value()),"mseg_n11_wave"=>f64::from(p.mseg_n11_wave.value()),"mseg_n11_depth"=>f64::from(p.mseg_n11_depth.value()),"mseg_n12_in"=>f64::from(p.mseg_n12_in.value()),"mseg_n12_out"=>f64::from(p.mseg_n12_out.value()),"mseg_n12_wave"=>f64::from(p.mseg_n12_wave.value()),"mseg_n12_depth"=>f64::from(p.mseg_n12_depth.value()),"mseg_n13_in"=>f64::from(p.mseg_n13_in.value()),"mseg_n13_out"=>f64::from(p.mseg_n13_out.value()),"mseg_n13_wave"=>f64::from(p.mseg_n13_wave.value()),"mseg_n13_depth"=>f64::from(p.mseg_n13_depth.value()),"mseg_n14_in"=>f64::from(p.mseg_n14_in.value()),"mseg_n14_out"=>f64::from(p.mseg_n14_out.value()),"mseg_n14_wave"=>f64::from(p.mseg_n14_wave.value()),"mseg_n14_depth"=>f64::from(p.mseg_n14_depth.value()),"mseg_n15_in"=>f64::from(p.mseg_n15_in.value()),"mseg_n15_out"=>f64::from(p.mseg_n15_out.value()),"mseg_n15_wave"=>f64::from(p.mseg_n15_wave.value()),"mseg_n15_depth"=>f64::from(p.mseg_n15_depth.value()),"mseg_n16_in"=>f64::from(p.mseg_n16_in.value()),"mseg_n16_out"=>f64::from(p.mseg_n16_out.value()),"mseg_n16_wave"=>f64::from(p.mseg_n16_wave.value()),"mseg_n16_depth"=>f64::from(p.mseg_n16_depth.value()),"mseg_n17_in"=>f64::from(p.mseg_n17_in.value()),"mseg_n17_out"=>f64::from(p.mseg_n17_out.value()),"mseg_n17_wave"=>f64::from(p.mseg_n17_wave.value()),"mseg_n17_depth"=>f64::from(p.mseg_n17_depth.value()),"mseg_speed"=>f64::from(p.mseg_speed.value()),"mseg_fix_tempo"=>f64::from(p.mseg_fix_tempo.value()),_=>0.};
+        let (points, bends) = p.envelope_slots();
+        Self {
+            enabled: get("mseg_enable") > 0.5,
+            duration: f64::from(p.mseg_duration.value()),
+            curve: get("mseg_curve"),
+            mode: get("mseg_mode") as usize,
+            attack: get("mseg_attack"),
+            decay: get("mseg_decay"),
+            amount: get("mseg_amount"),
+            target: get("mseg_target") as usize,
+            start: get("mseg_start"),
+            points,
+            bends,
+        }
+    }
     // shape alt adımı: Nokta/eğri/wave brush envelope’unun fiziksel zaman ve hedef modülasyon değerini hesaplar.
     pub fn shape(&self) -> Shape {
         Shape::new(self)
@@ -280,6 +298,7 @@ pub struct Envelope {
     ad_stage: u8,
     ad_coeff: [f64; 2],
     rate: f64,
+    cycle_increment:f64,
 }
 impl Default for Envelope {
     // Varsayılan değerleri kurar; parametre aralığı/preset varsayılanıyla birlikte değişmelidir.
@@ -299,6 +318,7 @@ impl Default for Envelope {
             ad_stage: 0,
             ad_coeff: [0.; 2],
             rate: 0.,
+            cycle_increment:0.,
         }
     }
 }
@@ -309,7 +329,7 @@ impl Envelope {
         if self.config != c || self.rate != rate {
             // Yalnız tempo değiştiyse fazı ve sesi kesmeden yeni örnek adımına geç.
             let mut timing_only=self.config;timing_only.duration=c.duration;
-            if timing_only==c && self.rate==rate { self.config=c;return; }
+            if timing_only==c && self.rate==rate { self.config=c;self.cycle_increment=1./(rate*c.duration);return; }
             if self.config.enabled != c.enabled {
                 self.reset();
             }
@@ -320,6 +340,7 @@ impl Envelope {
             self.shape = c.shape();
             self.config = c;
             self.rate = rate;
+            self.cycle_increment=1./(rate*c.duration);
             let f = 0.004 * 44100. / rate;
             self.ad_coeff = [
                 0.0003 * f + f * (1. - c.attack * 0.5).powi(24) * 7.,
@@ -362,7 +383,7 @@ impl Envelope {
             start * (1. - pos)
         } else if c.enabled {
             let y = self.shape.value(self.phase);
-            self.phase += 1. / (self.rate * c.duration);
+            self.phase += self.cycle_increment;
             if c.mode == 1 && gate && self.phase >= 1. {
                 self.phase -= self.phase.floor();
             }
@@ -453,6 +474,13 @@ impl EnvelopePreset {
                 .map(|(id, p)| (id.into(), p.value()))
                 .collect(),
         }
+    }
+    pub fn capture_view(p:&crate::mod_view::View<'_>)->Self {Self {format:1,values:p.list().into_iter().filter(|(id,_)|saved_id(id)).map(|(id,p)|(id.into(),p.value())).collect()}}
+    pub fn apply_view(&self,p:&crate::mod_view::View<'_>,setter:&ParamSetter<'_>)->Result<(),String> {
+        self.validate()?;
+        let edits=p.list().into_iter().filter(|(id,_)|saved_id(id)).map(|(id,param)|(p.real_id(id),self.values.get(id).copied().unwrap_or_else(||param.default_plain_value()))).collect();
+        for (id,value) in crate::mod_ui::activate(p.params,edits) {let param=p.params.get(&id).ok_or("Unknown envelope control")?;setter.begin_set_parameter(param);setter.set_parameter(param,value);setter.end_set_parameter(param);}
+        Ok(())
     }
     // validate alt adımı: Nokta/eğri/wave brush envelope’unun fiziksel zaman ve hedef modülasyon değerini hesaplar.
     // Gövdedeki başlıca çağrılar: ModelFParams::default → Self::capture → self.values.len → expected.values.len. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
@@ -741,6 +769,6 @@ mod tempo_tests {
         shape.values.remove("mseg_speed");shape.values.remove("mseg_fix_tempo");shape.validate().unwrap();
         let mut incomplete=EnvelopePreset {format:shape.format,values:shape.values.clone()};incomplete.values.remove("mseg_start");incomplete.values.insert("mseg_speed".into(),1.0);assert!(incomplete.validate().is_err());
         let mut full=crate::presets::Preset::capture(&p,"Legacy 0.2.1".into(),"Bass".into());
-        full.values.remove("output_voicing");full.values.remove("character");full.values.remove("character_shape");full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
+        full.values.retain(|id,_| (!id.starts_with("mod_") || id=="mod_depth") && !id.starts_with("preamp_"));full.values.remove("output_voicing");full.values.remove("character");full.values.remove("character_shape");full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
     }
 }

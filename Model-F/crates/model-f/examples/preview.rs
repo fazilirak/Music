@@ -26,8 +26,8 @@ fn main() {
     ] {
         let params = if name == "supersaw" {
             ModelFParams {
-                mode: FloatParam::new("Voice Mode", 1.0, FloatRange::Linear { min: 0.0, max: 6.0 })
-                    .with_step_size(1.0),
+                mode: Box::new(FloatParam::new("Voice Mode", 1.0, FloatRange::Linear { min: 0.0, max: 6.0 })
+                    .with_step_size(1.0)),
                 ..ModelFParams::default()
             }
         } else {
@@ -35,30 +35,30 @@ fn main() {
         };
         let params = if name == "overload" {
             ModelFParams {
-                overload: FloatParam::new(
+                overload: Box::new(FloatParam::new(
                     "Overload",
                     10.0,
                     FloatRange::Linear {
                         min: 0.0,
                         max: 10.0,
                     },
-                ),
+                )),
                 ..params
             }
         } else {
             params
         };
-        let params=if name=="ad-active" {ModelFParams {mseg_amount: FloatParam::new("Amount",0.5,FloatRange::Linear{min:-1.0,max:1.0}),..params}} else {params};
-        let params=if name=="multi-active" || name=="envelope-multi" {ModelFParams {mseg_enable: FloatParam::new("Multi",1.0,FloatRange::Linear{min:0.0,max:1.0}),..params}} else {params};
+        let params=if name=="ad-active" {ModelFParams {mseg_amount: Box::new(FloatParam::new("Amount",0.5,FloatRange::Linear{min:-1.0,max:1.0})),..params}} else {params};
+        let params=if name=="multi-active" || name=="envelope-multi" {ModelFParams {mseg_enable: Box::new(FloatParam::new("Multi",1.0,FloatRange::Linear{min:0.0,max:1.0})),..params}} else {params};
         let params=if name=="envelope-tempo" {ModelFParams {
-            mseg_enable:FloatParam::new("Multi",1.0,FloatRange::Linear{min:0.0,max:1.0}),
-            mseg_speed:FloatParam::new("Speed",5.0,FloatRange::Linear{min:0.0,max:6.0}),
-            mseg_fix_tempo:FloatParam::new("Fix Tempo",1.0,FloatRange::Linear{min:0.0,max:1.0}),..params}} else {params};
+            mseg_enable:Box::new(FloatParam::new("Multi",1.0,FloatRange::Linear{min:0.0,max:1.0})),
+            mseg_speed:Box::new(FloatParam::new("Speed",5.0,FloatRange::Linear{min:0.0,max:6.0})),
+            mseg_fix_tempo:Box::new(FloatParam::new("Fix Tempo",1.0,FloatRange::Linear{min:0.0,max:1.0})),..params}} else {params};
         let params=if name=="acid-resonance" {ModelFParams {
-            character:FloatParam::new("Character",4.0,FloatRange::Linear{min:0.0,max:5.0}),
-            emphasis:FloatParam::new("Emphasis",8.6,FloatRange::Linear{min:0.0,max:10.0}),..params}} else {params};
+            character:Box::new(FloatParam::new("Character",4.0,FloatRange::Linear{min:0.0,max:5.0})),
+            emphasis:Box::new(FloatParam::new("Emphasis",8.6,FloatRange::Linear{min:0.0,max:10.0})),..params}} else {params};
         let tuning=match name {"tuning-432"=>Some(432.0),"tuning-440"=>Some(440.0),"tuning-442"=>Some(442.0),"tuning-444"=>Some(444.0),"tuning-528"=>Some(528.0),"tuning-custom"=>Some(439.1),_=>None};
-        let params=if let Some(hz)=tuning {ModelFParams {global_tuning:FloatParam::new("Global Tuning",hz,FloatRange::Linear{min:model_f::params::GLOBAL_TUNING_MIN,max:model_f::params::GLOBAL_TUNING_MAX}).with_step_size(0.1),..params}} else {params};
+        let params=if let Some(hz)=tuning {ModelFParams {global_tuning:Box::new(FloatParam::new("Global Tuning",hz,FloatRange::Linear{min:model_f::params::GLOBAL_TUNING_MIN,max:model_f::params::GLOBAL_TUNING_MAX}).with_step_size(0.1)),..params}} else {params};
         view.overload = if name == "overload" { 1.0 } else { 0.0 };
         view.envelope = name == "envelope" || name == "envelope-multi" || name=="envelope-tempo";
         view.env.selected = 1;

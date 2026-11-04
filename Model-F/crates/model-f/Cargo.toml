@@ -4,7 +4,7 @@
 [package]
 name = "model-f"
 description = "Model F: a compact circuit-modelled synthesizer"
-version = "0.2.9"
+version = "0.3.0"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
@@ -78,3 +78,11 @@ path = "examples/character-audition.rs"
 [[example]]
 name = 'level-audition'
 path = 'examples/level-audition.rs'
+
+[[example]]
+name = "modulation-preview"
+path = "examples/modulation-preview.rs"
+
+[[example]]
+name = "modulation-cpu"
+path = "examples/modulation-cpu.rs"

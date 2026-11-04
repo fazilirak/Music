@@ -201,6 +201,7 @@ impl PanelWindow {
     // env_finish alt adımı: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.
     fn env_finish(&mut self) {
         self.view.env.drag = None;
+        self.view.env.extra_drag=None;self.view.env.step_drag=false;
         let setter = ParamSetter::new(self.context.as_ref());
         for id in self.view.env.gestures.drain(..) {
             if let Some(p) = self.params.get(&id) {
@@ -210,7 +211,7 @@ impl PanelWindow {
     }
     // env_apply alt adımı: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir.
     // Gövdedeki başlıca çağrılar: ParamSetter::new → self.context.as_ref → self.params.get → setter.begin_set_parameter. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
-    fn env_apply(&mut self, edits: crate::mseg_ui::Edits, once: bool) {
+    fn env_apply(&mut self, edits: crate::eg_editor::Edits, once: bool) {
         let setter = ParamSetter::new(self.context.as_ref());
         for (id, v) in edits {
             if let Some(p) = self.params.get(&id) {
@@ -247,10 +248,10 @@ impl PanelWindow {
             };
             if let Some(path) = path {
                 let result = if save {
-                    crate::mseg::EnvelopePreset::capture(&self.params).save(&path)
+                    crate::mseg::EnvelopePreset::capture_view(&crate::mod_view::View::editing(&self.params,self.view.env.page)).save(&path)
                 } else {
                     crate::mseg::EnvelopePreset::read(&path).and_then(|p| {
-                        p.apply(&self.params, &ParamSetter::new(self.context.as_ref()))
+                        p.apply_view(&crate::mod_view::View::bank(&self.params,self.view.env.page), &ParamSetter::new(self.context.as_ref()))
                     })
                 };
                 self.view.status = match result {
@@ -366,7 +367,7 @@ impl PanelWindow {
         self.end_drag();
         match preset.apply(&self.params, &ParamSetter::new(self.context.as_ref())) {
             Ok(()) => {
-                self.view.status = preset.description.clone();
+                self.view.status = format!("Loaded: {} / {}",preset.name,preset.category);
                 self.view.category = preset.category.clone();
                 self.selected = Some(preset);
             }
@@ -401,6 +402,14 @@ impl PanelWindow {
     }
     // set_normalized: Yazılım panelini native pencereye bağlar; parametre, fare/klavye ve pencere yaşam döngüsünü yönetir. Burada verilen ayar türetilmiş duruma/çıktıya aktarılır; çağrı sırası aşağıdaki gövdededir.
     fn set_normalized(&self, i: usize, value: f32, once: bool) {
+        if CONTROLS[i].id.starts_with("preamp_") && self.params.preamp_path.value()<0.5 {
+            let setter=ParamSetter::new(self.context.as_ref());
+            let old=crate::engine::output_gain(f64::from(self.params.volume.value())/10.,true);
+            let base=crate::engine::output_gain(0.7,true);
+            for (p,v) in [(&*self.params.preamp_gain,if self.params.output_voicing.value()>0.5 {10.}else{0.}),(&*self.params.preamp_trim,(20.*(old/base).max(0.001).log10()).clamp(-60.,12.) as f32),(&*self.params.preamp_path,1.)] {
+                setter.begin_set_parameter(p);setter.set_parameter(p,v);setter.end_set_parameter(p);
+            }
+        }
         let p = self.params.get(CONTROLS[i].id).expect("known control");
         let setter = ParamSetter::new(self.context.as_ref());
         // Fazıl Irak, 24.10.2026: eski ortak ayarı ilk düzenlemede ayır; diğer düğmeler yerinden oynamaz.
@@ -582,7 +591,7 @@ impl PanelWindow {
             }
             return;
         }
-        if !right && panel::in_rect(crate::mseg_ui::OPEN, x, y) {
+        if !right && panel::in_rect(crate::eg_editor::OPEN, x, y) {
             self.end_drag();
             self.env_finish();
             self.release_keys();
@@ -593,18 +602,18 @@ impl PanelWindow {
             }
             return;
         }
-        if self.view.envelope && panel::in_rect(crate::mseg_ui::RECT, x, y) {
+        if self.view.envelope && panel::in_rect(crate::eg_editor::RECT, x, y) {
             self.env_finish();
-            let (edits, command) = self.view.env.down(&self.params, x, y, right, modifiers);
+            let (edits, command) = crate::mod_ui::down(&self.params, &mut self.view.env,x,y,right,modifiers);
             let once = self.view.env.drag.is_none();
             self.env_apply(edits, once);
             match command {
-                crate::mseg_ui::Command::Close => {
+                crate::eg_editor::Command::Close => {
                     self.env_finish();
                     self.view.envelope = false;
                 }
-                crate::mseg_ui::Command::Save => self.envelope_file(true),
-                crate::mseg_ui::Command::Load => self.envelope_file(false),
+                crate::eg_editor::Command::Save => self.envelope_file(true),
+                crate::eg_editor::Command::Load => self.envelope_file(false),
                 _ => (),
             }
             return;
@@ -646,14 +655,14 @@ impl PanelWindow {
         }
         if let Some(index)=panel::CHARACTER_RECTS.iter().position(|rect|panel::in_rect(*rect,x,y)) {
             if self.view.header_enabled() {
-                self.end_drag();let p=&self.params.character;let set=ParamSetter::new(self.context.as_ref());
+                self.end_drag();let p=&*self.params.character;let set=ParamSetter::new(self.context.as_ref());
                 set.begin_set_parameter(p);set.set_parameter(p,index as f32);set.end_set_parameter(p);
                 self.view.status=format!("Character: {}",panel::CHARACTER_NAMES[index]);
             }
             return;
         }
-        if (40.0..78.0).contains(&y) {
-            if (340.0..770.0).contains(&x) {
+        if (40.0..107.0).contains(&y) {
+            if (340.0..770.0).contains(&x) && y<78.0 {
                 self.env_finish();
                 self.view.envelope = false;
                 self.release_keys();
@@ -665,15 +674,15 @@ impl PanelWindow {
                 }
                 return;
             }
-            if (782.0..812.0).contains(&x) {
+            if (782.0..812.0).contains(&x) && y<78.0 {
                 self.step_preset(-1);
                 return;
             }
-            if (820.0..850.0).contains(&x) {
+            if (820.0..850.0).contains(&x) && y<78.0 {
                 self.step_preset(1);
                 return;
             }
-            if (868.0..924.0).contains(&x) {
+            if (782.0..822.0).contains(&x) && y>=85.0 {
                 self.end_drag();
                 self.env_finish();
                 self.release_keys();
@@ -689,12 +698,12 @@ impl PanelWindow {
                 self.edit_preset_name(window);
                 return;
             }
-            if (934.0..990.0).contains(&x) {
+            if (826.0..866.0).contains(&x) && y>=85.0 {
                 self.import();
                 return;
             }
         }
-        if (84.0..107.0).contains(&y) && (868.0..990.0).contains(&x) {
+        if (14.0..31.0).contains(&y) && (782.0..866.0).contains(&x) {
             self.export();
             return;
         }
@@ -806,7 +815,7 @@ impl PanelWindow {
                 self.view.envelope = false;
                 return true;
             }
-            let edits = self.view.env.key(&self.params, &e.key, e.modifiers);
+            let edits = crate::mod_ui::key(&self.params,&self.view.env,&e.key,e.modifiers);
             if !edits.is_empty() {
                 self.env_apply(edits, true);
                 return true;
@@ -881,7 +890,7 @@ impl WindowHandler for PanelWindow {
     // on_frame: kullanıcı/pencere olayını bu bileşenin parametre ve sahiplik durumuna taşır; kapanmış nesne ve boş seçim yollarını koruyun.
     // Gövdedeki başlıca çağrılar: self.drag.is_some → self.view.env.drag.is_some → window::lost_capture → self.end_drag. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     fn on_frame(&mut self, window: &mut Window<'_>) {
-        if (self.drag.is_some() || self.view.env.drag.is_some()) && window::lost_capture(window) {
+        if (self.drag.is_some() || (self.view.env.drag.is_some() || self.view.env.extra_drag.is_some() || self.view.env.step_drag)) && window::lost_capture(window) {
             self.end_drag();
             self.env_finish();
         }
@@ -936,9 +945,9 @@ impl WindowHandler for PanelWindow {
                     position.x * f64::from(W) / self.logical.0,
                     position.y * f64::from(H) / self.logical.1,
                 );
-                if self.view.envelope && self.view.env.drag.is_some() {
-                    let edits = self.view.env.motion(
-                        &self.params,
+                if self.view.envelope && (self.view.env.drag.is_some() || self.view.env.extra_drag.is_some() || self.view.env.step_drag) {
+                    let edits = crate::mod_ui::motion(
+                        &self.params, &mut self.view.env,
                         self.pointer.0,
                         self.pointer.1,
                         modifiers,
@@ -980,11 +989,10 @@ impl WindowHandler for PanelWindow {
                     ScrollDelta::Pixels { y, .. } => y / 40.0,
                 };
                 if self.view.envelope {
-                    let edits = crate::mseg_ui::wheel(
-                        &self.params,
+                    let edits = crate::mod_ui::wheel(
+                        &self.params, &self.view.env,
                         self.pointer.0,
                         self.pointer.1,
-                        self.view.env.selected,
                         amount,
                         modifiers,
                     );

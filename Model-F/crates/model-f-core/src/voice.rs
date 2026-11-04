@@ -530,6 +530,7 @@ pub struct Jacks {
     pub s_trig: bool,
     pub detune: [f64; 3],
     pub cutoff: f64,
+    pub resonance: f64,
 }
 
 /// The volts an octave at a 100K input to the filter's control node, as R51 (the FILTER
@@ -1137,7 +1138,8 @@ impl Voice {
     // tick_at alt adımı: Bir notanın osilatör/filtre/VCA/contour/noise devrelerini tek örnek akışında birleştirir.
     // Gövdedeki başlıca çağrılar: self.keys.step → self.audio.pre.warm.gate → self.kbd.tick → self.ctl.tick. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     fn tick_at(&mut self, j: &Jacks) -> f64 {
-        let p = self.panel;
+        let mut p = self.panel;
+        p.emphasis=(p.emphasis+j.resonance).clamp(0.,1.);
         let mut c = self.keys.step();
         c.s_trig = j.s_trig;
         self.audio.pre.warm.gate(c.gate || c.s_trig);

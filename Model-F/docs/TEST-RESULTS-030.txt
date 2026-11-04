@@ -1,0 +1,29 @@
+Model F 0.3.0 — Yerel doğrulama
+4 Kasım 2026
+
+108 ürün testi geçti: 90 birim, 8 karakter/ses, 4 CLAP host oturum,
+1 modülasyon yönlendirme (6 hedef × 3 kaynak), 1 Multi EG ses,
+3 Overload ses ve 1 gerçek zamanlı bellek testi.
+Önceki temel motor doğrulaması: 5 character_filter + 2 SuperSaw testi geçti.
+Toplam doğrulama: 115 test.
+
+Sub Foundation: altı hedefin renkleri görünen üç Status alanıyla eşleşir.
+Gizli eski AD, OFF hedefte beyaz gösterge oluşturmaz ve ilk düzenlemede başka EG’yi açmaz.
+Regresyon testi: aynı Sub Foundation presetini tekrar yükleyerek 6 hedef × 3 kaynak × 2 yükleme; ilk ON, OFF ve tekrar ON tıklamalarında diğer tüm kaynaklar OFF kaldı. Hata düzeltme öncesinde aynı test OSC 1 ON → Cutoff EG ON olarak başarısız oldu.
+Panelde zaten ON görünen eski Multi EG’nin aktarımı ve bağımsız OSC ayarları korunur.
+Yeni ve sıfırlanan altı EG bankası beş noktalı sade ADSR çizimiyle başlar.
+Kayıtlı eski Multi EG şekilleri korunur; nokta/eğri düzenleme devam eder.
+Preset yükleme durum satırı yalnız preset adı/kategorisini gösterir.
+GAIN/TRIM sayısal sürükleme alanları: 16 punto, turuncu/logo beyazı.
+LINE/IN eşit boyutta, Gain/Trim altında. EG Brush, EG grafiği altında.
+Gerçek panel çizicisinden Sub Foundation ve tüm renk durumları kontrol edildi.
+
+512 KB yığın üzerinde 1840 parametre oluşturma testi geçti.
+1120×760 ve 1680×1140 panel render testleri geçti.
+Tüm 18 modülatör ve preamp açıkken ses işleme thread'inde 0 ayırma/boşaltma.
+CPU karşılaştırması: önceki 24 senaryonun örnek hashleri aynı.
+Ayrıntılar docs/CPU-030-TR.md ve docs/CPU-030.json.
+Önceki canlı Windows Standalone açılışı ve OSC 2 sekme geçişi gözlendi.
+Son revizyon gerçek çizici renderları ve otomatik testlerle doğrulandı.
+Gerçek DAW içinde kullanıcı dinlemesi ve macOS/Linux doğrulaması yapılmadı.
+GitHub ve web yayını kullanıcı onayı bekler.

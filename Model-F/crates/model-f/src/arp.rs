@@ -342,11 +342,11 @@ mod tests {
         a.boundary(|_| {});
         a.note(0, 60, false, |_| {});
         let p = ModelFParams {
-            arp_on: nih_plug::prelude::FloatParam::new(
+            arp_on: Box::new(nih_plug::prelude::FloatParam::new(
                 "Arp",
                 1.0,
                 nih_plug::prelude::FloatRange::Linear { min: 0.0, max: 1.0 },
-            ),
+            )),
             ..ModelFParams::default()
         };
         let mut off = false;

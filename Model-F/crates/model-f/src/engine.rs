@@ -81,6 +81,7 @@ const ENTROPY_KNOBS: usize = 6;
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Controls {
     pub mseg: crate::mseg::Config,
+    pub modulators: crate::modulators::Config,
     pub ring: bool,
     pub sync: bool,
     pub fm: f64,
@@ -93,6 +94,7 @@ pub struct Controls {
     pub volume: f64,
     // Fazıl Irak, 02.11.2026: devreyi değiştirmeyen, seçimli DAW çıkış kalibrasyonu.
     pub full_output: bool,
+    pub preamp:crate::output_preamp::Config,
     pub main_output: bool,
     pub bend_range: f64,
     pub power: bool,
@@ -116,6 +118,7 @@ impl Default for Controls {
     fn default() -> Self {
         Controls {
             mseg: crate::mseg::Config::default(),
+            modulators: Default::default(),
             ring: false,
             sync: false,
             fm: 0.0,
@@ -126,6 +129,7 @@ impl Default for Controls {
             panel: Panel::default(),
             volume: 1.0,
             full_output: false,
+            preamp:Default::default(),
             main_output: true,
             bend_range: 2.0,
             power: true,
@@ -320,6 +324,7 @@ impl Slot {
 #[derive(Debug)]
 pub struct Playing {
     envelope: crate::mseg::Envelope,
+    modulators: crate::modulators::Runtime,
     voice: Voice,
     character: Character,
     key: PolyKey,
@@ -360,6 +365,8 @@ impl Playing {
             self.key.step(gate, i32::from(self.note), &mut self.voice);
             let mut j = jacks(&mut self.character, x, rate, m);
             let envelope_gain = self.envelope.route(self.key.down.is_some(), &mut j);
+            let modulation=self.modulators.tick(self.key.down.is_some(),&mut j);
+            let (ml,mr)=crate::modulators::pan(modulation.pan);
             let mut y = self.voice.tick_jacks(&j);
             if !y.is_finite() {
                 self.broken = true;
@@ -368,9 +375,9 @@ impl Playing {
             peak = peak.max(y.abs());
             // A quiet section of the Volume envelope is not the end of the voice's
             // amplifier release. Keep lifetime detection on the unmodulated signal.
-            let y = y * envelope_gain;
-            self.out[0][k] = y * f64::from(gl);
-            self.out[1][k] = y * f64::from(gr);
+            let y = y * envelope_gain * modulation.gain;
+            self.out[0][k] = y * f64::from(gl)*ml;
+            self.out[1][k] = y * f64::from(gr)*mr;
         }
         self.peak = peak;
     }
@@ -479,6 +486,7 @@ pub struct Engine {
     gain: f64,
     // Fazıl Irak, 02.11.2026: 180 Hz altında hafif gövde, +10 dB kalibrasyon.
     // Sınırlayıcı/kompresör değildir; kullanıcının Output ile headroom bırakması gerekir.
+    output_preamp:crate::output_preamp::Preamp,
     output_low: [f64;2],
     output_low_step: f64,
     output_blend: f64,
@@ -549,6 +557,7 @@ impl Engine {
             rate: 0.0,
             seed: 0,
             gain: output_gain(controls.volume, controls.main_output),
+            output_preamp:Default::default(),
             output_low: [0.0;2], output_low_step: 0.0,
             output_blend: 0.0, output_blend_step: 1.0,
             controls,
@@ -613,6 +622,7 @@ impl Engine {
         self.output_low_step = 1.0-libm::exp(-std::f64::consts::TAU*180.0/rate);
         self.output_blend = if self.controls.full_output {1.0} else {0.0};
         self.output_blend_step = (1.0/(rate*0.020)).min(1.0);
+        self.output_preamp.prepare(rate,self.controls.preamp);
         self.fade_step = (1.0 / (POWER_FADE * rate)).min(1.0);
         self.hush_step = (1.0 / (HUSH_FADE * rate)).min(1.0);
         self.hush = false;
@@ -635,6 +645,7 @@ impl Engine {
                 Slot {
                     play: Arc::new(Mutex::new(Playing {
                         envelope: crate::mseg::Envelope::default(),
+                        modulators: Default::default(),
                         voice,
                         character: Character::new(voice_seed(seed, k), k, 3, ENTROPY_KNOBS),
                         key: PolyKey::new(voice_rate),
@@ -796,6 +807,7 @@ impl Engine {
                 }
             }
             self.controls = *c;
+            self.output_preamp.configure(c.preamp);
             self.gain = output_gain(c.volume, c.main_output)
                 * if c.lock { lock_trim(&c.panel) } else { 1.0 };
             self.apply();
@@ -807,7 +819,7 @@ impl Engine {
     // one_note alt adımı: Nota/voice, MIDI, çalışma kipleri, arpej, MSEG, filtre ve ses render akışını koordine eder.
     fn one_note(&mut self, key: i32, on: bool) {
         let s = &mut self.slots[0];
-        if with_voice(s, |p| p.voice.note(key, on)).is_none() && s.pending < s.notes.len() {
+        if with_voice(s, |p| {p.voice.note(key, on);if on {p.modulators.note_on();}}).is_none() && s.pending < s.notes.len() {
             s.notes[s.pending] = (key, on);
             s.pending += 1;
         }
@@ -901,6 +913,8 @@ impl Engine {
             }
         }
         if !waiting || self.hush_waited as f64 >= HUSH_WAIT * self.rate {
+            self.output_preamp.clear();
+            self.output_low=[0.;2];
             self.hush = false;
             for s in &mut self.slots {
                 s.rest = false;
@@ -932,7 +946,7 @@ impl Engine {
         drop(spare);
         p.voice.set_seed(voice_seed(self.seed, k));
         p.key.rest();
-        p.envelope.reset();
+        p.envelope.reset(); p.modulators.reset();
         (p.broken, p.drop) = (false, false);
         let s = &mut self.slots[k];
         (s.lift, s.pending, s.shown) = (false, 0, false);
@@ -999,7 +1013,7 @@ impl Engine {
             let s = &mut self.slots[k];
             if with_voice(s, |p| {
                 p.key.lift(&mut p.voice);
-                p.envelope.reset();
+                p.envelope.reset(); p.modulators.reset();
             })
             .is_none()
             {
@@ -1086,9 +1100,11 @@ impl Engine {
                 if p.broken { left[i]=0.0; right[i]=0.0; continue; }
                 let mut j = jacks(&mut p.character, f64::from(at(i)), rate, &mix);
                 let envelope_gain = p.envelope.route(gate, &mut j);
-                let y = p.voice.tick_jacks(&j) * envelope_gain;
+                let modulation=p.modulators.tick(gate,&mut j);
+                let (ml,mr)=crate::modulators::pan(modulation.pan);
+                let y = p.voice.tick_jacks(&j) * envelope_gain * modulation.gain;
                 if !y.is_finite() { p.broken = true; left[i]=0.0; right[i]=0.0; continue; }
-                (left[i],right[i]) = self.faded(y * f64::from(gl), y * f64::from(gr));
+                (left[i],right[i]) = self.faded(y * f64::from(gl)*ml, y * f64::from(gr)*mr);
             }
             return;
         }
@@ -1220,6 +1236,7 @@ impl Engine {
         }
         for &(key, on) in &s.notes[..s.pending] {
             p.voice.note(key, on);
+            if on {p.modulators.note_on();}
         }
         s.pending = 0;
         if p.panel_gen != self.panel_gen {
@@ -1251,6 +1268,10 @@ impl Engine {
             self.output_low[ch] += self.output_low_step*(x-self.output_low[ch]);
             let full=3.1622776601683795*(x+0.1885022274370185*self.output_low[ch]);
             out[ch]=((x+self.output_blend*(full-x))*self.fade) as f32;
+        }
+        if self.controls.preamp.available {
+            let processed=self.output_preamp.tick([l*self.gain,r*self.gain]);
+            out=[(processed[0]*self.fade) as f32,(processed[1]*self.fade) as f32];
         }
         let (l,r)=(out[0],out[1]);
         if l.is_finite() && r.is_finite() {
@@ -1311,13 +1332,15 @@ impl Engine {
             }
             let mut j = jacks(&mut p.character, ext, rate, &mix);
             let envelope_gain = p.envelope.route(self.held.iter().any(|&h| h), &mut j);
-            let y = p.voice.tick_jacks(&j) * envelope_gain;
+            let modulation=p.modulators.tick(self.held.iter().any(|&h|h),&mut j);
+            let (ml,mr)=crate::modulators::pan(modulation.pan);
+            let y = p.voice.tick_jacks(&j) * envelope_gain * modulation.gain;
             if !y.is_finite() {
                 p.broken = true;
                 return (0.0, 0.0);
             }
             let (gl, gr) = p.character.gains(mix.spread);
-            return (y * f64::from(gl), y * f64::from(gr));
+            return (y * f64::from(gl)*ml, y * f64::from(gr)*mr);
         }
         let mut ins = [0.0f64; CHUNK];
         ins[0] = ext;
@@ -1427,7 +1450,8 @@ impl Engine {
     // voice_panel alt adımı: Nota/voice, MIDI, çalışma kipleri, arpej, MSEG, filtre ve ses render akışını koordine eder.
     // Gövdedeki başlıca çağrılar: v.envelope.configure → self.voice_rate → self.controls.feedback.clamp → entropy_panel. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
     fn voice_panel(&self, v: &mut Playing, p: &Panel) {
-        v.envelope.configure(self.controls.mseg, self.voice_rate());
+        v.envelope.configure(if self.controls.modulators.enabled {crate::mseg::Config {amount:0.,..self.controls.mseg}}else{self.controls.mseg}, self.voice_rate());
+        v.modulators.configure(self.controls.modulators,self.voice_rate());
         let entropy = self.controls.entropy * ENTROPY_DEPTH;
         v.voice.feedback = self.controls.feedback.clamp(0.0, 1.0);
         v.voice.in_loop = self.in_loop;
@@ -1707,6 +1731,7 @@ mod tests {
         for rate in [44100.0,48000.0,96000.0] {
             let mut legacy=Engine::new();let mut full=Engine::new();
             let mut c=crate::params::ModelFParams::default().controls();
+            c.preamp.available=false;
             c.full_output=false;legacy.set(&c);legacy.prepare(rate,42);
             c.full_output=true;full.set(&c);full.prepare(rate,42);
             for e in [&mut legacy,&mut full] {e.event(Event::Note{key:45,on:true});}

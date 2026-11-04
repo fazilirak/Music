@@ -35,14 +35,14 @@ fn wav(path: &str, x: &[f32]) {
 // Gövdedeki başlıca çağrılar: FloatParam::new → Default::default → p.controls → Engine::new. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 fn render(old: bool, drive: f32, key: u8, resonance: f32, contour: f32) -> (Vec<f32>, f32) {
     let p = ModelFParams {
-        emphasis: FloatParam::new(
+        emphasis: Box::new(FloatParam::new(
             "Emphasis",
             resonance,
             FloatRange::Linear { min: 0., max: 10. },
-        ),
-        overload: FloatParam::new("Overload", drive, FloatRange::Linear { min: 0., max: 10. }),
-        sustain: FloatParam::new("Sustain", 10., FloatRange::Linear { min: 0., max: 10. }),
-        contour: FloatParam::new("Contour", contour, FloatRange::Linear { min: 0., max: 10. }),
+        )),
+        overload: Box::new(FloatParam::new("Overload", drive, FloatRange::Linear { min: 0., max: 10. })),
+        sustain: Box::new(FloatParam::new("Sustain", 10., FloatRange::Linear { min: 0., max: 10. })),
+        contour: Box::new(FloatParam::new("Contour", contour, FloatRange::Linear { min: 0., max: 10. })),
         ..Default::default()
     };
     let mut c = p.controls();

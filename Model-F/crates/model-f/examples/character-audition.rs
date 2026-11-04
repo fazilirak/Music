@@ -13,7 +13,7 @@ fn main() {
     let out=std::path::PathBuf::from(std::env::args().nth(1).unwrap());std::fs::create_dir_all(&out).unwrap();
     let mut rows=Vec::new();
     for character in 0..6 {
-        let p=ModelFParams{character:FloatParam::new("Character",character as f32,FloatRange::Linear{min:0.0,max:5.0}),..Default::default()};
+        let p=ModelFParams{character:Box::new(FloatParam::new("Character",character as f32,FloatRange::Linear{min:0.0,max:5.0})),..Default::default()};
         for (name,notes,super_mode) in [("Mono",1,false),("Poly",4,false),("SuperSaw",4,true)] {
             for rate in [44100.0,48000.0,96000.0] {for block in [64usize,256] {
                 let mut c=p.controls();c.poly=notes>1||character==5;c.voices=8;

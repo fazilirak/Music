@@ -41,6 +41,14 @@ fn new_modes_do_not_allocate_or_free_on_the_audio_thread() {
     engine.prepare(48000.0, 7);
     let (mut left, mut right) = ([0f32; 128], [0f32; 128]);
     let mut finite = true;
+    c.modulators.enabled=true;
+    c.preamp=model_f::output_preamp::Config {available:true,gain_db:18.,..Default::default()};
+    for (i,d) in c.modulators.targets.iter_mut().enumerate() {
+        d.eg.enabled=true;d.eg.amount=0.15;d.eg.mode=1;
+        d.lfo_status=1;d.lfo_depth=0.05;d.lfo_freq=1.+i as f64;
+        d.step_status=1;d.step_depth=0.1;d.step_retrigger=true;
+        d.steps[0]=0.25;d.steps[1]=0.75;
+    }
     ARMED.with(|a| a.set(true));
     c.poly = true;
     c.voices = 8;
@@ -56,6 +64,7 @@ fn new_modes_do_not_allocate_or_free_on_the_audio_thread() {
     finite &= left.iter().chain(&right).all(|x| x.is_finite());
     engine.event(Event::AllSoundOff);
     for block in 0..240 {
+        c.preamp.mic=block%2==0;c.preamp.enabled=block%3!=0;c.preamp.trim_db=-6.+(block%12) as f64;
         c.panel.character=(block%6) as u8;
         c.panel.character_shape=(block%100) as f64/100.0;
         c.global_cents=(block%23) as f64-11.0;

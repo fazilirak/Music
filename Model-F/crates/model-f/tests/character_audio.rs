@@ -76,9 +76,9 @@ fn old_session_defaults_and_new_state_roundtrip() {
 #[test]
 fn general_tuning_uses_frequency_ratio_for_both_oscillators() {
     let mut p=ModelFParams::default();
-    p.global_tuning=FloatParam::new("Tuning",432.0,FloatRange::Linear{min:400.0,max:480.0});
+    p.global_tuning=Box::new(FloatParam::new("Tuning",432.0,FloatRange::Linear{min:400.0,max:480.0}));
     assert!((p.controls().global_cents - 1200.0*(432.0f64/440.0).log2()).abs()<1e-10);
-    p.character=FloatParam::new("Character",5.0,FloatRange::Linear{min:0.0,max:5.0});
+    p.character=Box::new(FloatParam::new("Character",5.0,FloatRange::Linear{min:0.0,max:5.0}));
     let c=p.controls();assert!(c.supersaw.is_some()&&c.poly&&c.voices==8&&!c.panel.osc[1].on);
 }
 #[test]
