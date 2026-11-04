@@ -453,11 +453,12 @@ fn clap_automation_and_full_session_roundtrip() {
         In::Param(0,"character",0.8),
         In::Param(0,"character_shape",0.6),
         In::Param(0,"global_tuning",0.4),
+        In::Param(0,"output_voicing",0.0),
 
     ]);
     let saved = a.save();
     let json = json_of(&saved);
-    assert_eq!(json["params"].as_object().unwrap().len(), 177);
+    assert_eq!(json["params"].as_object().unwrap().len(), 178);
     let b = Instance::new();
     assert!(b.load(&saved));
     for id in [
@@ -484,6 +485,7 @@ fn clap_automation_and_full_session_roundtrip() {
         "mseg_speed",
         "mseg_fix_tempo",
         "character", "character_shape", "global_tuning",
+        "output_voicing",
     ] {
         assert!((a.value(id) - b.value(id)).abs() < 0.001, "{id}");
     }
@@ -517,8 +519,10 @@ fn clap_supersaw_midi_is_sample_timed_and_can_be_silenced() {
 // Gövdedeki başlıca çağrılar: Instance::new → p.save → json_of → as_object_mut. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
 fn legacy_sessions_reset_new_modulation_even_in_an_existing_instance() {
     let p = Instance::new();
+    assert_eq!(p.value("output_voicing"), 1.0);
     let saved = p.save();
     let mut json = json_of(&saved);
+    json["params"].as_object_mut().unwrap().remove("output_voicing");
     json["params"]
         .as_object_mut()
         .unwrap()
@@ -537,6 +541,7 @@ fn legacy_sessions_reset_new_modulation_even_in_an_existing_instance() {
     ]);
     assert!(p.value("mseg_enable") > 0.5);
     assert!(p.load(&old));
+    assert_eq!(p.value("output_voicing"), 0.0);
     assert_eq!(p.value("overload"), 0.);
     assert_eq!(p.value("fm_on"),0.0);assert_eq!(p.value("osc_sync"),0.0);assert_eq!(p.value("audio_attack"),0.0);
     assert_eq!(p.value("mseg_enable"), 0.);
