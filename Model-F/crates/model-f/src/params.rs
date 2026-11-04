@@ -223,6 +223,8 @@ parameters! {
     character: "character" => ("Character", 0.0, 5.0, 0.0, 1.0),
     character_shape: "character_shape" => ("Character Filter Shape", 0.0, 1.0, 0.0, 0.001),
     global_tuning: "global_tuning" => ("Global Tuning A4 Hz", GLOBAL_TUNING_MIN, GLOBAL_TUNING_MAX, 440.0, 0.1),
+    // Fazıl Irak, 02.11.2026: eski kimlikler aynı sırada kalır. Eski state/preset için 0 yüklenir.
+    output_voicing: "output_voicing" => ("Output Voicing Legacy/Full", 0.0, 1.0, 1.0, 1.0),
 }
 
 impl ModelFParams {
@@ -522,6 +524,7 @@ impl ModelFParams {
         p.quality = Quality::Potato;
         c.mseg = crate::mseg::Config::from_params(self);
         c.volume = f64::from(self.volume.value()) / 10.0;
+        c.full_output = self.output_voicing.value() > 0.5;
         c.poly = matches!(mode, 0 | 1 | 5);
         c.voices = if mode == 1 { 8 } else { 4 };
         c.ring = matches!(mode, 4 | 5);

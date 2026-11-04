@@ -116,6 +116,7 @@ pub const CONTROLS: &[Control] = &[
     b!("global_tuning", "GLOBAL TUNING", 30, 697, 185, 28),
     b!("character_shape", "FILTER SHAPE", 470, 146, 72, 28),
     k!("volume", "OUTPUT", 1045, 59, 22),
+    b!("output_voicing", "OUTPUT VOICING", 871, 87, 108, 22),
     b!("mode", "VOICE", 48, 170, 286, 28),
     b!("waveform", "WAVE", 48, 241, 106, 28),
     b!("octave", "RANGE", 48, 294, 106, 28),
@@ -327,7 +328,7 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
     for (x, label) in [(868.0, "SAVE"), (934.0, "LOAD")] {
         button(&mut s, x, 40.0, 56.0, 38.0, label, false);
     }
-    text(&mut s, 871.0, 96.0, 9, "#8d9799", "EXPORT .MODELF", "start");
+
     if !v.header_enabled() {s.push_str("</g>");}
     s.push_str(r##"<path d="M28 118H1092" stroke="#ed6c46" stroke-width="2"/><path d="M28 123H1092" stroke="#dce0d8" stroke-width="2"/>"##);
     section(&mut s, 28.0, 132.0, 326.0, 310.0, "01", "OSCILLATORS");
@@ -352,7 +353,9 @@ pub fn svg(p: &ModelFParams, v: &View) -> String {
         if !enabled { s.push_str(r##"<g opacity="0.3">"##); }
         let active = v.hover == Some(i);
         let accent = if active { "#ff956f" } else { "#ed6c46" };
-        if c.id=="global_tuning" {
+        if c.id=="output_voicing" {
+            button(&mut s,c.x,c.y,c.w,c.h,if p.output_voicing.value()>0.5 {"OUTPUT: FULL"} else {"OUTPUT: LEGACY"},p.output_voicing.value()>0.5);
+        } else if c.id=="global_tuning" {
             button(&mut s,c.x,c.y,c.w,c.h,"",false);
             // Sağ köşeler mevcut 4 px yuvarlamayı izler; sadece sağ şerit turuncudur.
             s.push_str(r##"<path data-role="global-tuning-cycle" d="M193 697H211A4 4 0 0 1 215 701V721A4 4 0 0 1 211 725H193Z" fill="#ed6c46"/>"##);
@@ -932,7 +935,7 @@ pub fn control_enabled(p: &ModelFParams, id: &str) -> bool {
 
 // Fazıl Irak — 25.10.2026: Output düğmesi de üst panelin kilidini izler.
 pub fn control_enabled_for_view(p:&ModelFParams,v:&View,id:&str)->bool {
-    control_enabled(p,id) && (!matches!(id,"volume" | "global_tuning" | "character_shape") || v.header_enabled())
+    control_enabled(p,id) && (!matches!(id,"volume" | "global_tuning" | "character_shape" | "output_voicing") || v.header_enabled())
 }
 // Satır ve silme hit-test'i render ile aynı boyutları kullanır.
 pub fn user_delete_hit(v:&View,x:f64,y:f64)->Option<usize> {

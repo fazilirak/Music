@@ -741,6 +741,6 @@ mod tempo_tests {
         shape.values.remove("mseg_speed");shape.values.remove("mseg_fix_tempo");shape.validate().unwrap();
         let mut incomplete=EnvelopePreset {format:shape.format,values:shape.values.clone()};incomplete.values.remove("mseg_start");incomplete.values.insert("mseg_speed".into(),1.0);assert!(incomplete.validate().is_err());
         let mut full=crate::presets::Preset::capture(&p,"Legacy 0.2.1".into(),"Bass".into());
-        full.values.remove("character");full.values.remove("character_shape");full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
+        full.values.remove("output_voicing");full.values.remove("character");full.values.remove("character_shape");full.values.remove("mseg_speed");full.values.remove("mseg_fix_tempo");assert_eq!(full.values.len(),172);full.validate().unwrap();
     }
 }

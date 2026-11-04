@@ -41,6 +41,8 @@ impl Preset {
             }
             self.format = 2;
         }
+        // Fazıl Irak, 02.11.2026: eski dosya sessizce yeni ses karakterine geçirilmez.
+        self.values.entry("output_voicing".into()).or_insert(0.0);
         self.validate()?;
         Ok(self)
     }
@@ -81,9 +83,9 @@ impl Preset {
         let p = ModelFParams::default();
         if p.list().iter().any(|(id, _)| {
             !self.values.contains_key(*id)
-                && !matches!(*id,"global_tuning" | "character" | "character_shape")
-                && !(*id == "overload" && matches!(self.values.len(), 27 | 160 | 161 | 172))
-                && !(id.starts_with("mseg_") && self.values.len() == 27)
+                && !matches!(*id,"global_tuning" | "character" | "character_shape" | "output_voicing")
+                && !(*id == "overload" && matches!(self.values.len() - usize::from(self.values.contains_key("output_voicing")), 27 | 160 | 161 | 172))
+                && !(id.starts_with("mseg_") && self.values.len() - usize::from(self.values.contains_key("output_voicing")) == 27)
                 && !matches!(*id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo")
         }) {
             return Err("Preset has missing controls".into());
@@ -119,7 +121,7 @@ impl Preset {
                 self.values
                     .get(id)
                     .copied()
-                    .unwrap_or_else(|| param.default_plain_value()),
+                    .unwrap_or_else(|| if id=="output_voicing" {0.0} else {param.default_plain_value()}),
             );
             setter.end_set_parameter(param);
         }
@@ -147,8 +149,11 @@ impl Preset {
 }
 // factory alt adımı: Preset sürüm geçişi, doğrulama, capture/apply, fabrika/kullanıcı dosyaları ve arama akışıdır.
 pub fn factory() -> Vec<Preset> {
-    serde_json::from_str(include_str!("../sounds/factory.json"))
-        .expect("validated built-in Model F bank")
+    // Yeni fabrika seçimi Full kullanır; eski DAW state filtre_state ile Legacy kalır.
+    let mut bank:Vec<Preset> = serde_json::from_str(include_str!("../sounds/factory.json"))
+        .expect("validated built-in Model F bank");
+    for preset in &mut bank {preset.values.insert("output_voicing".into(),1.0);}
+    bank
 }
 // directory alt adımı: Preset sürüm geçişi, doğrulama, capture/apply, fabrika/kullanıcı dosyaları ve arama akışıdır.
 pub fn directory() -> PathBuf {
@@ -372,7 +377,7 @@ mod tests {
         let mut old = factory().remove(0);
         old.format = 1;
         old.values
-            .retain(|id, _| !id.starts_with("mseg_") && id != "overload" && !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo"));
+            .retain(|id, _| !id.starts_with("mseg_") && id != "overload" && !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo" | "output_voicing"));
         assert_eq!(old.values.len(), 27);
         old.validate().unwrap();
         let p = std::sync::Arc::new(ModelFParams::default());
@@ -385,6 +390,10 @@ mod tests {
             let param = p.get(id).unwrap();
             assert!(context.automate(param.as_ptr(), param.preview_normalized(*v)));
         }
+        // Fazıl Irak, 03.11.2026: eski dosya Full alanı içermediğinden Legacy yüklenir.
+        let legacy=old.clone().upgrade().unwrap();
+        assert_eq!(legacy.values["output_voicing"],0.0);
+        assert!(context.automate(p.output_voicing.as_ptr(),0.0));
         assert!(!old.differs(&p));
         assert!(!p.controls().mseg.enabled);
         old.values.remove("mode");
@@ -395,7 +404,7 @@ mod tests {
     // Regresyon senaryosu previous_160_control_presets_default_to_dry_feedback: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     fn previous_160_control_presets_default_to_dry_feedback() {
         let mut old = factory().remove(0);
-        old.values.retain(|id,_| !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo"));
+        old.values.retain(|id,_| !matches!(id.as_str(), "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount" | "mseg_speed" | "mseg_fix_tempo" | "output_voicing"));
         old.values.remove("overload");
         assert_eq!(old.values.len(), 160);
         old.validate().unwrap();

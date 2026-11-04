@@ -10,8 +10,14 @@ Fazıl Irak · Oluşturulma: 25.10.2026
 - Tamamlanan maddeler listeden çıkarılır; bitmeyen maddeler gerekçeleriyle korunur. Tümü tamamlandığında liste boşaltılır.
 - GitHub ve web yayını, kullanıcının yayın talebine göre yapılır.
 
-## Bekleyen maddeler
+## Bekleyen doğrulama
 
-Bekleyen madde yok. Global Tuning, kompakt karakter seçimi (Ladder / Edge / Bite / State Variable / Acid / VA Stack) ve CPU incelemesi 26.10.2026 tarihinde Model F 0.2.4 yerel Windows sürümünde tamamlandı.
+- [ ] **Ses gövdesinin kullanıcı/DAW dinleme onayı.** Full çıkış ve waveform düzeltmesi uygulandı; 72 test ve 24 seviye ölçümü geçti. Sylenth1, Serum veya UAD Minimoog ile aynı MIDI/benzer patch ve seviye eşlenmiş dinleme henüz yapılmadı. Kaynak/model ölçümleri öznel kalite onayı yerine geçmez.
+- [ ] Model F 0.2.9'un gerçek DAW içinde Ctrl+sürükle ile sekiz waveform ve Full/Legacy geçişini kontrol et. Canlı uygulama açma izni zaman aşımına uğradığı için bu kontrol tamamlandı sayılmadı.
 
-Kullanım ve sınırlar: docs/KARAKTERLER-024-TR.md. Ölçüm ve test sonuçları: docs/CPU-024-TR.md. Önceki maddelerin arşivi: docs/YAPILACAKLAR-024-TAMAMLANAN.md.
+## Tamamlananlar
+
+03.11.2026: Waveform/fırça düzeltmesi, Full/Legacy çıkış geliştirmesi ve yerel Windows paketi hazır.
+Ayrıntılı sonuçlar: docs/YAPILACAKLAR-029-TAMAMLANAN.md.
+Önceki liste: docs/YAPILACAKLAR-029-ONCEKI.md.
+GitHub/web yayını kullanıcı talebine göre ayrıca yapılır.

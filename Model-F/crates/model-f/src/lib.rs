@@ -133,6 +133,9 @@ impl Plugin for ModelF {
         }
         // Old sessions have only the original 27 controls. Reset all new controls
         // when absent, including when loading into an instance with modulation on.
+        // Fazıl Irak, 02.11.2026: alanı olmayan eski oturum aynı tonda/seviyede açılır.
+        state.params.entry("output_voicing".into())
+            .or_insert(nih_plug::wrapper::state::ParamValue::F32(0.0));
         let defaults = ModelFParams::default();
         for (id, p) in defaults.list() {
             if matches!(id,"character" | "character_shape" | "global_tuning") || id.starts_with("mseg_") || id == "overload" || matches!(id, "osc2_waveform" | "osc2_octave" | "osc1_level" | "osc2_level" | "osc1_tune" | "audio_attack" | "audio_decay" | "audio_sustain" | "osc_sync" | "fm_on" | "fm_amount") {

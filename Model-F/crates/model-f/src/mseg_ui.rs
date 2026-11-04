@@ -293,6 +293,8 @@ impl State {
         if panel::in_rect(PLOT, x, y) {
             if !c.enabled { return (vec![], Command::None); }
             if mods.contains(Modifiers::CONTROL) && !right {
+                // Fazıl Irak, 02.11.2026: çizilen hücrenin başlangıcı seçilsin;
+                // NODE etiketi eski/seçilmemiş segmentin dalgasını göstermesin.
                 self.drag = Some(Drag::Brush(None));
                 return (self.motion(p, x, y, mods), Command::None);
             }
@@ -352,7 +354,14 @@ impl State {
             let id = node_id(self.selected, "wave");
             let v = value(p, &id);
             return (
-                vec![(id, ((v as usize + if right { 8 } else { 1 }) % 9) as f32)],
+                {
+                    let wave = ((v as usize + if right { 8 } else { 1 }) % 9) as f32;
+                    // Fazıl Irak, 02.11.2026: Node dalgası ile Ctrl-fırça aynı tercihi izler.
+                    // LINEAR bir segment türüdür; çizim fırçası 1..8 dalgalarını kullanır.
+                    let mut edits = vec![(id, wave)];
+                    if wave >= 1.0 { edits.push(("mseg_brush".into(), wave)); }
+                    edits
+                },
                 Command::None,
             );
         }
@@ -462,6 +471,9 @@ impl State {
                         p.mseg_brush.value() as usize,
                     ));
                 }
+                let left = cell as f64 / cells as f64;
+                self.selected = config.shape().nodes[..config.shape().count].iter()
+                    .find(|n| (n.x - left).abs() < 0.0005).map_or(0, |n| n.id);
                 self.drag = Some(Drag::Brush(Some((cell, b))));
                 edits
             }
@@ -859,6 +871,31 @@ mod tests {
         apply(&p, &mut ctx, e);
         assert_eq!(p.mseg_p6_on.value(), 0.);
         assert_eq!(Config::from_params(&p).shape().count, 8);
+    }
+    // Fazıl Irak, 02.11.2026: gerçek tıklama/otomasyon yolu; her dalga çizimde korunur.
+    #[test]
+    fn node_wave_selection_drives_ctrl_brush_for_every_wave() {
+        for desired in 1..=8 {
+            let p = Arc::new(ModelFParams::default());
+            let mut ctx = TestProcessContext::<crate::ModelF>::new(
+                p.clone() as Arc<dyn Params>, 48000., ProcessMode::Offline);
+            assert!(ctx.automate(p.mseg_enable.as_ptr(), 1.0));
+            let mut state = State::default();
+            for _ in 0..desired {
+                let (edits, _) = state.down(&p, 600., 205., false, Modifiers::empty());
+                apply(&p, &mut ctx, edits);
+            }
+            assert_eq!(p.mseg_brush.value(), desired as f32);
+            let (x,y)=pixel(0.04,0.75);
+            let (edits,_)=state.down(&p,x,y,false,Modifiers::CONTROL);
+            apply(&p,&mut ctx,edits);
+            let (x,y)=pixel(0.19,0.55);
+            let edits=state.motion(&p,x,y,Modifiers::CONTROL);
+            apply(&p,&mut ctx,edits);
+            let config=Config::from_params(&p);
+            assert_eq!(config.bends[state.selected].wave,desired);
+            assert_eq!(p.mseg_brush.value(),desired as f32);
+        }
     }
     #[test]
     // Regresyon senaryosu wave_brush_populates_stable_slots_and_preserves_outside_cells: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.

@@ -87,7 +87,14 @@ jobs:
             if [ "$project" = "Model-F" ]; then
               cat >> release-notes.md <<'MODEL'
 
-          Model F 0.2.8
+          Model F 0.2.9
+          - Fixes Ctrl+drag waveform painting for all eight Node waveforms.
+          - Adds Full / Legacy output calibration, with a 20 ms transition. Full adds 10 dB and a 180 Hz low shelf (+1.5 dB at DC); leave headroom, as no limiter or compressor is included.
+          - New instances and factory presets use Full; older DAW states and user presets without output_voicing load Legacy. Existing parameter IDs/order are preserved and the new parameter is appended.
+          - Local validation recorded 72 product unit tests and 24 engine measurements. CI repeats automated tests. Real DAW gesture checks and level-matched listening comparisons remain pending.
+          - Details: Model-F/docs/YAPILACAKLAR-029-TAMAMLANAN.md.
+
+          Retains Model F 0.2.8:
           - Adds an orange quick-select strip at the right edge of Global Tuning. Left-click goes forward and right-click goes backward through 432, 440, 442, 444 and 528 Hz; the sequence wraps at both ends. From a manual value, it selects the next value in the clicked direction.
           - Tuning value colours: 432 Hz green, 440 Hz red, 442/444 Hz orange, 528 Hz blue; other values remain grey. The main field retains vertical dragging and Ctrl/Alt reset. Modal windows also block the quick selector.
           - Extends the A4 range to 400-540 Hz while retaining the parameter ID, preset independence and DAW session storage. Drag speed remains 0.1 Hz/pixel, Shift 0.01 Hz/pixel, wheel 0.1 Hz per step. Existing saved plain-Hz states are retained; review older normalized host automation because the range has expanded.

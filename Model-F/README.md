@@ -1,3 +1,16 @@
+# Model F 0.2.9 — Waveform brush and Full / Legacy output
+
+Fazıl Irak · 04.11.2026
+
+Ctrl+drag now paints the selected Node waveform correctly across all eight waveforms. The new **OUTPUT: FULL / LEGACY** button selects the output calibration. Full adds 10 dB gain and a gentle 180 Hz low shelf (+1.5 dB at DC); transitions are smoothed over 20 ms. Leave output headroom: this is not a limiter or compressor.
+
+New instances and factory presets use Full. Older DAW states and user presets without the new field load Legacy to retain their previous sound. Existing parameter IDs and order are preserved; the new parameter is appended.
+
+[Downloads and matching source](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.2.9) · [Change and test report (Türkçe)](docs/YAPILACAKLAR-029-TAMAMLANAN.md)
+
+Previous local validation recorded 72 product unit tests and 24 engine level measurements. CI repeats automated tests for the published builds. Real DAW gesture checks and level-matched listening comparisons remain pending.
+
+---
 # Model F 0.2.8 — Global Tuning seçim alanı
 
 Fazıl Irak · 26.10.2026

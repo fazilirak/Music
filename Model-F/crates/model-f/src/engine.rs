@@ -91,6 +91,8 @@ pub struct Controls {
     pub supersaw: Option<f64>,
     pub panel: Panel,
     pub volume: f64,
+    // Fazıl Irak, 02.11.2026: devreyi değiştirmeyen, seçimli DAW çıkış kalibrasyonu.
+    pub full_output: bool,
     pub main_output: bool,
     pub bend_range: f64,
     pub power: bool,
@@ -123,6 +125,7 @@ impl Default for Controls {
             supersaw: None,
             panel: Panel::default(),
             volume: 1.0,
+            full_output: false,
             main_output: true,
             bend_range: 2.0,
             power: true,
@@ -474,6 +477,12 @@ pub struct Engine {
     seed: u64,
     controls: Controls,
     gain: f64,
+    // Fazıl Irak, 02.11.2026: 180 Hz altında hafif gövde, +10 dB kalibrasyon.
+    // Sınırlayıcı/kompresör değildir; kullanıcının Output ile headroom bırakması gerekir.
+    output_low: [f64;2],
+    output_low_step: f64,
+    output_blend: f64,
+    output_blend_step: f64,
     /// Keys held (MIDI numbers), played on by voices built for a new rate (POLY off).
     held: [bool; 128],
     /// POLY's notes taken so far (each voice's age).
@@ -540,6 +549,8 @@ impl Engine {
             rate: 0.0,
             seed: 0,
             gain: output_gain(controls.volume, controls.main_output),
+            output_low: [0.0;2], output_low_step: 0.0,
+            output_blend: 0.0, output_blend_step: 1.0,
             controls,
             held: [false; 128],
             counter: 0,
@@ -598,6 +609,10 @@ impl Engine {
         }
         self.stop_workers();
         self.rate = rate;
+        self.output_low = [0.0;2];
+        self.output_low_step = 1.0-libm::exp(-std::f64::consts::TAU*180.0/rate);
+        self.output_blend = if self.controls.full_output {1.0} else {0.0};
+        self.output_blend_step = (1.0/(rate*0.020)).min(1.0);
         self.fade_step = (1.0 / (POWER_FADE * rate)).min(1.0);
         self.hush_step = (1.0 / (HUSH_FADE * rate)).min(1.0);
         self.hush = false;
@@ -1222,11 +1237,22 @@ impl Engine {
         if self.hush && self.fade == 0.0 {
             self.hush_waited += 1;
         }
-        // (As the one voice was: the gain, then the fade.)
-        let (l, r) = (
-            (l * self.gain * self.fade) as f32,
-            (r * self.gain * self.fade) as f32,
-        );
+        // Fazıl Irak, 02.11.2026: kıyas ölçümünde düşük çıkan devre voltajı,
+        // filtreye daha fazla drive göndermeden DAW seviyesine taşınır.
+        // 1.5 dB düşük shelf tonu hafifçe doldurur; hard clip veya otomatik gain yok.
+        // Legacy blend=0 yolu eski örneklerle birebir aynı aritmetiği korur.
+        let target = if self.controls.full_output {1.0} else {0.0};
+        self.output_blend += (target-self.output_blend).clamp(-self.output_blend_step,self.output_blend_step);
+        let mut out=[0.0f32;2];
+        for (ch,x) in [l,r].into_iter().enumerate() {
+            let x=x*self.gain;
+            // Fazıl Irak, 03.11.2026: Output sıfırlandığında shelf kuyruğu da susar.
+            if self.gain==0.0 {self.output_low[ch]=0.0;}
+            self.output_low[ch] += self.output_low_step*(x-self.output_low[ch]);
+            let full=3.1622776601683795*(x+0.1885022274370185*self.output_low[ch]);
+            out[ch]=((x+self.output_blend*(full-x))*self.fade) as f32;
+        }
+        let (l,r)=(out[0],out[1]);
         if l.is_finite() && r.is_finite() {
             return (l, r);
         }
@@ -1675,6 +1701,28 @@ pub fn output_gain(volume: f64, on: bool) -> f64 {
 mod tests {
     use super::*;
     use crate::pool::Budget;
+    // Fazıl Irak, 03.11.2026: Full yalnız seviye değildir; alt bölge hafifçe güçlenir.
+    #[test]
+    fn full_output_calibration_and_mute_are_stable_at_supported_rates() {
+        for rate in [44100.0,48000.0,96000.0] {
+            let mut legacy=Engine::new();let mut full=Engine::new();
+            let mut c=crate::params::ModelFParams::default().controls();
+            c.full_output=false;legacy.set(&c);legacy.prepare(rate,42);
+            c.full_output=true;full.set(&c);full.prepare(rate,42);
+            for e in [&mut legacy,&mut full] {e.event(Event::Note{key:45,on:true});}
+            let(mut a,mut b,mut x,mut y)=([0f32;256],[0f32;256],[0f32;256],[0f32;256]);
+            let(mut old_energy,mut new_energy)=(0.0,0.0);
+            for _ in 0..80 {
+                legacy.render(&[],&mut a,&mut b);full.render(&[],&mut x,&mut y);
+                for (old,new) in a.iter().zip(&x) {
+                    assert!(new.is_finite());old_energy+=f64::from(*old).powi(2);new_energy+=f64::from(*new).powi(2);
+                }
+            }
+            assert!(new_energy>old_energy*9.0 && new_energy<old_energy*15.0);
+            c.volume=0.0;full.set(&c);full.render(&[],&mut x,&mut y);
+            assert!(x.iter().chain(&y).all(|v|*v==0.0));
+        }
+    }
     #[test]
     // Regresyon senaryosu silent_volume_stage_does_not_discard_a_voice_before_amp_release: bu girdide beklenen davranışı ve hata/sınır koşullarını doğrular; başarısız assert ilk araştırma noktasıdır.
     // Gövdedeki başlıca çağrılar: crate::params::ModelFParams::default → controls → Engine::new → e.set. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
