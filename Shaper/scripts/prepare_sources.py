@@ -320,7 +320,8 @@ void shape(juce::AudioProcessor& processor,int kind,float neutral) {
 '''.replace('NAMESPACE',name)
         target=out/name/'RackEnvelope.cpp'
         if not target.exists() or target.read_text(encoding='utf-8')!=bridge: target.write_text(bridge,encoding='utf-8')
-(root / 'upstream-lock.json').write_text(json.dumps(manifest, indent=2) + '\n')
+# Fazıl Irak · 13.11.2026: Kilidi QDelay dahil tüm girdiler okunduktan sonra tek kez yaz.
+# Kaynak ZIP/CI ortamında .git bulunmadığında önceki QDelay SHA kaybolmamalıdır.
 
 # Fazıl Irak · 03.11.2026: Width/FX aynı eğri davranışını, kendi rack renkleriyle kullanır.
 # Ayrı namespace sayesinde diğer efektler ve eşzamanlı pencereler etkilenmez.
