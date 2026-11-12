@@ -5,12 +5,14 @@
 #include "Embedded/SidechainPresets.h"
 #include <iostream>
 #include <stdexcept>
+#include <thread>
+#include <atomic>
 static void require(bool condition,const char* message){if(!condition)throw std::runtime_error(message);}
 static juce::Component* find(juce::Component& c,const juce::String& id){if(c.getComponentID()==id)return &c;for(auto* k:c.getChildren())if(auto* r=find(*k,id))return r;return nullptr;}
 static void set(juce::AudioProcessorValueTreeState& s,const char* id,float value){auto* p=s.getParameter(id);require(p!=nullptr,id);p->setValueNotifyingHost(p->convertTo0to1(value));}
 static void image(juce::Component& c,const juce::String& name){auto f=juce::File::getCurrentWorkingDirectory().getChildFile("../dist/"+name+".png");f.getParentDirectory().createDirectory();juce::FileOutputStream out(f);out.setPosition(0);out.truncate();require(juce::PNGImageFormat{}.writeImageToStream(c.createComponentSnapshot(c.getLocalBounds()),out),"snapshot");}
 int main(int argc,char** argv){try{
-    juce::ScopedJuceInitialiser_GUI gui;
+    juce::ScopedJuceInitialiser_GUI gui;std::cout.setf(std::ios::unitbuf);std::cerr<<"START utility\n";
     for(float w:{0.f,1.f,2.f}){auto lr=UtilityEffect::widthSample(.6f,-.2f,w);require(std::abs(lr.first+lr.second-.4f)<1e-6f,"Width mono sum");if(w==0)require(std::abs(lr.first-lr.second)<1e-6f,"Width mono");if(w==1)require(std::abs(lr.first-.6f)<1e-6f,"Width identity");}
     for(float width:{0.f,1.f,2.f}){
         UtilityEffect p(false);p.prepareToPlay(48000,256);set(p.state,"minimum",width);set(p.state,"maximum",width);
@@ -20,7 +22,7 @@ int main(int argc,char** argv){try{
     }
     for(int preset=0;preset<8;++preset){double floor=0;for(auto point:SidechainPresets::points(preset))floor=juce::jmax(floor,point.y);require(std::abs(floor-1.)<1e-8,"Factory Volume floor Y=0");}
     {ShaperProcessor volume;volume.loadFactoryPreset(0);volume.module(5).setCurrentProgram(2);ShaperEditor ui(volume);ui.setZoom(.75f);image(ui,"preview-volume3-088");}
-    ShaperProcessor rack;rack.addEffect(8);rack.prepareToPlay(48000,256);
+    std::cerr<<"START rack\n";ShaperProcessor rack;rack.addEffect(8);rack.prepareToPlay(48000,256);
     set(rack.state,"gain",-3.f);rack.switchAB(1);set(rack.state,"gain",-9.f);rack.addEffect(9);
     rack.switchAB(0);require(std::abs(rack.state.getRawParameterValue("gain")->load()+3)<1e-5,"A parameters");require(rack.palette()==std::vector<int>{8},"A rack palette");
     rack.switchAB(1);require(std::abs(rack.state.getRawParameterValue("gain")->load()+9)<1e-5,"B parameters");require(rack.palette()==std::vector<int>({8,9}),"B palette");
@@ -30,6 +32,34 @@ int main(int argc,char** argv){try{
         ui.setZoom(.75f);require(!ui.isResizable(),"Host edge resizing disabled");require(find(ui,"rack-resize-corner")!=nullptr,"Corner handle");
         require(find(ui,"rack-settings-button")&&find(ui,"rack-ab-a")&&find(ui,"rack-ab-b"),"A B gear buttons");image(ui,"preview-width-088");ui.showSettings();require(find(ui,"rack-settings-panel")->isVisible(),"Settings separate window");image(ui,"preview-settings-088");
     }
+    // Fazıl Irak · 12.11.2026: parametre bildirimi kuyruğa girdikten sonra A/B eski editörü siler.
+    // Her yerleşik efekt, kapanmış editör callback'leri teslim edilirken yaşatılmaz.
+    {std::cerr<<"START stress\n";ShaperProcessor stress;for(int e=0;e<ShaperProcessor::effectCount;++e)stress.addEffect(e);
+     stress.prepareToPlay(48000,128);
+     for(int e=0;e<ShaperProcessor::effectCount;++e){std::cerr<<"Effect "<<e<<"\n";stress.selectedEffect=e;
+        ShaperEditor ui(stress);
+        for(int turn=0;turn<4;++turn){std::cerr<<" turn "<<turn<<"\n";
+            for(auto* p:stress.module(e).getParameters())p->setValueNotifyingHost(p->getValue());
+            auto* button=dynamic_cast<juce::Button*>(find(ui,turn%2?"rack-ab-a":"rack-ab-b"));
+            require(button!=nullptr,"A/B stress button");button->onClick();
+        }
+     }
+     std::cerr<<"DRAIN notifications\n";juce::MessageManager::callAsync([]{juce::MessageManager::getInstance()->stopDispatchLoop();});
+     juce::MessageManager::getInstance()->runDispatchLoop();
+     std::atomic<bool> stop{false},finite{true};std::atomic<int> blocks{0};
+     std::thread audio([&]{juce::AudioBuffer<float> b(4,128);juce::MidiBuffer m;
+         while(!stop.load()){b.clear();b.setSample(0,0,.1f);stress.processBlock(b,m);if(!std::isfinite(b.getMagnitude(0,0,128)))finite=false;++blocks;}});
+     for(int i=0;i<30;++i)stress.switchAB(i%2);
+     stop=true;audio.join();require(finite&&blocks>0,"Concurrent A/B audio finite");
+     std::cout<<"PASS 44 editor A/B switches, queued callbacks and 30 concurrent audio/state switches\n";
+    }
+    {auto file=juce::File("C:/Program Files/Common Files/VST3/FAZIL IRAK/F-Saturator.vst3");if(file.exists()){
+        ShaperProcessor host;host.addEffect(9);host.prepareToPlay(48000,128);
+        auto& external=dynamic_cast<UtilityEffect&>(host.module(9));require(external.loadPlugin(file).isEmpty(),"A/B hosted fixture load");
+        host.switchAB(1);host.addEffect(8);juce::AudioBuffer<float> b(4,128);juce::MidiBuffer m;
+        for(int i=0;i<12;++i){host.switchAB(i%2);b.clear();b.setSample(0,0,.2f);host.processBlock(b,m);require(external.pluginName().containsIgnoreCase("Saturator"),"A/B hosted plugin retained");require(std::isfinite(b.getMagnitude(0,0,128)),"A/B hosted audio finite");}
+        std::cout<<"PASS 12 A/B hosted F-Saturator state/audio switches\n";
+    }}
     UtilityEffect fx(true);fx.prepareToPlay(48000,256);require(fx.loadPlugin(juce::File("bad.txt")).isNotEmpty(),"Reject non-VST3");
     if(argc>1){
         auto error=fx.loadPlugin(juce::File(juce::String(argv[1])));require(error.isEmpty(),error.toRawUTF8());

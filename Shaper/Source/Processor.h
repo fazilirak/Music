@@ -77,7 +77,7 @@ class ShaperProcessor final : public juce::AudioProcessor, private juce::AsyncUp
     void switchAB(int bank);
     void getRackStateInformation(juce::MemoryBlock &);
     void setRackStateInformation(const void *,int);
-    static constexpr int effectCount = 10;
+    static constexpr int effectCount = 11;
     static constexpr int orderCount = 720;
     // &module(int effect) alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
     juce::AudioProcessor &module(int effect)

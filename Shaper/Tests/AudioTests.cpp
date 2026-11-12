@@ -9,6 +9,10 @@
 #include "Editor.h"
 #include "MultibandProcessor.h"
 #include "BandGraph.h"
+#include "EnvelopeEffect.h"
+#include "UtilityEffect.h"
+#include "DelayEffect.h"
+#include <sstream>
 #include "Embedded/TimeQuickPresets.h"
 #include "Embedded/RackEditorCommands.h"
 #include "Embedded/SidechainPresets.h"
@@ -775,6 +779,14 @@ int main()
         if (panEditor.loadEffectFile(file))
             return 54;
     }
+    // Fazıl Irak · 13.11.2026: Clean Quarter vuruşta boşluk açmalı, sonra tam seviyeye dönmeli.
+    {ShaperProcessor duck;TestPlayHead ph;duck.setPlayHead(&ph);duck.loadFactoryPreset(0);duck.prepareToPlay(48000,256);
+     juce::AudioBuffer<float> signal(4,256);juce::MidiBuffer ev;double early=0,late=0;int en=0,ln=0;
+     for(int k=0;k<96;++k){ph.samples=k*256;signal.clear();for(int i=0;i<256;++i){signal.setSample(0,i,.2f);signal.setSample(1,i,.2f);}duck.processBlock(signal,ev);
+      for(int i=0;i<256;++i){int t=k*256+i;if(t>=300&&t<700){early+=std::abs(signal.getSample(0,i));++en;}if(t>=16000&&t<20000){late+=std::abs(signal.getSample(0,i));++ln;}}}
+     std::cout<<"Clean Quarter gain: attack="<<early/en<<" recovery="<<late/ln<<"\n";
+     if(early/en>.025||late/ln<.18)return 171;duck.setPlayHead(nullptr);
+    }
     // Every factory preset has a unique name and different complete rack state,
     // remains finite, and restores palette/order/settings deterministically.
     juce::StringArray factoryNames;
@@ -787,6 +799,22 @@ int main()
     {
         if (!p.loadFactoryPreset(i) || p.palette().empty())
             return 55;
+        // Yalnız aktif ana eğrileri denetle; nokta sayısı gerçek ritmik olayları temsil etmeli.
+        for(int e:p.palette()){
+            juce::AudioProcessor* engine=&p.module(e);
+            if(auto* mb=dynamic_cast<MultibandProcessor*>(engine))engine=&mb->band(1);
+            if(auto* envelope=dynamic_cast<EnvelopeEffect*>(engine))engine=&envelope->curve();
+            else if(auto* utility=dynamic_cast<UtilityEffect*>(engine))engine=utility->curve.get();
+            else if(auto* delay=dynamic_cast<DelayEffect*>(engine))engine=delay->curve.get();
+            juce::MemoryBlock data;engine->getStateInformation(data);
+            if(auto xml=juce::AudioProcessor::getXmlFromBinary(data.getData(),int(data.getSize()))) {
+                auto text=xml->getStringAttribute("pattern0");if(text.isNotEmpty()){
+                    std::istringstream in(text.toStdString());double x,y,t,last=-1;int type,count=0;
+                    while(in>>x>>y>>t>>type){if(xml->hasAttribute("sendpattern0")){int clearTails;if(!(in>>clearTails))return 174;}if(!std::isfinite(x+y+t)||x<last||x<0||x>1||y<0||y>1){std::cerr<<"Invalid curve rack="<<i<<" effect="<<e<<" x="<<x<<" y="<<y<<" last="<<last<<"\n";return 172;}last=x;++count;}
+                    if(count<2||count>40){std::cerr<<"Curve nodes rack="<<i<<" effect="<<e<<" count="<<count<<"\n";return 173;}
+                }
+            }
+        }
         auto name = ShaperProcessor::factoryPresetName(i);
         if (factoryNames.contains(name))
             return 56;
@@ -897,6 +925,10 @@ int main()
         const auto exported = bankDirectory.getChildFile("Creative Racks/120 Drum Carousel.shaper");
         if (!editor.loadRackFile(exported) || p.palette() != std::vector<int>({1, 2, 0, 4}))
             return 70;
+        for(int i:{0,2,4,5,9,14,18,23,39,87,114,131,153}) {
+            editor.loadFactory(i);editor.setZoom(.75f);
+            snapshot(editor,"preview-bank-091-"+juce::String(i+1).paddedLeft('0',3));
+        }
     }
     for (int e : p.palette())
         p.removeEffect(e);

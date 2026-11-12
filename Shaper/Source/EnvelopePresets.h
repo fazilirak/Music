@@ -3,11 +3,12 @@
 // Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
 // Kapsam: Shaper için eklenen kod ve uyarlamalar; özgün üçüncü taraf telif/lisansları korunur.
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 13.11.2026
 // Dosyanın görevi: Envelope biçimlerini ve hazır desen verilerini saklar; sıra/alanlar kaydedilen durumla uyumludur.
 #pragma once
 #include <JuceHeader.h>
 #include <cmath>
+#include "DesignedCurves.h"
 
 // Original Shaper presets: no third-party preset files or curves are embedded.
 namespace envelopePresets
@@ -175,17 +176,9 @@ inline void curve(juce::AudioProcessor &engine, bool pitch, int index, bool form
     engine.getStateInformation(data);
     if (auto xml = juce::AudioProcessor::getXmlFromBinary(data.getData(), (int)data.getSize()))
     {
-        juce::String points;
-        const bool stepped = pitch ? (index == 2 || index == 3 || index == 8 || index == 9 || index == 12 ||
-                                      index == 13 || index == 14 || (formant && index == 11))
-                                   : (index == 2 || index == 3 || index == 4 || index == 7 || index == 8 ||
-                                      index == 9 || index == 13);
-        for (int i = 0; i <= 96; ++i)
-        {
-            const double x = i / 96.;
-            points += juce::String(x, 9) + " " + juce::String(1 - value(pitch, index, x, formant), 9) +
-                      " 0 " + (stepped ? "0 " : "1 ");
-        }
+        // Fazıl Irak · 13.11.2026: 97 örnek noktası yerine nota/ritim düğümleri ve gerçek eğrilik.
+        auto nodes=pitch?designedCurves::pitch(index,formant):designedCurves::saturation(index);
+        const auto points=designedCurves::encode(nodes);
         for (int i = 0; i < 12; ++i)
             xml->setAttribute("pattern" + juce::String(i), points);
         xml->setAttribute("currpattern", 1);
@@ -197,13 +190,12 @@ inline void curve(juce::AudioProcessor &engine, bool pitch, int index, bool form
     set(engine, "pattern", 1);
     set(engine, "trigger", 0);
     set(engine, "sync",
-        pitch ? (index == 0                  ? 7
-                 : index == 1 || index == 14 ? 11
-                                             : 9)
-              : (index == 14 ? 11 : 9));
+        pitch ? (index == 0 ? 7 : index == 1 ? 11 : 9)
+              : (index == 0 ? 7 : index == 14 ? 11 : 9));
     set(engine, "min", 0);
     set(engine, "max", 1);
     set(engine, "phase", 0);
+    set(engine,"tension",0);set(engine,"tensionatk",0);set(engine,"tensionrel",0);
     set(engine, "mix", 1);
     set(engine, "attack", .003f);
     set(engine, "release", .008f);

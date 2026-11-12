@@ -45,10 +45,11 @@ juce::AudioProcessor *createEmbeddedProcessor();
 #include "MultibandProcessor.h"
 #include "EnvelopeEffect.h"
 #include "UtilityEffect.h"
+#include "DelayEffect.h"
 // effectName alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
 const char *ShaperProcessor::effectName(int e)
 {
-    static const char *names[]{"Gate", "Time", "Filter", "Reverb", "Pan", "Volume", "Saturation", "Pitch", "Width", "FX"};
+    static const char *names[]{"Gate", "Time", "Filter", "Reverb", "Pan", "Volume", "Saturation", "Pitch", "Width", "FX", "Delay"};
     return names[e];
 }
 const std::array<std::array<int, ShaperProcessor::effectCount>, ShaperProcessor::orderCount> &
@@ -64,7 +65,7 @@ ShaperProcessor::orders()
         {
             std::copy(p.begin(), p.end(), a[(size_t)i].begin());
             a[(size_t)i][6] = 6;
-            a[(size_t)i][7] = 7; a[(size_t)i][8]=8; a[(size_t)i++][9]=9;
+            a[(size_t)i][7] = 7; a[(size_t)i][8]=8; a[(size_t)i][9]=9; a[(size_t)i++][10]=10;
         } while (std::next_permutation(p.begin(), p.end()));
         return a;
     }();
@@ -107,6 +108,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout ShaperProcessor::layout()
         p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{presentId(e), 1},
                                                          juce::String(effectName(e)) + " In palette", false));
     }
+    p.add(std::make_unique<juce::AudioParameterInt>(juce::ParameterID{"delay_position",1},"Delay chain position",0,10,10));
     return p;
 }
 // ShaperProcessor alt adımı: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir.
@@ -140,6 +142,7 @@ ShaperProcessor::ShaperProcessor()
     modules[8]=std::make_unique<MultibandProcessor>([]{return new UtilityEffect(false);},8);
     // Bir FX modülünde tek plugin: bant başına dört instance oluşturulmaz.
     modules[9]=std::make_unique<UtilityEffect>(true);
+    modules[10]=std::make_unique<MultibandProcessor>([]{return new DelayEffect();},10);
     pitchPosition = state.getRawParameterValue("pitch_position");
     for (int e = 0; e < effectCount; ++e)
     {
@@ -200,7 +203,7 @@ void ShaperProcessor::moveEffect(int effect, int destination)
 std::array<int, ShaperProcessor::effectCount> ShaperProcessor::signalOrder() const
 {
     auto original = orders()[(size_t)juce::jlimit(0, orderCount - 1, (int)orderValue->load())];
-    const char* positions[]{"saturation_position","pitch_position","width_position","fx_position"};
+    const char* positions[]{"saturation_position","pitch_position","width_position","fx_position","delay_position"};
     for(int e=6;e<effectCount;++e){
         const int position=juce::jlimit(0,e,(int)state.getRawParameterValue(positions[e-6])->load());
         for(int i=e;i>position;--i)original[(size_t)i]=original[(size_t)i-1];
@@ -219,7 +222,7 @@ void ShaperProcessor::applyPaletteOrder(const std::vector<int> &installed)
     for(int e:all)if(e<6)sequence[(size_t)index++]=e;
     for(int e=6;e<effectCount;++e)sequence[(size_t)e]=e;
     for(int i=0;i<orderCount;++i)if(orders()[(size_t)i]==sequence){auto* p=state.getParameter("order");p->setValueNotifyingHost(p->convertTo0to1((float)i));break;}
-    const char* positions[]{"saturation_position","pitch_position","width_position","fx_position"};
+    const char* positions[]{"saturation_position","pitch_position","width_position","fx_position","delay_position"};
     for(int e=6;e<effectCount;++e){int slot=0;for(int item:all){if(item==e)break;if(item<e)++slot;}
         auto* p=state.getParameter(positions[e-6]);p->setValueNotifyingHost(p->convertTo0to1((float)slot));}
 }
@@ -286,6 +289,9 @@ void ShaperProcessor::handleAsyncUpdate()
 void ShaperProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midi)
 {
     juce::ScopedNoDenormals guard;
+    // Fazıl Irak · 12.11.2026: state yüklenirken ses thread'i beklemez; o blok kuru geçer.
+    const juce::ScopedTryLock stateGuard(getCallbackLock());
+    if(!stateGuard.isLocked()) return;
     if (blockCapacity == 0)
         return;
     for (int offset = 0; offset < buffer.getNumSamples(); offset += blockCapacity)
@@ -366,7 +372,7 @@ void ShaperProcessor::getRackStateInformation(juce::MemoryBlock &data)
 {
     const juce::ScopedLock lock(getCallbackLock());
     auto xml = state.copyState().createXml();
-    xml->setAttribute("version", 7);
+    xml->setAttribute("version", 8);
     xml->setAttribute("editorWidth", editorWidth.load());
     xml->setAttribute("editorHeight", editorHeight.load());
     xml->setAttribute("effect", selectedEffect);
@@ -413,6 +419,12 @@ void ShaperProcessor::setRackStateInformation(const void *data, int size)
             for (int i = tree.getNumChildren(); --i >= 0;)
                 if (tree.getChild(i).hasType("Module") || tree.getChild(i).hasType("CompareBank"))
                     tree.removeChild(i, nullptr);
+            if(version<8){
+                for(const auto& entry:std::array<std::pair<juce::String,float>,3>{{{presentId(10),0.f},{enableId(10),1.f},{"delay_position",10.f}}}){
+                    for(int i=tree.getNumChildren();--i>=0;)if(tree.getChild(i).getProperty("id").toString()==entry.first)tree.removeChild(i,nullptr);
+                    juce::ValueTree param("PARAM");param.setProperty("id",entry.first,nullptr);param.setProperty("value",entry.second,nullptr);tree.appendChild(param,nullptr);
+                }
+            }
             if(version<7){
                 for(const auto& entry:std::array<std::pair<juce::String,float>,4>{{{presentId(8),0.f},{presentId(9),0.f},{"width_position",8.f},{"fx_position",9.f}}}){
                     for(int i=tree.getNumChildren();--i>=0;)if(tree.getChild(i).getProperty("id").toString()==entry.first)tree.removeChild(i,nullptr);
@@ -526,6 +538,7 @@ juce::AudioProcessor *JUCE_CALLTYPE createPluginFilter()
 
 // Fazıl Irak · 03.11.2026: İç snapshot A/B içermez; böylece sonsuz iç içe serileştirme oluşmaz.
 void ShaperProcessor::getStateInformation(juce::MemoryBlock& data) {
+    const juce::ScopedLock transaction(getCallbackLock());
     getRackStateInformation(data);
     if(auto xml=getXmlFromBinary(data.getData(),(int)data.getSize())) {
         xml->setAttribute("activeAB",activeAB);
@@ -537,6 +550,7 @@ void ShaperProcessor::getStateInformation(juce::MemoryBlock& data) {
     }
 }
 void ShaperProcessor::setStateInformation(const void* data,int size) {
+    const juce::ScopedLock transaction(getCallbackLock());
     setRackStateInformation(data,size);
     if(auto xml=getXmlFromBinary(data,size)) if(xml->hasTagName("SHAPER")) {
         activeAB=juce::jlimit(0,1,xml->getIntAttribute("activeAB",0));
@@ -547,6 +561,8 @@ void ShaperProcessor::setStateInformation(const void* data,int size) {
     }
 }
 void ShaperProcessor::switchAB(int bank) {
+    // Banka yakalama ve geri yükleme tek işlem; audio thread bu süre boyunca kuru geçer.
+    const juce::ScopedLock transaction(getCallbackLock());
     bank=juce::jlimit(0,1,bank);if(bank==activeAB)return;
     getRackStateInformation(abStates[(size_t)activeAB]);
     if(abStates[(size_t)bank].isEmpty())abStates[(size_t)bank]=abStates[(size_t)activeAB];

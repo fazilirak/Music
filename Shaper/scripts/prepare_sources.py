@@ -170,6 +170,26 @@ private:''',1)
     if(transform.mat00>0 && transform.mat11>transform.mat00)
         g.addTransform(juce::AffineTransform::scale(1.0f,transform.mat00/transform.mat11));
 ''',True)
+        if path.suffix=='.cpp' and (path.name=='PluginEditor.cpp' or (path.parent.name=='ui' and path.name!='Sequencer.cpp')):
+            text=re.sub(r'(?:juce::)?MessageManager::callAsync\(', 'shaperui::postIfAlive(this,',text)
+            text='#include "RackAsync.h"\n'+text
+        # Fazıl Irak · 12.11.2026: editörden bağımsız, kapanmış işlemci/sequencer bildirimleri de atlanır.
+        if name not in ('satcurve','pitchcurve'):
+            if path.name=='PluginProcessor.h':
+                start=text.index('class '+{'gate12':'GATE12','time12':'TIME12','filtr':'FILTR','reevr':'REEVR','pan12':'GATE12','volumef':'GATE12'}[name]+'AudioProcessor')
+                pos=text.index('public:',start)+len('public:')
+                text=text[:pos]+'''
+    std::shared_ptr<int> rackLifetime=std::make_shared<int>(0);
+    void rackPost(std::function<void()> callback) {
+        std::weak_ptr<int> life=rackLifetime;
+        juce::MessageManager::callAsync([life,callback=std::move(callback)] {if(!life.expired())callback();});
+    }
+'''+text[pos:]
+            if path.name=='PluginProcessor.cpp':
+                text=text.replace('MessageManager::callAsync(', 'rackPost(')
+            if path.name=='Sequencer.cpp':
+                # Sequencer işlemcinin üyesidir; işlemci ömrü aynı kuyruğu korur.
+                text=text.replace('MessageManager::callAsync(', 'audioProcessor.rackPost(')
         if name in ('satcurve','pitchcurve'):
             if path.name in ('PluginEditor.cpp','Rotary.cpp','GridSelector.cpp','TextDial.cpp','PaintToolWidget.cpp','SequencerWidget.cpp'):
                 # Curve tabs and band switching can close native editors while
@@ -247,7 +267,7 @@ private:''',1)
         text = text.replace('createPluginFilter', 'createEmbeddedProcessor')
         if path.name == 'PluginProcessor.cpp':
             cleanup = '\n    for (auto* p : getParameters()) p->removeListener(this);\n'
-            if name in ('satcurve','pitchcurve'): cleanup='\n    rackLifetime.reset();\n'+cleanup
+            cleanup='\n    rackLifetime.reset();\n'+cleanup
             cleanup += '    delete sequencer;\n    for (auto* p : patterns) delete p;\n    for (auto* p : paintPatterns) delete p;\n'
             cleanup += {'gate12': '    delete value; delete value2;\n',
                         'pan12': '    delete value; delete value2;\n',
@@ -307,6 +327,7 @@ void shape(juce::AudioProcessor& processor,int kind,float neutral) {
 for variant, palette in {
     'widthcurve': ('0xff87c9ff','0xffb9e0ff','0xff335a78'),
     'fxcurve': ('0xffe377a6','0xfff2b4d1','0xff70394f'),
+    'delaycurve': ('0xff70d99a','0xffb4efc9','0xff286342'),
 }.items():
     for source in (out/'satcurve').rglob('*'):
         if not source.is_file(): continue
@@ -318,3 +339,17 @@ for variant, palette in {
             text=text.replace(before,after)
         if not target.exists() or target.read_text(encoding='utf-8')!=text:
             target.write_text(text,encoding='utf-8')
+
+# Fazıl Irak · 12.11.2026: QDelay ring buffer / ZDF SVF, GUI ve tüm QDelay işlemcisinden bağımsız.
+qroot=root/'upstream/qdelay'
+if (qroot/'.git').exists():
+    manifest['qdelay']=subprocess.check_output(['git','-c','safe.directory='+qroot.as_posix(),'-C',str(qroot),'rev-parse','HEAD'],text=True).strip()
+else: manifest['qdelay']=json.loads((root/'upstream-lock.json').read_text())['qdelay']
+for filename in ('DelayLine.h','SVF.h','SVF.cpp'):
+    text=(qroot/'src/dsp'/filename).read_text(encoding='utf-8-sig')
+    includes=re.findall(r'^#include[^\n]+',text,re.M)
+    text=re.sub(r'^#include[^\n]+\n','',text,flags=re.M).replace('#pragma once','')
+    text='// QDelay: Copyright (C) 2025 tilr; GPL-3.0-only. SVF: Theo Niessink port.\n#pragma once\n'+'\n'.join(includes)+'\nnamespace jellydelay {\n'+text+'\n}\n'
+    target=out/'qdelaycore'/filename;target.parent.mkdir(parents=True,exist_ok=True)
+    if not target.exists() or target.read_text(encoding='utf-8')!=text:target.write_text(text,encoding='utf-8')
+(root/'upstream-lock.json').write_text(json.dumps(manifest,indent=2)+'\n')

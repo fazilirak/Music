@@ -141,17 +141,20 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          Jellybone 0.8.5 — Filter and Reverb knob colour correction.
-          - Fixes an uninitialised legacy UI flag that randomly selected yellow for normal Filter/Reverb knobs.
-          - Uses each control's explicitly assigned colour: cyan Filter, lavender Reverb; intentional audio-trigger controls retain yellow.
-          - Preserves the shared knob geometry, DSP, plugin/parameter IDs and preset/session formats.
-          - Preserves all GATE-12/Tilr and third-party copyright/licence notices.
+          Jellybone 0.9.1 — Native Delay and a redesigned factory rack bank.
+          - 160 rack presets rebuilt with purposeful, compact curves and tempo-aligned rhythms.
+          - Native Delay: curve-controlled Send/Input, Mix, Feedback and Filter; stereo and ping-pong.
+          - Independent target ranges, smoothing and tail-preserving send modulation.
+          - A/B state and editor lifetime fixes; corrected Delay panel and full-rack layout.
+          - 32 redesigned Saturation/Pitch motion presets.
+          - Existing saved user presets and DAW projects retain their stored curves. Reselect a factory preset to load its redesigned version.
+          - Includes matching source, preserved upstream licences and QDelay component credits.
 
           Windows x64: VST3 and standalone.
           macOS Universal (arm64 + x86_64): VST3, AU and standalone; deployment target macOS 11.0.
 
           Mac bundles are ad-hoc signed; they are not Developer ID signed or Apple notarised.
-          Both build hosts passed all four CTest targets. Separate DAW and Intel Mac testing is still required.
+          Both build hosts passed all six CTest targets. Separate DAW and Intel Mac testing is still required.
           The Source ZIP includes Shaper, preserved upstream sources, build scripts and licence notices.
           Distribute the matching source alongside binaries. Individual component licences are preserved.
           The default Reverb IR is independently generated; the former Samplicity resource is excluded.

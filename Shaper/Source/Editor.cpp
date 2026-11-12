@@ -66,7 +66,7 @@ ShaperEditor::ShaperEditor(ShaperProcessor &p) : AudioProcessorEditor(p), proces
     addAndMakeVisible(palette);
     palette.onChange = [this] { select(); };
     emptyLabel.setText(
-        "Your rack is empty\n\nClick + to add Gate, Time, Filter, Reverb, Volume, Pan, Saturation, Pitch, Width or FX.",
+        "Your rack is empty\n\nClick + to add Gate, Time, Filter, Reverb, Volume, Pan, Saturation, Pitch, Width, FX or Delay.",
         juce::dontSendNotification);
     emptyLabel.setFont(juce::FontOptions(20));
     emptyLabel.setJustificationType(juce::Justification::centred);

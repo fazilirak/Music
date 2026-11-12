@@ -85,3 +85,14 @@ Copyright (c) 2026 Fazıl Irak; GPL-3.0-only. See its adjacent manifest.json.
 
 Shaper additions/adaptations: Fazil Irak (Fazıl Irak), 2026.
 Original third-party authorship and copyright remain unchanged.
+
+QDelay DSP components — Jellybone Delay
+=======================================
+https://github.com/tiagolr/qdelay
+Commit: 3130de7bbbc676b1c69b4dcfc8baa63851b57035
+Copyright (C) 2025 tilr. GNU GPL version 3.
+DelayLine.h, SVF.h and SVF.cpp are compiled in namespace jellydelay without DSP changes.
+SVF is Tilr's port of Theo Niessink <theo@taletn.com> ZDF filters; original attribution retained.
+New routing, curve targets and editor: Fazıl Irak, 12 November 2026.
+Full upstream sources and licence are included in the corresponding source archive.
+See licenses/upstream/qdelay-GPL-3.0.txt and upstream/qdelay/LICENSE.

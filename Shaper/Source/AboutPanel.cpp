@@ -78,9 +78,10 @@ class Page final : public juce::Component
                        bounds.removeFromTop(20), juce::Justification::centred);
         }
         else {
+            if(effect==10) g.drawText("QDelay: Copyright (C) 2025 Tilr / SVF: Theo Niessink port - GPLv3", bounds.removeFromTop(20),juce::Justification::centred);
             if(effect==9) g.drawText("Hosted plugins retain their own copyrights and licences.",
                 bounds.removeFromTop(20),juce::Justification::centred);
-            bounds.removeFromTop(effect==9?20:40);
+            bounds.removeFromTop(effect==9||effect==10?20:40);
         }
         g.drawText("No warranty. Licences: LICENSE, LICENSE-AGPL-3.0.txt, THIRD-PARTY-NOTICES.txt",
                    bounds.removeFromTop(20), juce::Justification::centred);
@@ -104,7 +105,8 @@ AboutPanel::AboutPanel()
                              reevr::createAboutPage(),  pan12::createAboutPage(),  volumef::createAboutPage(),
                              irak::createAboutPage(),   pitchfx::createAboutPage(),
                              new shaperui::RackAboutPage("Width", "Mid-Side stereo width / curve control", rackEffectColour(8)),
-                             new shaperui::RackAboutPage("FX", "VST3 hosting / curve-controlled dry-wet mix", rackEffectColour(9))};
+                             new shaperui::RackAboutPage("FX", "VST3 hosting / curve-controlled dry-wet mix", rackEffectColour(9)),
+                             new shaperui::RackAboutPage("Delay", "QDelay DSP components / Send, Mix, Feedback, Filter curves", rackEffectColour(10))};
     for (int e = 0; e < ShaperProcessor::effectCount; ++e)
         tabs.addTab(ShaperProcessor::effectName(e), rackEffectColour(e).withMultipliedBrightness(0.25f),
                     new Page(pages[e], e), true);

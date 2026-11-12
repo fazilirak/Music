@@ -3,7 +3,7 @@
 // Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
 // Kapsam: Shaper için eklenen kod ve uyarlamalar; özgün üçüncü taraf telif/lisansları korunur.
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 13.11.2026
 // Dosyanın görevi: Efekt kimliği, adı, rengi ve üretici fonksiyonunu tek kayıt sözleşmesinde tutar.
 #include "EffectPalette.h"
 // EffectPalette alt adımı: Efekt kimliği, adı, rengi ve üretici fonksiyonunu tek kayıt sözleşmesinde tutar.
@@ -59,6 +59,17 @@ void EffectPalette::refresh()
 // Pencere/kontrol boyutuna bağlı yerleşimi yeniden hesaplar; hit-test aynı geometriyi izlemelidir.
 void EffectPalette::resized()
 {
+    // Fazıl Irak · 13.11.2026: palet doluysa gizli + düğmesine alan ayırma.
+    // Bölme artığı kartlara dağıtılır; son kart tam sağ kenarda biter.
+    if(installed.size()==ShaperProcessor::effectCount) {
+        const int count=(int)installed.size(),gap=10;
+        const int usable=juce::jmax(count,getWidth()-gap*(count-1));
+        for(int i=0;i<count;++i) {
+            const int left=i*usable/count+i*gap,right=(i+1)*usable/count+i*gap;
+            cards[installed[(size_t)i]]->setBounds(left,0,right-left,getHeight());
+        }
+        return;
+    }
     const int cardWidth = juce::jmin(190, (getWidth() - 70) / juce::jmax(1,(int)installed.size()) - 10);
     int x = 0;
     for (int e : installed)
@@ -81,9 +92,12 @@ void EffectPalette::paint(juce::Graphics &g)
     }
     if (dropIndex >= 0)
     {
-        int cardWidth = juce::jmin(190, (getWidth() - 70) / juce::jmax(1,(int)installed.size()) - 10);
+        // Sürükleme belirteci de güncel kart sınırlarını izler.
+        const int slot=juce::jlimit(0,(int)installed.size(),dropIndex);
+        const int x=slot<(int)installed.size()?cards[installed[(size_t)slot]]->getX():
+                    installed.empty()?0:cards[installed.back()]->getRight()+10;
         g.setColour(juce::Colours::white);
-        g.fillRoundedRectangle((float)juce::jmax(0, dropIndex * (cardWidth + 10) - 6), 2, 3,
+        g.fillRoundedRectangle((float)juce::jlimit(0,juce::jmax(0,getWidth()-3),x-6), 2, 3,
                                (float)getHeight() - 4, 1);
     }
 }

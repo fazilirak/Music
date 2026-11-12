@@ -1,3 +1,17 @@
+## Jellybone 0.9.1 — redesigned factory rack bank
+
+160 rack presets rebuilt around sparse musical nodes, segment tension, S-curves and half-sine arcs.
+Volume ducking, swing/trance rhythms, filter phrases, stereo gestures and Pitch/Saturation curves
+are redesigned; selected racks use native Width/Delay. See [bank guide](docs/FACTORY-BANK-091.md).
+Saved user racks and DAW sessions keep their stored curves; reselect a factory preset to load the new bank.
+
+## Jellybone 0.9.0 — local Windows build
+
+Native curve-controlled Delay (Send, Mix, Feedback, Filter) and A/B lifetime/state fixes.
+QDelay 1.2.3 DelayLine and ZDF SVF components by Tilr; not the complete QDelay feature set.
+See [Delay guide](docs/JELLYBONE-090-DELAY.md), [verification](docs/JELLYBONE-090-DOGRULAMA.md)
+and [remaining live checks](YAPILACAKLAR.md). Six automated test groups are required before packaging.
+
 ## Latest release — 0.8.8
 
 ### Verified current downloads

@@ -22,8 +22,8 @@ def package():
     build = ROOT / 'build-macos'
     log = build / 'Testing/Temporary/LastTest.log'
     results = log.read_text(encoding='utf-8', errors='replace')
-    if results.count('Test Passed.') != 5 or 'Test Failed.' in results:
-        raise RuntimeError('All five CTest targets must pass before packaging.')
+    if results.count('Test Passed.') != 6 or 'Test Failed.' in results:
+        raise RuntimeError('All six CTest targets must pass before packaging.')
     header = (build / 'juce_binarydata_reevr_resources/JuceLibraryCode/reevr_data.h').read_text()
     if 'Shaper_Hall_Quad_wav' not in header or 'Hall_Quad_flac' in header:
         raise RuntimeError('Expected independently generated Shaper IR resource.')
@@ -87,7 +87,7 @@ def package():
                 raise RuntimeError('Archive verification failed: ' + name)
     release = {'version': version, 'platform': 'macOS', 'architectures': ['arm64', 'x86_64'],
                'deployment_target': '11.0', 'signing': 'ad-hoc', 'notarised': False,
-               'tests': '4/4 passed on the build host', 'source_entries': source_count,
+               'tests': '6/6 passed on the build host', 'source_entries': source_count,
                'replacement_ir': ir_manifest,
                'sha256': {name: digest(output / name) for name in (source_name, binary_name)}}
     (output / 'RELEASE-MANIFEST.json').write_text(json.dumps(release, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

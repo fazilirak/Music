@@ -11,8 +11,8 @@
 inline juce::Colour rackEffectColour(int effect)
 {
     static constexpr juce::uint32 colours[]{0xffff8050, 0xff00e672, 0xff00bbff, 0xff9ca7ff,
-                                            0xffff505b, 0xffffd42a, 0xffed6c46, 0xff54dfdb, 0xff87c9ff, 0xffe377a6};
-    return juce::Colour(colours[juce::jlimit(0, 9, effect)]);
+                                            0xffff505b, 0xffffd42a, 0xffed6c46, 0xff54dfdb, 0xff87c9ff, 0xffe377a6, 0xff70d99a};
+    return juce::Colour(colours[juce::jlimit(0, 10, effect)]);
 }
 class EffectPalette final : public juce::Component,
                             public juce::DragAndDropContainer,

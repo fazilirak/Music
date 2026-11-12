@@ -3,12 +3,15 @@
 // Fazıl Irak tarafından oluşturuldu / değiştirildi: 23.10.2026
 // Kapsam: Shaper için eklenen kod ve uyarlamalar; özgün üçüncü taraf telif/lisansları korunur.
 // Türkçe bakım açıklamaları: Fazıl Irak
-// Son düzenleme: 22.10.2026
+// Son düzenleme: 13.11.2026
 // Dosyanın görevi: Rack fabrika presetlerinin efekt dizilişi ve kaydedilen parametre durumlarını tanımlar.
 #include "Processor.h"
 #include "MultibandProcessor.h"
 #include "Embedded/PanPresets.h"
 #include "EnvelopePresets.h"
+#include "DesignedCurves.h"
+#include "DelayEffect.h"
+#include "UtilityEffect.h"
 #include <cmath>
 
 namespace
@@ -61,69 +64,11 @@ void plain(juce::AudioProcessor &m, const char *id, float v)
 // Original preset curves grouped into musical families.
 // curve alt adımı: Rack fabrika presetlerinin efekt dizilişi ve kaydedilen parametre durumlarını tanımlar.
 // Gövdedeki başlıca çağrılar: std::fmod → std::pow → juce::jlimit → std::cos. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
-juce::String curve(int kind, int variant, float depth = 1.0f)
-{
-    juce::String result;
-    const int steps = kind == 1 ? 64 : 32;
-    for (int i = 0; i <= steps; ++i)
-    {
-        double x = (double)i / steps, y = 1;
-        constexpr int pulses[]{8, 16, 16, 2, 8, 12, 4, 6, 8, 4, 8, 4, 16, 8, 12, 4};
-        const double t = std::fmod(x * (kind == 1 ? pulses[variant % 16] : 1), 1.0),
-                     pi = juce::MathConstants<double>::pi;
-        switch (kind)
-        {
-        case 0:
-        {
-            double hold = 0.03 + 0.015 * (variant % 5), release = 0.28 + 0.045 * (variant % 8);
-            y = t < hold
-                    ? 0
-                    : std::pow(juce::jlimit(0.0, 1.0, (t - hold) / release), 0.65 + 0.13 * (variant % 5));
-            break;
-        }
-        case 1:
-        {
-            double swing = variant % 3 == 0 ? 0.62 : 0.5;
-            y = t < swing ? 1 : 0;
-            if (variant % 4 == 1)
-                y = 0.5 - 0.5 * std::cos(2 * pi * t);
-            break;
-        }
-        case 2:
-            y = 0.15 + 0.8 * (variant % 3 == 0   ? 0.5 - 0.5 * std::cos(2 * pi * t)
-                              : variant % 3 == 1 ? t
-                                                 : 1 - t);
-            break;
-        case 3:
-        {
-            constexpr int pan[]{19, 5, 7, 9, 10, 17, 18, 8, 13, 14, 15, 16, 19, 7, 10, 5};
-            y = PanPresets::position(pan[variant % 16], x);
-            break;
-        }
-        case 4:
-            if (variant == 0)
-                y = 0.5 * x;
-            else if (variant == 2)
-                y = 0.35 * x * x;
-            else if (variant == 8 || variant == 9)
-                y = std::fmod(2 * x, 1.0);
-            else if (variant == 15)
-                y = 0.04 * (0.5 - 0.5 * std::cos(2 * pi * x));
-            else
-            {
-                int divisions = variant == 4 ? 8 : variant == 5 ? 6 : variant == 6 ? 3 : 4;
-                y = std::floor(x * divisions) / divisions;
-            }
-            break;
-        case 5:
-            y = 0.2 + 0.8 * std::pow(0.5 - 0.5 * std::cos(2 * pi * t), 0.5 + 0.15 * (variant % 6));
-            break;
-        }
-        y = kind == 3 ? 0.5 + (y - 0.5) * depth : 1 - depth + depth * y;
-        result +=
-            juce::String(x, 8) + " " + juce::String(y, 8) + " 0 " + juce::String(kind == 1 ? 0 : 1) + " ";
-    }
-    return result;
+// Fazıl Irak · 13.11.2026: her yay gerçek segment eğrisi; sabit adımlı nokta örneklemesi yok.
+juce::String curve(int kind,int variant,float depth=1.0f) {
+    auto nodes=designedCurves::family(kind,variant);
+    if(kind==4)for(auto& n:nodes)n.v=1.-n.v; // Time motoru doğrudan saklanan Y'yi okur.
+    return designedCurves::encode(nodes,depth,kind==3);
 }
 // shape alt adımı: Rack fabrika presetlerinin efekt dizilişi ve kaydedilen parametre durumlarını tanımlar.
 // Gövdedeki başlıca çağrılar: engine.getStateInformation → juce::AudioProcessor::getXmlFromBinary → state.getData → state.getSize. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
@@ -133,8 +78,15 @@ void shape(juce::AudioProcessor &engine, int kind, int variant, float depth = 1)
     engine.getStateInformation(state);
     if (auto xml = juce::AudioProcessor::getXmlFromBinary(state.getData(), (int)state.getSize()))
     {
-        for (int i = 0; i < 12; ++i)
-            xml->setAttribute("pattern" + juce::String(i), curve(kind, variant, depth));
+        // Reverb her düğümde beşinci alan olarak clearsTails saklar; Gate/Time/Filter dört alan kullanır.
+        const bool reverb=xml->hasAttribute("sendpattern0");
+        for(int i=0;i<12;++i) {
+            xml->setAttribute("pattern"+juce::String(i),reverb?
+                designedCurves::encode(designedCurves::family(kind,variant),depth,false,true):curve(kind,variant,depth));
+            if(reverb)xml->setAttribute("sendpattern"+juce::String(i),
+                designedCurves::encode(designedCurves::space(variant),1,false,true));
+        }
+        if(reverb)xml->setAttribute("currsendpattern",1);
         xml->setAttribute("currpattern", 1);
         xml->setAttribute("currentProgram", 0);
         xml->setAttribute("outputCV", false);
@@ -144,6 +96,8 @@ void shape(juce::AudioProcessor &engine, int kind, int variant, float depth = 1)
     plain(engine, "trigger", 0);
     plain(engine, "pattern", 1);
     plain(engine, "phase", 0);
+    plain(engine, "tension", 0);plain(engine, "tensionatk",0);plain(engine,"tensionrel",0);
+    plain(engine, "min", 0);plain(engine,"max",1);
     plain(engine, "mix", 1);
     plain(engine, "sync",
           variant % 5 == 0   ? 8
@@ -209,7 +163,8 @@ bool ShaperProcessor::loadFactoryPreset(int index)
         add(4, 3, (v == 1 || v == 3 || v == 4 ? 1.0f : v == 0 || v == 7 ? 0.35f : 0.7f));
         plain(engine(4), "min", 0);
         plain(engine(4), "max", 1);
-        plain(engine(4), "sync", v == 0 || v == 2 ? 11 : v == 4 ? 7 : v == 5 ? 14 : 9);
+        constexpr int periods[]{11,9,11,8,8,9,9,8,9,9,10,10,11,11,9,11};
+        plain(engine(4),"sync",(float)periods[v]);
     };
     auto reverb = [&]
     {
@@ -232,15 +187,29 @@ bool ShaperProcessor::loadFactoryPreset(int index)
         plain(engine(1), "max", 1);
         plain(engine(1), "sync", v == 1 || v == 7 ? 7 : v == 5 ? 14 : 9);
     };
+    auto delay = [&](bool dotted=false) {
+        addEffect(10);auto& d=dynamic_cast<DelayEffect&>(engine(10));
+        shape(*d.curve,5,v,1);plain(*d.curve,"sync",9);
+        plain(d,"division",dotted?9.f:4.f);plain(d,"mode",v%2?1.f:0.f);
+        plain(d,"send_curve",1);plain(d,"send_min",0);plain(d,"send_max",.75f);
+        plain(d,"blend_curve",0);plain(d,"blend_max",.25f);
+        plain(d,"feedback_curve",1);plain(d,"feedback_min",.22f);plain(d,"feedback_max",.48f);
+        plain(d,"filter_curve",1);plain(d,"filter_min",.32f);plain(d,"filter_max",.76f);
+    };
+    auto width = [&] {
+        addEffect(8);auto& w=dynamic_cast<UtilityEffect&>(engine(8));
+        shape(*w.curve,3,v,.7f);plain(w,"minimum",.7f);plain(w,"maximum",1.35f);
+    };
     switch (group)
     {
     case 0:
-        add(5, 0, 0.55f + 0.025f * v);
+        // Derinlik müzikal göreve göre seçilir; Clean/Short/Long/Sub tam dip yapar.
+        {constexpr float depths[]{1,.85f,.95f,1,1,.92f,1,.96f,.35f,1,.7f,.6f,1,.85f,.95f,.7f};add(5,0,depths[v]);}
         if (v == 10 || v == 15)
             pan();
         break;
     case 1:
-        add(0, 1, 0.65f + 0.02f * v);
+        add(0,1,v==3?.55f:1.f);
         if (v == 15)
             filter();
         break;
@@ -365,6 +334,11 @@ bool ShaperProcessor::loadFactoryPreset(int index)
         break;
     }
     }
+    // Seçilmiş rack'lerde stereo/echo hareketi diğer modüllere cevap verir; her rack'e efekt yığılmaz.
+    if(group==3&&(v==1||v==10||v==11||v==15))width();
+    if(group==5&&(v==7||v==13))delay(v==7);
+    if(group==7&&(v==2||v==12||v==15))delay(v!=2);
+    if(group==7&&(v==2||v==9||v==13))width();
     auto installed = palette();
     selectedEffect = installed.empty() ? -1 : installed.front();
     rackPresetName = factoryPresetName(index);
