@@ -2,21 +2,34 @@
 
 Independent music software and development resources by [FAZIL AHMET IRAK](https://fazilirak.com).
 
-[Explore all seven products — Türkçe](https://fazilirak.com/muzik-yazilimlari/) · [English](https://fazilirak.com/music-software/). Each product carries Fazıl Irak’s developer identity; original upstream/component copyrights and licences remain applicable.
+[Explore all eight products — Türkçe](https://fazilirak.com/muzik-yazilimlari/) · [English](https://fazilirak.com/music-software/). Each product carries Fazıl Irak’s developer identity; original upstream/component copyrights and licences remain applicable.
 
 | Project | Developer / maintainer | Windows | macOS | Linux x64 | Source |
 | --- | --- | --- | --- | --- | --- |
-| [F-Saturator](F-Saturator/README.md) | Fazıl Irak | [0.5.5](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-Windows-x64.zip) | [Universal 0.5.5](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-macOS-Universal.tar.gz) | [0.5.5](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.5) |
-| [F-Kick](F-Kick/README.md) | Fazıl Irak | [0.8.5](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Windows-x64.zip) | [Universal 0.8.5](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-macOS-Universal.tar.gz) | [0.8.5](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.5) |
+| [F-Saturator](F-Saturator/README.md) | Fazıl Irak | [0.5.6](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.6/F-Saturator-0.5.6-Windows-x64.zip) | [Universal 0.5.6](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.6/F-Saturator-0.5.6-macOS-Universal.tar.gz) | [0.5.5](https://github.com/fazilirak/Music/releases/download/F-Saturator-v0.5.5/F-Saturator-0.5.5-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Saturator-v0.5.6) |
+| [F-Kick](F-Kick/README.md) | Fazıl Irak | [0.8.8](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.8/F-Kick-0.8.8-Windows-x64.zip) | [Universal 0.8.8](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.8/F-Kick-0.8.8-macOS-Universal.tar.gz) | [0.8.5](https://github.com/fazilirak/Music/releases/download/F-Kick-v0.8.5/F-Kick-0.8.5-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Kick-v0.8.8) |
 | [F-TransForm](F-TransForm/README.md) | Fazıl Irak | [0.2.4](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Windows-x64.zip) | [Universal 0.2.4](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-macOS-Universal.tar.gz) | [0.2.4](https://github.com/fazilirak/Music/releases/download/F-TransForm-v0.2.4/F-TransForm-0.2.4-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-TransForm-v0.2.4) |
-| [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.3](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Windows-x64.zip) | [Universal 1.1.3](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-macOS-Universal.tar.gz) | [1.1.3](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.3) |
-| [Jellybone](Shaper/README.md) | Fazıl Irak | [0.8.8](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Windows-x64.zip) | [Universal 0.8.8](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-macOS-Universal.tar.gz) | [0.8.8](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.8.8) |
+| [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.4](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.4/F-Sidechain-1.1.4-Windows-x64.zip) | [Universal 1.1.4](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.4/F-Sidechain-1.1.4-macOS-Universal.tar.gz) | [1.1.3](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.4) |
+| [Jellybone](Shaper/README.md) | Fazıl Irak | [0.9.2](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.9.2/Jellybone-0.9.2-Windows-x64.zip) | [Universal 0.9.2](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.9.2/Jellybone-0.9.2-macOS-Universal.tar.gz) | [0.8.8](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.9.2) |
 | [Model F](Model-F/README.md) | Fazıl Irak | [0.3.0](https://github.com/fazilirak/Music/releases/download/Model-F-v0.3.0/Model-F-0.3.0-Windows-x64.zip) | [Universal 0.3.0](https://github.com/fazilirak/Music/releases/download/Model-F-v0.3.0/Model-F-0.3.0-macOS-Universal.tar.gz) | [0.3.0](https://github.com/fazilirak/Music/releases/download/Model-F-v0.3.0/Model-F-0.3.0-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.3.0) |
+| [F-EQ Pro](F-EQ-Pro/RELEASE-0.6.0.md) | Fazıl Irak | [0.6.0 — VST3 / CLAP / Standalone](https://github.com/fazilirak/Music/releases/download/F-EQ-Pro-v0.6.0/FEQ-Windows-0.6.0.zip) | — | — | Proprietary freeware; no source distribution |
 | [F-EQ](F-EQ/README.md) | Fazıl Irak | [0.1.14](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-Windows-x64.zip) | [Universal 0.1.14](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-macOS-Universal.tar.gz) | [0.1.14](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.14) |
 
 F-Kick and F-TransForm also provide macOS Universal VST3, AU and standalone packages. [Build, installation and test scope](docs/ORIGINALS_MACOS_TR.md).
 
-## November 2026 updates
+## 19 November 2026 releases
+
+- **F-EQ Pro 0.6.0:** corrected A/B Undo/Redo, multi-band editing, analyzer improvements, Musical/Surgical dynamics, Standard/High processing quality and adaptive Linear Phase. Windows-only proprietary freeware; narrow bass Linear filters can add seconds of latency.
+- **F-Sidechain 1.1.4:** eight original Trance Gate presets in a second compact row, retaining the original eight Volume curves.
+- **F-Kick 0.8.8:** Attack/Pump/Sustain transient shaping, numeric display improvements, FX layout and boolean host-state fixes.
+- **Jellybone 0.9.2:** correct Delay tail reporting across parallel bands and serial modules; retains native curve Delay and the redesigned 160-preset bank.
+- **F-Saturator 0.5.6:** saved UI zoom/window size and audio-preserving DSP optimisations. Local measured CPU reduction was approximately 7–33%, depending on settings.
+
+The four open-source updates have passed native Windows/macOS builds and automated tests. Linux links retain the explicitly numbered previous versions. Corresponding sources and component notices accompany covered binaries. Live DAW/hardware acceptance and subjective listening remain separate checks; see each release for measurement limits.
+
+Türkçe: Yeni Trance Gate presetleri, transient kontrolleri, Delay kuyruğu düzeltmesi, kaydedilen zoom ve F-EQ Pro düzenleme/kalite yenilikleri yayımlandı. Platform sürümleri yukarıdaki tabloda ayrı gösterilir.
+
+## Earlier November 2026 updates
 
 Jellybone 0.8.8 adds curve-controlled **Width** and **FX VST3 hosting**, A/B comparison, proportional corner resizing, seven zoom settings and persistent window size (75% by default). Width/FX controls follow their rack colours. F-series Windows panels are **912 × 511**; headers are consistent, F-Saturator/F-TransForm use the available width, and F-EQ retains its preferred original large logo.
 
@@ -28,7 +41,7 @@ ValhallaSpaceModulator by Valhalla DSP is shown as a separately installed hosted
 
 **Add colour. Shape the character.** Free saturation/distortion for Windows x64 and macOS Universal. VST3 and standalone, plus AU on macOS.
 
-Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface. Character (Warm–Sizzle), Harmonic Balance (Even–Odd) and subtle Analog Drift shape the saturation. Compact Transient, Comp, Bass and Treble controls include ATT/REL and Tight LED switches. Version 0.5.3 keeps the fixed 1040 × 640 editor and separates the preset/footer row from the knob panel.
+Five original character models — Console, Transformer, Tape, Triode and Pentode — with 16 presets, 8× FIR oversampling and two ADAA stages. Shape drive, tone, bias, dynamics and stereo width in a focused interface. Character (Warm–Sizzle), Harmonic Balance (Even–Odd) and subtle Analog Drift shape the saturation. Compact Transient, Comp, Bass and Treble controls include ATT/REL and Tight LED switches. Version 0.5.6 restores the last UI zoom/window size and offers proportional resizing.
 
 ![F-Saturator](F-Saturator/doc/f-saturator.png)
 
@@ -78,7 +91,7 @@ Both products provide Windows x64 VST3/CLAP/standalone and macOS Universal VST3/
 
 ## F-Sidechain
 
-**Draw the groove. Make room for your sound.** Multiband volume shaper with eight editable envelopes, Low/Mid/High bands, sync/MIDI/audio triggering and full preset/state saving. Version 1.1.2 follows the orange/ivory F-series design in a 912 × 511 panel.
+**Draw the groove. Make room for your sound.** Multiband volume shaper with eight editable envelopes, Low/Mid/High bands, sync/MIDI/audio triggering and full preset/state saving. Version 1.1.4 adds eight original Trance Gate presets in a compact second row, retaining the 912 × 511 base layout.
 
 ![F-Sidechain](F-Sidechain/preview.png)
 
