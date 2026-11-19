@@ -1,0 +1,28 @@
+# Fazıl Irak — 19 November 2026
+name: Publish verified F-EQ Pro Windows package
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/feq-pro-publish.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Download and verify locally tested package
+        run: |
+          curl --fail --location --retry 3 'https://fazilirak.com/wp-content/uploads/2026/11/FEQ-Windows-0.6.0.zip' -o FEQ-Windows-0.6.0.zip
+          echo '221261956f9ef8c36ce25e89c7941cf5675dfc587876304a0be19e9504342e8e  FEQ-Windows-0.6.0.zip' | sha256sum --check
+          unzip -t FEQ-Windows-0.6.0.zip
+      - name: Publish verified Windows-only release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if gh release view F-EQ-Pro-v0.6.0 >/dev/null 2>&1; then exit 0; fi
+          gh release create F-EQ-Pro-v0.6.0 FEQ-Windows-0.6.0.zip --target "$GITHUB_SHA" --title 'F-EQ Pro 0.6.0' --notes-file F-EQ-Pro/RELEASE-0.6.0.md

@@ -446,7 +446,7 @@ void Editor::showViewSettings()
     for (const int scale : {50, 75, 100, 125, 150, 175, 200})
         menu.addItem(scale, juce::String(scale) + "%", true, std::abs(getWidth() - 912 * scale / 100.0) < 2);
     menu.addSeparator();
-    menu.addItem("Last window size is saved automatically", false);
+    menu.addItem(999, "Last window size is saved automatically", false, false);
     juce::Component::SafePointer<Editor> safe(this);
     menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&viewSettings), [safe](int selected)
     { if (safe && selected >= 50 && selected <= 200) safe->setUiScale(selected); });
