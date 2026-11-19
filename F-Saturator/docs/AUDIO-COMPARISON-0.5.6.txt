@@ -1,0 +1,2 @@
+Compared samples: 2621440
+Maximum sample error: 0.000000000000

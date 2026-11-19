@@ -63,6 +63,7 @@ private:
     enum F {HP,RMix,RDecay,RHP,RLP,RDrive,Duck,Recover,EMix,ETime,EFeedback,ELP,ESync,EDivision,ESource,DriveType,Tempo,LHz,LSync,LShape,LDivision,LPhase,LRetrigger,ADDelay,ADAttack,ADDecay,ADCurve,Punch,RumbleGain,SCShape,SCShift,SCMix,Room,FXHP,FXLP,BassLift,BassQ,NumFX};
     std::array<std::atomic<float>*,NumFX> fxParams{};
     std::array<std::atomic<float>*,24> rumbleParams{};
+    std::array<std::atomic<float>*,3> transientParams{};
     std::array<std::array<std::atomic<float>*,fkick::modTargetCount>,2> routeParams{};
     std::array<std::array<std::atomic<float>*,1+fkick::maxPoints*3>,2> curves{};
     static juce::AudioProcessorValueTreeState::ParameterLayout layout();

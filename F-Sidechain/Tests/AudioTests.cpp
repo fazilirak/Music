@@ -62,9 +62,11 @@ void set(juce::AudioProcessor& p,const char* id,float v) {
     for(auto* param:p.getParameters())if(auto* r=dynamic_cast<juce::RangedAudioParameter*>(param))if(r->paramID==id){r->setValueNotifyingHost(r->convertTo0to1(v));return;}
     throw std::runtime_error(id);
 }
+#include "TranceGateChecks.h"
 int main(int argc,char** argv) {
     juce::ScopedJuceInitialiser_GUI gui;
     try {
+        trance_checks::run(juce::File::getCurrentWorkingDirectory().getChildFile("../validation/TranceGate"));
         auto p=make();
         require(!p->isMultiband() && p->editorBand()==1,"New instances must process the full range through Mid");
         p->setRateAndBufferSizeDetails(48000,512);p->prepareToPlay(48000,512);
@@ -111,7 +113,31 @@ int main(int argc,char** argv) {
             if(auto* b=dynamic_cast<juce::TextButton*>(c))require(b->getButtonText()!="Bands","Band toggle must be removed");
             if(auto* box=dynamic_cast<juce::ComboBox*>(c))require(!box->getText().contains("Pattern"),"Pattern selector must be removed");
         }
-        if(argc>1)snapshot(*editor,"preview.png");
+        for(int i=0;i<16;++i) {
+            auto* button=findComponent(*editor,"sidechain-preset-"+juce::String(i));
+            require(button!=nullptr && button->isVisible(),"Two preset rows must be visible");
+            auto area=editor->getLocalArea(button,button->getLocalBounds());
+            require(editor->getLocalBounds().contains(area),"Preset outside editor");
+            auto* curve=findComponent(*editor,"effect-curve");require(curve!=nullptr,"Curve toolbar missing");
+            require(area.getBottom()<=editor->getLocalArea(curve,curve->getLocalBounds()).getY(),"Preset row overlaps curve toolbar");
+            if(i>=8) {
+                auto* above=findComponent(*editor,"sidechain-preset-"+juce::String(i-8));
+                require(button->getY()>above->getBottom() && button->getX()==above->getX(),"Gate row must align under normal row");
+            }
+        }
+        if(argc>1) {
+            snapshot(*editor,"preview.png");
+            auto* gate=dynamic_cast<juce::Button*>(findComponent(*editor,"sidechain-preset-10"));
+            require(gate!=nullptr,"Gate preview button missing");gate->onClick();
+            require(view->band(1).getCurrentProgram()==10,"Gate button did not select its preset");
+            auto gateProcessor=make();gateProcessor->setCurrentProgram(10);
+            std::unique_ptr<juce::AudioProcessorEditor> gateEditor(gateProcessor->createEditor());
+            for(int slot=0;slot<16;++slot) {
+                auto* b=dynamic_cast<juce::Button*>(findComponent(*gateEditor,"sidechain-preset-"+juce::String(slot)));
+                require(b && b->getToggleState()==(slot==10),"Selected gate button must match the active preset");
+            }
+            snapshot(*gateEditor,"preview-trance-gate.png");
+        }
         require(findComponent(*editor,"about-button")==nullptr,"Separate About button must be removed");
         auto* aboutLogo=dynamic_cast<juce::Button*>(findComponent(*editor,"about-logo"));
         require(aboutLogo!=nullptr,"Clickable F-Sidechain logo missing");aboutLogo->onClick();
@@ -126,7 +152,7 @@ int main(int argc,char** argv) {
         }
         documents->setSelectedId(1,juce::sendNotificationSync);
         if(argc>1)snapshot(*editor,"preview-about.png");
-        std::cout<<"PASS: eight deeper presets, finite audio, dry identity, wet mute, independent band/state recall, 44.1/48 kHz, active-band latency, permanent band UI, removed pattern selector, seven embedded licence documents\n";
+        std::cout<<"PASS: eight preserved Volume and eight new Trance Gate presets, finite audio, dry identity, wet mute, independent band/state recall, 44.1/48 kHz, active-band latency, permanent band UI, removed pattern selector, seven embedded licence documents\n";
         return 0;
     }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }

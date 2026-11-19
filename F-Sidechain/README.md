@@ -1,3 +1,11 @@
+## Local Windows build — 1.1.4
+
+Eight new original Trance Gate presets in a second compact row below the eight preserved Volume presets. One-bar sync, short edge ramps, editable curves and independent per-band state. Technical tests passed; eight pad/chord audio examples are included for listening review.
+
+[Release notes](docs/RELEASE-1.1.4.md) · [Türkçe tasarım ve kaynaklar](docs/TRANCE-GATE-RESEARCH.md)
+
+This local build is not yet published. Public download links below refer to the preceding release.
+
 ## Latest release — 1.1.3
 
 ### Verified current downloads

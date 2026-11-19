@@ -40,7 +40,11 @@ class MultibandProcessor final : public juce::AudioProcessor
     // getTailLengthSeconds: Üç bağımsız efekt motoru, bant ayırma/birleştirme, bypass ve bant durumu saklamasını yönetir. Mevcut veri/kalıcılık sözleşmesini bu erişim adımında koruyun.
     double getTailLengthSeconds() const override
     {
-        return 30;
+        // Bantlar paraleldir: en uzun motor kuyruğu üst rack'e aktarılır.
+        // Pasif bantların da dahil edilmesi mod otomasyonunda korumacı bir üst sınır sağlar.
+        double seconds=0.;
+        for(const auto& engine:engines) seconds=juce::jmax(seconds,engine->getTailLengthSeconds());
+        return seconds;
     }
     // Host’a program adedini bildirir; gezinme/sınır ve fabrika bankasıyla tutarlı kalmalıdır.
     int getNumPrograms() override

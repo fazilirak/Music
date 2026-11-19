@@ -1,3 +1,11 @@
+## Local development build — 0.5.6 (Windows x64)
+
+Persistent 50–200% UI scaling, proportional corner resizing and last-size recall, independent of sound presets. CPU optimisation keeps 8x FIR/ADAA quality; 2,621,440 samples match the 0.5.5 reference exactly. Three automated test groups and pluginval level 10 passed. Full original-reporter Ableton acceptance is pending.
+
+[Release notes](docs/RELEASE-0.5.6.md) · [Türkçe geliştirme ve doğrulama raporu](docs/RELEASE-0.5.6-TR.md) · [CPU measurements](docs/CPU-0.5.6.csv)
+
+This local build has not yet been published; the public download links below remain 0.5.5.
+
 ## Latest release — 0.5.5
 
 ### Verified current downloads

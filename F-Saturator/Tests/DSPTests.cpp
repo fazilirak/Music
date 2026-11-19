@@ -456,12 +456,13 @@ int main(int argc, char **argv)
         p.setStateInformation(legacyData.getData(),(int)legacyData.getSize());
         if(p.settings().bass!=0||p.settings().treble!=0||p.settings().transient!=0||p.settings().comp!=0||p.settings().fastAttack||p.settings().fastRelease||p.settings().bassTight||p.settings().trebleTight) return verificationFailure(30,__LINE__);
         p.setCurrentProgram(2);
-        std::unique_ptr<juce::AudioProcessorEditor> editor(p.createEditor());
+        const auto uiTestFile = output.getChildFile("test-ui-preferences.settings").getNonexistentSibling();
+        std::unique_ptr<juce::AudioProcessorEditor> editor(new irak::Editor(p, uiTestFile));
         // Fazıl Irak: Ürün adı ve sabit pencere, host sözleşmesinde doğrulanır.
-        if (p.getName() != "F-Saturator" || editor->isResizable() || editor->getWidth()!=912 || editor->getHeight()!=511)
+        if (p.getName() != "F-Saturator" || !editor->isResizable() || editor->getWidth()!=912 || editor->getHeight()!=511)
             return verificationFailure(32, __LINE__);
         auto* limits=editor->getConstrainer();
-        if (!limits || limits->getMinimumWidth()!=912 || limits->getMaximumWidth()!=912 || limits->getMinimumHeight()!=511 || limits->getMaximumHeight()!=511)
+        if (!limits || limits->getMinimumWidth()>456 || limits->getMaximumWidth()<912 || std::abs(limits->getFixedAspectRatio()-912.0/511)>1e-6)
             return verificationFailure(32, __LINE__);
         // On iki halkada hedef seçimini ve tekerleğin yalnız doğru parametreyi değiştirdiğini sınar (kod 13–15).
         const char *groupedIds[4][3] = {
@@ -506,7 +507,7 @@ int main(int argc, char **argv)
             }
         }
         // Fazıl Irak: Sabit panelde dört grup ayrık ve pencere içinde kalmalı.
-        for (const auto dimensions : {juce::Point<int>{912, 511}})
+        for (const auto dimensions : {juce::Point<int>{456, 256}, juce::Point<int>{684, 383}, juce::Point<int>{912, 511}, juce::Point<int>{1140, 639}})
         {
             editor->setSize(dimensions.x, dimensions.y);
             for (int group = 0; group < 4; ++group)
@@ -524,7 +525,7 @@ int main(int argc, char **argv)
         }
         editor->setSize(912, 511);
         // Sabit panelde şerit elemanları model bankasıyla çakışmamalı.
-        for(const auto size : {juce::Point<int>{912,511}})
+        for(const auto size : {juce::Point<int>{456,256}, juce::Point<int>{684,383}, juce::Point<int>{912,511}, juce::Point<int>{1140,639}})
         {
             editor->setSize(size.x,size.y);
             for(const char* id : {"transient","comp","bass","treble","fast_attack","fast_release","bass_tight","treble_tight"})

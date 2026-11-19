@@ -49,21 +49,38 @@ double SaturationDSP::ADAA::process(double x, double k, double b, bool enabled, 
 {
     const double last = previous;
     previous = x;
-    if (!enabled)
-        return balancedShape(x, k, b, balance);
-    // Her iki simetrik dal aynı eski/güncel örnek çiftinden hesaplanır; yeni gecikme eklenmez.
-    const auto evaluate = [&](double value, double old)
+    const bool unchanged = k == cachedK && b == cachedBias;
+    if (!unchanged)
     {
-        const double dx = value - old;
-        if (std::abs(dx) < 1e-5 * (1 + std::abs(value) + std::abs(old)))
-            return shape((value + old) * .5, k, b);
-        const double offset = std::tanh(k * b), normal = k * (1 - offset * offset);
-        const auto primitive = [&](double v) { return (logCosh(k * (v + b)) / k - offset * v) / normal; };
-        return (primitive(value) - primitive(old)) / dx;
-    };
-    const double forward = evaluate(x, last);
-    // Nötr yol eski işlem sırasını aynen korur; ekstra dal yalnız Odd tarafında hesaplanır.
-    return balance > 0 ? forward - .5 * balance * (forward + evaluate(-x, -last)) : forward;
+        cachedK = k; cachedBias = b;
+        cachedOffset = std::tanh(k * b);
+        cachedNormal = k * (1 - cachedOffset * cachedOffset);
+        primitiveValid = reverseValid = false;
+    }
+    const auto direct = [&](double v) { return (std::tanh(k * (v + b)) - cachedOffset) / cachedNormal; };
+    if (!enabled)
+    {
+        primitiveValid = reverseValid = false;
+        const double forward = direct(x);
+        return balance > 0 ? forward - .5 * balance * (forward + direct(-x)) : forward;
+    }
+    const double dx = x - last;
+    if (std::abs(dx) < 1e-5 * (1 + std::abs(x) + std::abs(last)))
+    {
+        primitiveValid = reverseValid = false;
+        const double forward = direct((x + last) * .5);
+        return balance > 0 ? forward - .5 * balance * (forward + direct(-(x + last) * .5)) : forward;
+    }
+    const auto primitive = [&](double v) { return (logCosh(k * (v + b)) / k - cachedOffset * v) / cachedNormal; };
+    const double current = primitive(x);
+    const double old = primitiveValid ? primitivePrevious : primitive(last);
+    primitivePrevious = current; primitiveValid = true;
+    const double forward = (current - old) / dx;
+    if (balance <= 0) { reverseValid = false; return forward; }
+    const double reverse = primitive(-x);
+    const double oldReverse = reverseValid ? reversePrimitivePrevious : primitive(-last);
+    reversePrimitivePrevious = reverse; reverseValid = true;
+    return forward - .5 * balance * (forward + (reverse - oldReverse) / -dx);
 }
 // Langevin eğrisinin sıfıra yakın tekilliğini seri açılımı ile giderir.
 double SaturationDSP::Magnet::langevin(double x)
@@ -394,9 +411,11 @@ void SaturationDSP::render(juce::AudioBuffer<float> &audio, int offset, int coun
         }
         // 0.17 ve 0.113 Hz: periyodu birbirinden farklı, stereo bağlantılı küçük tolerans değişimi.
         // Aşırı drive/pitch modülasyonu değildir; max kazanç sapması yaklaşık ±0.3 dB'dir.
-        const double wander = driftAmount * (.65 * std::sin(driftPhase) + .35 * std::sin(driftPhase2));
+        // Keep phase advancing at zero depth, but skip inaudible trigonometry.
+        const double phase2Sin = driftAmount != 0 ? std::sin(driftPhase2) : 0;
+        const double wander = driftAmount != 0 ? driftAmount * (.65 * std::sin(driftPhase) + .35 * phase2Sin) : 0;
         const double driftGain = 1 + .035 * wander;
-        const double driftingBias = b + .012 * driftAmount * std::sin(driftPhase2);
+        const double driftingBias = b + .012 * driftAmount * phase2Sin;
         driftPhase += 2 * pi * .17 / internalRate;
         driftPhase2 += 2 * pi * .113 / internalRate;
         if (driftPhase >= 2 * pi) driftPhase -= 2 * pi;

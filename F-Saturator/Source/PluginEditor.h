@@ -51,7 +51,19 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
     std::array<juce::TextButton, 4> deskSwitches;
     std::array<std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment>, 4> deskAttachments;
     juce::ComboBox presets;
-    juce::TextButton previous{"<"}, next{">"}, save{"Save"}, load{"Load"};
+    juce::TextButton previous{"<"}, next{">"}, save{"Save"}, load{"Load"}, viewSettings{"UI"};
+    // View settings never enter APVTS, audio presets, or DAW automation.
+    std::unique_ptr<juce::PropertiesFile> viewPreferences;
+    int uiScale = 100;
+    bool restoringView = true, viewDirty = false;
+    juce::uint32 lastResizeTime = 0;
+    Settings displayedCurve;
+    bool curveDirty = true;
+    juce::Rectangle<int> lastDisplayArea;
+    juce::Rectangle<int> availableViewBounds() const;
+    void updateViewLimits();
+    void saveView();
+    void showViewSettings();
     // Asenkron preset penceresi callback bitene kadar saklanır; callback SafePointer kullanır.
     std::unique_ptr<juce::FileChooser> chooser;
     // Sıfır bağımsız panel; pozitif değer gömme başlığına ayrılan alan. Bu yapı bir rack uygulaması gerektirmez.
@@ -66,7 +78,9 @@ class Editor final : public juce::AudioProcessorEditor, public RackEditorCommand
     void curve(juce::Graphics &, juce::Rectangle<float>);
 
   public:
-    explicit Editor(Processor &);
+    explicit Editor(Processor &, juce::File preferencesFile = {});
+    void setUiScale(int percent);
+    int getUiScale() const { return uiScale; }
     ~Editor() override;
     void paint(juce::Graphics &) override;
     void resized() override;

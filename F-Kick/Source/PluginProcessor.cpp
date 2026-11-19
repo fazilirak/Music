@@ -6,8 +6,15 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "FactoryBank.h"
+#include "NumericPolicy.h"
 
 namespace {
+// Fazıl Irak · 19.11.2026: kesirli host girdileri ikili parametre geri okumasını bozmamalı.
+// Mantıksal 0/1 bildirimi APVTS kayıt/geri yükleme davranışıyla aynı tutulur.
+class BinarySwitchParameter final : public juce::AudioParameterBool {
+public: using juce::AudioParameterBool::AudioParameterBool;
+private: float getValue() const override {return get()?1.f:0.f;}
+};
 const char* ids[]={"mode","gate","loop","reverse","poly","tracking","sampleGain","sampleTune","samplePan",
     "bodyGain","root","sweep","phase","harmonics","length","attack","release","sustain","cutoff","resonance","drive","output","start","end"};
 
@@ -45,8 +52,10 @@ juce::MemoryBlock encode(const fkick::Sample& s) {
 }
 juce::AudioProcessorValueTreeState::ParameterLayout FKickProcessor::layout() {
     juce::AudioProcessorValueTreeState::ParameterLayout l;
-    auto f=[&](const char* id,const char* name,float min,float max,float def,float skew=1.f){l.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{id,1},name,juce::NormalisableRange<float>(min,max,0,skew),def));};
-    auto b=[&](const char* id,const char* name,bool def){l.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{id,1},name,def));};
+    auto f=[&](const char* id,const char* name,float min,float max,float def,float skew=1.f){l.add(std::make_unique<juce::AudioParameterFloat>(juce::ParameterID{id,1},name,juce::NormalisableRange<float>(min,max,0,skew),def,
+        juce::AudioParameterFloatAttributes().withStringFromValueFunction([key=juce::String(id)](float v,int){return fkick::hostNumber(key,v);})
+        .withValueFromStringFunction([key=juce::String(id)](const juce::String& t){return fkick::enteredNumber(key,t.replaceCharacter(',','.').getFloatValue());})));};
+    auto b=[&](const char* id,const char* name,bool def){l.add(std::make_unique<BinarySwitchParameter>(juce::ParameterID{id,1},name,def));};
     l.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID{"mode",1},"Mode",juce::StringArray{"Kick","Sampler"},0));
     b("gate","MIDI gate",false);b("loop","Sample loop",false);b("reverse","Reverse sample",false);
     b("poly","Polyphonic",false);b("tracking","Track body tail",false);
@@ -105,10 +114,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout FKickProcessor::layout() {
     f("bassCutoff","Hybrid bass cutoff Hz",40.0f,1500.0f,550.0f);
     b("bassFollow","Hybrid bass MIDI tracking",false);
     choice("bassPattern","Hybrid bass pattern",{"Rolling","Offbeat","Driver","Octaves"},0);
+    // Fazıl Irak · 03.11.2026: 155 eski parametre aynı sırada; üç yeni kontrol en sonda.
+    f("tsAttack","Transient Attack",-100,100,0);f("tsPump","Transient Pump",0,100,0);f("tsSustain","Transient Sustain",-100,100,0);
     return l;
 }
 FKickProcessor::FKickProcessor():AudioProcessor(BusesProperties().withOutput("Output",juce::AudioChannelSet::stereo(),true)),state(*this,&undo,"FKICK_PARAMETERS",layout()) {
     keyboard.addListener(this);
+    const char* transientIDs[]{"tsAttack","tsPump","tsSustain"};
+    for(size_t i=0;i<3;++i)transientParams[i]=state.getRawParameterValue(transientIDs[i]);
     for(size_t i=0;i<params.size();++i)params[i]=state.getRawParameterValue(ids[i]);
     for(size_t i=0;i<fxParams.size();++i)fxParams[i]=state.getRawParameterValue(fxIDs[i]);
     for(size_t i=0;i<rumbleParams.size();++i)rumbleParams[i]=state.getRawParameterValue(rumbleIDs[i]);
@@ -176,7 +189,8 @@ fkick::Settings FKickProcessor::settings() const noexcept {
     s.fx.echoMix=fx(EMix);s.fx.echoTime=fx(ETime)*.001f;s.fx.feedback=fx(EFeedback);s.fx.echoLP=fx(ELP);s.fx.echoSync=fx(ESync)>.5f;s.fx.echoDivision=int(fx(EDivision));s.fx.echoSource=int(fx(ESource));s.fx.driveType=int(fx(DriveType));
     const double host=hostTempo.load();s.motion.bpm=host>0?host:fx(Tempo);s.motion.hz=fx(LHz);s.motion.sync=fx(LSync)>.5f;s.motion.shape=int(fx(LShape));s.motion.division=int(fx(LDivision));s.motion.phase=fx(LPhase);s.motion.retrigger=fx(LRetrigger)>.5f;
     s.motion.delay=fx(ADDelay)*.001f;s.motion.attack=fx(ADAttack)*.001f;s.motion.decay=fx(ADDecay)*.001f;s.motion.curve=fx(ADCurve);
-    for(int i=0;i<fkick::modTargetCount;++i){s.motion.lfo[(size_t)i]=routeParams[0][(size_t)i]->load();s.motion.ad[(size_t)i]=routeParams[1][(size_t)i]->load();}return s;
+    for(int i=0;i<fkick::modTargetCount;++i){s.motion.lfo[(size_t)i]=routeParams[0][(size_t)i]->load();s.motion.ad[(size_t)i]=routeParams[1][(size_t)i]->load();}    s.transientAttack=transientParams[0]->load(std::memory_order_relaxed);s.transientPump=transientParams[1]->load(std::memory_order_relaxed);s.transientSustain=transientParams[2]->load(std::memory_order_relaxed);
+return s;
 }
 double FKickProcessor::getTailLengthSeconds() const {const auto s=settings();return juce::jmax(5.,s.length+s.release+fkick::TechnoFX::tailSeconds(s.fx,s.motion));}
 void FKickProcessor::processBlock(juce::AudioBuffer<float>& audio,juce::MidiBuffer& midi) {

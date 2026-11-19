@@ -60,7 +60,7 @@ public:
     void rackApplyDock() {
         if (!init || rackDockLeft == 0) return;
         const int x=rackDockLeft, right=getWidth()-12;
-        const int toolbar=119;
+        const int toolbar=142;
         auto place=[](juce::Component& c,int px,int py,int w,int h,const char* id=nullptr) {
             c.setTransform({}); c.setBounds(px,py,w,h); if(id) c.setComponentID(id);
         };
@@ -81,7 +81,9 @@ public:
         settingsButton->setVisible(false);
         for(size_t i=0;i<duckButtons.size();++i) {
             duckButtons[i]->setVisible(audioProcessor.uimode!=UIMode::Seq);
-            place(*duckButtons[i],x+(int)i*48,80,43,27);
+            // Fazıl Irak · 19.11.2026: iki kompakt sıra, eski Volume bankası üstte.
+            const int gap=4, width=(right-x-7*gap)/8;
+            place(*duckButtons[i],x+(int(i)%8)*(width+gap),80+(int(i)/8)*30,width,25);
         }
         place(paintButton,12,toolbar,48,26,"effect-paint"); place(sequencerButton,66,toolbar,44,26,"effect-seq");
         place(pointLabel,116,toolbar+2,22,22); place(pointMenu,142,toolbar,84,26,"effect-curve");

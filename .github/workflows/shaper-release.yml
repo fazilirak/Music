@@ -141,23 +141,15 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          Jellybone 0.9.1 — Native Delay and a redesigned factory rack bank.
-          - 160 rack presets rebuilt with purposeful, compact curves and tempo-aligned rhythms.
-          - Native Delay: curve-controlled Send/Input, Mix, Feedback and Filter; stereo and ping-pong.
-          - Independent target ranges, smoothing and tail-preserving send modulation.
-          - A/B state and editor lifetime fixes; corrected Delay panel and full-rack layout.
-          - 32 redesigned Saturation/Pitch motion presets.
-          - Existing saved user presets and DAW projects retain their stored curves. Reselect a factory preset to load its redesigned version.
-          - Includes matching source, preserved upstream licences and QDelay component credits.
-
-          Windows x64: VST3 and standalone.
-          macOS Universal (arm64 + x86_64): VST3, AU and standalone; deployment target macOS 11.0.
-
-          Mac bundles are ad-hoc signed; they are not Developer ID signed or Apple notarised.
-          Both build hosts passed all six CTest targets. Separate DAW and Intel Mac testing is still required.
-          The Source ZIP includes Shaper, preserved upstream sources, build scripts and licence notices.
-          Distribute the matching source alongside binaries. Individual component licences are preserved.
-          The default Reverb IR is independently generated; the former Samplicity resource is excluded.
+          Jellybone 0.9.2
+          
+          Corrects host-reported Delay tail duration across parallel bands and serial rack modules, so long feedback echoes are not cut short by the old fixed 30-second report. Retains native curve Delay, 160 redesigned rack presets, Width, hosted VST3 FX, A/B and persistent zoom.
+          
+          Six local CTest groups and pluginval strictness 10 passed. Actual VST3 offline host tests cover nine rate/buffer configurations, tempo/transport/automation and state recall, including a five-minute virtual render. This is not a completed live Ableton/FL Studio acceptance test. Details: Shaper/docs/JELLYBONE-092-DOGRULAMA.md.
+          
+          Windows x64 VST3 and standalone; macOS Universal VST3, AU and standalone. Native automated build/tests gate each platform. Mac binaries are ad-hoc signed, not Apple notarised. Matching complete source, QDelay component credits and upstream licences accompany binaries. Default reverb IR is independently generated; original Samplicity resource is excluded.
+          
+          Turkce: Delay kuyrugu bildirimi paralel bantlar ve seri moduller icin duzeltildi; onceki sabit 30 saniye siniri kaldirildi.
           NOTES
           tag="Jellybone-v${SHAPER_VERSION}"
           if gh release view "$tag" >/dev/null 2>&1; then

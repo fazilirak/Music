@@ -1,3 +1,18 @@
+## Local 0.8.8 — host state validation
+Boolean host values now read back as 0/1, fixing a pluginval session-restore mismatch. Parameter IDs and audio processing remain unchanged. Windows VST3/Standalone, CTest and pluginval level 10 passed. A real VST3 test-host matrix covers MIDI, automation, tempo changes, state recall and four instances. Live DAW acceptance and subjective listening remain pending; the report includes the 96 kHz/64-buffer timing overruns. See validation/TEST_SONUCLARI_TR.md. Local review build only.
+
+## Local 0.8.7 — compact numeric values
+
+Includes the Attack/Pump/Sustain transient shaper. Readouts use at most two decimal places, with whole-number steps for note/semitone, phase, tempo, filter Hz and long time controls. Existing preset/automation precision is preserved. Windows review package only; public stable links below are unchanged.
+
+See docs/NUMERIC-087-TR.md and docs/TRANSIENT-086-TR.md.
+
+## Local 0.8.6 — Attack / Pump / Sustain
+
+Three compact transient controls are available below Tempo. Attack and Sustain boost/cut their regions; Pump only attenuates immediately after the hit. All three at zero provide exact bypass. The 912 × 511 interface and original parameter IDs are preserved. New controls are appended and saved with presets/DAW sessions; older presets default them to zero.
+
+This is a local Windows review build. The published release links below remain the previous stable release until a new publication is requested. [Türkçe kullanım ve bakım rehberi](docs/TRANSIENT-086-TR.md).
+
 ## Latest release — 0.8.5
 
 ### Verified current downloads

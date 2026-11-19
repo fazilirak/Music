@@ -18,7 +18,7 @@ from bootstrap_fonts import verify as verify_fonts
 
 ROOT_FILES = ['CMakeLists.txt', 'README.md', 'LICENSE', 'JUCE-LICENSE.md',
               'THIRD-PARTY-NOTICES.txt', 'GELISTIRME-TR.md', 'REVIEW-TR.md',
-              '.gitignore', '.gitattributes']
+              '.gitignore', '.gitattributes', 'YAPILACAKLAR.md']
 SOURCE_DIRS = ['Source', 'Tests', 'Resources', 'Research', 'docs', 'doc', 'scripts', 'vendor']
 
 
@@ -34,7 +34,7 @@ def package(target):
     build = ROOT / ('build-macos' if target == 'macOS' else 'build')
     log = build / 'Testing/Temporary/LastTest.log'
     result = log.read_text(encoding='utf-8', errors='replace')
-    if result.count('Test Passed.') != 1 or 'Test Failed.' in result:
+    if result.count('Test Passed.') != 3 or 'Test Failed.' in result:
         raise RuntimeError('DSP/preset/UI regression test must pass before packaging')
     dependency = verify_tree()
     verify_fonts()

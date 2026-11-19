@@ -6,6 +6,7 @@
 #include "PluginEditor.h"
 #include "RumbleRecipes.h"
 #include "FamilyTitle.h"
+#include "NumericPolicy.h"
 #include <BinaryData.h>
 
 namespace {
@@ -51,7 +52,7 @@ void FKickSidechainGraph::paint(juce::Graphics& g){
     for(int i=0;i<=400;++i){const float gain=fkick::FXShaper::curve(s.scShape,i/400.,s.scShift);auto point=juce::Point<float>{r.getX()+r.getWidth()*i/400,r.getBottom()-gain*r.getHeight()};if(i==0)curve.startNewSubPath(point);else curve.lineTo(point);area.lineTo(point);}
     area.lineTo(r.getRight(),r.getBottom());area.closeSubPath();g.setColour(accent.withAlpha(.08f));g.fillPath(area);g.setColour(accent);g.strokePath(curve,juce::PathStrokeType(1.7f));
     g.setColour(text.withAlpha(.5f));const float x=r.getX()+r.getWidth()*processor.scPhase.load();g.drawLine(x,r.getY(),x,r.getBottom(),1);
-    label(g,s.scMix==0?"MIX 0% / BYPASS":"SIDECHAIN MIX "+juce::String(s.scMix*100,0)+"%",{18,getHeight()-18,250,17},9);
+    label(g,s.scMix==0?"MIX 0% / BYPASS":"SIDECHAIN MIX "+fkick::displayNumber(s.scMix*100,0)+"%",{18,getHeight()-18,250,17},9);
 }
 void FKickSidechainGraph::mouseDown(const juce::MouseEvent& e){if(e.mods.isPopupMenu())return;if(e.mods.isAltDown()){shift.setValueAsCompleteGesture(0);return;}processor.undo.beginNewTransaction("Sidechain shift");startShift=processor.value("scShift");startX=e.position.x;shift.beginGesture();dragging=true;}
 void FKickSidechainGraph::mouseDrag(const juce::MouseEvent& e){if(dragging)shift.setValueAsPartOfGesture(juce::jlimit(-.5f,.5f,startShift+(e.position.x-startX)/juce::jmax(1,getWidth()-36)));}
@@ -79,39 +80,39 @@ FKickValue::FKickValue(FKickProcessor& p,const char* parameterID,const char* nam
     number.setColour(juce::Label::backgroundColourId,juce::Colours::transparentBlack);number.setColour(juce::Label::outlineColourId,juce::Colours::transparentBlack);
     number.setColour(juce::Label::textColourId,text);number.setColour(juce::Label::textWhenEditingColourId,text);number.setColour(juce::Label::backgroundWhenEditingColourId,panel);
     number.setTooltip(getTooltip());number.setMouseCursor(juce::MouseCursor::UpDownResizeCursor);number.addMouseListener(this,false);
-    number.onTextChange=[this]{float v=parsed(number.getText());if(std::isfinite(v)){if(id=="start")v=juce::jmin(v,processor.value("end")-.001f);if(id=="end")v=juce::jmax(v,processor.value("start")+.001f);processor.undo.beginNewTransaction("Type "+caption);attachment.setValueAsCompleteGesture(parameter.convertFrom0to1(parameter.convertTo0to1(v)));}refresh();};
+    number.onTextChange=[this]{float v=fkick::enteredNumber(id,parsed(number.getText()));if(std::isfinite(v)){if(id=="start")v=juce::jmin(v,processor.value("end")-.001f);if(id=="end")v=juce::jmax(v,processor.value("start")+.001f);processor.undo.beginNewTransaction("Type "+caption);attachment.setValueAsCompleteGesture(parameter.convertFrom0to1(parameter.convertTo0to1(v)));}refresh();};
     number.onEditorShow=[this]{if(dragging){attachment.endGesture();dragging=false;}};
     addAndMakeVisible(number);attachment.sendInitialUpdate();
 }
 FKickValue::~FKickValue(){number.removeMouseListener(this);if(dragging)attachment.endGesture();}
 juce::String FKickValue::formatted(float v) const {
-    if(id.endsWith("Duck")||id.endsWith("SC")||id=="grooveDepth"||id=="bassTone")return juce::String(v*100,0)+"%";
-    if(id=="echoGain"||id=="roomGain"||id=="rumbleCeiling"||id=="bassLevel")return v<=-59.9f?"Off":juce::String(v,1)+" dB";
-    if(id=="bassNote")return juce::String(v,0);
-    if(id=="bassTune")return juce::String(v,1)+" st";
-    if(id=="bassCutoff")return juce::String(v,0)+" Hz";
-    if(id.startsWith("lfo_")||id.startsWith("ad_")||id=="rumbleMix"||id=="echoMix"||id=="duck"||id=="echoFeedback")return juce::String(v*100,0)+"%";
-    if(id=="rumbleDecay")return juce::String(v,1)+" s";
+    if(id.endsWith("Duck")||id.endsWith("SC")||id=="grooveDepth"||id=="bassTone")return fkick::displayNumber(v*100,0)+"%";
+    if(id=="echoGain"||id=="roomGain"||id=="rumbleCeiling"||id=="bassLevel")return v<=-59.9f?"Off":juce::String(v,2)+" dB";
+    if(id=="bassNote")return fkick::displayNumber(v,0);
+    if(id=="bassTune")return juce::String(v,2)+" st";
+    if(id=="bassCutoff")return fkick::displayNumber(v,0)+" Hz";
+    if(id.startsWith("lfo_")||id.startsWith("ad_")||id=="rumbleMix"||id=="echoMix"||id=="duck"||id=="echoFeedback")return fkick::displayNumber(v*100,0)+"%";
+    if(id=="rumbleDecay")return juce::String(v,2)+" s";
     if(id=="adCurve")return juce::String(v,2);
-    if(id=="tempo")return juce::String(processor.hostTempo.load()>0?processor.hostTempo.load():v,0)+" BPM";
+    if(id=="tempo")return fkick::displayNumber(processor.hostTempo.load()>0?processor.hostTempo.load():v,0)+" BPM";
     if(id=="lfoHz")return juce::String(v,2)+" Hz";
-    if(id=="rumbleHP"||id=="rumbleLP"||id=="echoLP")return v>=1000?juce::String(v/1000,1)+"k":juce::String(v,0);
-    if(id=="rumbleDrive"||id=="rumbleGain")return juce::String(v,0)+" dB";
-    if(id=="lfoPhase")return juce::String(v,0)+juce::String::fromUTF8("°");
-    if(id=="sampleGain"||id=="bodyGain"||id=="output")return v<=-59.9f?juce::String("Off"):juce::String(v,1)+" dB";
-    if(id=="sampleTune"||id=="sweep")return juce::String(v,0)+" st";
+    if(id=="rumbleHP"||id=="rumbleLP"||id=="echoLP")return v>=1000?juce::String(v/1000,2)+"k":fkick::displayNumber(v,0);
+    if(id=="rumbleDrive"||id=="rumbleGain")return fkick::displayNumber(v,2)+" dB";
+    if(id=="lfoPhase")return fkick::displayNumber(v,0)+juce::String::fromUTF8("°");
+    if(id=="sampleGain"||id=="bodyGain"||id=="output")return v<=-59.9f?juce::String("Off"):juce::String(v,2)+" dB";
+    if(id=="sampleTune"||id=="sweep")return fkick::displayNumber(v,0)+" st";
     if(id=="samplePan")return std::abs(v)<.005f?juce::String("C"):juce::String(v<0?"L ":"R ")+juce::String(juce::roundToInt(std::abs(v)*100));
-    if(id=="room"||id=="scMix"||id=="punch"||id=="harmonics"||id=="sustain"||id=="start"||id=="end")return juce::String(v*100,id=="start"||id=="end"?1:0)+"%";
-    if(id=="root")return juce::String(v,1)+" Hz";
+    if(id=="room"||id=="scMix"||id=="punch"||id=="harmonics"||id=="sustain"||id=="start"||id=="end")return fkick::displayNumber(v*100,id=="start"||id=="end"?2:0)+"%";
+    if(id=="root")return juce::String(v,2)+" Hz";
     if((id=="hp"||id=="fxHP")&&v<1)return "Off";
     if(id=="fxLP"&&v>=19999)return "Off";
-    if(id=="scShift")return (v>0?"+":"")+juce::String(v*100,0)+"%";
-    if(id=="cutoff"||id=="hp"||id=="fxHP"||id=="fxLP")return v>=1000?juce::String(v/1000,1)+"k":juce::String(v,0);
-    if(id=="phase")return juce::String(v,0)+juce::String::fromUTF8("°");
+    if(id=="scShift")return (v>0?"+":"")+fkick::displayNumber(v*100,0)+"%";
+    if(id=="cutoff"||id=="hp"||id=="fxHP"||id=="fxLP")return v>=1000?juce::String(v/1000,2)+"k":fkick::displayNumber(v,0);
+    if(id=="phase")return fkick::displayNumber(v,0)+juce::String::fromUTF8("°");
     if(id=="resonance"||id=="bassQ")return juce::String(v,2);
-    if(id=="bassLift")return (v>0?"+":"")+juce::String(v,1)+" dB";
-    if(id=="drive")return juce::String(v,0)+" dB";
-    return juce::String(v,0)+" ms";
+    if(id=="bassLift")return (v>0?"+":"")+juce::String(v,2)+" dB";
+    if(id=="drive")return fkick::displayNumber(v,2)+" dB";
+    return fkick::displayNumber(v,id=="attack"?2:0)+" ms";
 }
 float FKickValue::parsed(const juce::String& input) const {
     auto t=input.trim().replaceCharacter(',', '.');
@@ -137,13 +138,13 @@ void FKickValue::mouseDrag(const juce::MouseEvent& e){
     float v=parameter.convertFrom0to1(dragValue);
     if(id=="start")v=juce::jmin(v,processor.value("end")-.001f);
     if(id=="end")v=juce::jmax(v,processor.value("start")+.001f);
-    attachment.setValueAsPartOfGesture(v);
+    attachment.setValueAsPartOfGesture(fkick::enteredNumber(id,v));
 }
 void FKickValue::mouseUp(const juce::MouseEvent&){if(dragging){attachment.endGesture();dragging=false;}}
 void FKickValue::mouseWheelMove(const juce::MouseEvent& e,const juce::MouseWheelDetails& w){
     if(!isEnabled()||number.isBeingEdited()||dragging||w.deltaY==0)return;processor.undo.beginNewTransaction("Adjust "+caption);
     float v=parameter.convertFrom0to1(juce::jlimit(0.f,1.f,parameter.getValue()+(w.deltaY>0?1:-1)*(e.mods.isShiftDown()?.001f:.01f)));
-    if(id=="start")v=juce::jmin(v,processor.value("end")-.001f);if(id=="end")v=juce::jmax(v,processor.value("start")+.001f);attachment.setValueAsCompleteGesture(v);
+    if(id=="start")v=juce::jmin(v,processor.value("end")-.001f);if(id=="end")v=juce::jmax(v,processor.value("start")+.001f);attachment.setValueAsCompleteGesture(fkick::enteredNumber(id,v));
 }
 juce::Rectangle<float> FKickGraph::plot() const {return {30.f,42.f,float(getWidth()-60),float(getHeight()-62)};}
 juce::Point<float> FKickGraph::point(const fkick::Curve& c,int i) const {auto r=plot();return {r.getX()+c.x[(size_t)i]*r.getWidth(),r.getBottom()-c.y[(size_t)i]*r.getHeight()};}
@@ -168,8 +169,8 @@ void FKickGraph::paint(juce::Graphics& g) {
             g.fillRect(juce::Rectangle<float>(r.getX(),r.getY(),startX-r.getX(),r.getHeight()));
             g.fillRect(juce::Rectangle<float>(endX,r.getY(),r.getRight()-endX,r.getHeight()));
             for(int i=0;i<2;++i){float x=r.getX()+(i==0?s.start:s.end)*r.getWidth();g.setColour(accent);g.drawVerticalLine(int(x),r.getY(),r.getBottom());g.fillRect(x-3,r.getY(),6.f,8.f);}
-            label(g,"START "+juce::String(s.start*view.duration,3)+" s",{int(r.getX())+7,24,170,14},10,accent);
-            label(g,"END "+juce::String(s.end*view.duration,3)+" s",{getWidth()-220,24,180,14},10,accent,juce::Justification::centredRight);
+            label(g,"START "+juce::String(s.start*view.duration,2)+" s",{int(r.getX())+7,24,170,14},10,accent);
+            label(g,"END "+juce::String(s.end*view.duration,2)+" s",{getWidth()-220,24,180,14},10,accent,juce::Justification::centredRight);
         }
         return;
     }
@@ -313,7 +314,11 @@ FKickEditor::FKickEditor(FKickProcessor& p):AudioProcessorEditor(p),processor(p)
     for(int i=0;i<4;++i){auto& b=scPresets[(size_t)i];addAndMakeVisible(b);b.setButtonText(scNames[i]);b.setComponentID("sc-preset-"+juce::String(i+1));b.onClick=[this,i]{processor.undo.beginNewTransaction("Sidechain curve");processor.setParameter("scShape",float(i));updateControls();};}
     addAndMakeVisible(scMixValue);addAndMakeVisible(scShiftValue);
     addAndMakeVisible(hpValue);addAndMakeVisible(bodyPunch);
+    const char* tsIDs[]{"tsAttack","tsPump","tsSustain"};const char* tsNames[]{"Attack","Pump","Sustain"};
+    const char* tsHelp[]{"Boost or reduce the first hit (-100 to +100%). Double-click: zero.","Cut immediately after the hit without boosting the transient (0 to 100%). Double-click: zero.","Boost or reduce the continuation and tail (-100 to +100%). All three at zero: exact bypass."};
+    for(size_t i=0;i<3;++i)transientKnobs[i]=std::make_unique<FKickTransientKnob>(p,tsIDs[i],tsNames[i],tsHelp[i]);
     addAndMakeVisible(samplePanel);
+    for(auto& knob:transientKnobs)samplePanel.addAndMakeVisible(*knob);
     for(auto* b:{&openSample,&kickMode,&samplerMode,&gate,&poly,&loop,&reverse,&sampleTab,&pitchTab,&ampTab})samplePanel.addAndMakeVisible(*b);
     for(int i=0;i<5;++i)samplePanel.addAndMakeVisible(*values[(size_t)i]);
     samplePanel.addAndMakeVisible(graph);
@@ -336,6 +341,7 @@ void FKickEditor::resized() {
     save.setBounds(516,8,37,23);load.setBounds(559,8,37,23);exportButton.setBounds(603,8,40,23);play.setBounds(653,8,22,23);panic.setBounds(685,8,22,23);options.setBounds(722,8,30,23);
     kickMode.setBounds(12,77,57,24);samplerMode.setBounds(12,105,57,24);poly.setBounds(12,172,57,21);gate.setBounds(12,204,57,21);
     sampleTab.setBounds(82,47,50,21);pitchTab.setBounds(139,47,43,21);ampTab.setBounds(189,47,41,21);openSample.setBounds(286,47,356,21);
+    for(int i=0;i<3;++i)transientKnobs[(size_t)i]->setBounds(655+i*30,262,30,50);
     graph.setBounds(76,72,570,244);
     sidechainGraph.setBounds(76,72,570,244);tempoValue.setBounds(660,209,81,38);
     values[0]->setBounds(86,78,87,20);values[1]->setBounds(176,78,73,20);values[2]->setBounds(251,78,55,20);values[3]->setBounds(311,78,91,20);values[4]->setBounds(407,78,91,20);
@@ -370,14 +376,15 @@ void FKickEditor::paint(juce::Graphics& g) {
     g.setColour(accent);g.drawLine(8,38,752,38,1.5f);
     g.setColour(text.withAlpha(.85f));g.drawLine(8,41,752,41,.7f);
     g.setColour(juce::Colour(0xff111617));g.fillRoundedRectangle(8,44,744,274,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,44,744,274,5,.7f);g.setColour(line.withAlpha(.5f));g.drawVerticalLine(74,44,318);g.drawVerticalLine(650,72,314);
+    label(g,"TRANSIENT",{655,248,90,11},8,accent,juce::Justification::centred);
     label(g,"MODE",{20,52,50,15},9);label(g,"VOICE",{20,155,50,14},9);label(g,"PLAY",{20,190,50,14},9);
     g.setColour(juce::Colour(0xff1b2123));g.fillRoundedRectangle(8,326,744,71,5);g.setColour(text.withAlpha(.10f));g.drawRoundedRectangle(8,326,744,71,5,.7f);g.setColour(line.withAlpha(.6f));
     if(page==0){g.drawVerticalLine(309,335,390);g.drawVerticalLine(535,335,390);label(g,"BODY",{18,329,150,15},9,accent);label(g,"ENVELOPE",{326,329,194,15},9,accent);label(g,"FILTER / OUTPUT",{548,326,196,13},9,accent);}
-    else if(page==1){g.drawVerticalLine(355,335,390);label(g,"RUMBLE",{18,329,58,15},9,accent);label(g,"ECHO",{370,329,58,15},9,accent);label(g,"Source",{605,283,62,13},10);label(g,"Drive type",{682,283,62,13},10);label(g,"Time",{423,283,58,13},10);}
+    else if(page==1){g.drawVerticalLine(355,335,390);label(g,"RUMBLE",{18,329,58,15},9,accent);label(g,"ECHO",{370,329,58,15},9,accent);label(g,"Source",{605,349,62,13},10);label(g,"Drive type",{682,349,62,13},10);label(g,"Time",{423,349,58,13},10);}
     else if(page==2){label(g,"SIDECHAIN CURVE",{18,329,340,15},9,accent);g.drawVerticalLine(385,335,390);label(g,"FX AMOUNT / TIMING",{400,329,185,15},9,accent);label(g,"1/4 note",{620,350,110,17},12,text);label(g,"FX returns only",{620,370,110,15},10);}
 
     if(page==3)label(g,"RETURNS",{18,329,58,15},9,accent);
-    if(page==4){label(g,"BASS",{18,329,58,15},9,accent);label(g,"Pattern",{610,283,130,14},10);}
+    if(page==4){label(g,"BASS",{18,329,58,15},9,accent);label(g,"Pattern",{610,349,130,14},10);}
     const auto view=processor.sampleView();label(g,view.status.isNotEmpty()?view.status:page==2?"Drag curve left/right  |  Double-click: reset shift  |  Mix 0%: bypass":"Drag: adjust  |  Double-click: type  |  Room / FX HP / FX LP: effect returns only",{12,405,594,15},10);
     const float db=juce::Decibels::gainToDecibels(peak,-60.f);g.setColour(line);g.fillRect(615,411,64,2);g.setColour(accent);g.fillRect(615,411,int(64*juce::jlimit(0.f,1.f,(db+60)/60)),2);
     label(g,juce::String(db,1)+" dB",{686,404,64,17},10,peak>.98f?accent:muted,juce::Justification::centredRight);

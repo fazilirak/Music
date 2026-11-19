@@ -141,16 +141,13 @@ jobs:
           copy_asset artifacts/windows RELEASE-MANIFEST.json release/Windows-RELEASE-MANIFEST.json
           copy_asset artifacts/macos RELEASE-MANIFEST.json release/macOS-RELEASE-MANIFEST.json
           cat > release-notes.md <<'NOTES'
-          F-Sidechain 1.1.2 — Draw the groove. Make room for your sound.
-
-          Free compact multiband volume shaper with eight editable factory envelopes, independent Low/Mid/High bands, full-range mode, tempo/MIDI/audio triggering, paint and sequencer editing, and complete preset/state saving.
-          Preset selection, Save, Load and options are in the top bar; 912 × 511 interface follows the F-series charcoal/orange/ivory design, with paired orange/white header lines. Audio processing and state formats are unchanged.
-
-          Windows x64: VST3 and standalone.
-          macOS Universal (arm64 + x86_64): VST3, AU and standalone; macOS 11.0+.
-          Both build hosts passed the audio, preset/state and embedded licence test suite.
-          Mac bundles are ad-hoc signed, not Developer ID signed or Apple notarised. Separate real DAW and Intel Mac testing remains necessary.
-          Complete corresponding source includes application code, scripts, pinned JUCE/VST3 source, resources and licence notices. Preserve GPLv3/AGPLv3 component requirements and upstream credits.
+          F-Sidechain 1.1.4
+          
+          Eight new original Trance Gate presets in a compact second row; existing eight Volume presets are retained. 72 local audio cases, state/program and UI checks passed; pluginval strictness 10 passed. Local test details: F-Sidechain/docs/RELEASE-1.1.4.md. Human musical and DAW acceptance remain separate.
+          
+          Windows x64 VST3 and standalone; macOS Universal VST3, AU and standalone. Native automated build/tests gate each platform. macOS bundles are ad-hoc signed, not Apple notarised. Complete matching sources and preserved upstream licences are attached. GPL-3.0-only project; individual component terms apply.
+          
+          Turkce: Sekiz yeni Trance Gate preseti ikinci sirada; mevcut Volume presetleri korunur.
           NOTES
           tag="F-Sidechain-v${FSIDECHAIN_VERSION}"
           if gh release view "$tag" >/dev/null 2>&1; then

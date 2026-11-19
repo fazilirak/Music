@@ -1,18 +1,16 @@
 # F-Kick — Yapılacaklar
+Fazıl Irak · 19.11.2026 · Yerel sürüm 0.8.8
 
-Fazıl Irak · Güncelleme: 03.11.2026
+## Tamamlananlar
+- [x] Gerçek VST3 test hostunda MIDI, otomasyon, tempo geçişi, 1/4 instance ve state kaydet/geri aç matrisi.
+- [x] On iki Classic/Groove/Hybrid reçetesinin yeni VST3 instance içinde geri çağrılması ve ses üretmesi.
+- [x] Boolean host/state readback düzeltmesi; pluginval 10 ve tüm CTest regresyonları.
+- [x] Kullanıcı yardımıyla Explorer→Standalone grafik alanına dosya bırakma ve dalga/dosya adı doğrulaması (canlı 0.8.7; 0.8.8 native testleri de geçti).
+- [x] Yerel Windows VST3/Standalone ve eşleşen kaynak paketi.
 
-## Bekleyen doğrulama
+## Bekleyen kullanıcı/DAW kabulü
+- [ ] On iki reçetenin ayrı ve birlikte kulakla kalite, groove ve mono faz kontrolü.
+- [ ] Güncel 0.8.8 ile gerçek Ableton/FL Studio MIDI, otomasyon, çoklu instance CPU/gecikme ve oturum kaydet-aç denemesi. VST3 test hostu tamamlandı; canlı DAW yerine sayılmaz. Araç odak/kullanıcı girişi hatası nedeniyle canlı kontrol sürdürülemedi.
+- [ ] Explorer→Standalone metin alanı ve Explorer→Ableton waveform/metin alanı fiziksel sürükle-bırak denemesi.
 
-- [ ] 0.8.4'ün 12 yeni Classic/Groove/Hybrid reçetesini kullanıcı DAW'ında ayrı dönüşlerle ve birlikte dinle: kick başlangıcının açıklığı, groove, bass/rumble frekans paylaşımı ve mono faz ilişkisini değerlendir. Otomatik DC/peak/mono/state/tempo testleri geçti; kulakla kalite kontrolü yapılmadı.
-- [ ] Ableton/FL Studio içinde aktif parametre otomasyonu ve çoklu instance yükünü deneyerek gerçek DAW CPU/gecikme davranışını kontrol et. Çevrimdışı DSP zaman ölçümleri raporda; bunlar DAW testi değildir.
-
-## Tamamlananlar — 0.8.4
-
-- Bağımsız Rumble/Echo/Room ve Hybrid bass Duck/SC katılımları, dönüş trim'leri, isteğe bağlı rumble peak limiter.
-- Eski sesi birebir koruyan Classic; dört özgün ritmik eğriyle Groove; ayrı akortlu mono bass motoruyla Hybrid.
-- 912 × 432 kompakt mod/Routes/Bass alanları; 12 ek özgün reçete ve WAV; Türkçe kullanım/bakım belgeleri.
-- CTest, gerçek VST3 instantiate/editor, eski/yeni örnek eşitliği, tempo geçişi, preset/state, mono bass ve GUI kontrolleri.
-- Yerel Windows VST3/Standalone ve eşleşen kaynak paketleri. GitHub/web yayın talebi beklenir.
-
-Özgün görev kapsamı ve kanıtlar: docs/YAPILACAKLAR-084-ARSIV.md ve validation/TEST_SONUCLARI_TR.md. Tamamlanmış kod işleri aktif listeden çıkarıldı; dinleme ve gerçek DAW denemeleri tamamlanınca bekleyen liste boşaltılır.
+Kanıt ve ölçüm sınırları: validation/TEST_SONUCLARI_TR.md. 96 kHz/64 buffer/4 instance çevrimdışı koşulundaki 30 zaman aşımı CSV ve raporda korunur. GitHub/web yayını ayrıca talep edilmelidir.

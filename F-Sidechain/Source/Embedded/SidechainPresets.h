@@ -11,6 +11,7 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "VolumePresetData.h"
+#include "TranceGatePresetData.h"
 #include <array>
 #include <vector>
 #include <sstream>
@@ -19,7 +20,7 @@
 
 struct SidechainPresets
 {
-    static constexpr int count = 8;
+    static constexpr int normalCount = 8, tranceCount = 8, count = normalCount + tranceCount;
     struct Point
     {
         double x, y, tension;
@@ -29,13 +30,15 @@ struct SidechainPresets
     static const char *name(int i)
     {
         static const char *names[]{"Volume 1", "Volume 2", "Volume 3", "Volume 4",
-                                   "Volume 5", "Volume 6", "Volume 7", "Volume 8"};
+                                   "Volume 5", "Volume 6", "Volume 7", "Volume 8",
+            "TG 1 - Classic 16", "TG 2 - Offbeat Eighths", "TG 3 - Anthem Sync", "TG 4 - Dotted 3-3-2", "TG 5 - Triplet Roll", "TG 6 - Swing Chops", "TG 7 - Held Chords", "TG 8 - Final Beat Fill"};
         return names[juce::jlimit(0, count - 1, i)];
     }
     // state alt adımı: Volume/sidechain yönlü hazır envelope/desen verilerinin sözleşmesidir.
     static const char *state(int i)
     {
-        return volumePresetStates[juce::jlimit(0, count - 1, i)];
+        i = juce::jlimit(0, count - 1, i);
+        return i < normalCount ? volumePresetStates[i] : tranceGatePresetStates[i - normalCount];
     }
     // points alt adımı: Volume/sidechain yönlü hazır envelope/desen verilerinin sözleşmesidir.
     // Gövdedeki başlıca çağrılar: juce::parseXML → state → xml->getIntAttribute → stream. Ayrıntı/sıra için aşağıdaki çağrı yerlerini izleyin.
@@ -74,6 +77,7 @@ class SidechainPresetButton final : public juce::Button
     void setSelected(bool value)
     {
         selected = value;
+        setToggleState(value, juce::dontSendNotification);
         repaint();
     }
     // paintButton alt adımı: Volume/sidechain yönlü hazır envelope/desen verilerinin sözleşmesidir.

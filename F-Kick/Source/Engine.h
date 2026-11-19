@@ -7,6 +7,7 @@
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <array>
 #include "TechnoFX.h"
+#include "TransientShaper.h"
 
 namespace fkick {
 constexpr int maxPoints = 8;
@@ -26,6 +27,7 @@ struct Settings {
     float sampleGain = .6f, sampleTune = 0, samplePan = 0, bodyGain = .65f;
     float root = 50, sweep = 48, phase = 0, harmonics = 0, length = .5f;
     float punch = 0;
+    float transientAttack=0, transientPump=0, transientSustain=0;
     float attack = .001f, release = .08f, sustain = .8f;
     float cutoff = 18000, resonance = .7f, drive = 0, output = .7f, start = 0, end = 1;
     Curve amp, pitch;
@@ -70,6 +72,7 @@ private:
     std::array<double,2> ic1{}, ic2{}, dcX{}, dcY{};
     juce::SmoothedValue<float> sampleLevel, bodyLevel, cutoff, drive, output, punchAmount;
     TechnoFX effects;
+    TransientShaper transient;
     Motion motion;
     MotionFrame lastMotion;
     void beginRelease(Voice&) noexcept;

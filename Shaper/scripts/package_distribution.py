@@ -13,7 +13,7 @@ EXCLUDED_IR = 'upstream/reevr/resources/impulses/Hall Quad.flac'
 DIRECTORIES = ('.github', 'Source', 'Tests', 'scripts', 'upstream', 'Resources', 'licenses', 'docs', 'doc')
 ROOT_FILES = ('CMakeLists.txt', 'README.md', 'AGENTS.md', '.gitignore', '.gitattributes', 'LICENSE',
               'LICENSE-AGPL-3.0.txt', 'COPYING.txt', 'THIRD-PARTY-NOTICES.txt',
-              'upstream-lock.json', 'Pitch-dependencies.json', 'AUTHORS.md')
+              'upstream-lock.json', 'Pitch-dependencies.json', 'AUTHORS.md', 'YAPILACAKLAR.md')
 
 
 def digest(path):

@@ -6,6 +6,7 @@
 #pragma once
 #include "PluginProcessor.h"
 #include "NativeFileDrop.h"
+#include "TransientKnob.h"
 
 class FKickTheme final : public juce::LookAndFeel_V4 {
 public:
@@ -156,6 +157,7 @@ private:
     FKickValue bodyPunch;
     FKickValue tempoValue;
     FKickValue scMixValue,scShiftValue,roomMixValue,fxHPValue,fxLPValue,bassLiftValue,bassQValue;
+    std::array<std::unique_ptr<FKickTransientKnob>,3> transientKnobs;
     FKickSampleDropArea samplePanel;
     FKickGraph graph;
     FKickSidechainGraph sidechainGraph;

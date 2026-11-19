@@ -1,3 +1,6 @@
+## Jellybone 0.9.2 — local Windows validation update
+Long Delay tails now propagate through parallel bands and the active serial rack instead of being capped at a fixed 30-second host report. Parameter IDs, state format and DSP are preserved. Six CTest groups and pluginval level 10 passed. A real VST3 test-host matrix includes a five-minute offline render, MIDI, tempo/transport, automation and session recall. FL Studio and the user's original Ableton project still need live acceptance; see [verification](docs/JELLYBONE-092-DOGRULAMA.md) and [remaining checks](YAPILACAKLAR.md). This is a local Windows package.
+
 ## Jellybone 0.9.1 — redesigned factory rack bank
 
 160 rack presets rebuilt around sparse musical nodes, segment tension, S-curves and half-sine arcs.

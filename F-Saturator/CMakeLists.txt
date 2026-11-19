@@ -1,7 +1,7 @@
 # Geliştirici: Fazıl Irak | Son düzenleme: 26.10.2026
 # F-Saturator 0.5.3: Windows VST3/Standalone, macOS Universal VST3/AU/Standalone.
 cmake_minimum_required(VERSION 3.24)
-project(FSaturator VERSION 0.5.5 LANGUAGES C CXX)
+project(FSaturator VERSION 0.5.6 LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 17)
 # MSVC çalışma zamanı statik bağlanır; /utf-8 Türkçe kaynak açıklamalarının doğru okunmasını sağlar.
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -56,3 +56,25 @@ add_test(NAME irak_dsp COMMAND IRAKTests)
 juce_add_binary_data(FamilyTitleFonts NAMESPACE family_title HEADER_NAME FamilyTitleFonts.h
     SOURCES Resources/Brand/Book.otf Resources/Brand/LICENSE Resources/Brand/COPYING)
 target_link_libraries(IRAK PRIVATE FamilyTitleFonts)
+
+# Fazıl Irak · 19.11.2026: optional pre/post CPU and audio measurement tool.
+juce_add_console_app(IRAKPerformance PRODUCT_NAME "F-Saturator Performance Checks")
+target_sources(IRAKPerformance PRIVATE Tests/PerformanceChecks.cpp)
+target_include_directories(IRAKPerformance PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/IRAK_artefacts/JuceLibraryCode" "${IRAK_JUCE_PATH}/modules")
+target_compile_definitions(IRAKPerformance PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1)
+target_link_libraries(IRAKPerformance PRIVATE IRAK)
+
+juce_add_console_app(IRAKViewChecks PRODUCT_NAME "F-Saturator View Checks")
+target_sources(IRAKViewChecks PRIVATE Tests/ViewChecks.cpp)
+target_include_directories(IRAKViewChecks PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/IRAK_artefacts/JuceLibraryCode" "${IRAK_JUCE_PATH}/modules")
+target_compile_definitions(IRAKViewChecks PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1)
+target_link_libraries(IRAKViewChecks PRIVATE IRAK)
+add_test(NAME irak_view COMMAND IRAKViewChecks)
+
+# Kept only in the measurement executable, never linked into the product.
+juce_add_console_app(IRAKPairedPerformance PRODUCT_NAME "F-Saturator Paired Comparison")
+target_sources(IRAKPairedPerformance PRIVATE Tests/PairedPerformance.cpp Tests/Reference055/SaturationDSP.cpp)
+target_include_directories(IRAKPairedPerformance PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/IRAK_artefacts/JuceLibraryCode" "${IRAK_JUCE_PATH}/modules")
+target_compile_definitions(IRAKPairedPerformance PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1)
+target_link_libraries(IRAKPairedPerformance PRIVATE IRAK)
+add_test(NAME irak_reference COMMAND IRAKPairedPerformance)

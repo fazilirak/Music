@@ -78,7 +78,7 @@ void Editor::Theme::drawRotarySlider(juce::Graphics& g,int x,int y,int w,int h,f
 }
 // Kontrolleri oluştur, APVTS ile bağla ve callback’leri kur.
 // Arayüz metinlerini değiştirmek parametre kimliklerini değiştirmeyi gerektirmez.
-Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
+Editor::Editor(Processor &p, juce::File preferencesFile) : AudioProcessorEditor(p), processor(p)
 {
     setLookAndFeel(&theme);
     setComponentID("irak-editor");
@@ -176,14 +176,29 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
     { presets.setSelectedItemIndex((presets.getSelectedItemIndex() + 1) % 16, juce::sendNotificationSync); };
     save.onClick = [this] { choosePreset(true); };
     load.onClick = [this] { choosePreset(false); };
-    // Fazıl Irak: İstenen sabit panel 1142×640; host sürükleme ve köşe yeniden boyutlandırması kapalıdır.
-    setResizable(false, false);
-    setResizeLimits(912, 511, 912, 511);
+    // Fazıl Irak · 19.11.2026: user-wide, preset-independent UI preferences.
+    juce::PropertiesFile::Options options;
+    options.applicationName = "F-Saturator"; options.filenameSuffix = ".settings";
+    options.folderName = "FAZIL IRAK"; options.osxLibrarySubFolder = "Application Support";
+    options.millisecondsBeforeSaving = -1;
+    viewPreferences = preferencesFile == juce::File()
+        ? std::make_unique<juce::PropertiesFile>(options)
+        : std::make_unique<juce::PropertiesFile>(preferencesFile, options);
+    uiScale = juce::jlimit(50, 200, viewPreferences->getIntValue("uiScale", 100));
+    viewSettings.setComponentID("saturator-ui-settings");
+    viewSettings.setTooltip("UI scale (50-200%). Size is remembered independently of sound presets.");
+    viewSettings.onClick = [this] { showViewSettings(); };
+    addAndMakeVisible(viewSettings);
     // Fazıl Irak · 03.11.2026: aynı aile ölçüsü 912 x 511; dairesel kontroller bozulmaz.
     const auto panelChildren=getChildren();
     for(auto* c:panelChildren)brandCanvas.addChildComponent(c);
     addAndMakeVisible(brandCanvas);
-    setSize(912,511);
+    setResizable(true, true);
+    updateViewLimits();
+    const int savedWidth = viewPreferences->getIntValue("windowWidth", juce::roundToInt(912 * uiScale / 100.0));
+    const int width = juce::jlimit(getConstrainer()->getMinimumWidth(), getConstrainer()->getMaximumWidth(), savedWidth);
+    setSize(width, juce::roundToInt(width * 511.0 / 912));
+    restoringView = false;
     timerCallback();
     startTimerHz(30);
 }
@@ -191,6 +206,7 @@ Editor::Editor(Processor &p) : AudioProcessorEditor(p), processor(p)
 Editor::~Editor()
 {
     stopTimer();
+    saveView();
     for (auto &group : groups)
         group.reset();
     for(auto& knob : deskKnobs) knob.reset();
@@ -201,6 +217,15 @@ Editor::~Editor()
 // 30 Hz GUI güncellemesi DSP’den atomik tepe değerleri okur; bu bir audio callback değildir. repaint ses işleme başlatmaz.
 void Editor::timerCallback()
 {
+    if (isShowing() && availableViewBounds() != lastDisplayArea)
+    {
+        updateViewLimits();
+        if (getWidth() > getConstrainer()->getMaximumWidth() || getHeight() > getConstrainer()->getMaximumHeight())
+        {
+            const int width = getConstrainer()->getMaximumWidth();
+            setSize(width, juce::roundToInt(width * 511.0 / 912));
+        }
+    }
     const auto s = processor.settings();
     for (int i = 0; i < 5; ++i)
         characters[(size_t)i].setToggleState(i == s.model, juce::dontSendNotification);
@@ -210,7 +235,17 @@ void Editor::timerCallback()
     displayedProgram = current;
     inputLevel = juce::jmax(processor.dsp.inputPeak.load(), inputLevel * .88f);
     outputLevel = juce::jmax(processor.dsp.outputPeak.load(), outputLevel * .88f);
-    repaint();
+    // Only redraw the graph when its parameters change, and only the meter strips each tick.
+    if (curveDirty || s.model != displayedCurve.model || s.drive != displayedCurve.drive ||
+        s.heat != displayedCurve.heat || s.bias != displayedCurve.bias || s.character != displayedCurve.character ||
+        s.harmonics != displayedCurve.harmonics || s.bypass != displayedCurve.bypass)
+    {
+        displayedCurve = s; curveDirty = false;
+        repaint(graphBounds.getSmallestIntegerContainer().transformedBy(brandCanvas.getTransform()).expanded(2));
+    }
+    for (const auto bounds : {inputMeter, outputMeter})
+        repaint(bounds.expanded(10, 22).getSmallestIntegerContainer().transformedBy(brandCanvas.getTransform()).expanded(2));
+    if (viewDirty && juce::Time::getMillisecondCounter() - lastResizeTime > 400) saveView();
 }
 // Transfer eğrisinin statik önizlemesi; spektrum analizörü değildir. Drive/Heat/Bias görünümünü gösterir.
 void Editor::curve(juce::Graphics &g, juce::Rectangle<float> r)
@@ -289,7 +324,7 @@ void Editor::paint(juce::Graphics &g)
         g.setFont(familySubtitleFont(511.f/640.f));
         g.drawText("FAZIL IRAK / ANALOG COLOUR", 28, 68, 285, 16, juce::Justification::centredLeft);
     }
-    curve(g, graphBounds);
+    if (g.clipRegionIntersects(graphBounds.getSmallestIntegerContainer())) curve(g, graphBounds);
     meter(g, inputMeter, inputLevel, "IN");
     meter(g, outputMeter, outputLevel, "OUT");
     g.setColour(accent);
@@ -319,6 +354,11 @@ void Editor::paint(juce::Graphics &g)
 // Tüm bileşenlerin piksel yerleşimi burada. dockLeft gömme alanı için ikinci yerleşimi seçer.
 void Editor::resized()
 {
+    curveDirty = true;
+    if (!restoringView && !dockLeft)
+    {
+        viewDirty = true; lastResizeTime = juce::Time::getMillisecondCounter();
+    }
     // Fazıl Irak · 03.11.2026: yan boşluk yerine genişletilmiş kontrol sütunları.
     const float familyScale=juce::jmin(getWidth()/float(1142),getHeight()/float(640));
     brandCanvas.setBounds(0,0,1142,640);
@@ -362,6 +402,54 @@ void Editor::resized()
     next.setBounds(354, bottom, 30, 28);
     save.setBounds(400, bottom, 62, 28);
     load.setBounds(470, bottom, 62, 28);
+    viewSettings.setBounds(548, bottom, 45, 28);
+    viewSettings.setVisible(dockLeft == 0);
+}
+// Fazıl Irak · 19.11.2026: logical desktop coordinates already account for DPI.
+juce::Rectangle<int> Editor::availableViewBounds() const
+{
+    const auto& displays = juce::Desktop::getInstance().getDisplays();
+    const auto* display = isShowing() ? displays.getDisplayForRect(getScreenBounds()) : displays.getDisplayForPoint(juce::Desktop::getMousePosition());
+    return display != nullptr ? display->userArea : juce::Rectangle<int>(0, 0, 1920, 1080);
+}
+void Editor::updateViewLimits()
+{
+    const auto area = availableViewBounds();
+    lastDisplayArea = area;
+    const int maxWidth = juce::jmax(228, juce::jmin(1824, juce::jmin(area.getWidth() - 48,
+        juce::roundToInt((area.getHeight() - 96) * 912.0 / 511))));
+    const int minWidth = juce::jmin(456, maxWidth);
+    setResizeLimits(minWidth, juce::roundToInt(minWidth * 511.0 / 912), maxWidth, juce::roundToInt(maxWidth * 511.0 / 912));
+    getConstrainer()->setFixedAspectRatio(912.0 / 511);
+}
+void Editor::setUiScale(int percent)
+{
+    uiScale = juce::jlimit(50, 200, percent);
+    updateViewLimits();
+    const int width = juce::jlimit(getConstrainer()->getMinimumWidth(), getConstrainer()->getMaximumWidth(), juce::roundToInt(912 * uiScale / 100.0));
+    setSize(width, juce::roundToInt(width * 511.0 / 912));
+    viewDirty = true; saveView();
+}
+void Editor::saveView()
+{
+    if (!viewPreferences || restoringView || dockLeft) return;
+    viewPreferences->setValue("uiScale", uiScale);
+    viewPreferences->setValue("windowWidth", getWidth());
+    viewPreferences->setValue("windowHeight", getHeight());
+    viewPreferences->saveIfNeeded();
+    viewDirty = false;
+}
+void Editor::showViewSettings()
+{
+    juce::PopupMenu menu;
+    menu.addSectionHeader("UI scale / default opening size");
+    for (const int scale : {50, 75, 100, 125, 150, 175, 200})
+        menu.addItem(scale, juce::String(scale) + "%", true, std::abs(getWidth() - 912 * scale / 100.0) < 2);
+    menu.addSeparator();
+    menu.addItem("Last window size is saved automatically", false);
+    juce::Component::SafePointer<Editor> safe(this);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&viewSettings), [safe](int selected)
+    { if (safe && selected >= 50 && selected <= 200) safe->setUiScale(selected); });
 }
 // Gömülü kullanımın sağ tık/menü seçenekleri; 9001=Auto Gain, 9002=Heat, 9003=Bypass.
 juce::PopupMenu Editor::rackOptions()

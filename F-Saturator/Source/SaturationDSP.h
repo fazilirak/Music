@@ -43,6 +43,10 @@ class SaturationDSP
     {
         // ADAA geçmiş örneği sıfırlanmadan yeni sinyal/karaktere taşınırsa geçişte yapay darbe oluşabilir.
         double previous = 0;
+        // Fazıl Irak · 19.11.2026: exact-value cache, invalidated by any k/b change.
+        double cachedK = -1, cachedBias = 0, cachedOffset = 0, cachedNormal = 1;
+        double primitivePrevious = 0, reversePrimitivePrevious = 0;
+        bool primitiveValid = false, reverseValid = false;
         static double logCosh(double x);
         static double shape(double x, double k, double bias);
         // Pozitif denge, statik eğrinin çift simetrik bileşenini azaltır; temel bileşen korunur.

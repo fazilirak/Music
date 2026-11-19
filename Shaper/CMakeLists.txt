@@ -5,7 +5,7 @@
 # Son düzenleme: 24.10.2026
 # Görev: Bu projenin derleme/parametre/araç yapılandırmasıdır; bağımlılık ve sürüm sözleşmesini birlikte koruyun.
 cmake_minimum_required(VERSION 3.24)
-project(Shaper VERSION 0.9.1 LANGUAGES C CXX)
+project(Shaper VERSION 0.9.2 LANGUAGES C CXX)
 add_compile_options("$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -131,5 +131,7 @@ if(SHAPER_BUILD_TESTS)
     if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         target_link_libraries(DelayTests PRIVATE "$<LINK_GROUP:RESCAN,Shaper,gate12_embedded,time12_embedded,filtr_embedded,reevr_embedded,pan12_embedded,volumef_embedded,satcurve_embedded,pitchcurve_embedded,widthcurve_embedded,fxcurve_embedded,delaycurve_embedded,irak_embedded,pitch_embedded>")
     endif()
-    add_test(NAME delay_effect COMMAND DelayTests)
+    add_dependencies(DelayTests Shaper_VST3)
+    add_test(NAME delay_effect COMMAND DelayTests "${CMAKE_BINARY_DIR}/Shaper_artefacts/Release/VST3/Jellybone.vst3")
+    set_tests_properties(delay_effect PROPERTIES TIMEOUT 300)
 endif()

@@ -20,6 +20,11 @@ with zipfile.ZipFile(out/source) as z:
 with tempfile.TemporaryDirectory(dir=build) as t:
     stage=Path(t)/f'F-Sidechain-{version}';stage.mkdir()
     art=build/'FSidechain_artefacts/Release'
+    if not mac:
+        import os
+        env=dict(os.environ, FSIDECHAIN_BINARY=str(art/'Standalone/F-Sidechain.exe'))
+        actual=subprocess.check_output(['powershell','-NoProfile','-Command',"(Get-Item -LiteralPath $env:FSIDECHAIN_BINARY).VersionInfo.ProductVersion"],env=env,text=True).strip()
+        assert actual==version, 'Binary/source version mismatch: '+actual
     bundles=[('VST3/F-Sidechain.vst3','VST3/F-Sidechain.vst3'),('Standalone/'+('F-Sidechain.app' if mac else 'F-Sidechain.exe'),'Standalone/'+('F-Sidechain.app' if mac else 'F-Sidechain.exe'))]
     if mac: bundles.append(('AU/F-Sidechain.component','AU/F-Sidechain.component'))
     for original,destination in bundles:
@@ -34,6 +39,9 @@ with tempfile.TemporaryDirectory(dir=build) as t:
         else:shutil.copy2(p,q)
     for name in ['README.md','LICENSE.txt','THIRD-PARTY-NOTICES.txt','source-lock.json','preview.png','preview-about.png']:shutil.copy2(root/name,stage/name)
     shutil.copytree(root/'licenses',stage/'licenses')
+    shutil.copytree(root/'docs',stage/'docs')
+    shutil.copytree(root/'validation/TranceGate',stage/'TranceGate-Auditions')
+    shutil.copy2(root/'preview-trance-gate.png',stage/'preview-trance-gate.png')
     shutil.copy2(log,stage/'test-results.txt')
     (stage/'SOURCE.txt').write_text('Corresponding complete source: '+source+'\nhttps://github.com/fazilirak/Music/releases/tag/F-Sidechain-v'+version+'\n',encoding='utf-8')
     manifest={p.relative_to(stage).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in stage.rglob('*') if p.is_file()}

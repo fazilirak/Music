@@ -8,6 +8,19 @@
 
 namespace irak
 {
+namespace
+{
+// Fazıl Irak · 19.11.2026: hosts may send fractional values to a boolean.
+// Expose the logical binary value, matching APVTS recall and the declared two steps.
+class BinarySwitchParameter final : public juce::AudioParameterBool
+{
+public:
+    using juce::AudioParameterBool::AudioParameterBool;
+private:
+    float getValue() const override { return get() ? 1.0f : 0.0f; }
+};
+}
+
 // DAW otomasyon sözleşmesi. Kimlikleri (drive, model vb.) ve sürüm 1 değerlerini
 // rastgele değiştirmeyin; eski oturum/preset uyumluluğu bunlara bağlıdır.
 // Parametre eklerken dört yer eşleşmeli: layout → Settings → settings() okuması → attachment/render. Eski kimliği silmek DAW otomasyonunu koparır.
@@ -37,7 +50,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Processor::layout()
     // Anahtarların varsayılanları: Heat kapalı, Auto Gain açık, Bypass kapalı.
     for (const auto &entry : std::array<std::pair<const char *, bool>, 3>{
              {{"heat", false}, {"auto_gain", true}, {"bypass", false}}})
-        p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{entry.first, 1}, entry.first,
+        p.add(std::make_unique<BinarySwitchParameter>(juce::ParameterID{entry.first, 1}, entry.first,
                                                          entry.second));
     // Fazıl Irak: yeni parametreler listenin SONUNA eklenir; eski DAW parametre indeksleri korunur.
     // Sıfır değerleri eski presetleri aynı sesle açar. Yeni kontroller bağımsız otomasyon alır.
@@ -50,7 +63,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout Processor::layout()
     add("bass", "Bass dB", -12, 12, 0);
     add("treble", "Treble dB", -12, 12, 0);
     for (const char* id : {"fast_attack", "fast_release", "bass_tight", "treble_tight"})
-        p.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID{id, 1}, id, false));
+        p.add(std::make_unique<BinarySwitchParameter>(juce::ParameterID{id, 1}, id, false));
     return p;
 }
 // Stereo varsayılan bus ve IRAK_STATE kökü oluşturulur. Ürün adı değişse de eski durum kimliği korunur.

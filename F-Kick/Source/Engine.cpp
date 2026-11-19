@@ -31,13 +31,13 @@ void Curve::sanitise() noexcept {
 void Engine::prepare(double sr) noexcept {
     rate=sr>0?sr:48000;
     dcPole=std::exp(-juce::MathConstants<double>::twoPi*5.0/rate);
-    effects.prepare(rate);motion.prepare(rate);
+    effects.prepare(rate);motion.prepare(rate);transient.prepare(rate);
     for (auto* s:{&sampleLevel,&bodyLevel,&cutoff,&drive,&output,&punchAmount}) s->reset(rate,.008);
     reset();
 }
 void Engine::reset() noexcept {
     voices={}; bend={}; pedal={}; ic1={}; ic2={}; dcX={}; dcY={}; serial=0;primed=false;
-    effects.reset();motion.reset();lastMotion={};
+    effects.reset();motion.reset();transient.reset();lastMotion={};
     sampleLevel.setCurrentAndTargetValue(.6f); bodyLevel.setCurrentAndTargetValue(.65f);
     cutoff.setCurrentAndTargetValue(18000); drive.setCurrentAndTargetValue(0); output.setCurrentAndTargetValue(.7f);punchAmount.setCurrentAndTargetValue(0);
 }
@@ -46,7 +46,7 @@ void Engine::beginRelease(Voice& v) noexcept { if (!v.releasing) { v.releasing=t
 void Engine::panic() noexcept { for(auto& v:voices) { v.held=false; v.sustained=false;v.panic=true; beginRelease(v); } pedal={};effects.panic(); }
 // Fazıl Irak: Yeni MIDI vuruşunda ses ayırır; note/velocity ve retrigger bilgisi aynı olayda yakalanır.
 void Engine::noteOn(int note, int channel, float velocity, const Settings& s) noexcept {
-    motion.trigger(s.motion);effects.trigger(note,velocity);
+    motion.trigger(s.motion);effects.trigger(note,velocity);transient.trigger();
     Voice* chosen=nullptr;
     if (!s.poly) {
         chosen=&voices[0];
@@ -80,6 +80,7 @@ void Engine::sustainPedal(int ch,bool down,const Settings&) noexcept {
 int Engine::activeVoices() const noexcept { int n=0;for(auto& v:voices)if(v.active)++n;return n; }
 // Fazıl Irak: Önceden ayrılmış ses ve sample hafızalarından üretir; ses callback içinde disk veya ağ erişimi yoktur.
 void Engine::render(juce::AudioBuffer<float>& buffer,int offset,int n,const Settings& s) noexcept {
+    transient.set(s.transientAttack,s.transientPump,s.transientSustain);
     if(!primed){sampleLevel.setCurrentAndTargetValue(s.sampleGain);bodyLevel.setCurrentAndTargetValue(s.bodyGain);cutoff.setCurrentAndTargetValue(s.cutoff);drive.setCurrentAndTargetValue(s.drive);output.setCurrentAndTargetValue(s.output);punchAmount.setCurrentAndTargetValue(s.punch);primed=true;}
     sampleLevel.setTargetValue(s.sampleGain); bodyLevel.setTargetValue(s.bodyGain);
     cutoff.setTargetValue(s.cutoff); drive.setTargetValue(s.drive); output.setTargetValue(s.output);punchAmount.setTargetValue(s.punch);
@@ -159,7 +160,8 @@ void Engine::render(juce::AudioBuffer<float>& buffer,int offset,int n,const Sett
             ic1[(size_t)c]=2*v1-ic1[(size_t)c];ic2[(size_t)c]=2*v2-ic2[(size_t)c];
             dry[(size_t)c]=TechnoFX::distort(v2,dr,s.fx.driveType);
         }
-        const auto processed=effects.process(dry[0],dry[1],s.fx,lastMotion);
+        const auto fx=effects.process(dry[0],dry[1],s.fx,lastMotion);
+        const auto processed=transient.process(fx[0],fx[1],dry[0],dry[1]);
         for(int c=0;c<2;++c) {
             const double value=processed[(size_t)c];
             const double dc=value-dcX[(size_t)c]+dcPole*dcY[(size_t)c];dcX[(size_t)c]=value;dcY[(size_t)c]=dc;

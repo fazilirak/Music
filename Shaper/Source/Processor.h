@@ -46,10 +46,7 @@ class ShaperProcessor final : public juce::AudioProcessor, private juce::AsyncUp
         return false;
     }
     // getTailLengthSeconds: Rack efekt zinciri, MIDI/transport, preset, ses callback ve kaydedilen durum akışını yönetir. Mevcut veri/kalıcılık sözleşmesini bu erişim adımında koruyun.
-    double getTailLengthSeconds() const override
-    {
-        return 30.0;
-    }
+    double getTailLengthSeconds() const override;
     // Host’a program adedini bildirir; gezinme/sınır ve fabrika bankasıyla tutarlı kalmalıdır.
     int getNumPrograms() override
     {

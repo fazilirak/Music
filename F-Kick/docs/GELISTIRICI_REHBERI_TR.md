@@ -1,3 +1,6 @@
+# 0.8.8 bakım notu — 19.11.2026
+Tests/HostAcceptance.h gerçek VST3 host matrisi ve boolean state regresyonlarını içerir. Source/PluginProcessor.cpp içindeki BinarySwitchParameter getValue() mantıksal 0/1 readback sağlar; parametre ID/sırası ve ses yolu korunur. Matris çıktısı validation/HOST-ACCEPTANCE-2026-11-19.csv, test kapsamı ve canlı kullanım sınırları validation/TEST_SONUCLARI_TR.md içindedir. scripts/package.ps1 sürümü CMakeLists.txt üzerinden okur ve Windows ikili sürümlerini doğrular.
+
 # F-Kick geliştirici rehberi
 
 Fazıl Irak · 27.10.2026 · 0.7.0
@@ -225,3 +228,11 @@ Eski Room sesinin eşitlik testi yeni fabrika ayarıyla değil, 0.8.1 dağıtım
 - Yeni 24 APVTS alanı eski 131 alanın sonundadır. Eski state eksik alanları varsayılandan tamamlar; FKICK_PRESET v1 korunur. Yeni mod varsayılanı Classic, routing Legacy ve limiter kapalıdır.
 - Tests/Legacy/TechnoFX.* yalnız test hedefinde 0.8.3 gerçek DSP referansıdır. Ürün eski test namespace'ini linklemez. RumbleTests.cpp eski/yeni fark, dry izolasyonu, SC, limiter, bass frekansı, panic, preset/state, blok ve GUI testlerini içerir.
 - Kullanım ve routing: docs/RUMBLE-084-TR.md. Ölçümler validation/RUMBLE-084-*.csv; 12 tarif ve ses validation/Rumble-Recipes. CPU ölçümü host CPU yüzdesi değildir.
+
+
+## 0.8.6: Transient Shaper
+
+Attack/Pump/Sustain işlem sırası, eski preset varsayılanları ve bakım noktaları: [TRANSIENT-086-TR.md](TRANSIENT-086-TR.md). Yeni kontroller `tsAttack`, `tsPump`, `tsSustain` olarak eski 155 host parametresinin sonuna eklenir.
+
+
+Fazıl Irak · 03.11.2026: Sayı gösterim ve giriş adımları için NUMERIC-087-TR.md ve Source/NumericPolicy.h dosyalarına bakın.

@@ -917,8 +917,8 @@ void VOLUMEFAudioProcessorEditor::resized()
 void VOLUMEFAudioProcessorEditor::layoutSidechainButtons() {
     const int left=pointMenu.getRight()+10+(loopButton.isVisible()?35:0);
     const int right=undoButton.getX()-12;
-    const int width=juce::jmax(24,juce::jmin(45,(right-left)/SidechainPresets::count-3));
-    for(int i=0;i<SidechainPresets::count;++i) duckButtons[i]->setBounds(left+i*(width+3),pointMenu.getY(),width,25);
+    const int width=juce::jmax(24,juce::jmin(45,(right-left)/SidechainPresets::normalCount-3));
+    for(int i=0;i<SidechainPresets::count;++i) duckButtons[i]->setBounds(left+(i%8)*(width+3),pointMenu.getY()+(i/8)*28,width,25);
 }
 
 } // namespace volumef

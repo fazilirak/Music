@@ -1,3 +1,6 @@
+## 0.9.2 — 19.11.2026 bakım notu
+Source/MultibandProcessor.h paralel motorların maksimum kuyruğunu, Source/Processor.cpp etkin seri rack'in toplam kuyruğunu bildirir; önceki 30 saniye rack alt sınırı korunur. Parametre/state sözleşmesi değişmez. Tests/DelayTests.cpp tail/bypass/state regresyonlarını, Tests/DelayAcceptance.h gerçek VST3 çevrimdışı host matrisini içerir. CMake altıncı testin son VST3'ü derleyip argümanla yüklemesini sağlar. Canlı test sınırları ve ölçümler JELLYBONE-092-DOGRULAMA.md içindedir.
+
 # Shaper — Türkçe geliştirici ve hata müdahale rehberi
 
 **Fazıl Irak · Son düzenleme: 22.10.2026**

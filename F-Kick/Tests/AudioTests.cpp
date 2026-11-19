@@ -8,6 +8,7 @@
 #include <iostream>
 #include <stdexcept>
 void runRumbleTests(const juce::File&);
+void runTransientTests(const juce::File&);
 void runTechnoTests(const juce::File&);
 void runBankTests(const juce::File&);
 void runImpactTests(const juce::File&);
@@ -34,6 +35,7 @@ juce::Component* find(juce::Component& c,const juce::String& id){if(c.getCompone
 template<class T> bool containsType(juce::Component& c){if(dynamic_cast<T*>(&c))return true;for(auto* child:c.getChildren())if(containsType<T>(*child))return true;return false;}
 bool pumpUntil(const std::function<bool()>& ready,int timeout=3000){const auto end=juce::Time::getMillisecondCounter()+timeout;while(!ready()&&juce::Time::getMillisecondCounter()<end)juce::MessageManager::getInstance()->runDispatchLoopUntil(10);return ready();}
 }
+#include "HostAcceptance.h"
 int main(int argc,char** argv) {
     std::cout.setf(std::ios::unitbuf);std::cerr.setf(std::ios::unitbuf);
     std::cout<<"Starting F-Kick verification\n";
@@ -110,7 +112,12 @@ int main(int argc,char** argv) {
         std::unique_ptr<juce::AudioProcessorEditor> editor(demo.createEditor());require(editor->getWidth()==912&&editor->getHeight()==511,"F-series UI dimensions");
         for(auto* child:editor->getChildren())require(editor->getLocalBounds().contains(child->getBounds()),"UI component outside editor");
         require(find(*editor,"brand-logo")&&find(*editor,"envelope-editor")&&find(*editor,"preset-selector"),"Required UI components missing");
-        require(!containsType<juce::MidiKeyboardComponent>(*editor)&&!containsType<juce::Slider>(*editor)&&find(*editor,"hp")!=nullptr,"HP must be an editable text control");
+        require(!containsType<juce::MidiKeyboardComponent>(*editor)&&dynamic_cast<FKickValue*>(find(*editor,"hp"))!=nullptr,"HP must be an editable text control");
+        // Fazıl Irak · 03.11.2026: rotary istisnası yalnız kullanıcının istediği üç transient knobudur.
+        int transientSliders=0;std::function<void(juce::Component&)> checkSliders=[&](juce::Component& c){
+            if(dynamic_cast<juce::Slider*>(&c)){require(dynamic_cast<FKickTransientKnob*>(c.getParentComponent())!=nullptr,"Unexpected legacy rotary control");++transientSliders;}
+            for(auto* child:c.getChildren())checkSliders(*child);
+        };checkSliders(*editor);require(transientSliders==3,"Exactly three transient knobs required");
         auto* brand=dynamic_cast<FKickLogo*>(find(*editor,"brand-logo"));require(brand&&dynamic_cast<juce::Button*>(find(*editor,"brand-logo"))==nullptr,"Logo must be a plain component");
         auto* previous=dynamic_cast<juce::TextButton*>(find(*editor,"preset-previous"));auto* next=dynamic_cast<juce::TextButton*>(find(*editor,"preset-next"));auto* selector=dynamic_cast<juce::ComboBox*>(find(*editor,"preset-selector"));
         require(previous&&next&&selector&&previous->getRight()<=selector->getX()&&next->getX()>=selector->getRight(),"Preset arrows do not flank selector");
@@ -172,6 +179,8 @@ int main(int argc,char** argv) {
             std::unique_ptr<juce::AudioProcessorEditor> hostEditor(instance->createEditorIfNeeded());require(hostEditor!=nullptr&&hostEditor->getWidth()==912&&hostEditor->getHeight()==511,"VST3 host editor failed");hostEditor.reset();instance->releaseResources();instance.reset();
             std::cout<<"PASS built VST3: scan / instantiate / MIDI / audio / state / editor\n";
         }
+        if(argc>2) kick_acceptance::run(folder,argv[2]);
+        runTransientTests(folder);
         runCleanTests(folder);
         runTechnoTests(folder);
         runImpactTests(folder);

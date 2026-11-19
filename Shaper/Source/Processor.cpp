@@ -570,3 +570,14 @@ void ShaperProcessor::switchAB(int bank) {
     setRackStateInformation(abStates[(size_t)bank].getData(),(int)abStates[(size_t)bank].getSize());
     editorWidth.store(w);editorHeight.store(h);activeAB=bank;
 }
+
+// Fazıl Irak · 19.11.2026: seri efektlerin kuyrukları toplanır; uzun Delay render'da kesilmez.
+// Mevcut 30 saniye alt sınırı korunur. Sabit modül dizisi ve atomik bayraklar tahsis gerektirmez.
+double ShaperProcessor::getTailLengthSeconds() const
+{
+    double seconds=0.;
+    for(int e=0;e<effectCount;++e)
+        if(presentValues[e]->load()>.5f && enableValues[e]->load()>.5f)
+            seconds+=modules[e]->getTailLengthSeconds();
+    return juce::jmax(30.,seconds);
+}

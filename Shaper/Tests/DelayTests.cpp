@@ -2,12 +2,14 @@
 // Fazıl Irak · 12.11.2026: Delay ses sözleşmesi; kuru uç, kuyruk, feedback, stereo ve state.
 #include "DelayEffect.h"
 #include "Editor.h"
+#include "MultibandProcessor.h"
 #include <iostream>
 #include <stdexcept>
 static void check(bool ok,const char* why){if(!ok)throw std::runtime_error(why);}
 static void set(DelayEffect& p,const char* id,float v){auto* a=p.state.getParameter(id);check(a!=nullptr,id);a->setValueNotifyingHost(a->convertTo0to1(v));}
 static void fixed(DelayEffect& p,const char* id,float v){set(p,(juce::String(id)+"_curve").toRawUTF8(),0);set(p,(juce::String(id)+"_min").toRawUTF8(),v);set(p,(juce::String(id)+"_max").toRawUTF8(),v);}
-int main(){try{juce::ScopedJuceInitialiser_GUI gui;
+#include "DelayAcceptance.h"
+int main(int argc,char** argv){try{juce::ScopedJuceInitialiser_GUI gui;
  for(double sr:{44100.,48000.,96000.})for(int block:{32,257,1024}){
     DelayEffect p;fixed(p,"send",1);fixed(p,"blend",1);fixed(p,"feedback",.7f);fixed(p,"filter",1);set(p,"division",0);set(p,"time_ms",50);p.prepareToPlay(sr,block);
     juce::AudioBuffer<float> b(4,block);juce::MidiBuffer midi;double tail=0;float peak=0;int first=-1;
@@ -47,11 +49,28 @@ int main(){try{juce::ScopedJuceInitialiser_GUI gui;
   auto folder=juce::File::getCurrentWorkingDirectory().getChildFile("../dist");folder.createDirectory();juce::FileOutputStream out(folder.getChildFile("preview-delay-090.png"));out.setPosition(0);out.truncate();check(juce::PNGImageFormat{}.writeImageToStream(ui.createComponentSnapshot(ui.getLocalBounds()),out),"Delay snapshot");
   juce::MemoryBlock bytes;p.getStateInformation(bytes);check(folder.getChildFile("Delay-090.shaper").replaceWithData(bytes.getData(),bytes.getSize()),"Delay test preset");ShaperProcessor r;r.setStateInformation(bytes.getData(),int(bytes.getSize()));check(r.palette()==std::vector<int>{10},"Rack Delay recall");
  }
+ // Uzun feedback kuyruğu ve Low/Mid/High paralel bant aktarımı.
+ {ShaperProcessor rack;rack.addEffect(10);auto& bands=dynamic_cast<MultibandProcessor&>(rack.module(10));
+  double longest=0.;
+  for(int b=0;b<3;++b){auto& d=dynamic_cast<DelayEffect&>(bands.band(b));
+   set(d,"division",0);set(d,"time_ms",1000.f*(b+2));fixed(d,"feedback",.9f);
+   longest=juce::jmax(longest,d.getTailLengthSeconds());
+  }
+  check(std::abs(bands.getTailLengthSeconds()-longest)<1e-6,"Parallel bands use maximum tail");
+  check(rack.getTailLengthSeconds()>=longest,"Rack tail covers Delay tail");
+  rack.addEffect(9);check(rack.getTailLengthSeconds()>=longest+rack.module(9).getTailLengthSeconds(),"Serial rack tails add");
+  rack.state.getParameter(ShaperProcessor::enableId(10))->setValueNotifyingHost(0);
+  check(std::abs(rack.getTailLengthSeconds()-30.)<1e-6,"Bypassed Delay does not extend tail");
+  rack.state.getParameter(ShaperProcessor::enableId(10))->setValueNotifyingHost(1);
+  juce::MemoryBlock saved;rack.getStateInformation(saved);ShaperProcessor recalled;recalled.setStateInformation(saved.getData(),int(saved.getSize()));
+  check(recalled.getTailLengthSeconds()>=longest,"Long tail survives session recall");
+ }
  // Görsel kontrol: tüm efektler eklendiğinde paletin sağında boş + alanı kalmamalı.
  {ShaperProcessor p;for(int e=0;e<ShaperProcessor::effectCount;++e)p.addEffect(e);p.selectedEffect=10;
   ShaperEditor ui(p);ui.setZoom(1.f);auto file=juce::File::getCurrentWorkingDirectory().getChildFile("../dist/preview-full-rack-090.png");
   juce::FileOutputStream out(file);out.setPosition(0);out.truncate();check(juce::PNGImageFormat{}.writeImageToStream(ui.createComponentSnapshot(ui.getLocalBounds()),out),"Full rack snapshot");
  }
+ if(argc>1)delay_acceptance::run(juce::String(argv[1]));
  juce::MessageManager::callAsync([]{juce::MessageManager::getInstance()->stopDispatchLoop();});juce::MessageManager::getInstance()->runDispatchLoop();
  std::cout<<"PASS Delay: 9 rate/block combinations, exact dry, Send tail, bounded feedback, ping-pong, state and UI\n";return 0;
 }catch(const std::exception& e){std::cerr<<"FAIL "<<e.what()<<"\n";return 1;}}

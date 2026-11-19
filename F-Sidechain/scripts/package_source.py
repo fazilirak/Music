@@ -13,7 +13,7 @@ if not dependency.is_dir():
 if not (dependency / 'CMakeLists.txt').is_file():
     raise SystemExit('Complete JUCE source is required for the source archive')
 items = ['Source', 'Resources', 'Tests', 'scripts', 'CMakeLists.txt', 'README.md',
-         'THIRD-PARTY-NOTICES.txt', 'LICENSE.txt', 'source-lock.json', 'licenses', 'LICENSE', 'AUTHORS.md', 'docs', 'preview.png', 'preview-about.png']
+         'THIRD-PARTY-NOTICES.txt', 'LICENSE.txt', 'source-lock.json', 'licenses', 'LICENSE', 'AUTHORS.md', 'docs', 'preview.png', 'preview-about.png', 'preview-trance-gate.png']
 with zipfile.ZipFile(sys.argv[1], 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
     for name in items:
         path = root / name
