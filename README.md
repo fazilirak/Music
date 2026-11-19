@@ -2,7 +2,7 @@
 
 Independent music software and development resources by [FAZIL AHMET IRAK](https://fazilirak.com).
 
-[Explore all eight products — Türkçe](https://fazilirak.com/muzik-yazilimlari/) · [English](https://fazilirak.com/music-software/). Each product carries Fazıl Irak’s developer identity; original upstream/component copyrights and licences remain applicable.
+[Explore all seven products — Türkçe](https://fazilirak.com/muzik-yazilimlari/) · [English](https://fazilirak.com/music-software/). Each product carries Fazıl Irak’s developer identity; original upstream/component copyrights and licences remain applicable.
 
 | Project | Developer / maintainer | Windows | macOS | Linux x64 | Source |
 | --- | --- | --- | --- | --- | --- |
@@ -12,14 +12,12 @@ Independent music software and development resources by [FAZIL AHMET IRAK](https
 | [F-Sidechain](F-Sidechain/README.md) | Fazıl Irak | [1.1.4](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.4/F-Sidechain-1.1.4-Windows-x64.zip) | [Universal 1.1.4](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.4/F-Sidechain-1.1.4-macOS-Universal.tar.gz) | [1.1.3](https://github.com/fazilirak/Music/releases/download/F-Sidechain-v1.1.3/F-Sidechain-1.1.3-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-Sidechain-v1.1.4) |
 | [Jellybone](Shaper/README.md) | Fazıl Irak | [0.9.2](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.9.2/Jellybone-0.9.2-Windows-x64.zip) | [Universal 0.9.2](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.9.2/Jellybone-0.9.2-macOS-Universal.tar.gz) | [0.8.8](https://github.com/fazilirak/Music/releases/download/Jellybone-v0.8.8/Jellybone-0.8.8-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/Jellybone-v0.9.2) |
 | [Model F](Model-F/README.md) | Fazıl Irak | [0.3.0](https://github.com/fazilirak/Music/releases/download/Model-F-v0.3.0/Model-F-0.3.0-Windows-x64.zip) | [Universal 0.3.0](https://github.com/fazilirak/Music/releases/download/Model-F-v0.3.0/Model-F-0.3.0-macOS-Universal.tar.gz) | [0.3.0](https://github.com/fazilirak/Music/releases/download/Model-F-v0.3.0/Model-F-0.3.0-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/Model-F-v0.3.0) |
-| [F-EQ Pro](F-EQ-Pro/RELEASE-0.6.0.md) | Fazıl Irak | [0.6.0 — VST3 / CLAP / Standalone](https://github.com/fazilirak/Music/releases/download/F-EQ-Pro-v0.6.0/FEQ-Windows-0.6.0.zip) | — | — | Proprietary freeware; no source distribution |
 | [F-EQ](F-EQ/README.md) | Fazıl Irak | [0.1.14](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-Windows-x64.zip) | [Universal 0.1.14](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-macOS-Universal.tar.gz) | [0.1.14](https://github.com/fazilirak/Music/releases/download/F-EQ-v0.1.14/F-EQ-0.1.14-Linux-x64.tar.gz) | [Source / licences](https://github.com/fazilirak/Music/releases/tag/F-EQ-v0.1.14) |
 
 F-Kick and F-TransForm also provide macOS Universal VST3, AU and standalone packages. [Build, installation and test scope](docs/ORIGINALS_MACOS_TR.md).
 
 ## 19 November 2026 releases
 
-- **F-EQ Pro 0.6.0:** corrected A/B Undo/Redo, multi-band editing, analyzer improvements, Musical/Surgical dynamics, Standard/High processing quality and adaptive Linear Phase. Windows-only proprietary freeware; narrow bass Linear filters can add seconds of latency.
 - **F-Sidechain 1.1.4:** eight original Trance Gate presets in a second compact row, retaining the original eight Volume curves.
 - **F-Kick 0.8.8:** Attack/Pump/Sustain transient shaping, numeric display improvements, FX layout and boolean host-state fixes.
 - **Jellybone 0.9.2:** correct Delay tail reporting across parallel bands and serial modules; retains native curve Delay and the redesigned 160-preset bank.
@@ -27,7 +25,7 @@ F-Kick and F-TransForm also provide macOS Universal VST3, AU and standalone pack
 
 The four open-source updates have passed native Windows/macOS builds and automated tests. Linux links retain the explicitly numbered previous versions. Corresponding sources and component notices accompany covered binaries. Live DAW/hardware acceptance and subjective listening remain separate checks; see each release for measurement limits.
 
-Türkçe: Yeni Trance Gate presetleri, transient kontrolleri, Delay kuyruğu düzeltmesi, kaydedilen zoom ve F-EQ Pro düzenleme/kalite yenilikleri yayımlandı. Platform sürümleri yukarıdaki tabloda ayrı gösterilir.
+Türkçe: Yeni Trance Gate presetleri, transient kontrolleri, Delay kuyruğu düzeltmesi, kaydedilen zoom yayımlandı. Platform sürümleri yukarıdaki tabloda ayrı gösterilir.
 
 ## Earlier November 2026 updates
 
